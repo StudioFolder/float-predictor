@@ -1,0 +1,81 @@
+/* BreakPoints */
+
+$xlarge: 1200px;
+$large: 992px;
+$medium: 768px;
+$small: 480px;
+$xsmall: 320px;
+
+
+/* colors */
+$primary: #2936e7;
+$bodyColor: #0f121d;
+$titleColor: #383838;
+
+
+/* static assets paths */
+$asset-base-path: '../../../static/' !default;
+$img-base-path: '../../../static/img/' !default;
+
+
+
+/// Asset URL builder
+/// @access private
+/// @param {String} $type - Asset type, matching folder name
+/// @param {String} $file - Asset file name, including extension
+/// @return {URL} - A `url()` function leading to the asset
+@function asset($type, $file) {
+  @return url($asset-base-path + '/' + $type + '/' + $file);
+}
+
+
+/// Image asset helper
+/// @access public
+/// @param {String} $file - Asset file name, including extension
+/// @return {URL} - A `url()` function leading to the image
+/// @require {function} asset
+@function image($file) {
+  @return asset('img', $file);
+}
+
+
+/* Media Query Mixins */
+
+@mixin up($breakpoint) {
+  @media screen and (min-width: $breakpoint + 1) {
+    @content;
+  }
+}
+@mixin down($breakpoint) {
+  @media screen and (max-width: $breakpoint) {
+    @content;
+  }
+}
+@mixin only($breakpoint) {
+  @if($breakpoint==$xsmall){$breakpointnext:$small}
+  @if($breakpoint==$small){$breakpointnext:$medium}
+  @if($breakpoint==$medium){$breakpointnext:$large}
+  @if($breakpoint==$large){$breakpointnext:$xlarge}
+  @media screen and (min-width: $breakpoint) and (max-width: $breakpointnext - 1) {
+    @content;
+  }
+}
+@mixin between($lower, $upper) {
+  @include up($lower) {
+    @include down($upper - 1) {
+      @content;
+    }
+  }
+}
+
+@mixin medium_up() {
+  @include up($medium) {
+    @content;
+  }
+}
+
+@mixin medium_down() {
+  @include down($medium) {
+    @content;
+  }
+}
