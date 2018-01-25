@@ -1,7 +1,7 @@
 export default {
   namespaced: true,
   state: {
-    flightType: 'free',
+    flightType: 'planned',
     isActive: false, // are we flying yet?
     explorers: [1, 2, 3, 4, 5, 6, 7, 8],
     activeExplorer: [], // who is flying right now?

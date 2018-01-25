@@ -1,7 +1,7 @@
 <template>
-  <div id="app">
-    <router-view/>
+  <div id="app" class="main-application">
     <flightForm></flightForm>
+    <router-view/>
   </div>
 </template>
 

@@ -23,7 +23,7 @@ export default {
   },
   methods: {
     toggleMenu() {
-      console.log('toggleMenu');
+      // console.log('toggleMenu');
     },
   },
 };
