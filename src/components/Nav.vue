@@ -5,12 +5,12 @@
         <router-link to="/">
             <span @click="toggleMenu" class="home-link-mobile">Home</span>
         </router-link>
-        <router-link to="/about">
+<!--        <router-link to="/about">
             <span @click="toggleMenu">About</span>
         </router-link>
         <router-link to="/contatti">
             <span @click="toggleMenu">Contacts</span>
-        </router-link>
+        </router-link>-->
     </nav>
 </template>
 <script>
@@ -19,7 +19,6 @@ export default {
   data() {
     return {
       isActive: false,
-      isLoading: false,
     };
   },
   methods: {

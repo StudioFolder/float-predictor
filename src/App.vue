@@ -1,13 +1,16 @@
 <template>
   <div id="app">
-    <img src="./assets/img/logo.png">
     <router-view/>
+    <flightForm></flightForm>
   </div>
 </template>
 
 <script>
+import flightForm from './components/FlightForm';
+
 export default {
   name: 'App',
+  components: { flightForm },
 };
 </script>
 

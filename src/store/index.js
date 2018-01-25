@@ -1,11 +1,14 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
+import general from './modules/general';
+import flightSimulator from './modules/flighSimulator';
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   modules: {
-    // insert modules here
+    general,
+    flightSimulator,
   },
   // plugins: [createPersistedState({paths: ['filters', 'visualization']})]
 });
