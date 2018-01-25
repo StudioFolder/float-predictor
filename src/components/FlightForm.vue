@@ -79,8 +79,12 @@ export default {
 };
 </script>
 <style lang="scss">
-    @import "~@/assets/css/_variables_and_mixins.scss"; // it works
+    @import "~@/assets/css/_variables_and_mixins.scss";
     .flight-form.container {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
         width: 450px;
         margin: 0 auto;
         background: linear-gradient(180deg, $lightGray, $bodyColor);
@@ -135,7 +139,7 @@ export default {
             }
             &.planned {
                 .slider:before {
-                    transform: translateX(-19px);
+                    transform: translateX(-22px);
                 }
             }
         }

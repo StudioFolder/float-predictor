@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import HomePage from '@/components/HomePage';
+import HomePage from '@/components/pages/HomePage';
+import FlightSimulator from '@/components/pages/FlightSimulator';
+import About from '@/components/pages/About';
 
 Vue.use(Router);
 
@@ -10,6 +12,16 @@ const router = new Router({
       path: '/',
       name: 'HomePage',
       component: HomePage,
+    },
+    {
+      path: '/flight-simulator',
+      name: 'FlightSimulator',
+      component: FlightSimulator,
+    },
+    {
+      path: '/about',
+      name: 'About',
+      component: About,
     },
   ],
   mode: 'history',

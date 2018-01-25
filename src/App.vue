@@ -1,16 +1,17 @@
 <template>
   <div id="app" class="main-application">
-    <flightForm></flightForm>
+    <navigation/>
     <router-view/>
   </div>
 </template>
 
 <script>
-import flightForm from './components/FlightForm';
+
+import Navigation from './components/Navigation';
 
 export default {
+  components: { Navigation },
   name: 'App',
-  components: { flightForm },
 };
 </script>
 

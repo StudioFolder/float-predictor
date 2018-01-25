@@ -7,5 +7,9 @@ body {
 }
 
 .main-application {
-  //display: flex;
+  @include medium_up {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
 }
