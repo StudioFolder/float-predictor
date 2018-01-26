@@ -72,8 +72,9 @@ export default {
     },
   },
   methods: {
-    onSubmit() {
-      // console.log('submitted');
+    onSubmit(e) {
+      e.preventDefault();
+      this.$store.commit('flightSimulator/startAnimation');
     },
   },
 };
@@ -82,6 +83,7 @@ export default {
     @import "~@/assets/css/_variables_and_mixins.scss";
     .flight-form.container {
         position: absolute;
+        z-index: 5;
         top: 0;
         left: 50%;
         transform: translateX(-50%);

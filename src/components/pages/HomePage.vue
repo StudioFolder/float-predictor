@@ -1,9 +1,9 @@
 <template>
-  <div class="main-content">
+
     <div class="call_to_action">
       <router-link to="/flight-simulator">Start a new aerosolar journey</router-link>
     </div>
-  </div>
+
 </template>
 
 <script>

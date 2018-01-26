@@ -19,6 +19,10 @@ export default {
     @import "~@/assets/css/_variables_and_mixins.scss";
     .main-navigation {
         color: #fff;
+        display: block;
+        position: absolute;
+        top: 1em;
+        left: 1em;
     }
     .intro-description {
         max-width: 230px;

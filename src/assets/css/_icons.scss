@@ -1,0 +1,16 @@
+.fp {
+  display: block;
+  width: 1em;
+  height: 1em;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: auto;
+}
+.fp-info {
+  background-image: url("assets/icons/ico-info.svg");
+}
+.fp-menu {
+  background-image: url("assets/icons/ico-menu.svg");
+  background-size: contain;
+  width: 1.8em;
+}

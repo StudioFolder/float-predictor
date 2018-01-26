@@ -6,10 +6,3 @@ body {
   letter-spacing: 1px;
 }
 
-.main-application {
-  @include medium_up {
-    width: 100vw;
-    height: 100vh;
-    overflow: hidden;
-  }
-}
