@@ -40,6 +40,26 @@ $img-base-path: '../../../static/img/' !default;
 }
 
 
+
+// fonts mixins
+// mixins
+%colfax_reg {
+  font-family: "Colfax-Regular", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+%colfax_bold {
+  font-family: "Colfax-Bold", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+%colfax_med {
+  font-family: "Colfax-Medium", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 /* Media Query Mixins */
 
 @mixin up($breakpoint) {
