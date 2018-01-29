@@ -1,5 +1,6 @@
 <template>
   <div id="simple-interface">
+    <visualization></visualization>
     <div class="bottom-left-panel">
       <h4>GENERAL</h4>
       <span class="subtext">From</span>
@@ -53,6 +54,7 @@
 </template>
 <script>
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
+import Visualization from '../Visualization';
 
 export default {
   name: 'TestInterface',
@@ -62,7 +64,7 @@ export default {
     };
   },
   components: {
-    VueGoogleAutocomplete,
+    VueGoogleAutocomplete, Visualization,
   },
   computed: {
     days() { return this.$store.state.flightSimulator.elapsedDays; },

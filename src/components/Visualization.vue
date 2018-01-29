@@ -1,7 +1,6 @@
 
 <template>
   <div id ="visualization" class="main-visualization">
-    <TestInterface></TestInterface>
     <div class="labels">
       <div class="label" id="dialog-label">
         <div class="labeldata">
@@ -34,7 +33,6 @@
 
 import _ from 'lodash';
 import { saveAs } from 'file-saver';
-import TestInterface from './visualization/TestInterface';
 import Loading from './Loading';
 import Util from './visualization/Util';
 import Label from './visualization/Label';
@@ -235,7 +233,6 @@ export default {
 
   components: {
     Loading,
-    TestInterface,
   },
 
   mounted() {

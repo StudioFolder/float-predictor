@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import HomePage from '@/components/pages/HomePage';
+import TestInterface from '@/components/visualization/TestInterface';
 import Gallery from '@/components/pages/Gallery';
 import FlightSimulator from '@/components/pages/FlightSimulator';
 import About from '@/components/pages/About';
@@ -29,8 +30,13 @@ const router = new Router({
       name: 'Gallery',
       component: Gallery,
     },
+    {
+      path: '/test',
+      name: 'TestInterface',
+      component: TestInterface,
+    },
   ],
-  mode: 'history',
+//   mode: 'history',
 });
 
 
