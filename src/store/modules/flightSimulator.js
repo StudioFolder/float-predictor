@@ -5,15 +5,13 @@ export default {
   state: {
     flightType: 'planned',
     isActive: false, // are we flying yet?
-    isPlaying: true,
-    isSaving: false,
-    isLoading: true,
-    isWindVisible: true,
-    explorers: [1, 2, 3, 4, 5, 6, 7, 8],
-    activeExplorers: [], // who is flying right now?
+    isPlaying: true, // play/pause
+    isSaving: false, // saving true sve image then sets to false
+    isLoading: true, // if true show loading spinner while loading assets
+    isWindVisible: true, // not yet implemented
     focusedExplorer: 0, // this is for onBoardExperience, if 0 none is focused
-    focusedExplorerSpeed: 0,
-    focusedExplorerDistance: 0,
+    focusedExplorerSpeed: 0, // onBoard data
+    focusedExplorerDistance: 0, // onBoard data
     elapsedDays: 0,
     departure: {
       lat: 52.520645,
@@ -34,6 +32,7 @@ export default {
       departureDate: new Date(),
       minDist: 0,
       minTime: 0,
+      svg: '',
     },
   },
   mutations: {
@@ -42,10 +41,6 @@ export default {
     },
     startAnimation(state) {
       state.isActive = true;
-    },
-    activateExplorer(state, explorer) {
-      // console.log(explorer);
-      _.concat(state.activeExplorers, explorer);
     },
     saveImage(state) { // the image will be saved after the next rendering
       state.isSaving = true;
