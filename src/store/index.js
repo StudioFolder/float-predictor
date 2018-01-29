@@ -1,7 +1,7 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
 import general from './modules/general';
-import flightSimulator from './modules/flighSimulator';
+import flightSimulator from './modules/flightSimulator';
 
 Vue.use(Vuex);
 

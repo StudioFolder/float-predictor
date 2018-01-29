@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://github.com/mrdoob/three.js/issues/352 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+  <link rel="dns-prefetch" href="https://assets-cdn.github.com/">
+  <link rel="dns-prefetch" href="https://avatars0.githubusercontent.com/">
+  <link rel="dns-prefetch" href="https://avatars1.githubusercontent.com/">
+  <link rel="dns-prefetch" href="https://avatars2.githubusercontent.com/">
+  <link rel="dns-prefetch" href="https://avatars3.githubusercontent.com/">
+  <link rel="dns-prefetch" href="https://github-cloud.s3.amazonaws.com/">
+  <link rel="dns-prefetch" href="https://user-images.githubusercontent.com/">
+
+
+
+  <link crossorigin="anonymous" href="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/frameworks-d7137690e30123bade38abb082ac79f36cc7a105ff92e602405f53b725465cab.css" integrity="sha256-1xN2kOMBI7reOKuwgqx582zHoQX/kuYCQF9TtyVGXKs=" media="all" rel="stylesheet">
+  <link crossorigin="anonymous" href="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/github-9c5236e1eaedd7951b40aeeaba181a37ac061f562068cd2127c489467239b965.css" integrity="sha256-nFI24ert15UbQK7quhgaN6wGH1YgaM0hJ8SJRnI5uWU=" media="all" rel="stylesheet">
+  
+  
+  
+  
+
+  <meta name="viewport" content="width=device-width">
+  
+  <title>Working example of WebGLRenderer using existing canvas/div · Issue #352 · mrdoob/three.js</title>
+  <link rel="search" type="application/opensearchdescription+xml" href="https://github.com/opensearch.xml" title="GitHub">
+  <link rel="fluid-icon" href="https://github.com/fluidicon.png" title="GitHub">
+  <meta property="fb:app_id" content="1401488693436528">
+
+    
+    <meta content="https://avatars2.githubusercontent.com/u/914783?s=400&amp;v=4" property="og:image"><meta content="GitHub" property="og:site_name"><meta content="object" property="og:type"><meta content="Working example of WebGLRenderer using existing canvas/div · Issue #352 · mrdoob/three.js" property="og:title"><meta content="https://github.com/mrdoob/three.js/issues/352" property="og:url"><meta content="Hi guys.
+Congrats on the wicked library.
+Is there an existing working example of #157 &quot;use existing canvas element&quot; fixed by #192 &quot;existing canvas element&quot; ?
+There&#39;s already a lot of examples but n..." property="og:description">
+
+  <link rel="assets" href="https://assets-cdn.github.com/">
+  <link rel="web-socket" href="wss://live.github.com/_sockets/VjI6MjEyMzA0OTUxOjgwYWZjYTYxMTYzNzZjODM3Yzc5MDM0YTc0YWYyOTFhMDlkNjQyYzAxNzExYjFkNmM2ZDc1ZDVkZTFiZmQ1YzQ=--5a76944a80796a17e373b57c45fdf982c9999032">
+  <meta name="pjax-timeout" content="1000">
+  <link rel="sudo-modal" href="https://github.com/sessions/sudo_modal">
+  <meta name="request-id" content="CC55:2ABD:12E4CA5:1E26D92:59F499F8" data-pjax-transient="">
+  
+
+  <meta name="selected-link" value="repo_issues" data-pjax-transient="">
+
+  <meta name="google-site-verification" content="KT5gs8h0wvaagLKAVWq8bbeNwnZZK1r1XQysX3xurLU">
+<meta name="google-site-verification" content="ZzhVyEFwb7w3e0-uOTltm8Jsck2F5StVihD0exw2fsA">
+    <meta name="google-analytics" content="UA-3769691-2">
+
+<meta content="collector.githubapp.com" name="octolytics-host"><meta content="github" name="octolytics-app-id"><meta content="https://collector.githubapp.com/github-external/browser_event" name="octolytics-event-url"><meta content="CC55:2ABD:12E4CA5:1E26D92:59F499F8" name="octolytics-dimension-request_id"><meta content="iad" name="octolytics-dimension-region_edge"><meta content="iad" name="octolytics-dimension-region_render"><meta content="1011489" name="octolytics-actor-id"><meta content="angeloseme" name="octolytics-actor-login"><meta content="306a6b3181ef221a46e8f307e0793235923e5c1d2b992c71bdc9978a0efc83f7" name="octolytics-actor-hash">
+<meta content="/&lt;user-name&gt;/&lt;repo-name&gt;/issues/show" data-pjax-transient="true" name="analytics-location">
+
+
+
+
+  <meta class="js-ga-set" name="dimension1" content="Logged In">
+
+
+  
+
+      <meta name="hostname" content="github.com">
+  <meta name="user-login" content="angeloseme">
+
+      <meta name="expected-hostname" content="github.com">
+    <meta name="js-proxy-site-detection-payload" content="NGNiOTdiZjliMzJhYmYwOWFmNzAzYmJiMmU5MzBiYTlmNTUzOWQ2NmM2ZGUzNjdhMjg2Y2I0MWU4MjM3MTUwMXx7InJlbW90ZV9hZGRyZXNzIjoiOTQuMTYwLjEzOC4yNTMiLCJyZXF1ZXN0X2lkIjoiQ0M1NToyQUJEOjEyRTRDQTU6MUUyNkQ5Mjo1OUY0OTlGOCIsInRpbWVzdGFtcCI6MTUwOTIwMjQyNSwiaG9zdCI6ImdpdGh1Yi5jb20ifQ==">
+
+    <meta name="enabled-features" content="REMOTE_NEXT,UNIVERSE_BANNER">
+
+  <meta name="html-safe-nonce" content="c23126c6eaf222b6a39c9e6ee8d65dea3149cc0b">
+
+  <meta http-equiv="x-pjax-version" content="130005904b686148715d3156221bece2">
+  
+
+      <link href="https://github.com/mrdoob/three.js/commits/dev.atom" rel="alternate" title="Recent Commits to three.js:dev" type="application/atom+xml">
+
+  <meta name="description" content="three.js - JavaScript 3D library.">
+  <meta name="go-import" content="github.com/mrdoob/three.js git https://github.com/mrdoob/three.js.git">
+
+  <meta content="97088" name="octolytics-dimension-user_id"><meta content="mrdoob" name="octolytics-dimension-user_login"><meta content="576201" name="octolytics-dimension-repository_id"><meta content="mrdoob/three.js" name="octolytics-dimension-repository_nwo"><meta content="true" name="octolytics-dimension-repository_public"><meta content="false" name="octolytics-dimension-repository_is_fork"><meta content="576201" name="octolytics-dimension-repository_network_root_id"><meta content="mrdoob/three.js" name="octolytics-dimension-repository_network_root_nwo"><meta content="false" name="octolytics-dimension-repository_explore_github_marketplace_ci_cta_shown">
+
+
+
+
+  <meta name="browser-stats-url" content="https://api.github.com/_private/browser/stats">
+
+  <meta name="browser-errors-url" content="https://api.github.com/_private/browser/errors">
+
+  <link rel="mask-icon" href="https://assets-cdn.github.com/pinned-octocat.svg" color="#000000">
+  <link rel="icon" type="image/x-icon" class="js-site-favicon" href="https://assets-cdn.github.com/favicon.ico">
+
+<meta name="theme-color" content="#1e2327">
+
+
+  <meta name="u2f-support" content="true">
+
+  </head>
+
+  <body class="logged-in env-production emoji-size-boost">
+    
+
+  <div class="position-relative js-header-wrapper ">
+    <a href="https://github.com/mrdoob/three.js/issues/352#start-of-content" tabindex="1" class="bg-black text-white p-3 show-on-focus js-skip-to-content">Skip to content</a>
+    <div id="js-pjax-loader-bar" class="pjax-loader-bar"><div class="progress"></div></div>
+
+    
+    
+    
+
+
+
+        
+<header class="Header  f5" role="banner">
+  <div class="d-flex px-3 flex-justify-between container-lg">
+    <div class="d-flex flex-justify-between">
+      <a class="header-logo-invertocat" href="https://github.com/" data-hotkey="g d" aria-label="Homepage" data-ga-click="Header, go to dashboard, icon:logo">
+  <svg aria-hidden="true" class="octicon octicon-mark-github" height="32" version="1.1" viewBox="0 0 16 16" width="32"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+</a>
+
+
+    </div>
+
+    <div class="HeaderMenu d-flex flex-justify-between flex-auto">
+      <div class="d-flex">
+            <div class="">
+              <div class="header-search scoped-search site-scoped-search js-site-search" role="search">
+  <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/mrdoob/three.js/search" class="js-site-search-form" data-scoped-search-url="/mrdoob/three.js/search" data-unscoped-search-url="/search" method="get"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"></div>
+    <label class="form-control header-search-wrapper js-chromeless-input-container">
+        <a href="https://github.com/mrdoob/three.js/issues/352" class="header-search-scope no-underline">This repository</a>
+      <input type="text" class="form-control header-search-input js-site-search-focus js-site-search-field is-clearable" data-hotkey="s" name="q" value="" placeholder="Search" aria-label="Search this repository" data-unscoped-placeholder="Search GitHub" data-scoped-placeholder="Search" autocapitalize="off">
+        <input type="hidden" class="js-site-search-type-field" name="type">
+    </label>
+</form></div>
+
+            </div>
+
+          <ul class="d-flex pl-2 flex-items-center text-bold list-style-none" role="navigation">
+            <li>
+              <a href="https://github.com/pulls" aria-label="Pull requests you created" class="js-selected-navigation-item HeaderNavlink px-2" data-ga-click="Header, click, Nav menu - item:pulls context:user" data-hotkey="g p" data-selected-links="/pulls /pulls/assigned /pulls/mentioned /pulls">
+                Pull requests
+</a>            </li>
+            <li>
+              <a href="https://github.com/issues" aria-label="Issues you created" class="js-selected-navigation-item HeaderNavlink px-2" data-ga-click="Header, click, Nav menu - item:issues context:user" data-hotkey="g i" data-selected-links="/issues /issues/assigned /issues/mentioned /issues">
+                Issues
+</a>            </li>
+                <li>
+                  <a href="https://github.com/marketplace" class="js-selected-navigation-item HeaderNavlink px-2" data-ga-click="Header, click, Nav menu - item:marketplace context:user" data-selected-links=" /marketplace">
+                    Marketplace
+</a>                </li>
+            <li>
+              <a href="https://github.com/explore" class="js-selected-navigation-item HeaderNavlink px-2" data-ga-click="Header, click, Nav menu - item:explore" data-selected-links="/explore /trending /trending/developers /integrations /integrations/feature/code /integrations/feature/collaborate /integrations/feature/ship showcases showcases_search showcases_landing /explore">
+                Explore
+</a>            </li>
+          </ul>
+      </div>
+
+      <div class="d-flex">
+        
+<ul class="user-nav d-flex flex-items-center list-style-none" id="user-links">
+  <li class="dropdown js-menu-container js-header-notifications">
+    <span class="d-inline-block  px-2">
+      
+      <a href="https://github.com/notifications" aria-label="You have no unread notifications" class="notification-indicator tooltipped tooltipped-s  js-socket-channel js-notification-indicator" data-channel="notification-changed:1011489" data-ga-click="Header, go to notifications, icon:read" data-hotkey="g n">
+          <span class="mail-status "></span>
+          <svg aria-hidden="true" class="octicon octicon-bell" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M14 12v1H0v-1l.73-.58c.77-.77.81-2.55 1.19-4.42C2.69 3.23 6 2 6 2c0-.55.45-1 1-1s1 .45 1 1c0 0 3.39 1.23 4.16 5 .38 1.88.42 3.66 1.19 4.42l.66.58H14zm-7 4c1.11 0 2-.89 2-2H5c0 1.11.89 2 2 2z"></path></svg>
+</a>
+    </span>
+  </li>
+
+  <li class="dropdown js-menu-container">
+    <details class="dropdown-details js-dropdown-details d-flex px-2 flex-items-center">
+      <summary class="HeaderNavlink" aria-label="Create new…" data-ga-click="Header, create new, icon:add">
+        <svg aria-hidden="true" class="octicon octicon-plus float-left mr-1 mt-1" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M12 9H7v5H5V9H0V7h5V2h2v5h5z"></path></svg>
+        <span class="dropdown-caret mt-1"></span>
+      </summary>
+
+      <ul class="dropdown-menu dropdown-menu-sw">
+        
+<a class="dropdown-item" href="https://github.com/new" data-ga-click="Header, create new repository">
+  New repository
+</a>
+
+  <a class="dropdown-item" href="https://github.com/new/import" data-ga-click="Header, import a repository">
+    Import repository
+  </a>
+
+<a class="dropdown-item" href="https://gist.github.com/" data-ga-click="Header, create new gist">
+  New gist
+</a>
+
+  <a class="dropdown-item" href="https://github.com/organizations/new" data-ga-click="Header, create new organization">
+    New organization
+  </a>
+
+
+
+  <div class="dropdown-divider"></div>
+  <div class="dropdown-header">
+    <span title="mrdoob/three.js">This repository</span>
+  </div>
+    <a class="dropdown-item" href="https://github.com/mrdoob/three.js/issues/new" data-ga-click="Header, create new issue">
+      New issue
+    </a>
+
+      </ul>
+    </details>
+  </li>
+
+  <li class="dropdown js-menu-container">
+
+    <details class="dropdown-details js-dropdown-details d-flex pl-2 flex-items-center">
+      <summary class="HeaderNavlink name mt-1" aria-label="View profile and more" data-ga-click="Header, show menu, icon:avatar">
+        <img alt="@angeloseme" class="avatar float-left mr-1" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/1011489" height="20" width="20">
+        <span class="dropdown-caret"></span>
+      </summary>
+
+      <ul class="dropdown-menu dropdown-menu-sw">
+        <li class="dropdown-header header-nav-current-user css-truncate">
+          Signed in as <strong class="css-truncate-target">angeloseme</strong>
+        </li>
+
+        <li class="dropdown-divider"></li>
+
+        <li><a class="dropdown-item" href="https://github.com/angeloseme" data-ga-click="Header, go to profile, text:your profile">
+          Your profile
+        </a></li>
+        <li><a class="dropdown-item" href="https://github.com/angeloseme?tab=stars" data-ga-click="Header, go to starred repos, text:your stars">
+          Your stars
+        </a></li>
+          <li><a class="dropdown-item" href="https://gist.github.com/" data-ga-click="Header, your gists, text:your gists">Your Gists</a></li>
+
+        <li class="dropdown-divider"></li>
+
+        <li><a class="dropdown-item" href="https://help.github.com/" data-ga-click="Header, go to help, text:help">
+          Help
+        </a></li>
+
+        <li><a class="dropdown-item" href="https://github.com/settings/profile" data-ga-click="Header, go to settings, icon:settings">
+          Settings
+        </a></li>
+
+        <li><!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/logout" class="logout-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="t9sDi3yj+LxMNG+BOLcJtDA/mT/ZXbxrQP5WDcV/Pk40a8u3TukMVwYenpelc/fnhxBs85dMfjf0MRBs2N2pkg=="></div>
+          <button type="submit" class="dropdown-item dropdown-signout" data-ga-click="Header, sign out, icon:logout">
+            Sign out
+          </button>
+        </form></li>
+      </ul>
+    </details>
+  </li>
+</ul>
+
+
+        <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/logout" class="sr-only right-0" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="InH7VlaV/2sCYC6Da1/EIoQIU6iz7xc6rb1kZH0DPI+hwTNqZN8LgEhK35X2mzpxMyemZP3+1WYZciIFYKGrUw=="></div>
+          <button type="submit" class="dropdown-item dropdown-signout" data-ga-click="Header, sign out, icon:logout">
+            Sign out
+          </button>
+</form>      </div>
+    </div>
+  </div>
+</header>
+
+
+      
+
+  </div>
+
+  <div id="start-of-content" class="show-on-focus"></div>
+
+    <div id="js-flash-container">
+</div>
+
+
+
+  <div role="main">
+        <div itemscope="" itemtype="http://schema.org/SoftwareSourceCode">
+    <div id="js-repo-pjax-container" data-pjax-container="">
+      
+<style type="text/css" media="screen" id="issue-labels-style">
+  span.labelstyle-fbca04, .linked-labelstyle-fbca04 {  background-color: #fbca04 !important;  color: #332900 !important;}.labelstyle-fbca04.selected {  background-color: #fbca04 !important;  color: #332900 !important;}.label-select-menu .labelstyle-fbca04.selected {  background:rgba(251, 202, 4, 0.12) !important;  color: #997b02 !important;}
+
+span.labelstyle-d93f0b, .linked-labelstyle-d93f0b {  background-color: #d93f0b !important;  color: #fff !important;}.labelstyle-d93f0b.selected {  background-color: #d93f0b !important;  color: #fff !important;}.label-select-menu .labelstyle-d93f0b.selected {  background:rgba(217, 63, 11, 0.12) !important;  color: #982c07 !important;}
+
+span.labelstyle-e99695, .linked-labelstyle-e99695 {  background-color: #e99695 !important;  color: #332020 !important;}.labelstyle-e99695.selected {  background-color: #e99695 !important;  color: #332020 !important;}.label-select-menu .labelstyle-e99695.selected {  background:rgba(233, 150, 149, 0.12) !important;  color: #986261 !important;}
+
+span.labelstyle-b60205, .linked-labelstyle-b60205 {  background-color: #b60205 !important;  color: #fff !important;}.labelstyle-b60205.selected {  background-color: #b60205 !important;  color: #fff !important;}.label-select-menu .labelstyle-b60205.selected {  background:rgba(182, 2, 5, 0.12) !important;  color: #990104 !important;}
+
+span.labelstyle-bfdadc, .linked-labelstyle-bfdadc {  background-color: #bfdadc !important;  color: #2c3233 !important;}.labelstyle-bfdadc.selected {  background-color: #bfdadc !important;  color: #2c3233 !important;}.label-select-menu .labelstyle-bfdadc.selected {  background:rgba(191, 218, 220, 0.12) !important;  color: #849799 !important;}
+
+span.labelstyle-c2e0c6, .linked-labelstyle-c2e0c6 {  background-color: #c2e0c6 !important;  color: #2c332d !important;}.labelstyle-c2e0c6.selected {  background-color: #c2e0c6 !important;  color: #2c332d !important;}.label-select-menu .labelstyle-c2e0c6.selected {  background:rgba(194, 224, 198, 0.12) !important;  color: #849987 !important;}
+
+span.labelstyle-0e8a16, .linked-labelstyle-0e8a16 {  background-color: #0e8a16 !important;  color: #fff !important;}.labelstyle-0e8a16.selected {  background-color: #0e8a16 !important;  color: #fff !important;}.label-select-menu .labelstyle-0e8a16.selected {  background:rgba(14, 138, 22, 0.12) !important;  color: #0f9918 !important;}
+
+span.labelstyle-cfcfcf, .linked-labelstyle-cfcfcf {  background-color: #cfcfcf !important;  color: #333333 !important;}.labelstyle-cfcfcf.selected {  background-color: #cfcfcf !important;  color: #333333 !important;}.label-select-menu .labelstyle-cfcfcf.selected {  background:rgba(207, 207, 207, 0.12) !important;  color: #999999 !important;}
+
+span.labelstyle-dad9ff, .linked-labelstyle-dad9ff {  background-color: #dad9ff !important;  color: #2b2b33 !important;}.labelstyle-dad9ff.selected {  background-color: #dad9ff !important;  color: #2b2b33 !important;}.label-select-menu .labelstyle-dad9ff.selected {  background:rgba(218, 217, 255, 0.12) !important;  color: #828299 !important;}
+
+span.labelstyle-000000, .linked-labelstyle-000000 {  background-color: #000000 !important;  color: #fff !important;}.labelstyle-000000.selected {  background-color: #000000 !important;  color: #fff !important;}.label-select-menu .labelstyle-000000.selected {  background:rgba(247, 247, 247, 1.0) !important;  color: #666666 !important;}
+
+span.labelstyle-ffffcf, .linked-labelstyle-ffffcf {  background-color: #ffffcf !important;  color: #333329 !important;}.labelstyle-ffffcf.selected {  background-color: #ffffcf !important;  color: #333329 !important;}.label-select-menu .labelstyle-ffffcf.selected {  background:rgba(255, 255, 207, 0.12) !important;  color: #99997c !important;}
+</style>
+
+
+
+
+
+
+    <div class="pagehead repohead instapaper_ignore readability-menu experiment-repo-nav ">
+      <div class="repohead-details-container clearfix container ">
+
+        <ul class="pagehead-actions">
+  <li>
+        <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/notifications/subscribe" class="js-social-container" data-autosubmit="true" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="InmFZBih/bXjt/a9fV2SntUs29Y+6Uk0Qi5yXWAOQXIO5Ftp7qKsWaLZDH5A6EJc4lDe4yJrWy2I9TiFOJ6pCQ=="></div>      <input class="form-control" id="repository_id" name="repository_id" type="hidden" value="576201">
+
+        <div class="select-menu js-menu-container js-select-menu">
+          <a href="https://github.com/mrdoob/three.js/subscription" class="btn btn-sm btn-with-count select-menu-button js-menu-target" role="button" aria-haspopup="true" aria-expanded="false" aria-label="Toggle repository notifications menu" data-ga-click="Repository, click Watch settings, action:issues#show">
+            <span class="js-select-button">
+                <svg aria-hidden="true" class="octicon octicon-eye" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"></path></svg>
+                Watch
+            </span>
+          </a>
+            <a class="social-count js-social-count" href="https://github.com/mrdoob/three.js/watchers" aria-label="2116 users are watching this repository">
+              2,116
+            </a>
+
+        <div class="select-menu-modal-holder">
+          <div class="select-menu-modal subscription-menu-modal js-menu-content">
+            <div class="select-menu-header js-navigation-enable" tabindex="-1">
+              <svg aria-label="Close" class="octicon octicon-x js-menu-close" height="16" role="img" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"></path></svg>
+              <span class="select-menu-title">Notifications</span>
+            </div>
+
+              <div class="select-menu-list js-navigation-container" role="menu">
+
+                <div class="select-menu-item js-navigation-item selected" role="menuitem" tabindex="0">
+                  <svg aria-hidden="true" class="octicon octicon-check select-menu-item-icon" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z"></path></svg>
+                  <div class="select-menu-item-text">
+                    <input checked="checked" id="do_included" name="do" type="radio" value="included">
+                    <span class="select-menu-item-heading">Not watching</span>
+                    <span class="description">Be notified when participating or @mentioned.</span>
+                    <span class="js-select-button-text hidden-select-button-text">
+                      <svg aria-hidden="true" class="octicon octicon-eye" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"></path></svg>
+                      Watch
+                    </span>
+                  </div>
+                </div>
+
+                <div class="select-menu-item js-navigation-item " role="menuitem" tabindex="0">
+                  <svg aria-hidden="true" class="octicon octicon-check select-menu-item-icon" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z"></path></svg>
+                  <div class="select-menu-item-text">
+                    <input id="do_subscribed" name="do" type="radio" value="subscribed">
+                    <span class="select-menu-item-heading">Watching</span>
+                    <span class="description">Be notified of all conversations.</span>
+                    <span class="js-select-button-text hidden-select-button-text">
+                      <svg aria-hidden="true" class="octicon octicon-eye" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8.06 2C3 2 0 8 0 8s3 6 8.06 6C13 14 16 8 16 8s-3-6-7.94-6zM8 12c-2.2 0-4-1.78-4-4 0-2.2 1.8-4 4-4 2.22 0 4 1.8 4 4 0 2.22-1.78 4-4 4zm2-4c0 1.11-.89 2-2 2-1.11 0-2-.89-2-2 0-1.11.89-2 2-2 1.11 0 2 .89 2 2z"></path></svg>
+                        Unwatch
+                    </span>
+                  </div>
+                </div>
+
+                <div class="select-menu-item js-navigation-item " role="menuitem" tabindex="0">
+                  <svg aria-hidden="true" class="octicon octicon-check select-menu-item-icon" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M12 5l-8 8-4-4 1.5-1.5L4 10l6.5-6.5z"></path></svg>
+                  <div class="select-menu-item-text">
+                    <input id="do_ignore" name="do" type="radio" value="ignore">
+                    <span class="select-menu-item-heading">Ignoring</span>
+                    <span class="description">Never be notified.</span>
+                    <span class="js-select-button-text hidden-select-button-text">
+                      <svg aria-hidden="true" class="octicon octicon-mute" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8 2.81v10.38c0 .67-.81 1-1.28.53L3 10H1c-.55 0-1-.45-1-1V7c0-.55.45-1 1-1h2l3.72-3.72C7.19 1.81 8 2.14 8 2.81zm7.53 3.22l-1.06-1.06-1.97 1.97-1.97-1.97-1.06 1.06L11.44 8 9.47 9.97l1.06 1.06 1.97-1.97 1.97 1.97 1.06-1.06L13.56 8l1.97-1.97z"></path></svg>
+                        Stop ignoring
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+        </div>
+</form>
+  </li>
+
+  <li>
+    
+  <div class="js-toggler-container js-social-container starring-container ">
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/mrdoob/three.js/unstar" class="starred js-social-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="ZtmaQcF9GshPxXlqJjkJCmiKGYjmysGxaCkWnfDD9q3iNpvsaCpO1nA4YXUEfaveVUQY8yJMo85jFEeMskVF+w=="></div>
+      <input type="hidden" name="context" value="repository">
+      <button type="submit" class="btn btn-sm btn-with-count js-toggler-target" aria-label="Unstar this repository" title="Unstar mrdoob/three.js" data-ga-click="Repository, click unstar button, action:issues#show; text:Unstar">
+        <svg aria-hidden="true" class="octicon octicon-star" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74z"></path></svg>
+        Unstar
+      </button>
+        <a class="social-count js-social-count" href="https://github.com/mrdoob/three.js/stargazers" aria-label="36203 users starred this repository">
+          36,203
+        </a>
+</form>
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/mrdoob/three.js/star" class="unstarred js-social-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Ns5VieYZYHj0RU17YynLN6nd1eBNavxtpSipgXQme2nGdwHbBTveJZW60Mm2FY7c7K05dfMpnyBZU+AgTrLHZQ=="></div>
+      <input type="hidden" name="context" value="repository">
+      <button type="submit" class="btn btn-sm btn-with-count js-toggler-target" aria-label="Star this repository" title="Star mrdoob/three.js" data-ga-click="Repository, click star button, action:issues#show; text:Star">
+        <svg aria-hidden="true" class="octicon octicon-star" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M14 6l-4.9-.64L7 1 4.9 5.36 0 6l3.6 3.26L2.67 14 7 11.67 11.33 14l-.93-4.74z"></path></svg>
+        Star
+      </button>
+        <a class="social-count js-social-count" href="https://github.com/mrdoob/three.js/stargazers" aria-label="36203 users starred this repository">
+          36,203
+        </a>
+</form>  </div>
+
+  </li>
+
+  <li>
+          <a href="https://github.com/mrdoob/three.js/issues/352#fork-destination-box" class="btn btn-sm btn-with-count" title="Fork your own copy of mrdoob/three.js to your account" aria-label="Fork your own copy of mrdoob/three.js to your account" rel="facebox" data-ga-click="Repository, show fork modal, action:issues#show; text:Fork">
+              <svg aria-hidden="true" class="octicon octicon-repo-forked" height="16" version="1.1" viewBox="0 0 10 16" width="10"><path fill-rule="evenodd" d="M8 1a1.993 1.993 0 0 0-1 3.72V6L5 8 3 6V4.72A1.993 1.993 0 0 0 2 1a1.993 1.993 0 0 0-1 3.72V6.5l3 3v1.78A1.993 1.993 0 0 0 5 15a1.993 1.993 0 0 0 1-3.72V9.5l3-3V4.72A1.993 1.993 0 0 0 8 1zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3 10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zm3-10c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+            Fork
+          </a>
+
+          <div id="fork-destination-box" style="display: none;">
+            <h2 class="facebox-header" data-facebox-id="facebox-header">Where should we fork this repository?</h2>
+            <include-fragment src="" class="js-fork-select-fragment fork-select-fragment" data-url="/mrdoob/three.js/fork?fragment=1">
+              <img alt="Loading" height="64" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/octocat-spinner-128.gif" width="64">
+            </include-fragment>
+          </div>
+
+    <a href="https://github.com/mrdoob/three.js/network" class="social-count" aria-label="13436 users forked this repository">
+      13,436
+    </a>
+  </li>
+</ul>
+
+        <h1 class="public ">
+  <svg aria-hidden="true" class="octicon octicon-repo" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M4 9H3V8h1v1zm0-3H3v1h1V6zm0-2H3v1h1V4zm0-2H3v1h1V2zm8-1v12c0 .55-.45 1-1 1H6v2l-1.5-1.5L3 16v-2H1c-.55 0-1-.45-1-1V1c0-.55.45-1 1-1h10c.55 0 1 .45 1 1zm-1 10H1v2h2v-1h3v1h5v-2zm0-10H2v9h9V1z"></path></svg>
+  <span class="author" itemprop="author"><a href="https://github.com/mrdoob" class="url fn" rel="author">mrdoob</a></span><!--
+--><span class="path-divider">/</span><!--
+--><strong itemprop="name"><a href="https://github.com/mrdoob/three.js" data-pjax="#js-repo-pjax-container">three.js</a></strong>
+
+</h1>
+
+      </div>
+      
+<nav class="reponav js-repo-nav js-sidenav-container-pjax container" itemscope="" itemtype="http://schema.org/BreadcrumbList" role="navigation" data-pjax="#js-repo-pjax-container">
+
+  <span itemscope="" itemtype="http://schema.org/ListItem" itemprop="itemListElement">
+    <a href="https://github.com/mrdoob/three.js" class="js-selected-navigation-item reponav-item" data-hotkey="g c" data-selected-links="repo_source repo_downloads repo_commits repo_releases repo_tags repo_branches repo_packages /mrdoob/three.js" itemprop="url">
+      <svg aria-hidden="true" class="octicon octicon-code" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14 8 9.5 3zm-5 0L0 8l4.5 5L6 11.5 2.5 8 6 4.5 4.5 3z"></path></svg>
+      <span itemprop="name">Code</span>
+      <meta itemprop="position" content="1">
+</a>  </span>
+
+    <span itemscope="" itemtype="http://schema.org/ListItem" itemprop="itemListElement">
+      <a href="https://github.com/mrdoob/three.js/issues" class="js-selected-navigation-item selected reponav-item" data-hotkey="g i" data-selected-links="repo_issues repo_labels repo_milestones /mrdoob/three.js/issues" itemprop="url">
+        <svg aria-hidden="true" class="octicon octicon-issue-opened" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M7 2.3c3.14 0 5.7 2.56 5.7 5.7s-2.56 5.7-5.7 5.7A5.71 5.71 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zM7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm1 3H6v5h2V4zm0 6H6v2h2v-2z"></path></svg>
+        <span itemprop="name">Issues</span>
+        <span class="Counter">729</span>
+        <meta itemprop="position" content="2">
+</a>    </span>
+
+  <span itemscope="" itemtype="http://schema.org/ListItem" itemprop="itemListElement">
+    <a href="https://github.com/mrdoob/three.js/pulls" class="js-selected-navigation-item reponav-item" data-hotkey="g p" data-selected-links="repo_pulls /mrdoob/three.js/pulls" itemprop="url">
+      <svg aria-hidden="true" class="octicon octicon-git-pull-request" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M11 11.28V5c-.03-.78-.34-1.47-.94-2.06C9.46 2.35 8.78 2.03 8 2H7V0L4 3l3 3V4h1c.27.02.48.11.69.31.21.2.3.42.31.69v6.28A1.993 1.993 0 0 0 10 15a1.993 1.993 0 0 0 1-3.72zm-1 2.92c-.66 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2zM4 3c0-1.11-.89-2-2-2a1.993 1.993 0 0 0-1 3.72v6.56A1.993 1.993 0 0 0 2 15a1.993 1.993 0 0 0 1-3.72V4.72c.59-.34 1-.98 1-1.72zm-.8 10c0 .66-.55 1.2-1.2 1.2-.65 0-1.2-.55-1.2-1.2 0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2zM2 4.2C1.34 4.2.8 3.65.8 3c0-.65.55-1.2 1.2-1.2.65 0 1.2.55 1.2 1.2 0 .65-.55 1.2-1.2 1.2z"></path></svg>
+      <span itemprop="name">Pull requests</span>
+      <span class="Counter">138</span>
+      <meta itemprop="position" content="3">
+</a>  </span>
+
+
+    <a href="https://github.com/mrdoob/three.js/wiki" class="js-selected-navigation-item reponav-item" data-hotkey="g w" data-selected-links="repo_wiki /mrdoob/three.js/wiki">
+      <svg aria-hidden="true" class="octicon octicon-book" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M3 5h4v1H3V5zm0 3h4V7H3v1zm0 2h4V9H3v1zm11-5h-4v1h4V5zm0 2h-4v1h4V7zm0 2h-4v1h4V9zm2-6v9c0 .55-.45 1-1 1H9.5l-1 1-1-1H2c-.55 0-1-.45-1-1V3c0-.55.45-1 1-1h5.5l1 1 1-1H15c.55 0 1 .45 1 1zm-8 .5L7.5 3H2v9h6V3.5zm7-.5H9.5l-.5.5V12h6V3z"></path></svg>
+      Wiki
+</a>
+
+  <a href="https://github.com/mrdoob/three.js/pulse" class="js-selected-navigation-item reponav-item" data-selected-links="repo_graphs repo_contributors dependency_graph pulse /mrdoob/three.js/pulse">
+    <svg aria-hidden="true" class="octicon octicon-graph" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M16 14v1H0V0h1v14h15zM5 13H3V8h2v5zm4 0H7V3h2v10zm4 0h-2V6h2v7z"></path></svg>
+    Insights
+</a>
+
+</nav>
+
+
+    </div>
+
+<div class="container new-discussion-timeline experiment-repo-nav">
+  <div class="repository-content">
+
+    
+  <div class="issues-listing" data-pjax="">
+    
+  
+
+  <div id="show_issue" class="js-issues-results">
+
+    
+  <div id="partial-discussion-header" class="gh-header js-details-container Details js-socket-channel js-updatable-content issue" data-channel="issue:1222612" data-url="/mrdoob/three.js/issues/352/show_partial?partial=issues%2Ftitle">
+
+  <div class="gh-header-show ">
+      <div class="gh-header-actions">
+
+            <a href="https://github.com/mrdoob/three.js/issues/new" class="btn btn-sm btn-primary float-right" data-hotkey="c" data-ga-click="Issues, create new issue, view:issue_show location:issue_header style:button logged_in:true">
+              New issue
+            </a>
+      </div>
+
+    <h1 class="gh-header-title">
+      <span class="js-issue-title">
+        Working example of WebGLRenderer using existing canvas/div
+      </span>
+      <span class="gh-header-number">#352</span>
+    </h1>
+  </div>
+
+
+  <div class="TableObject gh-header-meta">
+    <div class="TableObject-item">
+        <div class="State State--red">
+          <svg aria-hidden="true" class="octicon octicon-issue-closed" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M7 10h2v2H7v-2zm2-6H7v5h2V4zm1.5 1.5l-1 1L12 9l4-4.5-1-1L12 7l-1.5-1.5zM8 13.7A5.71 5.71 0 0 1 2.3 8c0-3.14 2.56-5.7 5.7-5.7 1.83 0 3.45.88 4.5 2.2l.92-.92A6.947 6.947 0 0 0 8 1C4.14 1 1 4.14 1 8s3.14 7 7 7 7-3.14 7-7l-1.52 1.52c-.66 2.41-2.86 4.19-5.48 4.19v-.01z"></path></svg>
+          Closed
+        </div>
+    </div>
+    <div class="TableObject-item TableObject-item--primary">
+        <a href="https://github.com/chesterd" class="author">chesterd</a>  opened this <span class="noun">Issue</span>
+        <relative-time datetime="2011-07-14T11:03:15Z" title="14 Jul 2011, 13:03 GMT+2">on 14 Jul 2011</relative-time>
+        · 6 comments
+    </div>
+  </div>
+</div>
+
+
+    <h2 class="sr-only">Comments</h2>
+    <div id="discussion_bucket" class="clearfix">
+      <div class="discussion-sidebar">
+        <div id="partial-discussion-sidebar" class="js-socket-channel js-updatable-content" data-channel="issue:1222612" data-url="/mrdoob/three.js/issues/352/show_partial?partial=issues%2Fsidebar">
+
+  <div class="discussion-sidebar-item sidebar-assignee js-discussion-sidebar-item">
+  <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/mrdoob/three.js/issues/352?partial=issues%2Fsidebar%2Fshow%2Fassignees" class="js-issue-sidebar-form" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="nQ4giVqoMgy6KKXxWTPcd4MkY1t/kA7qrV7tUD8G0Jj8fNmz+i26cq8IQZB9OWg4G/J1gH+3uO0HHGm1T/2j8w=="></div>
+    
+
+  <div class="discussion-sidebar-heading text-bold">
+    Assignees
+  </div>
+
+    <span class="css-truncate">
+    No one assigned
+</span>
+
+</form></div>
+
+  <div class="discussion-sidebar-item sidebar-labels js-discussion-sidebar-item">
+  <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/mrdoob/three.js/issues/352?partial=issues%2Fsidebar%2Fshow%2Flabels" class="js-issue-sidebar-form" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="aHJXcI9FLQck2mUfGFLL+sTbvFZhPzdf2BMY002bv88JAK5KL8CleTH6gX48WH+1XA2qjWEYgVhyUZw2PWDMpA=="></div>
+    <div class="js-issue-labels-container">
+      
+
+  <div class="discussion-sidebar-heading text-bold">
+    Labels
+  </div>
+
+
+    </div>
+    <div class="labels css-truncate">
+      <a href="https://github.com/mrdoob/three.js/labels/Question" class="label css-truncate-target linked-labelstyle-dad9ff" title="Question">Question</a>
+
+</div>
+
+</form></div>
+
+  <div class="discussion-sidebar-item sidebar-milestone js-discussion-sidebar-item">
+  <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/mrdoob/three.js/issues/352/set_milestone?partial=issues%2Fsidebar%2Fshow%2Fmilestone" class="js-issue-sidebar-form" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="e+RGcMgPTjp/ZOpQ5XSSdyq/UIhLCszBpahIJONDiTwnk/ThabMj/ZGgDKmNfZQjrLL7Rau6EXriz2qPg6K/LA=="></div>
+    
+
+  <div class="discussion-sidebar-heading text-bold">
+    Milestone
+  </div>
+
+      No milestone
+
+</form></div>
+
+    <div class="discussion-sidebar-item sidebar-notifications">
+    <div class="discussion-sidebar-heading text-bold">Notifications</div>
+    <div class="thread-subscription-status js-thread-subscription-status js-socket-channel js-updatable-content" data-channel="thread-subscription:1222612:1011489" data-url="/notifications/thread_subscription?repository_id=576201&amp;thread_class=Issue&amp;thread_id=1222612">
+
+  <svg aria-hidden="true" class="octicon octicon-radio-tower" height="32" version="1.1" viewBox="0 0 16 16" width="32"><path fill-rule="evenodd" d="M4.79 6.11c.25-.25.25-.67 0-.92-.32-.33-.48-.76-.48-1.19 0-.43.16-.86.48-1.19.25-.26.25-.67 0-.92a.613.613 0 0 0-.45-.19c-.16 0-.33.06-.45.19-.57.58-.85 1.35-.85 2.11 0 .76.29 1.53.85 2.11.25.25.66.25.9 0zM2.33.52a.651.651 0 0 0-.92 0C.48 1.48.01 2.74.01 3.99c0 1.26.47 2.52 1.4 3.48.25.26.66.26.91 0s.25-.68 0-.94c-.68-.7-1.02-1.62-1.02-2.54 0-.92.34-1.84 1.02-2.54a.66.66 0 0 0 .01-.93zm5.69 5.1A1.62 1.62 0 1 0 6.4 4c-.01.89.72 1.62 1.62 1.62zM14.59.53a.628.628 0 0 0-.91 0c-.25.26-.25.68 0 .94.68.7 1.02 1.62 1.02 2.54 0 .92-.34 1.83-1.02 2.54-.25.26-.25.68 0 .94a.651.651 0 0 0 .92 0c.93-.96 1.4-2.22 1.4-3.48A5.048 5.048 0 0 0 14.59.53zM8.02 6.92c-.41 0-.83-.1-1.2-.3l-3.15 8.37h1.49l.86-1h4l.84 1h1.49L9.21 6.62c-.38.2-.78.3-1.19.3zm-.01.48L9.02 11h-2l.99-3.6zm-1.99 5.59l1-1h2l1 1h-4zm5.19-11.1c-.25.25-.25.67 0 .92.32.33.48.76.48 1.19 0 .43-.16.86-.48 1.19-.25.26-.25.67 0 .92a.63.63 0 0 0 .9 0c.57-.58.85-1.35.85-2.11 0-.76-.28-1.53-.85-2.11a.634.634 0 0 0-.9 0z"></path></svg>
+
+  <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/notifications/thread" class="thread-subscribe-form js-thread-subscribe-form" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="rIJUB/RN3R6jUz4uEd/kxX5YGO5y0YrG4dA+bBliT2M9WSGhDAR+WlfbCqypLITaE8rBjuuq/MBI3y+ZH1oCdg=="></div>    <input type="hidden" name="repository_id" value="576201">
+    <input type="hidden" name="thread_id" value="1222612">
+    <input type="hidden" name="thread_class" value="Issue">
+    <input type="hidden" name="id" value="subscribe">
+
+    <button class="btn btn-sm" type="submit" data-disable-with="">
+      <svg aria-hidden="true" class="octicon octicon-unmute" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M12 8.02c0 1.09-.45 2.09-1.17 2.83l-.67-.67c.55-.56.89-1.31.89-2.16 0-.85-.34-1.61-.89-2.16l.67-.67A3.99 3.99 0 0 1 12 8.02zM7.72 2.28L4 6H2c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h2l3.72 3.72c.47.47 1.28.14 1.28-.53V2.81c0-.67-.81-1-1.28-.53zm5.94.08l-.67.67a6.996 6.996 0 0 1 2.06 4.98c0 1.94-.78 3.7-2.06 4.98l.67.67A7.973 7.973 0 0 0 16 8c0-2.22-.89-4.22-2.34-5.66v.02zm-1.41 1.41l-.69.67a5.05 5.05 0 0 1 1.48 3.58c0 1.39-.56 2.66-1.48 3.56l.69.67A5.971 5.971 0 0 0 14 8.02c0-1.65-.67-3.16-1.75-4.25z"></path></svg>
+      Subscribe
+    </button>
+</form>
+  <p class="reason text-small text-gray">You’re not receiving notifications from this thread.</p>
+</div>
+
+  </div>
+
+  <div id="partial-users-participants" class="discussion-sidebar-item">
+  <div class="participation">
+
+    <div class="discussion-sidebar-heading text-bold">
+      2 participants
+    </div>
+    <div class="participation-avatars">
+        <a class="participant-avatar tooltipped tooltipped-n" aria-label="chesterd" href="https://github.com/chesterd"><img alt="@chesterd" class="avatar" height="26" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/914783" width="26"> </a>
+        <a class="participant-avatar tooltipped tooltipped-n" aria-label="mrdoob" href="https://github.com/mrdoob"><img alt="@mrdoob" class="avatar" height="26" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/97088" width="26"> </a>
+    </div>
+  </div>
+</div>
+
+
+  
+
+</div>
+
+      </div>
+
+      <div class="discussion-timeline js-quote-selection-container ">
+
+        <div class="js-discussion js-socket-channel" data-channel="marked-as-read:issue:1222612">
+          
+
+  
+  <div class="timeline-comment-wrapper js-comment-container">
+
+    
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a href="https://github.com/chesterd">
+      <img alt="@chesterd" class="avatar rounded-1" height="44" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/914783(1)" width="44">
+    </a>
+
+</div>
+
+
+
+      
+  <div id="issue-1222612" class="comment previewable-edit js-comment js-task-list-container timeline-comment js-reorderable-task-lists reorderable-task-lists " data-body-version="5caa345256c4d8646d885260f4b92819">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+<!--
+Reactions should always be at the top-level, outside of the dropdown.
+Until we find a better solution to show team discussion comment states, Pin and Subscribe will also stay outside the dropdown.
+-->
+  
+  <span class="reaction-popover-container dropdown js-socket-channel js-updatable-content js-reaction-popover-container js-comment-header-reaction-button js-menu-container" data-channel="reaction:issue:1222612" data-url="/_render_node/MDU6SXNzdWUxMjIyNjEy/comments/comment_header_reaction_button">
+    <button type="button" class="btn-link timeline-comment-action tooltipped tooltipped-n js-menu-target" aria-label="Add your reaction" aria-expanded="false" aria-haspopup="true">
+      <svg aria-hidden="true" class="octicon octicon-plus-small add-reaction-plus-icon" height="16" version="1.1" viewBox="0 0 7 16" width="7"><path fill-rule="evenodd" d="M4 7V4H3v3H0v1h3v3h1V8h3V7H4z"></path></svg>
+      <svg aria-hidden="true" class="octicon octicon-smiley" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.81 12.81a6.72 6.72 0 0 1-2.17 1.45c-.83.36-1.72.53-2.64.53-.92 0-1.81-.17-2.64-.53-.81-.34-1.55-.83-2.17-1.45a6.773 6.773 0 0 1-1.45-2.17A6.59 6.59 0 0 1 1.21 8c0-.92.17-1.81.53-2.64.34-.81.83-1.55 1.45-2.17.62-.62 1.36-1.11 2.17-1.45A6.59 6.59 0 0 1 8 1.21c.92 0 1.81.17 2.64.53.81.34 1.55.83 2.17 1.45.62.62 1.11 1.36 1.45 2.17.36.83.53 1.72.53 2.64 0 .92-.17 1.81-.53 2.64-.34.81-.83 1.55-1.45 2.17zM4 6.8v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2H5.2C4.53 8 4 7.47 4 6.8zm5 0v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2h-.59C9.53 8 9 7.47 9 6.8zm4 3.2c-.72 1.88-2.91 3-5 3s-4.28-1.13-5-3c-.14-.39.23-1 .66-1h8.59c.41 0 .89.61.75 1z"></path></svg>
+    </button>
+    
+<div class="dropdown-menu-content anim-scale-in js-menu-content">
+  <div class="dropdown-menu dropdown-menu-sw add-reaction-popover js-add-reaction-popover">
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/users/mrdoob/reactions" class="reaction-popover-form js-pick-reaction" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="Xjdz3kNEemFSDRtZkcdlavEA2b7J2i4TfgF2uFAbJOCj8hTNZjKLXWUUD39ZIfQqwTNWHQhm0lDrqXCn0Zr4Ag=="></div>
+      <p class="text-gray mx-2 my-1">
+        <span class="js-reaction-description">Pick your reaction</span>
+        <img alt="" class="loading-spinner" height="16" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/octocat-spinner-32.gif" width="16">
+      </p>
+
+      <div class="dropdown-divider"></div>
+
+      <div class="add-reactions-options mx-1 mb-1">
+        <input type="hidden" name="input[subjectId]" value="MDU6SXNzdWUxMjIyNjEy">
+
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="+1" name="input[content]" aria-label="React with thumbs up emoji" value="THUMBS_UP react">
+            <g-emoji alias="+1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png" ios-version="6.0">👍</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="-1" name="input[content]" aria-label="React with thumbs down emoji" value="THUMBS_DOWN react">
+            <g-emoji alias="-1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png" ios-version="6.0">👎</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Laugh" name="input[content]" aria-label="React with laugh emoji" value="LAUGH react">
+            <g-emoji alias="smile" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png" ios-version="6.0">😄</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Hooray" name="input[content]" aria-label="React with hooray emoji" value="HOORAY react">
+            <g-emoji alias="tada" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png" ios-version="6.0">🎉</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Confused" name="input[content]" aria-label="React with confused emoji" value="CONFUSED react">
+            <g-emoji alias="thinking_face" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png" ios-version="6.0">😕</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Heart" name="input[content]" aria-label="React with heart emoji" value="HEART react">
+            <g-emoji alias="heart" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png" ios-version="6.0">❤️</g-emoji>
+          </button>
+      </div>
+</form>  </div>
+</div>
+
+  </span>
+
+
+
+
+
+
+
+  </div>
+
+    
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong>
+      
+
+  <a href="https://github.com/chesterd" class="author text-inherit">chesterd</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#issue-1222612" class="timestamp"><relative-time datetime="2011-07-14T11:03:15Z" title="14 Jul 2011, 13:03 GMT+2">on 14 Jul 2011</relative-time></a>
+
+
+
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+      <table class="d-block">
+        <tbody class="d-block">
+          <tr class="d-block">
+            <td class="d-block comment-body markdown-body  js-comment-body">
+                <p>Hi guys.<br>
+Congrats on the wicked library.</p>
+<p>Is there an existing working example of <a href="https://github.com/mrdoob/three.js/issues/157" class="issue-link js-issue-link" data-error-text="Failed to load issue title" data-id="729387" data-permission-text="Issue title is private" data-url="https://github.com/mrdoob/three.js/issues/157">#157</a> "use existing canvas element" fixed by <a href="https://github.com/mrdoob/three.js/pull/192" class="issue-link js-issue-link" data-error-text="Failed to load issue title" data-id="833550" data-permission-text="Issue title is private" data-url="https://github.com/mrdoob/three.js/issues/192">#192</a> "existing canvas element" ?</p>
+<p>There's already a lot of examples but none showing the issue at hand (or i missed it?)<br>
+I just started working with this library last week and barely made it possible to show a random object (cube or sphere) which was exported from 3ds max (still some issues with bmw 7 example). But i'd really want to see a working example of the canvas being part of an existing webpage like an online shop.</p>
+<p>Would it be possible to have one such example ?</p>
+<p>Thank you. Keep up the good work</p>
+<p>ps: how can i paste html code here so that is look a bit formatted ?</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+        
+
+<div class="comment-reactions  js-reactions-container js-socket-channel js-updatable-content" data-channel="reaction:issue:1222612" data-url="/_render_node/MDU6SXNzdWUxMjIyNjEy/comments/reactions">
+</div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+  
+  <div class="timeline-comment-wrapper js-comment-container">
+
+
+        
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a href="https://github.com/mrdoob">
+      <img alt="@mrdoob" class="avatar rounded-1" height="44" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/97088(1)" width="44">
+    </a>
+
+</div>
+
+
+      
+  <div id="issuecomment-1571105" class="comment previewable-edit js-comment js-task-list-container timeline-comment js-reorderable-task-lists reorderable-task-lists " data-body-version="0230f84d563cfdb360fba80e7ec90889">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+<!--
+Reactions should always be at the top-level, outside of the dropdown.
+Until we find a better solution to show team discussion comment states, Pin and Subscribe will also stay outside the dropdown.
+-->
+  
+  <span class="reaction-popover-container dropdown js-socket-channel js-updatable-content js-reaction-popover-container js-comment-header-reaction-button js-menu-container" data-channel="reaction:issue-comment:1571105" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE1NzExMDU=/comments/comment_header_reaction_button">
+    <button type="button" class="btn-link timeline-comment-action tooltipped tooltipped-n js-menu-target" aria-label="Add your reaction" aria-expanded="false" aria-haspopup="true">
+      <svg aria-hidden="true" class="octicon octicon-plus-small add-reaction-plus-icon" height="16" version="1.1" viewBox="0 0 7 16" width="7"><path fill-rule="evenodd" d="M4 7V4H3v3H0v1h3v3h1V8h3V7H4z"></path></svg>
+      <svg aria-hidden="true" class="octicon octicon-smiley" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.81 12.81a6.72 6.72 0 0 1-2.17 1.45c-.83.36-1.72.53-2.64.53-.92 0-1.81-.17-2.64-.53-.81-.34-1.55-.83-2.17-1.45a6.773 6.773 0 0 1-1.45-2.17A6.59 6.59 0 0 1 1.21 8c0-.92.17-1.81.53-2.64.34-.81.83-1.55 1.45-2.17.62-.62 1.36-1.11 2.17-1.45A6.59 6.59 0 0 1 8 1.21c.92 0 1.81.17 2.64.53.81.34 1.55.83 2.17 1.45.62.62 1.11 1.36 1.45 2.17.36.83.53 1.72.53 2.64 0 .92-.17 1.81-.53 2.64-.34.81-.83 1.55-1.45 2.17zM4 6.8v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2H5.2C4.53 8 4 7.47 4 6.8zm5 0v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2h-.59C9.53 8 9 7.47 9 6.8zm4 3.2c-.72 1.88-2.91 3-5 3s-4.28-1.13-5-3c-.14-.39.23-1 .66-1h8.59c.41 0 .89.61.75 1z"></path></svg>
+    </button>
+    
+<div class="dropdown-menu-content anim-scale-in js-menu-content">
+  <div class="dropdown-menu dropdown-menu-sw add-reaction-popover js-add-reaction-popover">
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/users/mrdoob/reactions" class="reaction-popover-form js-pick-reaction" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="2h9u3NkguswCZOFDIlDkwsc8ypZ51P/EZKsd3XokS7gn2gnP/FZL8DV99WXqtnWC9w9FNbhoA4fxAxvC+6WXWg=="></div>
+      <p class="text-gray mx-2 my-1">
+        <span class="js-reaction-description">Pick your reaction</span>
+        <img alt="" class="loading-spinner" height="16" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/octocat-spinner-32.gif" width="16">
+      </p>
+
+      <div class="dropdown-divider"></div>
+
+      <div class="add-reactions-options mx-1 mb-1">
+        <input type="hidden" name="input[subjectId]" value="MDEyOklzc3VlQ29tbWVudDE1NzExMDU=">
+
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="+1" name="input[content]" aria-label="React with thumbs up emoji" value="THUMBS_UP react">
+            <g-emoji alias="+1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png" ios-version="6.0">👍</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="-1" name="input[content]" aria-label="React with thumbs down emoji" value="THUMBS_DOWN react">
+            <g-emoji alias="-1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png" ios-version="6.0">👎</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Laugh" name="input[content]" aria-label="React with laugh emoji" value="LAUGH react">
+            <g-emoji alias="smile" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png" ios-version="6.0">😄</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Hooray" name="input[content]" aria-label="React with hooray emoji" value="HOORAY react">
+            <g-emoji alias="tada" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png" ios-version="6.0">🎉</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Confused" name="input[content]" aria-label="React with confused emoji" value="CONFUSED react">
+            <g-emoji alias="thinking_face" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png" ios-version="6.0">😕</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Heart" name="input[content]" aria-label="React with heart emoji" value="HEART react">
+            <g-emoji alias="heart" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png" ios-version="6.0">❤️</g-emoji>
+          </button>
+      </div>
+</form>  </div>
+</div>
+
+  </span>
+
+
+
+
+
+
+
+  </div>
+
+    
+    <span class="timeline-comment-label text-bold tooltipped tooltipped-multiline tooltipped-s" aria-label="This user is the owner of the three.js repository.">
+      Owner
+    </span>
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong>
+      
+
+  <a href="https://github.com/mrdoob" class="author text-inherit">mrdoob</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#issuecomment-1571105" class="timestamp"><relative-time datetime="2011-07-14T12:32:53Z" title="14 Jul 2011, 14:32 GMT+2">on 14 Jul 2011</relative-time></a>
+
+
+
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+      <table class="d-block">
+        <tbody class="d-block">
+          <tr class="d-block">
+            <td class="d-block comment-body markdown-body  js-comment-body">
+                <p>This should work:</p>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> renderer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">THREE.WebGLRenderer</span>( { canvas<span class="pl-k">:</span> my_canvas } );</pre></div>
+<blockquote>
+<p>ps: how can i paste html code here so that is look a bit formatted ?</p>
+</blockquote>
+<p>On the top right of the comment input box you'll find a link that says <em>GitHub Flavored Markdown</em>. Click on it ;)</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+        
+
+<div class="comment-reactions  js-reactions-container js-socket-channel js-updatable-content" data-channel="reaction:issue-comment:1571105" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE1NzExMDU=/comments/reactions">
+</div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+  
+  <div class="timeline-comment-wrapper js-comment-container">
+
+
+        
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a href="https://github.com/chesterd">
+      <img alt="@chesterd" class="avatar rounded-1" height="44" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/914783(1)" width="44">
+    </a>
+
+</div>
+
+
+      
+  <div id="issuecomment-1578425" class="comment previewable-edit js-comment js-task-list-container timeline-comment js-reorderable-task-lists reorderable-task-lists " data-body-version="0ebd6db2d56be8f5b06210544c5c74b1">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+<!--
+Reactions should always be at the top-level, outside of the dropdown.
+Until we find a better solution to show team discussion comment states, Pin and Subscribe will also stay outside the dropdown.
+-->
+  
+  <span class="reaction-popover-container dropdown js-socket-channel js-updatable-content js-reaction-popover-container js-comment-header-reaction-button js-menu-container" data-channel="reaction:issue-comment:1578425" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE1Nzg0MjU=/comments/comment_header_reaction_button">
+    <button type="button" class="btn-link timeline-comment-action tooltipped tooltipped-n js-menu-target" aria-label="Add your reaction" aria-expanded="false" aria-haspopup="true">
+      <svg aria-hidden="true" class="octicon octicon-plus-small add-reaction-plus-icon" height="16" version="1.1" viewBox="0 0 7 16" width="7"><path fill-rule="evenodd" d="M4 7V4H3v3H0v1h3v3h1V8h3V7H4z"></path></svg>
+      <svg aria-hidden="true" class="octicon octicon-smiley" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.81 12.81a6.72 6.72 0 0 1-2.17 1.45c-.83.36-1.72.53-2.64.53-.92 0-1.81-.17-2.64-.53-.81-.34-1.55-.83-2.17-1.45a6.773 6.773 0 0 1-1.45-2.17A6.59 6.59 0 0 1 1.21 8c0-.92.17-1.81.53-2.64.34-.81.83-1.55 1.45-2.17.62-.62 1.36-1.11 2.17-1.45A6.59 6.59 0 0 1 8 1.21c.92 0 1.81.17 2.64.53.81.34 1.55.83 2.17 1.45.62.62 1.11 1.36 1.45 2.17.36.83.53 1.72.53 2.64 0 .92-.17 1.81-.53 2.64-.34.81-.83 1.55-1.45 2.17zM4 6.8v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2H5.2C4.53 8 4 7.47 4 6.8zm5 0v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2h-.59C9.53 8 9 7.47 9 6.8zm4 3.2c-.72 1.88-2.91 3-5 3s-4.28-1.13-5-3c-.14-.39.23-1 .66-1h8.59c.41 0 .89.61.75 1z"></path></svg>
+    </button>
+    
+<div class="dropdown-menu-content anim-scale-in js-menu-content">
+  <div class="dropdown-menu dropdown-menu-sw add-reaction-popover js-add-reaction-popover">
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/users/mrdoob/reactions" class="reaction-popover-form js-pick-reaction" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="3qkQaTcSkggxIZgO3BUL8TJ4PrBExiYzRa7h+f4EhasjbHd6EmRjNAY4jCgU85qxAkuxE4V62nDQBufmf4VZSQ=="></div>
+      <p class="text-gray mx-2 my-1">
+        <span class="js-reaction-description">Pick your reaction</span>
+        <img alt="" class="loading-spinner" height="16" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/octocat-spinner-32.gif" width="16">
+      </p>
+
+      <div class="dropdown-divider"></div>
+
+      <div class="add-reactions-options mx-1 mb-1">
+        <input type="hidden" name="input[subjectId]" value="MDEyOklzc3VlQ29tbWVudDE1Nzg0MjU=">
+
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="+1" name="input[content]" aria-label="React with thumbs up emoji" value="THUMBS_UP react">
+            <g-emoji alias="+1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png" ios-version="6.0">👍</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="-1" name="input[content]" aria-label="React with thumbs down emoji" value="THUMBS_DOWN react">
+            <g-emoji alias="-1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png" ios-version="6.0">👎</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Laugh" name="input[content]" aria-label="React with laugh emoji" value="LAUGH react">
+            <g-emoji alias="smile" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png" ios-version="6.0">😄</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Hooray" name="input[content]" aria-label="React with hooray emoji" value="HOORAY react">
+            <g-emoji alias="tada" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png" ios-version="6.0">🎉</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Confused" name="input[content]" aria-label="React with confused emoji" value="CONFUSED react">
+            <g-emoji alias="thinking_face" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png" ios-version="6.0">😕</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Heart" name="input[content]" aria-label="React with heart emoji" value="HEART react">
+            <g-emoji alias="heart" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png" ios-version="6.0">❤️</g-emoji>
+          </button>
+      </div>
+</form>  </div>
+</div>
+
+  </span>
+
+
+
+
+
+
+
+  </div>
+
+    
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong>
+      
+
+  <a href="https://github.com/chesterd" class="author text-inherit">chesterd</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#issuecomment-1578425" class="timestamp"><relative-time datetime="2011-07-15T08:49:25Z" title="15 Jul 2011, 10:49 GMT+2">on 15 Jul 2011</relative-time></a>
+
+
+
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+      <table class="d-block">
+        <tbody class="d-block">
+          <tr class="d-block">
+            <td class="d-block comment-body markdown-body  js-comment-body">
+                <p>Good morning.</p>
+<p>Wrote this example so that i can try to make an existing canvas work for me. No luck so far. I'm surely missing something but i just can't find out what :(</p>
+<div class="highlight highlight-text-html-basic"><pre>&lt;!doctype html&gt;
+&lt;<span class="pl-ent">html</span>&gt;
+    &lt;<span class="pl-ent">head</span>&gt;
+        &lt;<span class="pl-ent">meta</span> <span class="pl-e">charset</span>=<span class="pl-s"><span class="pl-pds">"</span>utf-8<span class="pl-pds">"</span></span> /&gt;
+        &lt;<span class="pl-ent">title</span>&gt;Sample Three.js&lt;/<span class="pl-ent">title</span>&gt;
+        &lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/css<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>css/three.css<span class="pl-pds">"</span></span> /&gt;
+    &lt;/<span class="pl-ent">head</span>&gt;
+    &lt;<span class="pl-ent">body</span>&gt;
+        &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>wrapper<span class="pl-pds">"</span></span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>header<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">h2</span>&gt;Threejs test&lt;/<span class="pl-ent">h2</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>content<span class="pl-pds">"</span></span>&gt;
+                &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>container<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">div</span>&gt;
+            &lt;/<span class="pl-ent">div</span>&gt;
+            &lt;<span class="pl-ent">div</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>footer<span class="pl-pds">"</span></span>&gt;
+
+            &lt;/<span class="pl-ent">div</span>&gt;
+        &lt;/<span class="pl-ent">div</span>&gt;
+
+        &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>js/Three.js<span class="pl-pds">"</span></span>&gt;<span class="pl-s1">&lt;</span>/<span class="pl-ent">script</span>&gt;
+
+        &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>js/Detector.js<span class="pl-pds">"</span></span>&gt;<span class="pl-s1">&lt;</span>/<span class="pl-ent">script</span>&gt;
+        &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>js/RequestAnimationFrame.js<span class="pl-pds">"</span></span>&gt;<span class="pl-s1">&lt;</span>/<span class="pl-ent">script</span>&gt;
+        &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>js/Stats.js<span class="pl-pds">"</span></span>&gt;<span class="pl-s1">&lt;</span>/<span class="pl-ent">script</span>&gt;
+        &lt;<span class="pl-ent">script</span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>js/three_test.js<span class="pl-pds">"</span></span>&gt;<span class="pl-s1">&lt;</span>/<span class="pl-ent">script</span>&gt;
+    &lt;/<span class="pl-ent">body</span>&gt;
+&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
+<div class="highlight highlight-source-js"><pre><span class="pl-k">if</span>(<span class="pl-k">!</span><span class="pl-smi">Detector</span>.<span class="pl-smi">webgl</span>) <span class="pl-smi">Detector</span>.<span class="pl-en">addGetWebGLMessage</span>();
+
+<span class="pl-k">var</span> container, stats;
+<span class="pl-k">var</span> camera, scene, renderer;
+<span class="pl-k">var</span> mesh;
+
+<span class="pl-k">var</span> mouseX <span class="pl-k">=</span> <span class="pl-c1">0</span>, mouseY <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+
+<span class="pl-k">var</span> windowHalfX <span class="pl-k">=</span> <span class="pl-c1">window</span>.<span class="pl-c1">innerWidth</span> <span class="pl-k">/</span> <span class="pl-c1">2</span>;
+<span class="pl-k">var</span> windowHalfY <span class="pl-k">=</span> <span class="pl-c1">window</span>.<span class="pl-c1">innerHeight</span> <span class="pl-k">/</span> <span class="pl-c1">2</span>;
+
+<span class="pl-en">init</span>();
+<span class="pl-en">animate</span>();
+
+<span class="pl-k">function</span> <span class="pl-en">init</span>(){
+    container <span class="pl-k">=</span> <span class="pl-c1">document</span>.<span class="pl-c1">getElementById</span>( <span class="pl-s"><span class="pl-pds">"</span>container<span class="pl-pds">"</span></span> );
+
+    camera <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">THREE.TrackballCamera</span>({
+
+        fov<span class="pl-k">:</span> <span class="pl-c1">60</span>, 
+        aspect<span class="pl-k">:</span> <span class="pl-c1">window</span>.<span class="pl-c1">innerWidth</span> <span class="pl-k">/</span> <span class="pl-c1">window</span>.<span class="pl-c1">innerHeight</span>,
+        near<span class="pl-k">:</span> <span class="pl-c1">1</span>,
+        far<span class="pl-k">:</span> <span class="pl-c1">1e3</span>,
+
+        rotateSpeed<span class="pl-k">:</span> <span class="pl-c1">1.5</span>,
+        zoomSpeed<span class="pl-k">:</span> <span class="pl-c1">2.5</span>, <span class="pl-c"><span class="pl-c">//</span>below 2.0 zoom feels slow</span>
+        panSpeed<span class="pl-k">:</span> <span class="pl-c1">0.2</span>,
+
+        noZoom<span class="pl-k">:</span> <span class="pl-c1">false</span>,
+        noPan<span class="pl-k">:</span> <span class="pl-c1">false</span>,
+
+        staticMoving<span class="pl-k">:</span> <span class="pl-c1">false</span>, <span class="pl-c"><span class="pl-c">//</span>false makes moving/rotating the object faster</span>
+        dynamicDampingFactor<span class="pl-k">:</span> <span class="pl-c1">0.3</span>,
+
+        keys<span class="pl-k">:</span> [ <span class="pl-c1">65</span>, <span class="pl-c1">83</span>, <span class="pl-c1">68</span> ]
+
+    });
+
+    <span class="pl-smi">camera</span>.<span class="pl-smi">position</span>.<span class="pl-c1">z</span> <span class="pl-k">=</span> <span class="pl-c1">300</span>;
+
+    scene <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">THREE.Scene</span>();
+
+    light <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">THREE.AmbientLight</span>(<span class="pl-c1">0xffFF00</span>);
+    <span class="pl-smi">scene</span>.<span class="pl-en">addLight</span>(light);
+
+    <span class="pl-k">var</span> loader <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">THREE.JSONLoader</span>();
+    <span class="pl-smi">loader</span>.<span class="pl-c1">load</span>( { model<span class="pl-k">:</span> <span class="pl-s"><span class="pl-pds">"</span>models/tea_new.js<span class="pl-pds">"</span></span>, <span class="pl-en">callback</span><span class="pl-k">:</span> <span class="pl-k">function</span>(<span class="pl-smi">geometry</span>){<span class="pl-en">createScene</span>(geometry)} } );
+
+    renderer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">THREE.WebGLRenderer</span>( { canvas<span class="pl-k">:</span> container, antialias<span class="pl-k">:</span> <span class="pl-c1">true</span> } );
+    <span class="pl-smi">renderer</span>.<span class="pl-en">setSize</span>( <span class="pl-smi">container</span>.<span class="pl-c1">style</span>.<span class="pl-c1">width</span>, <span class="pl-smi">container</span>.<span class="pl-c1">style</span>.<span class="pl-c1">height</span> );
+
+    <span class="pl-smi">container</span>.<span class="pl-c1">appendChild</span>( <span class="pl-smi">renderer</span>.<span class="pl-smi">domElement</span> );
+
+    stats <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Stats</span>();
+    <span class="pl-smi">stats</span>.<span class="pl-smi">domElement</span>.<span class="pl-c1">style</span>.<span class="pl-smi">position</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>absolute<span class="pl-pds">'</span></span>;
+    <span class="pl-smi">stats</span>.<span class="pl-smi">domElement</span>.<span class="pl-c1">style</span>.<span class="pl-c1">top</span> <span class="pl-k">=</span> <span class="pl-s"><span class="pl-pds">'</span>0px<span class="pl-pds">'</span></span>;
+    <span class="pl-smi">container</span>.<span class="pl-c1">appendChild</span>(<span class="pl-smi">stats</span>.<span class="pl-smi">domElement</span>);
+}
+
+
+<span class="pl-c"><span class="pl-c">/**</span></span>
+<span class="pl-c"> * function createScene(geometry) creates the object from the geometry</span>
+<span class="pl-c"> * <span class="pl-k">@param</span> <span class="pl-smi">geometry</span> the object's geometry</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">function</span> <span class="pl-en">createScene</span>( <span class="pl-smi">geometry</span> ) {
+
+    <span class="pl-smi">geometry</span>.<span class="pl-smi">materials</span>[<span class="pl-c1">0</span>][<span class="pl-c1">0</span>].<span class="pl-smi">shading</span> <span class="pl-k">=</span> <span class="pl-c1">THREE</span>.<span class="pl-smi">FlatShading</span>;
+
+    <span class="pl-k">var</span> material <span class="pl-k">=</span> [ <span class="pl-k">new</span> <span class="pl-en">THREE.MeshFaceMaterial</span>(), <span class="pl-k">new</span> <span class="pl-en">THREE.MeshLambertMaterial</span>( { color<span class="pl-k">:</span> <span class="pl-c1">0xffffff</span>, opacity<span class="pl-k">:</span><span class="pl-c1">1</span>, wireframe<span class="pl-k">:</span> <span class="pl-c1">false</span>, wireframeLinewidth<span class="pl-k">:</span> <span class="pl-c1">2</span> } ) ];
+
+    mesh <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">THREE.Mesh</span>( geometry, material );
+    <span class="pl-smi">mesh</span>.<span class="pl-smi">position</span>.<span class="pl-c1">x</span> <span class="pl-k">=</span> <span class="pl-c1">0</span>;
+    <span class="pl-smi">mesh</span>.<span class="pl-smi">scale</span>.<span class="pl-c1">x</span> <span class="pl-k">=</span> <span class="pl-smi">mesh</span>.<span class="pl-smi">scale</span>.<span class="pl-c1">y</span> <span class="pl-k">=</span> <span class="pl-smi">mesh</span>.<span class="pl-smi">scale</span>.<span class="pl-c1">z</span> <span class="pl-k">=</span> <span class="pl-c1">1</span>;
+    <span class="pl-smi">scene</span>.<span class="pl-en">addObject</span>( mesh );
+}
+
+
+<span class="pl-c"><span class="pl-c">/**</span></span>
+<span class="pl-c"> * function animate() animates the scene</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">function</span> <span class="pl-en">animate</span>() {
+    <span class="pl-en">requestAnimationFrame</span>( animate );
+
+    <span class="pl-c"><span class="pl-c">//</span>render();</span>
+    <span class="pl-smi">renderer</span>.<span class="pl-en">render</span>( scene, camera );
+    <span class="pl-smi">stats</span>.<span class="pl-en">update</span>();
+}
+
+<span class="pl-c"><span class="pl-c">/**</span></span>
+<span class="pl-c"> * function render() renders the objects on screen and updates camera position</span>
+<span class="pl-c"> <span class="pl-c">*/</span></span>
+<span class="pl-k">function</span> <span class="pl-en">render</span>() {
+
+    <span class="pl-smi">camera</span>.<span class="pl-smi">position</span>.<span class="pl-c1">x</span> <span class="pl-k">+=</span> ( mouseX <span class="pl-k">-</span> <span class="pl-smi">camera</span>.<span class="pl-smi">position</span>.<span class="pl-c1">x</span> ) <span class="pl-k">*</span> <span class="pl-c1">0.05</span>;
+    <span class="pl-smi">camera</span>.<span class="pl-smi">position</span>.<span class="pl-c1">y</span> <span class="pl-k">+=</span> ( <span class="pl-k">-</span> mouseY <span class="pl-k">-</span> <span class="pl-smi">camera</span>.<span class="pl-smi">position</span>.<span class="pl-c1">y</span> ) <span class="pl-k">*</span> <span class="pl-c1">0.05</span>;
+
+    <span class="pl-k">if</span> ( mesh ) {
+
+        <span class="pl-smi">mesh</span>.<span class="pl-smi">rotation</span>.<span class="pl-c1">x</span> <span class="pl-k">+=</span> <span class="pl-c1">0.01</span>;
+        <span class="pl-smi">mesh</span>.<span class="pl-smi">rotation</span>.<span class="pl-c1">y</span> <span class="pl-k">+=</span> <span class="pl-c1">0.01</span>;
+    }
+
+    <span class="pl-smi">renderer</span>.<span class="pl-en">render</span>( scene, camera );
+}</pre></div>
+<div class="highlight highlight-source-css"><pre><span class="pl-ent">body</span> {
+    <span class="pl-c1"><span class="pl-c1">background-image</span></span>: <span class="pl-c1">url</span>(<span class="pl-v">../_images/bgsquares.gif</span>);
+    <span class="pl-c1"><span class="pl-c1">background-color</span></span>: <span class="pl-c1">#333</span>;
+    <span class="pl-c1"><span class="pl-c1">color</span></span>: <span class="pl-c1">#000</span>;
+    <span class="pl-c1"><span class="pl-c1">font</span></span>:<span class="pl-c1">75<span class="pl-k">%</span></span>/<span class="pl-c1">1.4</span> <span class="pl-c1">verdana</span>,<span class="pl-c1">Helvetica</span>,<span class="pl-c1">sans-serif</span>;
+}
+
+<span class="pl-e">#wrapper</span> {
+    <span class="pl-c1"><span class="pl-c1">margin</span></span>: <span class="pl-c1">0</span> <span class="pl-c1">auto</span>; <span class="pl-c"><span class="pl-c">/*</span> auto centers on page <span class="pl-c">*/</span></span>
+    <span class="pl-c1"><span class="pl-c1">height</span></span>: <span class="pl-c1">100<span class="pl-k">%</span></span>;
+    <span class="pl-c1"><span class="pl-c1">min-height</span></span>: <span class="pl-c1">700<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">margin-top</span></span>: <span class="pl-c1">10<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">width</span></span>: <span class="pl-c1">700<span class="pl-k">px</span></span>;
+}
+
+<span class="pl-e">#container</span>{
+    <span class="pl-c1"><span class="pl-c1">background-color</span></span>: <span class="pl-c1">#555</span>;
+    <span class="pl-c1"><span class="pl-c1">clear</span></span>: <span class="pl-c1">left</span>;
+    <span class="pl-c1"><span class="pl-c1">height</span></span>: <span class="pl-c1">540<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">width</span></span>: <span class="pl-c1">700<span class="pl-k">px</span></span>;
+    <span class="pl-c1"><span class="pl-c1">float</span></span>: <span class="pl-c1">left</span>;
+}</pre></div>
+<p>This causes the following in Firebug:</p>
+<p>TypeError: ua.getContext is not a function<br>
+(undefined="[object Object]")Three.js (line 293)<br>
+init()three_test.js (line 49)<br>
+Aa=b.stencil!==void 0?b.stencil:!0,xa=...SION)+" | "+j.getParameter(j.VENDOR)+<br>
+Three.js (line 293)<br>
+j is undefined<br>
+error source line: [Break On This Error] " | "+j.getParameter(j.RENDERER)+" | "...ertices=new Float32Array(12);R.faces=</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+        
+
+<div class="comment-reactions  js-reactions-container js-socket-channel js-updatable-content" data-channel="reaction:issue-comment:1578425" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE1Nzg0MjU=/comments/reactions">
+</div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+  
+  <div class="timeline-comment-wrapper js-comment-container">
+
+
+        
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a href="https://github.com/chesterd">
+      <img alt="@chesterd" class="avatar rounded-1" height="44" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/914783(1)" width="44">
+    </a>
+
+</div>
+
+
+      
+  <div id="issuecomment-1621878" class="comment previewable-edit js-comment js-task-list-container timeline-comment js-reorderable-task-lists reorderable-task-lists " data-body-version="783c52e236cd7c8c99c3915400ce802e">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+<!--
+Reactions should always be at the top-level, outside of the dropdown.
+Until we find a better solution to show team discussion comment states, Pin and Subscribe will also stay outside the dropdown.
+-->
+  
+  <span class="reaction-popover-container dropdown js-socket-channel js-updatable-content js-reaction-popover-container js-comment-header-reaction-button js-menu-container" data-channel="reaction:issue-comment:1621878" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE2MjE4Nzg=/comments/comment_header_reaction_button">
+    <button type="button" class="btn-link timeline-comment-action tooltipped tooltipped-n js-menu-target" aria-label="Add your reaction" aria-expanded="false" aria-haspopup="true">
+      <svg aria-hidden="true" class="octicon octicon-plus-small add-reaction-plus-icon" height="16" version="1.1" viewBox="0 0 7 16" width="7"><path fill-rule="evenodd" d="M4 7V4H3v3H0v1h3v3h1V8h3V7H4z"></path></svg>
+      <svg aria-hidden="true" class="octicon octicon-smiley" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.81 12.81a6.72 6.72 0 0 1-2.17 1.45c-.83.36-1.72.53-2.64.53-.92 0-1.81-.17-2.64-.53-.81-.34-1.55-.83-2.17-1.45a6.773 6.773 0 0 1-1.45-2.17A6.59 6.59 0 0 1 1.21 8c0-.92.17-1.81.53-2.64.34-.81.83-1.55 1.45-2.17.62-.62 1.36-1.11 2.17-1.45A6.59 6.59 0 0 1 8 1.21c.92 0 1.81.17 2.64.53.81.34 1.55.83 2.17 1.45.62.62 1.11 1.36 1.45 2.17.36.83.53 1.72.53 2.64 0 .92-.17 1.81-.53 2.64-.34.81-.83 1.55-1.45 2.17zM4 6.8v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2H5.2C4.53 8 4 7.47 4 6.8zm5 0v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2h-.59C9.53 8 9 7.47 9 6.8zm4 3.2c-.72 1.88-2.91 3-5 3s-4.28-1.13-5-3c-.14-.39.23-1 .66-1h8.59c.41 0 .89.61.75 1z"></path></svg>
+    </button>
+    
+<div class="dropdown-menu-content anim-scale-in js-menu-content">
+  <div class="dropdown-menu dropdown-menu-sw add-reaction-popover js-add-reaction-popover">
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/users/mrdoob/reactions" class="reaction-popover-form js-pick-reaction" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="1QqmB7bGEgf3aoHjnPjtls2Fu20JhG5MrtwT9fA1l7Aoz8EUk7DjO8BzlcVUHnzW/bY0zsg4kg87dBXqcbRLUg=="></div>
+      <p class="text-gray mx-2 my-1">
+        <span class="js-reaction-description">Pick your reaction</span>
+        <img alt="" class="loading-spinner" height="16" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/octocat-spinner-32.gif" width="16">
+      </p>
+
+      <div class="dropdown-divider"></div>
+
+      <div class="add-reactions-options mx-1 mb-1">
+        <input type="hidden" name="input[subjectId]" value="MDEyOklzc3VlQ29tbWVudDE2MjE4Nzg=">
+
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="+1" name="input[content]" aria-label="React with thumbs up emoji" value="THUMBS_UP react">
+            <g-emoji alias="+1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png" ios-version="6.0">👍</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="-1" name="input[content]" aria-label="React with thumbs down emoji" value="THUMBS_DOWN react">
+            <g-emoji alias="-1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png" ios-version="6.0">👎</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Laugh" name="input[content]" aria-label="React with laugh emoji" value="LAUGH react">
+            <g-emoji alias="smile" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png" ios-version="6.0">😄</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Hooray" name="input[content]" aria-label="React with hooray emoji" value="HOORAY react">
+            <g-emoji alias="tada" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png" ios-version="6.0">🎉</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Confused" name="input[content]" aria-label="React with confused emoji" value="CONFUSED react">
+            <g-emoji alias="thinking_face" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png" ios-version="6.0">😕</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Heart" name="input[content]" aria-label="React with heart emoji" value="HEART react">
+            <g-emoji alias="heart" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png" ios-version="6.0">❤️</g-emoji>
+          </button>
+      </div>
+</form>  </div>
+</div>
+
+  </span>
+
+
+
+
+
+
+
+  </div>
+
+    
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong>
+      
+
+  <a href="https://github.com/chesterd" class="author text-inherit">chesterd</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#issuecomment-1621878" class="timestamp"><relative-time datetime="2011-07-21T07:33:24Z" title="21 Jul 2011, 09:33 GMT+2">on 21 Jul 2011</relative-time></a>
+
+
+
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+      <table class="d-block">
+        <tbody class="d-block">
+          <tr class="d-block">
+            <td class="d-block comment-body markdown-body  js-comment-body">
+                <p>Anyone had a look at this ?</p>
+<p>Is it still relevant ?</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+        
+
+<div class="comment-reactions  js-reactions-container js-socket-channel js-updatable-content" data-channel="reaction:issue-comment:1621878" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE2MjE4Nzg=/comments/reactions">
+</div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+  
+  
+    
+<div class="discussion-item discussion-item-closed">
+  <h3 class="discussion-item-header f5 text-normal" id="event-1920759">
+    <span class="discussion-item-icon">
+      <svg aria-hidden="true" class="octicon octicon-circle-slash" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 1.3c1.3 0 2.5.44 3.47 1.17l-8 8A5.755 5.755 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zm0 11.41c-1.3 0-2.5-.44-3.47-1.17l8-8c.73.97 1.17 2.17 1.17 3.47 0 3.14-2.56 5.7-5.7 5.7z"></path></svg>
+    </span>
+
+      
+
+  <img src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/914783(2)" alt="@chesterd" height="16" width="16" class="avatar">
+  <a href="https://github.com/chesterd" class="author">chesterd</a>
+  
+
+
+      
+closed this
+
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#event-1920759" class="timestamp"><relative-time datetime="2011-07-21T07:33:25Z" title="21 Jul 2011, 09:33 GMT+2">on 21 Jul 2011</relative-time></a>
+
+
+  </h3>
+</div>
+
+  <div class="closed-banner"></div>
+
+
+    
+<div class="discussion-item discussion-item-reopened">
+  <h3 class="discussion-item-header f5 text-normal" id="event-1920760">
+    <span class="discussion-item-icon">
+      <svg aria-hidden="true" class="octicon octicon-primitive-dot" height="16" version="1.1" viewBox="0 0 8 16" width="8"><path fill-rule="evenodd" d="M0 8c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4-4-1.8-4-4z"></path></svg>
+    </span>
+
+      
+
+  <img src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/914783(2)" alt="@chesterd" height="16" width="16" class="avatar">
+  <a href="https://github.com/chesterd" class="author">chesterd</a>
+  
+
+
+      reopened this
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#event-1920760" class="timestamp"><relative-time datetime="2011-07-21T07:33:28Z" title="21 Jul 2011, 09:33 GMT+2">on 21 Jul 2011</relative-time></a>
+
+
+  </h3>
+</div>
+
+
+
+
+  
+  <div class="timeline-comment-wrapper js-comment-container">
+
+
+        
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a href="https://github.com/chesterd">
+      <img alt="@chesterd" class="avatar rounded-1" height="44" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/914783(1)" width="44">
+    </a>
+
+</div>
+
+
+      
+  <div id="issuecomment-1622144" class="comment previewable-edit js-comment js-task-list-container timeline-comment js-reorderable-task-lists reorderable-task-lists " data-body-version="7a5895aaab4caae8edd7366936fe6e53">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+<!--
+Reactions should always be at the top-level, outside of the dropdown.
+Until we find a better solution to show team discussion comment states, Pin and Subscribe will also stay outside the dropdown.
+-->
+  
+  <span class="reaction-popover-container dropdown js-socket-channel js-updatable-content js-reaction-popover-container js-comment-header-reaction-button js-menu-container" data-channel="reaction:issue-comment:1622144" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE2MjIxNDQ=/comments/comment_header_reaction_button">
+    <button type="button" class="btn-link timeline-comment-action tooltipped tooltipped-n js-menu-target" aria-label="Add your reaction" aria-expanded="false" aria-haspopup="true">
+      <svg aria-hidden="true" class="octicon octicon-plus-small add-reaction-plus-icon" height="16" version="1.1" viewBox="0 0 7 16" width="7"><path fill-rule="evenodd" d="M4 7V4H3v3H0v1h3v3h1V8h3V7H4z"></path></svg>
+      <svg aria-hidden="true" class="octicon octicon-smiley" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.81 12.81a6.72 6.72 0 0 1-2.17 1.45c-.83.36-1.72.53-2.64.53-.92 0-1.81-.17-2.64-.53-.81-.34-1.55-.83-2.17-1.45a6.773 6.773 0 0 1-1.45-2.17A6.59 6.59 0 0 1 1.21 8c0-.92.17-1.81.53-2.64.34-.81.83-1.55 1.45-2.17.62-.62 1.36-1.11 2.17-1.45A6.59 6.59 0 0 1 8 1.21c.92 0 1.81.17 2.64.53.81.34 1.55.83 2.17 1.45.62.62 1.11 1.36 1.45 2.17.36.83.53 1.72.53 2.64 0 .92-.17 1.81-.53 2.64-.34.81-.83 1.55-1.45 2.17zM4 6.8v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2H5.2C4.53 8 4 7.47 4 6.8zm5 0v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2h-.59C9.53 8 9 7.47 9 6.8zm4 3.2c-.72 1.88-2.91 3-5 3s-4.28-1.13-5-3c-.14-.39.23-1 .66-1h8.59c.41 0 .89.61.75 1z"></path></svg>
+    </button>
+    
+<div class="dropdown-menu-content anim-scale-in js-menu-content">
+  <div class="dropdown-menu dropdown-menu-sw add-reaction-popover js-add-reaction-popover">
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/users/mrdoob/reactions" class="reaction-popover-form js-pick-reaction" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="j/kwjLdfVMnGt9ojty1lxJ5KsVlzsREeafx/uvhpv4NyPFefkiml9fGuzgV/y/SErnk++rIN7V38VHmleehjYQ=="></div>
+      <p class="text-gray mx-2 my-1">
+        <span class="js-reaction-description">Pick your reaction</span>
+        <img alt="" class="loading-spinner" height="16" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/octocat-spinner-32.gif" width="16">
+      </p>
+
+      <div class="dropdown-divider"></div>
+
+      <div class="add-reactions-options mx-1 mb-1">
+        <input type="hidden" name="input[subjectId]" value="MDEyOklzc3VlQ29tbWVudDE2MjIxNDQ=">
+
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="+1" name="input[content]" aria-label="React with thumbs up emoji" value="THUMBS_UP react">
+            <g-emoji alias="+1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png" ios-version="6.0">👍</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="-1" name="input[content]" aria-label="React with thumbs down emoji" value="THUMBS_DOWN react">
+            <g-emoji alias="-1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png" ios-version="6.0">👎</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Laugh" name="input[content]" aria-label="React with laugh emoji" value="LAUGH react">
+            <g-emoji alias="smile" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png" ios-version="6.0">😄</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Hooray" name="input[content]" aria-label="React with hooray emoji" value="HOORAY react">
+            <g-emoji alias="tada" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png" ios-version="6.0">🎉</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Confused" name="input[content]" aria-label="React with confused emoji" value="CONFUSED react">
+            <g-emoji alias="thinking_face" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png" ios-version="6.0">😕</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Heart" name="input[content]" aria-label="React with heart emoji" value="HEART react">
+            <g-emoji alias="heart" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png" ios-version="6.0">❤️</g-emoji>
+          </button>
+      </div>
+</form>  </div>
+</div>
+
+  </span>
+
+
+
+
+
+
+
+  </div>
+
+    
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong>
+      
+
+  <a href="https://github.com/chesterd" class="author text-inherit">chesterd</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#issuecomment-1622144" class="timestamp"><relative-time datetime="2011-07-21T08:34:02Z" title="21 Jul 2011, 10:34 GMT+2">on 21 Jul 2011</relative-time></a>
+
+
+
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+      <table class="d-block">
+        <tbody class="d-block">
+          <tr class="d-block">
+            <td class="d-block comment-body markdown-body  js-comment-body">
+                <p>One quick and maybe important question.</p>
+<p>I read &gt;&gt; var renderer = new THREE.WebGLRenderer( { canvas: my_canvas } );</p>
+<p>Does that mean that my_canvas is a canvas element or a div element ?<br>
+I'm really confused. Maybe it didn't work as expected for me since i was using a div element ...</p>
+<p>Any ideas ?</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+        
+
+<div class="comment-reactions  js-reactions-container js-socket-channel js-updatable-content" data-channel="reaction:issue-comment:1622144" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE2MjIxNDQ=/comments/reactions">
+</div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+  
+  <div class="timeline-comment-wrapper js-comment-container">
+
+
+        
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a href="https://github.com/mrdoob">
+      <img alt="@mrdoob" class="avatar rounded-1" height="44" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/97088(1)" width="44">
+    </a>
+
+</div>
+
+
+      
+  <div id="issuecomment-1634225" class="comment previewable-edit js-comment js-task-list-container timeline-comment js-reorderable-task-lists reorderable-task-lists " data-body-version="186133e6180e79cc9997197edd254f4c">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+<!--
+Reactions should always be at the top-level, outside of the dropdown.
+Until we find a better solution to show team discussion comment states, Pin and Subscribe will also stay outside the dropdown.
+-->
+  
+  <span class="reaction-popover-container dropdown js-socket-channel js-updatable-content js-reaction-popover-container js-comment-header-reaction-button js-menu-container" data-channel="reaction:issue-comment:1634225" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE2MzQyMjU=/comments/comment_header_reaction_button">
+    <button type="button" class="btn-link timeline-comment-action tooltipped tooltipped-n js-menu-target" aria-label="Add your reaction" aria-expanded="false" aria-haspopup="true">
+      <svg aria-hidden="true" class="octicon octicon-plus-small add-reaction-plus-icon" height="16" version="1.1" viewBox="0 0 7 16" width="7"><path fill-rule="evenodd" d="M4 7V4H3v3H0v1h3v3h1V8h3V7H4z"></path></svg>
+      <svg aria-hidden="true" class="octicon octicon-smiley" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.81 12.81a6.72 6.72 0 0 1-2.17 1.45c-.83.36-1.72.53-2.64.53-.92 0-1.81-.17-2.64-.53-.81-.34-1.55-.83-2.17-1.45a6.773 6.773 0 0 1-1.45-2.17A6.59 6.59 0 0 1 1.21 8c0-.92.17-1.81.53-2.64.34-.81.83-1.55 1.45-2.17.62-.62 1.36-1.11 2.17-1.45A6.59 6.59 0 0 1 8 1.21c.92 0 1.81.17 2.64.53.81.34 1.55.83 2.17 1.45.62.62 1.11 1.36 1.45 2.17.36.83.53 1.72.53 2.64 0 .92-.17 1.81-.53 2.64-.34.81-.83 1.55-1.45 2.17zM4 6.8v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2H5.2C4.53 8 4 7.47 4 6.8zm5 0v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2h-.59C9.53 8 9 7.47 9 6.8zm4 3.2c-.72 1.88-2.91 3-5 3s-4.28-1.13-5-3c-.14-.39.23-1 .66-1h8.59c.41 0 .89.61.75 1z"></path></svg>
+    </button>
+    
+<div class="dropdown-menu-content anim-scale-in js-menu-content">
+  <div class="dropdown-menu dropdown-menu-sw add-reaction-popover js-add-reaction-popover">
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/users/mrdoob/reactions" class="reaction-popover-form js-pick-reaction" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="eIapfdIdorEPGXHb/s1D8ervRPBMsZ/Kfww7HOZparKFQ85u92tTjTgAZf02K9Kx2tzLU40NY4nqpD0DZ+i2UA=="></div>
+      <p class="text-gray mx-2 my-1">
+        <span class="js-reaction-description">Pick your reaction</span>
+        <img alt="" class="loading-spinner" height="16" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/octocat-spinner-32.gif" width="16">
+      </p>
+
+      <div class="dropdown-divider"></div>
+
+      <div class="add-reactions-options mx-1 mb-1">
+        <input type="hidden" name="input[subjectId]" value="MDEyOklzc3VlQ29tbWVudDE2MzQyMjU=">
+
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="+1" name="input[content]" aria-label="React with thumbs up emoji" value="THUMBS_UP react">
+            <g-emoji alias="+1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png" ios-version="6.0">👍</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="-1" name="input[content]" aria-label="React with thumbs down emoji" value="THUMBS_DOWN react">
+            <g-emoji alias="-1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png" ios-version="6.0">👎</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Laugh" name="input[content]" aria-label="React with laugh emoji" value="LAUGH react">
+            <g-emoji alias="smile" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png" ios-version="6.0">😄</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Hooray" name="input[content]" aria-label="React with hooray emoji" value="HOORAY react">
+            <g-emoji alias="tada" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png" ios-version="6.0">🎉</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Confused" name="input[content]" aria-label="React with confused emoji" value="CONFUSED react">
+            <g-emoji alias="thinking_face" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png" ios-version="6.0">😕</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Heart" name="input[content]" aria-label="React with heart emoji" value="HEART react">
+            <g-emoji alias="heart" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png" ios-version="6.0">❤️</g-emoji>
+          </button>
+      </div>
+</form>  </div>
+</div>
+
+  </span>
+
+
+
+
+
+
+
+  </div>
+
+    
+    <span class="timeline-comment-label text-bold tooltipped tooltipped-multiline tooltipped-s" aria-label="This user is the owner of the three.js repository.">
+      Owner
+    </span>
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong>
+      
+
+  <a href="https://github.com/mrdoob" class="author text-inherit">mrdoob</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#issuecomment-1634225" class="timestamp"><relative-time datetime="2011-07-22T19:04:32Z" title="22 Jul 2011, 21:04 GMT+2">on 22 Jul 2011</relative-time></a>
+
+
+
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+      <table class="d-block">
+        <tbody class="d-block">
+          <tr class="d-block">
+            <td class="d-block comment-body markdown-body  js-comment-body">
+                <p>There are two problems here:</p>
+<div class="highlight highlight-source-js"><pre>renderer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">THREE.WebGLRenderer</span>( { canvas<span class="pl-k">:</span> container, antialias<span class="pl-k">:</span> <span class="pl-c1">true</span> } );
+<span class="pl-smi">renderer</span>.<span class="pl-en">setSize</span>( <span class="pl-smi">container</span>.<span class="pl-c1">style</span>.<span class="pl-c1">width</span>, <span class="pl-smi">container</span>.<span class="pl-c1">style</span>.<span class="pl-c1">height</span> );</pre></div>
+<p><code>container</code> is not a <code>&lt;canvas&gt;</code> element.<br>
+<code>containter.style.width</code> and <code>container.style.height</code> are strings such as <code>"200px"</code> on them, and <code>setSize</code> expect just numbers such as <code>200</code>.</p>
+<p>Change these lines to this, and you should be able to go from there:</p>
+<div class="highlight highlight-source-js"><pre>renderer <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">THREE.WebGLRenderer</span>( { antialias<span class="pl-k">:</span> <span class="pl-c1">true</span> } );
+<span class="pl-smi">renderer</span>.<span class="pl-en">setSize</span>( <span class="pl-c1">200</span>, <span class="pl-c1">200</span> );</pre></div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+        
+
+<div class="comment-reactions  js-reactions-container js-socket-channel js-updatable-content" data-channel="reaction:issue-comment:1634225" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE2MzQyMjU=/comments/reactions">
+</div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+  
+  
+    
+<div class="discussion-item discussion-item-closed">
+  <h3 class="discussion-item-header f5 text-normal" id="event-1957604">
+    <span class="discussion-item-icon">
+      <svg aria-hidden="true" class="octicon octicon-circle-slash" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M7 1C3.14 1 0 4.14 0 8s3.14 7 7 7 7-3.14 7-7-3.14-7-7-7zm0 1.3c1.3 0 2.5.44 3.47 1.17l-8 8A5.755 5.755 0 0 1 1.3 8c0-3.14 2.56-5.7 5.7-5.7zm0 11.41c-1.3 0-2.5-.44-3.47-1.17l8-8c.73.97 1.17 2.17 1.17 3.47 0 3.14-2.56 5.7-5.7 5.7z"></path></svg>
+    </span>
+
+      
+
+  <img src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/97088(2)" alt="@mrdoob" height="16" width="16" class="avatar">
+  <a href="https://github.com/mrdoob" class="author">mrdoob</a>
+  
+
+
+      
+closed this
+
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#event-1957604" class="timestamp"><relative-time datetime="2011-07-22T19:04:32Z" title="22 Jul 2011, 21:04 GMT+2">on 22 Jul 2011</relative-time></a>
+
+
+  </h3>
+</div>
+
+  <div class="closed-banner"></div>
+
+
+
+  
+  <div class="timeline-comment-wrapper js-comment-container">
+
+
+        
+
+<div class="avatar-parent-child timeline-comment-avatar">
+    <a href="https://github.com/mrdoob">
+      <img alt="@mrdoob" class="avatar rounded-1" height="44" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/97088(1)" width="44">
+    </a>
+
+</div>
+
+
+      
+  <div id="issuecomment-19169203" class="comment previewable-edit js-comment js-task-list-container timeline-comment js-reorderable-task-lists reorderable-task-lists " data-body-version="fd9d8aa711276dcb72c3b3a8544d0cd5">
+
+    
+<div class="timeline-comment-header clearfix">
+  <div class="timeline-comment-actions">
+    
+
+<!--
+Reactions should always be at the top-level, outside of the dropdown.
+Until we find a better solution to show team discussion comment states, Pin and Subscribe will also stay outside the dropdown.
+-->
+  
+  <span class="reaction-popover-container dropdown js-socket-channel js-updatable-content js-reaction-popover-container js-comment-header-reaction-button js-menu-container" data-channel="reaction:issue-comment:19169203" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE5MTY5MjAz/comments/comment_header_reaction_button">
+    <button type="button" class="btn-link timeline-comment-action tooltipped tooltipped-n js-menu-target" aria-label="Add your reaction" aria-expanded="false" aria-haspopup="true">
+      <svg aria-hidden="true" class="octicon octicon-plus-small add-reaction-plus-icon" height="16" version="1.1" viewBox="0 0 7 16" width="7"><path fill-rule="evenodd" d="M4 7V4H3v3H0v1h3v3h1V8h3V7H4z"></path></svg>
+      <svg aria-hidden="true" class="octicon octicon-smiley" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8zm4.81 12.81a6.72 6.72 0 0 1-2.17 1.45c-.83.36-1.72.53-2.64.53-.92 0-1.81-.17-2.64-.53-.81-.34-1.55-.83-2.17-1.45a6.773 6.773 0 0 1-1.45-2.17A6.59 6.59 0 0 1 1.21 8c0-.92.17-1.81.53-2.64.34-.81.83-1.55 1.45-2.17.62-.62 1.36-1.11 2.17-1.45A6.59 6.59 0 0 1 8 1.21c.92 0 1.81.17 2.64.53.81.34 1.55.83 2.17 1.45.62.62 1.11 1.36 1.45 2.17.36.83.53 1.72.53 2.64 0 .92-.17 1.81-.53 2.64-.34.81-.83 1.55-1.45 2.17zM4 6.8v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2H5.2C4.53 8 4 7.47 4 6.8zm5 0v-.59c0-.66.53-1.19 1.2-1.19h.59c.66 0 1.19.53 1.19 1.19v.59c0 .67-.53 1.2-1.19 1.2h-.59C9.53 8 9 7.47 9 6.8zm4 3.2c-.72 1.88-2.91 3-5 3s-4.28-1.13-5-3c-.14-.39.23-1 .66-1h8.59c.41 0 .89.61.75 1z"></path></svg>
+    </button>
+    
+<div class="dropdown-menu-content anim-scale-in js-menu-content">
+  <div class="dropdown-menu dropdown-menu-sw add-reaction-popover js-add-reaction-popover">
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/users/mrdoob/reactions" class="reaction-popover-form js-pick-reaction" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="_method" type="hidden" value="put"><input name="authenticity_token" type="hidden" value="VFiNNPRCtkIrHj25ZrVKWOJ603irM7P+FiBYxRZS0B+pneon0TRHfhwHKZ+uU9sY0klc22qPT72DiF7al9MM/Q=="></div>
+      <p class="text-gray mx-2 my-1">
+        <span class="js-reaction-description">Pick your reaction</span>
+        <img alt="" class="loading-spinner" height="16" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/octocat-spinner-32.gif" width="16">
+      </p>
+
+      <div class="dropdown-divider"></div>
+
+      <div class="add-reactions-options mx-1 mb-1">
+        <input type="hidden" name="input[subjectId]" value="MDEyOklzc3VlQ29tbWVudDE5MTY5MjAz">
+
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="+1" name="input[content]" aria-label="React with thumbs up emoji" value="THUMBS_UP react">
+            <g-emoji alias="+1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44d.png" ios-version="6.0">👍</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="-1" name="input[content]" aria-label="React with thumbs down emoji" value="THUMBS_DOWN react">
+            <g-emoji alias="-1" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f44e.png" ios-version="6.0">👎</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Laugh" name="input[content]" aria-label="React with laugh emoji" value="LAUGH react">
+            <g-emoji alias="smile" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f604.png" ios-version="6.0">😄</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Hooray" name="input[content]" aria-label="React with hooray emoji" value="HOORAY react">
+            <g-emoji alias="tada" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f389.png" ios-version="6.0">🎉</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Confused" name="input[content]" aria-label="React with confused emoji" value="CONFUSED react">
+            <g-emoji alias="thinking_face" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/1f615.png" ios-version="6.0">😕</g-emoji>
+          </button>
+          <button type="submit" class="btn-link add-reactions-options-item js-reaction-option-item" data-reaction-label="Heart" name="input[content]" aria-label="React with heart emoji" value="HEART react">
+            <g-emoji alias="heart" class="emoji" fallback-src="https://assets-cdn.github.com/images/icons/emoji/unicode/2764.png" ios-version="6.0">❤️</g-emoji>
+          </button>
+      </div>
+</form>  </div>
+</div>
+
+  </span>
+
+
+
+
+
+
+
+  </div>
+
+    
+    <span class="timeline-comment-label text-bold tooltipped tooltipped-multiline tooltipped-s" aria-label="This user is the owner of the three.js repository.">
+      Owner
+    </span>
+
+
+
+  <h3 class="timeline-comment-header-text f5 text-normal">
+
+    <strong>
+      
+
+  <a href="https://github.com/mrdoob" class="author text-inherit">mrdoob</a>
+  
+
+    </strong>
+
+    commented
+
+    <a href="https://github.com/mrdoob/three.js/issues/352#issuecomment-19169203" class="timestamp"><relative-time datetime="2013-06-09T16:43:50Z" title="9 Jun 2013, 18:43 GMT+2">on 9 Jun 2013</relative-time></a>
+
+
+
+  </h3>
+</div>
+
+
+    <div class="edit-comment-hide">
+      <table class="d-block">
+        <tbody class="d-block">
+          <tr class="d-block">
+            <td class="d-block comment-body markdown-body  js-comment-body">
+                <p>As stated in the <a href="https://github.com/mrdoob/three.js/blob/master/CONTRIBUTING.md">guidelines</a>, help requests should be done in <a href="http://stackoverflow.com/questions/tagged/three.js">stackoverflow</a>. This board is for bugs or feature requests.</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+        
+
+<div class="comment-reactions  js-reactions-container js-socket-channel js-updatable-content" data-channel="reaction:issue-comment:19169203" data-url="/_render_node/MDEyOklzc3VlQ29tbWVudDE5MTY5MjAz/comments/reactions">
+</div>
+
+    </div>
+
+  </div>
+
+  </div>
+
+
+
+
+
+<!-- Rendered timeline since 2013-06-09 09:43:50 -->
+<div id="partial-timeline-marker" class="js-timeline-marker js-socket-channel js-updatable-content" data-channel="issue:1222612" data-url="/mrdoob/three.js/issues/352/show_partial?partial=issues%2Ftimeline_marker&amp;since=1370796230" data-last-modified="Sun, 09 Jun 2013 16:43:50 GMT">
+
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/mrdoob/three.js/notifications/mark?ids=12057500" class="d-none js-timeline-marker-form" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="Xr51zpS+AYWHGMAMm40/NfOQY3pxkGvtdiO2nAqV9RIZo1cNxl3hzBOxgHWx80F1DT6aUYUF26teYc94IPAB2A=="></div>
+</form></div>
+
+
+        </div>
+
+
+        <div class="discussion-timeline-actions">
+              
+<div class="timeline-comment-wrapper timeline-new-comment js-comment-container ">
+  <a href="https://github.com/angeloseme"><img alt="@angeloseme" class="timeline-comment-avatar" height="44" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/1011489(1)" width="44"></a>
+
+    <!-- '"` --><!-- </textarea></xmp> --><form accept-charset="UTF-8" action="https://github.com/mrdoob/three.js/issue_comments" class="js-new-comment-form js-needs-timeline-marker-header" method="post"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="dTp43nilrbPAx5ufp1AwfYxgirqqirF6uB4S4C5RGWVr7DyAAVzQ97PCEtTujMZ9BpMTz97/JM/7SnfmOghJLw=="></div>
+      <div class="timeline-comment">
+        <input type="hidden" name="issue" value="352">
+          <div class="js-suggester-container  js-previewable-comment-form previewable-comment-form write-selected" data-preview-url="/preview?markdown_unsupported=false&amp;repository=576201&amp;subject=352&amp;subject_type=Issue" data-preview-authenticity-token="bKsP+khOFhpHU5PkY9SPzHU9ACpfXkAvpCgdyVN8BqGqzK+hAdbJkskRgV/5M3HyCxON+0FA7PGGa5bj17l0eQ==">
+  <div class="comment-form-head tabnav">
+      <div class="js-toolbar toolbar-commenting">
+  <div class="toolbar-group">
+    <div class="toolbar-item dropdown js-menu-container">
+      <button type="button" tabindex="-1" class="js-menu-target menu-target tooltipped tooltipped-n" aria-label="Add header text" aria-expanded="false" aria-haspopup="true">
+        <svg aria-hidden="true" class="octicon octicon-text-size" height="16" version="1.1" viewBox="0 0 18 16" width="18"><path fill-rule="evenodd" d="M13.62 9.08L12.1 3.66h-.06l-1.5 5.42h3.08zM5.7 10.13S4.68 6.52 4.53 6.02h-.08l-1.13 4.11H5.7zM17.31 14h-2.25l-.95-3.25h-4.07L9.09 14H6.84l-.69-2.33H2.87L2.17 14H0l3.3-9.59h2.5l2.17 6.34L10.86 2h2.52l3.94 12h-.01z"></path></svg>
+        <span class="dropdown-caret"></span>
+      </button>
+
+      <div class="dropdown-menu-content js-menu-content">
+        <ul class="dropdown-menu dropdown-menu-s">
+          <button type="button" class="js-toolbar-item dropdown-item dropdown-header1" data-prefix="# " data-ga-click="Markdown Toolbar, click, header1">
+            Header
+          </button>
+          <button type="button" class="js-toolbar-item dropdown-item dropdown-header2" data-prefix="## " data-ga-click="Markdown Toolbar, click, header2">
+            Header
+          </button>
+          <button type="button" class="js-toolbar-item dropdown-item dropdown-header3" data-prefix="### " data-ga-click="Markdown Toolbar, click, header3">
+            Header
+          </button>
+        </ul>
+      </div>
+    </div>
+
+    <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-n" aria-label="Add bold text &lt;cmd+b&gt;" data-prefix="**" data-suffix="**" data-toolbar-hotkey="b" data-ga-click="Markdown Toolbar, click, bold" data-trim-first="">
+      <svg aria-hidden="true" class="octicon octicon-bold" height="16" version="1.1" viewBox="0 0 10 16" width="10"><path fill-rule="evenodd" d="M1 2h3.83c2.48 0 4.3.75 4.3 2.95 0 1.14-.63 2.23-1.67 2.61v.06c1.33.3 2.3 1.23 2.3 2.86 0 2.39-1.97 3.52-4.61 3.52H1V2zm3.66 4.95c1.67 0 2.38-.66 2.38-1.69 0-1.17-.78-1.61-2.34-1.61H3.13v3.3h1.53zm.27 5.39c1.77 0 2.75-.64 2.75-1.98 0-1.27-.95-1.81-2.75-1.81h-1.8v3.8h1.8v-.01z"></path></svg>
+    </button>
+
+    <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-n" aria-label="Add italic text &lt;cmd+i&gt;" data-prefix="_" data-suffix="_" data-toolbar-hotkey="i" data-ga-click="Markdown Toolbar, click, italic" data-trim-first="">
+      <svg aria-hidden="true" class="octicon octicon-italic" height="16" version="1.1" viewBox="0 0 6 16" width="6"><path fill-rule="evenodd" d="M2.81 5h1.98L3 14H1l1.81-9zm.36-2.7c0-.7.58-1.3 1.33-1.3.56 0 1.13.38 1.13 1.03 0 .75-.59 1.3-1.33 1.3-.58 0-1.13-.38-1.13-1.03z"></path></svg>
+    </button>
+  </div>
+
+  <div class="toolbar-group">
+    <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-n" aria-label="Insert a quote" data-prefix="&gt; " data-multiline="true" data-ga-click="Markdown Toolbar, click, quote" data-surround-with-newlines="">
+      <svg aria-hidden="true" class="octicon octicon-quote" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M6.16 3.5C3.73 5.06 2.55 6.67 2.55 9.36c.16-.05.3-.05.44-.05 1.27 0 2.5.86 2.5 2.41 0 1.61-1.03 2.61-2.5 2.61-1.9 0-2.99-1.52-2.99-4.25 0-3.8 1.75-6.53 5.02-8.42L6.16 3.5zm7 0c-2.43 1.56-3.61 3.17-3.61 5.86.16-.05.3-.05.44-.05 1.27 0 2.5.86 2.5 2.41 0 1.61-1.03 2.61-2.5 2.61-1.89 0-2.98-1.52-2.98-4.25 0-3.8 1.75-6.53 5.02-8.42l1.14 1.84h-.01z"></path></svg>
+    </button>
+
+    <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-n" aria-label="Insert code" data-prefix="`" data-suffix="`" data-block-prefix="```" data-block-suffix="```" data-ga-click="Markdown Toolbar, click, code">
+      <svg aria-hidden="true" class="octicon octicon-code" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M9.5 3L8 4.5 11.5 8 8 11.5 9.5 13 14 8 9.5 3zm-5 0L0 8l4.5 5L6 11.5 2.5 8 6 4.5 4.5 3z"></path></svg>
+    </button>
+
+    <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-n" aria-label="Add a link &lt;cmd+k&gt;" data-prefix="[" data-suffix="](url)" data-replace-next="url" data-toolbar-hotkey="k" data-scan-for="https?://" data-ga-click="Markdown Toolbar, click, link">
+      <svg aria-hidden="true" class="octicon octicon-link" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg>
+    </button>
+  </div>
+
+  <div class="toolbar-group">
+    <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-n" aria-label="Add a bulleted list" data-multiline="true" data-prefix="- " data-ga-click="Markdown Toolbar, click, unordered list" data-surround-with-newlines="">
+      <svg aria-hidden="true" class="octicon octicon-list-unordered" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M2 13c0 .59 0 1-.59 1H.59C0 14 0 13.59 0 13c0-.59 0-1 .59-1h.81c.59 0 .59.41.59 1H2zm2.59-9h6.81c.59 0 .59-.41.59-1 0-.59 0-1-.59-1H4.59C4 2 4 2.41 4 3c0 .59 0 1 .59 1zM1.41 7H.59C0 7 0 7.41 0 8c0 .59 0 1 .59 1h.81c.59 0 .59-.41.59-1 0-.59 0-1-.59-1h.01zm0-5H.59C0 2 0 2.41 0 3c0 .59 0 1 .59 1h.81c.59 0 .59-.41.59-1 0-.59 0-1-.59-1h.01zm10 5H4.59C4 7 4 7.41 4 8c0 .59 0 1 .59 1h6.81c.59 0 .59-.41.59-1 0-.59 0-1-.59-1h.01zm0 5H4.59C4 12 4 12.41 4 13c0 .59 0 1 .59 1h6.81c.59 0 .59-.41.59-1 0-.59 0-1-.59-1h.01z"></path></svg>
+    </button>
+    <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-n" aria-label="Add a numbered list" data-prefix="1. " data-multiline="true" data-ga-click="Markdown Toolbar, click, ordered list" data-ordered-list="">
+      <svg aria-hidden="true" class="octicon octicon-list-ordered" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M12 13c0 .59 0 1-.59 1H4.59C4 14 4 13.59 4 13c0-.59 0-1 .59-1h6.81c.59 0 .59.41.59 1H12zM4.59 4h6.81c.59 0 .59-.41.59-1 0-.59 0-1-.59-1H4.59C4 2 4 2.41 4 3c0 .59 0 1 .59 1zm6.81 3H4.59C4 7 4 7.41 4 8c0 .59 0 1 .59 1h6.81c.59 0 .59-.41.59-1 0-.59 0-1-.59-1zM2 1h-.72c-.3.19-.58.25-1.03.34V2H1v2.14H.16V5H3v-.86H2V1zm.25 8.13c-.17 0-.45.03-.66.06.53-.56 1.14-1.25 1.14-1.89C2.71 6.52 2.17 6 1.37 6c-.59 0-.97.2-1.38.64l.58.58c.19-.19.38-.38.64-.38.28 0 .48.16.48.52 0 .53-.77 1.2-1.7 2.06V10h3l-.09-.88h-.66l.01.01zm-.08 3.78v-.03c.44-.19.64-.47.64-.86 0-.7-.56-1.11-1.44-1.11-.48 0-.89.19-1.28.52l.55.64c.25-.2.44-.31.69-.31.27 0 .42.13.42.36 0 .27-.2.44-.86.44v.75c.83 0 .98.17.98.47 0 .25-.23.38-.58.38-.28 0-.56-.14-.81-.38l-.48.66c.3.36.77.56 1.41.56.83 0 1.53-.41 1.53-1.16 0-.5-.31-.81-.77-.94v.01z"></path></svg>
+    </button>
+
+      <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-n" aria-label="Add a task list" data-prefix="- [ ] " data-toolbar-hotkey="L" data-multiline="" data-ga-click="Markdown Toolbar, click, task list" data-surround-with-newlines="">
+        <svg aria-hidden="true" class="octicon octicon-tasklist" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M15.41 9H7.59C7 9 7 8.59 7 8c0-.59 0-1 .59-1h7.81c.59 0 .59.41.59 1 0 .59 0 1-.59 1h.01zM9.59 4C9 4 9 3.59 9 3c0-.59 0-1 .59-1h5.81c.59 0 .59.41.59 1 0 .59 0 1-.59 1H9.59zM0 3.91l1.41-1.3L3 4.2 7.09 0 8.5 1.41 3 6.91l-3-3zM7.59 12h7.81c.59 0 .59.41.59 1 0 .59 0 1-.59 1H7.59C7 14 7 13.59 7 13c0-.59 0-1 .59-1z"></path></svg>
+      </button>
+  </div>
+
+  <div class="toolbar-group">
+
+      <div class="toolbar-item select-menu select-menu-modal-right js-menu-container js-select-menu js-load-contents js-saved-reply-container" data-contents-url="/settings/replies?context=issue">
+
+        <button type="button" tabindex="-1" class="js-menu-target menu-target tooltipped tooltipped-nw" aria-label="Insert a reply" aria-expanded="false" aria-haspopup="true" data-ga-click="Markdown Toolbar, click, saved reply">
+          <svg aria-hidden="true" class="octicon octicon-reply" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M6 3.5c3.92.44 8 3.125 8 10-2.312-5.062-4.75-6-8-6V11L.5 5.5 6 0v3.5z"></path></svg>
+          <span class="dropdown-caret"></span>
+        </button>
+
+        <div class="select-menu-modal-holder js-menu-content js-navigation-container">
+          <div class="select-menu-modal">
+            <div class="select-menu-header">
+              <svg aria-label="Close" class="octicon octicon-x js-menu-close" height="16" role="img" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"></path></svg>
+              <span class="select-menu-title">Select a reply</span>
+            </div>
+            <div class="js-select-menu-deferred-content"></div>
+            <div class="select-menu-loading-overlay anim-pulse">
+              <svg aria-hidden="true" class="octicon octicon-octoface" height="32" version="1.1" viewBox="0 0 16 16" width="32"><path fill-rule="evenodd" d="M14.7 5.34c.13-.32.55-1.59-.13-3.31 0 0-1.05-.33-3.44 1.3-1-.28-2.07-.32-3.13-.32s-2.13.04-3.13.32c-2.39-1.64-3.44-1.3-3.44-1.3-.68 1.72-.26 2.99-.13 3.31C.49 6.21 0 7.33 0 8.69 0 13.84 3.33 15 7.98 15S16 13.84 16 8.69c0-1.36-.49-2.48-1.3-3.35zM8 14.02c-3.3 0-5.98-.15-5.98-3.35 0-.76.38-1.48 1.02-2.07 1.07-.98 2.9-.46 4.96-.46 2.07 0 3.88-.52 4.96.46.65.59 1.02 1.3 1.02 2.07 0 3.19-2.68 3.35-5.98 3.35zM5.49 9.01c-.66 0-1.2.8-1.2 1.78s.54 1.79 1.2 1.79c.66 0 1.2-.8 1.2-1.79s-.54-1.78-1.2-1.78zm5.02 0c-.66 0-1.2.79-1.2 1.78s.54 1.79 1.2 1.79c.66 0 1.2-.8 1.2-1.79s-.53-1.78-1.2-1.78z"></path></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-nw" aria-label="Directly mention a user or team" data-prefix="@" data-prefix-space="" data-ga-click="Markdown Toolbar, click, mention">
+        <svg aria-hidden="true" class="octicon octicon-mention" height="16" version="1.1" viewBox="0 0 14 16" width="14"><path fill-rule="evenodd" d="M6.58 15c1.25 0 2.52-.31 3.56-.94l-.42-.94c-.84.52-1.89.83-3.03.83-3.23 0-5.64-2.08-5.64-5.72 0-4.37 3.23-7.18 6.58-7.18 3.45 0 5.22 2.19 5.22 5.2 0 2.39-1.34 3.86-2.5 3.86-1.05 0-1.36-.73-1.05-2.19l.73-3.75H8.98l-.11.72c-.41-.63-.94-.83-1.56-.83-2.19 0-3.66 2.39-3.66 4.38 0 1.67.94 2.61 2.3 2.61.84 0 1.67-.53 2.3-1.25.11.94.94 1.45 1.98 1.45 1.67 0 3.77-1.67 3.77-5C14 2.61 11.59 0 7.83 0 3.66 0 0 3.33 0 8.33 0 12.71 2.92 15 6.58 15zm-.31-5c-.73 0-1.36-.52-1.36-1.67 0-1.45.94-3.22 2.41-3.22.52 0 .84.2 1.25.83l-.52 3.02c-.63.73-1.25 1.05-1.78 1.05V10z"></path></svg>
+      </button>
+
+      <button type="button" tabindex="-1" class="js-toolbar-item toolbar-item tooltipped tooltipped-nw" aria-label="Reference an issue or pull request" data-prefix="#" data-prefix-space="" data-ga-click="Markdown Toolbar, click, reference">
+        <svg aria-hidden="true" class="octicon octicon-bookmark" height="16" version="1.1" viewBox="0 0 10 16" width="10"><path fill-rule="evenodd" d="M9 0H1C.27 0 0 .27 0 1v15l5-3.09L10 16V1c0-.73-.27-1-1-1zm-.78 4.25L6.36 5.61l.72 2.16c.06.22-.02.28-.2.17L5 6.6 3.12 7.94c-.19.11-.25.05-.2-.17l.72-2.16-1.86-1.36c-.17-.16-.14-.23.09-.23l2.3-.03.7-2.16h.25l.7 2.16 2.3.03c.23 0 .27.08.09.23h.01z"></path></svg>
+      </button>
+  </div>
+</div>
+
+      <nav class="tabnav-tabs" role="tablist">
+        <button type="button" class="btn-link tabnav-tab write-tab js-write-tab selected " role="tab" aria-selected="true">Write</button>
+        <button type="button" class="btn-link tabnav-tab preview-tab js-preview-tab " role="tab">Preview</button>
+      </nav>
+  </div>
+
+
+  <div class="comment-form-error js-comment-form-error" style="display:none">    There was an error creating your Issue.
+</div>
+  <div class="write-content js-write-bucket js-uploadable-container js-upload-markdown-image is-default upload-enabled" data-upload-policy-url="/upload/policies/assets" data-upload-policy-authenticity-token="u5qst9N6H078J9RwmWumcQgOyjQrU/R7c8n1X2jQixLt9HmO2uxNJ1OLB0ViH68Q5Jz6m++gvtwxTg+tr1127A==" data-upload-repository-id="576201">
+
+    <input type="hidden" name="saved_reply_id" class="js-saved-reply-id js-resettable-field" value="" data-reset-value="">
+
+    <textarea name="comment[body]" id="new_comment_field" placeholder="Leave a comment" aria-label="Comment body" class="form-control input-contrast comment-form-textarea js-comment-field js-improved-comment-field js-task-list-field js-quick-submit js-size-to-fit js-suggester-field js-quote-selection-target js-session-resumable"></textarea>
+
+        <p class="drag-and-drop position-relative">
+    <input accept=".gif,.jpeg,.jpg,.png,.docx,.gz,.log,.pdf,.pptx,.txt,.xlsx,.zip" type="file" multiple="multiple" class="manual-file-chooser top-0 right-0 bottom-0 left-0 width-full ml-0 js-manual-file-chooser" aria-label="Attach files to your comment">
+    <span class="default">
+        Attach files by dragging &amp; dropping,
+        <span class="btn-link manual-file-chooser-text">selecting them</span>, or pasting
+        from the clipboard.
+    </span>
+    <span class="loading">
+      <img alt="" height="16" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/octocat-spinner-32.gif" width="16"> Uploading your files…
+    </span>
+    <span class="error bad-file">
+      We don’t support that file type.
+      <span class="drag-and-drop-error-info">
+        <button type="button" class="btn-link manual-file-chooser-text">Try again</button> with a
+        GIF, JPEG, JPG, PNG, DOCX, GZ, LOG, PDF, PPTX, TXT, XLSX or ZIP.
+      </span>
+    </span>
+    <span class="error bad-permissions">
+      Attaching documents requires write permission to this repository.
+      <span class="drag-and-drop-error-info">
+        <button type="button" class="btn-link manual-file-chooser-text">Try again</button> with a GIF, JPEG, JPG, PNG, DOCX, GZ, LOG, PDF, PPTX, TXT, XLSX or ZIP.
+      </span>
+    </span>
+    <span class="error repository-required">
+      We don’t support that file type.
+      <span class="drag-and-drop-error-info">
+        <button type="button" class="btn-link manual-file-chooser-text">Try again</button> with a GIF, JPEG, JPG, PNG, DOCX, GZ, LOG, PDF, PPTX, TXT, XLSX or ZIP.
+      </span>
+    </span>
+    <span class="error too-big">
+      Yowza, that’s a big file
+      <span class="drag-and-drop-error-info">
+        <button type="button" class="btn-link manual-file-chooser-text">Try again</button> with a file smaller than 10MB.
+      </span>
+    </span>
+    <span class="error empty">
+      This file is empty.
+      <span class="drag-and-drop-error-info">
+        <button type="button" class="btn-link manual-file-chooser-text">Try again</button> with a file that’s not empty.
+      </span>
+    </span>
+    <span class="error hidden-file">
+      This file is hidden.
+      <span class="drag-and-drop-error-info">
+        <button type="button" class="btn-link manual-file-chooser-text">Try again</button> with another file.
+      </span>
+    </span>
+    <span class="error failed-request">
+      Something went really wrong, and we can’t process that file.
+      <span class="drag-and-drop-error-info">
+        <button type="button" class="btn-link manual-file-chooser-text">Try again.</button>
+      </span>
+    </span>
+  </p>
+
+
+    <div class="suggester-container">
+      <div class="suggester js-suggester js-navigation-container" data-url="/suggestions/issue/1222612?repository=three.js&amp;user_id=mrdoob" data-log-mention-url="/suggestions/log_mention?repository=three.js&amp;user_id=mrdoob" data-log-mention-authenticity-token="65b/8lvMZEkXWZHfSaCksnCYlLfYGLROJOIdIVWOJ5wev9IxTbV3GqWYLE98pVqC4CffW25zl2Z1+jznj2GlIg==">
+      </div>
+    </div>
+  </div>
+
+  <div class="preview-content">
+    <div class="comment">
+  <div class="comment-body markdown-body js-preview-body">
+    <p>Nothing to preview</p>
+  </div>
+</div>
+
+  </div>
+
+  <div class="float-left">
+      <a class="tabnav-extra" href="https://guides.github.com/features/mastering-markdown/" target="_blank" data-ga-click="Markdown Toolbar, click, help">
+        <svg aria-hidden="true" class="octicon octicon-markdown v-align-bottom" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M14.85 3H1.15C.52 3 0 3.52 0 4.15v7.69C0 12.48.52 13 1.15 13h13.69c.64 0 1.15-.52 1.15-1.15v-7.7C16 3.52 15.48 3 14.85 3zM9 11H7V8L5.5 9.92 4 8v3H2V5h2l1.5 2L7 5h2v6zm2.99.5L9.5 8H11V5h2v3h1.5l-2.51 3.5z"></path></svg>
+        Styling with Markdown is supported
+      </a>
+  </div>
+
+
+  <div class="comment-form-error comment-form-bottom js-comment-update-error"></div>
+</div>
+
+          <div class="form-actions">
+            <div id="partial-new-comment-form-actions" class="js-socket-channel js-updatable-content" data-channel="issue:1222612:state" data-url="/mrdoob/three.js/issues/352/show_partial?partial=issues%2Fform_actions">
+
+  <button type="submit" class="btn btn-primary" data-disable-with="" data-disable-invalid="">
+    Comment
+  </button>
+
+    
+</div>
+
+          </div>
+      </div>
+</form>
+</div>
+
+
+        </div>
+      </div>
+
+    </div>
+    <div class="clear"></div>
+  </div>
+
+  </div>
+
+  </div>
+  <div class="modal-backdrop js-touch-events"></div>
+</div>
+
+    </div>
+  </div>
+
+  </div>
+
+      
+<div class="footer container-lg px-3" role="contentinfo">
+  <div class="position-relative d-flex flex-justify-between py-6 mt-6 f6 text-gray border-top border-gray-light ">
+    <ul class="list-style-none d-flex flex-wrap ">
+      <li class="mr-3">© 2017 <span title="0.62860s from unicorn-1142906791-4zmr9">GitHub</span>, Inc.</li>
+        <li class="mr-3"><a href="https://github.com/site/terms" data-ga-click="Footer, go to terms, text:terms">Terms</a></li>
+        <li class="mr-3"><a href="https://github.com/site/privacy" data-ga-click="Footer, go to privacy, text:privacy">Privacy</a></li>
+        <li class="mr-3"><a href="https://github.com/security" data-ga-click="Footer, go to security, text:security">Security</a></li>
+        <li class="mr-3"><a href="https://status.github.com/" data-ga-click="Footer, go to status, text:status">Status</a></li>
+        <li><a href="https://help.github.com/" data-ga-click="Footer, go to help, text:help">Help</a></li>
+    </ul>
+
+    <a href="https://github.com/" aria-label="Homepage" class="footer-octicon" title="GitHub">
+      <svg aria-hidden="true" class="octicon octicon-mark-github" height="24" version="1.1" viewBox="0 0 16 16" width="24"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"></path></svg>
+</a>
+    <ul class="list-style-none d-flex flex-wrap ">
+        <li class="mr-3"><a href="https://github.com/contact" data-ga-click="Footer, go to contact, text:contact">Contact GitHub</a></li>
+      <li class="mr-3"><a href="https://developer.github.com/" data-ga-click="Footer, go to api, text:api">API</a></li>
+      <li class="mr-3"><a href="https://training.github.com/" data-ga-click="Footer, go to training, text:training">Training</a></li>
+      <li class="mr-3"><a href="https://shop.github.com/" data-ga-click="Footer, go to shop, text:shop">Shop</a></li>
+        <li class="mr-3"><a href="https://github.com/blog" data-ga-click="Footer, go to blog, text:blog">Blog</a></li>
+        <li><a href="https://github.com/about" data-ga-click="Footer, go to about, text:about">About</a></li>
+
+    </ul>
+  </div>
+</div>
+
+
+
+  <div id="ajax-error-message" class="ajax-error-message flash flash-error">
+    <svg aria-hidden="true" class="octicon octicon-alert" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8.865 1.52c-.18-.31-.51-.5-.87-.5s-.69.19-.87.5L.275 13.5c-.18.31-.18.69 0 1 .19.31.52.5.87.5h13.7c.36 0 .69-.19.86-.5.17-.31.18-.69.01-1L8.865 1.52zM8.995 13h-2v-2h2v2zm0-3h-2V6h2v4z"></path></svg>
+    <button type="button" class="flash-close js-ajax-error-dismiss" aria-label="Dismiss error">
+      <svg aria-hidden="true" class="octicon octicon-x" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"></path></svg>
+    </button>
+    You can't perform that action at this time.
+  </div>
+
+
+    
+    <script crossorigin="anonymous" integrity="sha256-kO4IRl30AFXbobbN8akpieAMTwfYBby7HBg788ye2vQ=" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/frameworks-90ee08465df40055dba1b6cdf1a92989e00c4f07d805bcbb1c183bf3cc9edaf4.js"></script>
+    
+    <script async="async" crossorigin="anonymous" integrity="sha256-XAdq67mWYmJINZ92pTv7WUA7+9oNOllxp7finKbZWak=" src="./Working example of WebGLRenderer using existing canvas_div · Issue #352 · mrdoob_three.js_files/github-5c076aebb996626248359f76a53bfb59403bfbda0d3a5971a7b7e29ca6d959a9.js"></script>
+    
+    
+    
+    
+  <div class="js-stale-session-flash stale-session-flash flash flash-warn flash-banner d-none">
+    <svg aria-hidden="true" class="octicon octicon-alert" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M8.865 1.52c-.18-.31-.51-.5-.87-.5s-.69.19-.87.5L.275 13.5c-.18.31-.18.69 0 1 .19.31.52.5.87.5h13.7c.36 0 .69-.19.86-.5.17-.31.18-.69.01-1L8.865 1.52zM8.995 13h-2v-2h2v2zm0-3h-2V6h2v4z"></path></svg>
+    <span class="signed-in-tab-flash">You signed in with another tab or window. <a href="https://github.com/mrdoob/three.js/issues/352">Reload</a> to refresh your session.</span>
+    <span class="signed-out-tab-flash">You signed out in another tab or window. <a href="https://github.com/mrdoob/three.js/issues/352">Reload</a> to refresh your session.</span>
+  </div>
+  <div class="facebox" id="facebox" style="display:none;">
+  <div class="facebox-popup">
+    <div class="facebox-content" role="dialog" aria-labelledby="facebox-header" aria-describedby="facebox-description">
+    </div>
+    <button type="button" class="facebox-close js-facebox-close" aria-label="Close modal">
+      <svg aria-hidden="true" class="octicon octicon-x" height="16" version="1.1" viewBox="0 0 12 16" width="12"><path fill-rule="evenodd" d="M7.48 8l3.75 3.75-1.48 1.48L6 9.48l-3.75 3.75-1.48-1.48L4.52 8 .77 4.25l1.48-1.48L6 6.52l3.75-3.75 1.48 1.48z"></path></svg>
+    </button>
+  </div>
+</div>
+
+
+  
+
+
+</body></html>
