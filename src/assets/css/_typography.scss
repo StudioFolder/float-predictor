@@ -1,26 +1,26 @@
 @font-face {
   font-family: "Colfax-Bold";
-  src: url("/static/fonts/Colfax/Colfax-Bold.ttf") format("ttf");
+  src: url("/static/fonts/Colfax/Colfax-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "Colfax-Medium";
-  src: url("/static/fonts/Colfax/Colfax-Medium.ttf") format("ttf");
+  src: url("/static/fonts/Colfax/Colfax-Medium.ttf") format("truetype");
 }
 @font-face {
   font-family: "Colfax-Regular";
-  src: url("/static/fonts/Colfax/Colfax-Regular.ttf") format("ttf");
+  src: url("/static/fonts/Colfax/Colfax-Regular.ttf") format("truetype");
 }
 
 
 
 html {
-  @extend %colfax_reg;
   font-size: 16px;
   @include medium_down {
     font-size: 14px
   }
 }
 body {
+  @extend %colfax_reg;
   font-size: 1em;
 }
 h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
@@ -46,20 +46,12 @@ h4, .h4 {
 }
 p {
   font-size: 1em;
+}
+p + p {
   margin-bottom: 1.3em;
 }
-.btn {
-  font-size: 0.9em;
-  padding: 0.3em 1.6em;
-  text-transform: uppercase;
-}
-.btn-primary {
-  border: 1px solid #fff;
-  border-radius: 4px;
-  background-color: transparent;
+a, a:visited, a:hover {
   color: #fff;
-}
-a, a:visited {
-  color: #fff;
+  text-decoration: underline;
   text-transform: uppercase;
 }

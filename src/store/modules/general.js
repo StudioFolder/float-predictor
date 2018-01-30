@@ -2,6 +2,7 @@ export default {
   namespaced: true,
   state: {
     isLoading: true, // are we still loading?
+    isMenuOpen: false,
     deviceName: '', // (small, medium, big) or (phone, tablet, desktop) ???
   },
   mutations: {
@@ -10,6 +11,9 @@ export default {
     },
     setDevice(state, deviceName) {
       state.deviceName = deviceName;
+    },
+    toggleMenu(state) {
+      state.isMenuOpen = !state.isMenuOpen;
     },
   },
   getters: {

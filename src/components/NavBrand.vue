@@ -1,5 +1,5 @@
 <template>
-    <nav class="main-navigation">
+    <nav class="nav-brand">
         <router-link to="/" class="logo">
             <img src="../assets/img/aerocene_logo.svg">
         </router-link>
@@ -7,7 +7,7 @@
             carried only by the wind,
             towards a clean and sustainable future.
         </p>
-        <div><router-link to="/about">read more</router-link></div>
+        <div><router-link to="/about" class="read-more">read more</router-link></div>
     </nav>
 </template>
 <script>
@@ -17,12 +17,13 @@ export default {
 </script>
 <style lang="scss">
     @import "~@/assets/css/_variables_and_mixins.scss";
-    .main-navigation {
+    .nav-brand {
         color: #fff;
         display: block;
         position: absolute;
-        top: 1em;
-        left: 1em;
+        top: 0;
+        padding: 1em;
+        z-index: 20;
     }
     .intro-description {
         max-width: 230px;
@@ -30,5 +31,9 @@ export default {
     .logo {
         text-transform: uppercase;
         text-decoration: none;
+    }
+    .read-more {
+        display: block;
+        margin-top: 1em;
     }
 </style>

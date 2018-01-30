@@ -1,22 +1,25 @@
 <template>
-  <div id="app" class="main-application">
-    <navigation/>
-    <div class="main-content">
-      <router-view/>
+    <div id="app" class="main-application">
+        <nav-brand/>
+        <div class="router-view">
+            <router-view/>
+        </div>
+        <main-menu />
+        <visualization />
     </div>
-    <dashboard />
-  </div>
 </template>
 
 <script>
 
-import Navigation from './components/Navigation';
-import Dashboard from './components/Dashboard';
+import navBrand from './components/NavBrand';
+import mainMenu from './components/MainMenu';
+import visualization from './components/Visualization';
 
 export default {
   components: {
-    Dashboard,
-    Navigation },
+    visualization,
+    mainMenu,
+    navBrand },
   name: 'App',
 };
 </script>

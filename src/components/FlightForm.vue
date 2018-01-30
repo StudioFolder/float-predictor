@@ -2,7 +2,6 @@
     <div class="flight-form container">
         <b-form @submit="onSubmit">
             <div class="type-selector-group">
-
                 <b-form-checkbox id="FlightTypeSelector"
                                  v-model="flightType"
                                  value="free"
@@ -18,31 +17,27 @@
                 <p class="description">{{label}}</p>
             </div>
             <div class="coordinates-selector-group">
-                <b-form-group id="departureInput"
-                              label-for="departureInput"
-                              label="From">
-                    <b-form-input type="text"
-                                  v-model="form.departure"
-                                  required
-                                  placeholder="Departure">
-                    </b-form-input>
-                </b-form-group>
-                <b-form-group id="destinationInput"
-                              label-for="destinationInput"
-                              label="To">
-                    <b-form-input type="text"
-                                  label="To"
-                                  v-model="form.destination"
-                                  placeholder="Destination">
-                    </b-form-input>
-                </b-form-group>
+                <label class="small">From</label>
+                <vue-google-autocomplete
+                        id="map" classname="form-control" placeholder="Departure"
+                        v-on:placechanged="setDeparture"
+                        types="(cities)"
+                        rtypes="geocode">
+                </vue-google-autocomplete>
+                <label class="small">To</label>
+                <vue-google-autocomplete
+                        id="map2" classname="form-control" placeholder="Destination"
+                        v-on:placechanged="setDestination"
+                        types="(cities)" rtypes="geocode">
+                </vue-google-autocomplete>
+                <p class="input-label">Click on globe to select locations or enter them here.</p>
             </div>
-            <p>Click on globe to select locations or enter them here.</p>
             <b-button type="submit" variant="primary">Launch</b-button>
         </b-form>
     </div>
 </template>
 <script>
+import VueGoogleAutocomplete from 'vue-google-autocomplete';
 
 export default {
   name: 'flight-form',
@@ -54,6 +49,9 @@ export default {
       },
     };
   },
+  components: {
+    VueGoogleAutocomplete,
+  },
   computed: {
     flightType: {
       get() {
@@ -61,6 +59,16 @@ export default {
       },
       set(value) {
         this.$store.commit('flightSimulator/changeFlightType', value);
+      },
+    },
+    active: {
+      get() {
+        return this.$store.state.flightSimulator.isActive;
+      },
+      set(value) {
+        if (value) {
+          this.$store.commit('flightSimulator/startAnimation');
+        }
       },
     },
     isFree() { return (this.$store.getters['flightSimulator/isFreeFlight']); },
@@ -76,6 +84,14 @@ export default {
       e.preventDefault();
       this.$store.commit('flightSimulator/startAnimation');
     },
+    setDeparture(e) {
+      this.departure =
+        { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
+    },
+    setDestination(e) {
+      this.destination =
+        { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
+    },
   },
 };
 </script>
@@ -89,9 +105,9 @@ export default {
         transform: translateX(-50%);
         width: 450px;
         margin: 0 auto;
-        background: linear-gradient(180deg, $lightGray, $bodyColor);
+        background: linear-gradient(180deg, $lightGray, rgba(0, 0, 0, 0));
         padding: 2rem 1rem;
-        color: $lightGray;
+        color: $gray;
         text-align: center;
     }
     .type-selector-group{
@@ -102,17 +118,20 @@ export default {
         input {
             display:none;
         }
-
+        label[for="FlightTypeSelector"] {
+            &:after, &:before {
+                display: none;
+            }
+        }
         .description {
-            max-width: 318px;
-            margin: 1em auto;
+            margin: 1em auto .5em;
             min-height: 48px;
         }
 
         .type-selector {
 
             span {
-                text-transform: uppercase;
+                color: $gray;
                 &.--isActive {
                     color: #fff;
                 }
@@ -149,25 +168,16 @@ export default {
     .coordinates-selector-group {
 
         text-align: left;
-
-        label {
-            font-size: .8em;
-        }
         .form-group {
             margin-top: 1em;
         }
         .form-control {
             font-size: 1em;
             padding: 0.6em 0 0.3em 0;
+            margin-bottom: 1em;
         }
-        input {
-            width: 100%;
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid $lightGray;
+        .input-label {
+            text-align: center;
         }
-    }
-    .btn {
-        margin-top: 1em;
     }
 </style>

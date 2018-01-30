@@ -1,7 +1,6 @@
 <template>
   <div class="main-content">
     <flight-form></flight-form>
-    <visualization></visualization>
   </div>
 </template>
 

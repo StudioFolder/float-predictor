@@ -14,21 +14,25 @@ const router = new Router({
       path: '/',
       name: 'HomePage',
       component: HomePage,
+      meta: { bodyClass: 'home' },
     },
     {
       path: '/flight-simulator',
       name: 'FlightSimulator',
       component: FlightSimulator,
+      meta: { bodyClass: 'flight-simulator' },
     },
     {
       path: '/about',
       name: 'About',
       component: About,
+      meta: { bodyClass: 'about' },
     },
     {
       path: '/gallery',
       name: 'Gallery',
       component: Gallery,
+      meta: { bodyClass: 'gallery' },
     },
     {
       path: '/test',

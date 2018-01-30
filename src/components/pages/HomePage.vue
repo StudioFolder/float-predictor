@@ -1,9 +1,7 @@
 <template>
-
-    <div class="call_to_action">
-      <router-link to="/flight-simulator">Start a new aerosolar journey</router-link>
+    <div class="call-to-action">
+      <router-link to="/flight-simulator">Start a new<br>aerosolar journey</router-link>
     </div>
-
 </template>
 
 <script>
@@ -12,18 +10,18 @@ export default {
 };
 </script>
 <style lang="scss">
-  .call_to_action {
+    .call-to-action {
     display: block;
     color: #fff;
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
-    max-width: 200px;
+    max-width: 280px;
     text-align: center;
-
-    a {
-      text-decoration: none;
+    padding: 1em;
+        a {
+          text-decoration: none;
+        }
     }
-  }
 </style>

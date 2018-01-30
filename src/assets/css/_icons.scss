@@ -1,10 +1,11 @@
 .fp {
-  display: block;
+  display: inline-block;
   width: 1em;
   height: 1em;
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto;
+  vertical-align: middle;
 }
 .fp-info {
   background-image: url("assets/icons/ico-info.svg");
@@ -13,4 +14,13 @@
   background-image: url("assets/icons/ico-menu.svg");
   background-size: contain;
   width: 1.8em;
+}
+.fp-close {
+  background-image: url("assets/icons/ico-close.svg");
+}
+.fp-close-w {
+  background-image: url("assets/icons/ico-close-w.svg");
+}
+.fp-caret-right {
+  background-image: url("assets/icons/ico-caret-right.svg");
 }

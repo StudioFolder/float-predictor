@@ -48,5 +48,6 @@ table {
   border-spacing: 0;
 }
 *:focus {
-  outline: 0;
+  outline: 0 !important;
+  box-shadow: none !important;
 }
