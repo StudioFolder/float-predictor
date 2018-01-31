@@ -1,14 +1,17 @@
 @font-face {
   font-family: "Colfax-Bold";
-  src: url("/static/fonts/Colfax/Colfax-Bold.ttf") format("truetype");
+  src: url("/static/fonts/Colfax/ColfaxWebBold.woff") format("woff"),
+       url("/static/fonts/Colfax/Colfax-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "Colfax-Medium";
-  src: url("/static/fonts/Colfax/Colfax-Medium.ttf") format("truetype");
+  src: url("/static/fonts/Colfax/ColfaxWebRegular.woff") format("woff"),
+       url("/static/fonts/Colfax/Colfax-Medium.ttf") format("truetype");
 }
 @font-face {
   font-family: "Colfax-Regular";
-  src: url("/static/fonts/Colfax/Colfax-Regular.ttf") format("truetype");
+  src: url("/static/fonts/Colfax/ColfaxWebThin.woff") format("woff"),
+       url("/static/fonts/Colfax/Colfax-Regular.ttf") format("truetype");
 }
 
 
