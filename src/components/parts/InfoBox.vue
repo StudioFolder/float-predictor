@@ -4,7 +4,7 @@
             <div class="list-item">Info & Legend</div>
         </div>
         <div class="body">
-            <div class="dashboard-legend">
+            <div class="dashboard-legend" v-if="isAnimationActive">
                 <div class="list-item">Take a Screenshot <i class="fp fp-caret-right"></i></div>
                 <div class="list-item">Turn winds on/off <i class="fp fp-caret-right"></i></div>
                 <div class="list-item">Total elapsed days <i class="fp fp-caret-right"></i></div>
@@ -48,6 +48,9 @@
 <script>
 export default {
   name: 'info-box',
+  computed: {
+    isAnimationActive() { return this.$store.state.flightSimulator.isActive; },
+  },
 };
 </script>
 
@@ -55,8 +58,8 @@ export default {
     @import "~@/assets/css/_variables_and_mixins.scss";
     .info-box {
         background-color: $lightGray;
-        position: absolute;
-        top: $marginBase;
+        position: fixed;
+        top: $marginBase + 3rem;
         right: $marginBase + 3rem;
         width: 13.5rem;
     }

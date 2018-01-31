@@ -74,15 +74,16 @@ let bumpTexture, colorTexture, nightMapTexture, container, renderer, scene, came
 
 // GUI PARAMETERS
 const pars = {
+  pixel_ratio: 1,
   // GENERAL
   active: false,
   fps: 0,
   state: 0,
-  speed_d_x_sec: 0.05,
+  speed_d_x_sec: 0.10,
   move_in_time: false,
   zoom: SCALINGF,
   onboard: false,
-  skip_frame: 0,
+  skip_frame: 8,
   camera_smooth: 0.993,
   camera_distance: 1.5,
   camera_shift: 0.07,
@@ -90,7 +91,7 @@ const pars = {
   sun_visible: false,
   zoom_enabled: true,
   // MATERIAL
-  use_bump: true,
+  use_bump: false,
   use_nightmap: true,
   nightmap_intensity: 0.9,
   nightmap_threshold: 0.7,
@@ -108,7 +109,7 @@ const pars = {
   explorer_height_shift: 0.025,
   layers: {
     wind: {
-      visible: true,
+      visible: false,
       start_color: '#000000',
       end_color: '#ffffff',
       opacity: 0.35,

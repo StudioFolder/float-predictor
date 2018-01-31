@@ -1,5 +1,5 @@
 <template>
-    <div class="flight-form container">
+    <div v-show="!active" class="flight-form container">
         <b-form @submit="onSubmit">
             <div class="type-selector-group">
                 <b-form-checkbox id="FlightTypeSelector"
