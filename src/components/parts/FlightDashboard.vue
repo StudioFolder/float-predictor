@@ -28,7 +28,6 @@ export default {
   props: ['isAnimationActive'],
   data() {
     return {
-      maxExplorerNum: 8,
       activeExplorers: [1, 2, 3, 4, 5, 6, 7, 8],
     };
   },

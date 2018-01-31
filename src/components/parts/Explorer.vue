@@ -1,11 +1,11 @@
 <template>
     <li class="nav-item explorer-item --rounded" :style="{opacity: opacity}">
         <div class="explorer-id">
-            {{id}}
+            {{explorer}}
         </div>
         <svg>
-            <circle class="progress"
-                    :transform="rotation" :style="{ strokeDashoffset: dashOffset }"></circle>
+            <circle class="progress" :style="{ strokeDashoffset: dashOffset }"></circle>
+            <circle class="handicap" :style="{ strokeDasharray: dashArray }"></circle>
         </svg>
     </li>
 </template>
@@ -23,12 +23,12 @@ export default {
   },
   computed: {
     circumference() { return this.r * 2 * Math.PI; },
-    rotation() { return `rotate( ${(this.id / 16) * 360} 20 20)`; },
     dashOffset() { return this.circumference * ((16 - this.day) / 16); },
+    dashArray() { return `${this.circumference * ((this.id) / 16)}, 1000`; },
   },
   watch: {
     day(day) {
-      if (day >= this.id) {
+      if (day >= this.explorer) {
         this.opacity = 1;
       }
     },

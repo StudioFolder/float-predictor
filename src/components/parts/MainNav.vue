@@ -63,5 +63,6 @@ export default {
         top: 0;
         right: 0;
         height: 100vh;
+        z-index: 10;
     }
 </style>
