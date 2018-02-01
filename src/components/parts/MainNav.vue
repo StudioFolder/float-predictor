@@ -1,39 +1,45 @@
 <template>
     <div class="main-nav">
         <div class="header">
-            <div class="close" @click="closeAction">
-                <i class="fp fp-close-w"></i>
+            <b-nav vertical>
+                <b-nav-item @click="closeAction" class="--close --correction">
+                    <i class="fp fp-close-w"></i></b-nav-item>
+            </b-nav>
+            <div class="menu-section">
+                <ul class="list-group menu-items">
+                    <li class="menu-item --logo"><img src="~img/globe_illustration.svg"></li>
+                    <li class="menu-item --nav"><p>start a new<br>aerosolar journey</p></li>
+                </ul>
             </div>
-            <div class="brand"></div>
         </div>
         <div class="body">
             <div class="menu-section">
                 <ul class="list-group menu-items">
-                    <li>About</li>
-                    <li>Aeroglyphs archive</li>
-                    <li>Aerocene explorer</li>
-                    <li>Resources and APIs</li>
-                    <li>Instructions</li>
-                    <li>Impressum</li>
-                    <li>Disclaimer</li>
+                    <li class="menu-item --nav">About</li>
+                    <li class="menu-item --nav">Aeroglyphs archive</li>
+                    <li class="menu-item --nav">Aerocene explorer</li>
+                    <li class="menu-item --nav">Resources and APIs</li>
+                    <li class="menu-item --nav">Instructions</li>
+                    <li class="menu-item --nav">Impressum</li>
+                    <li class="menu-item --nav">Disclaimer</li>
                 </ul>
             </div>
             <div class="menu-section">
                 <ul class="list-group link-items">
-                    <li>aerocene.org</li>
-                    <li>forum</li>
+                    <li class="menu-item --link">aerocene.org</li>
+                    <li class="menu-item --link">forum</li>
                 </ul>
             </div>
             <div class="menu-section">
-                &copy; All rights reserved.<br>
-                Studio Tomás Saraceno {{currentYear}}
+                <small>&copy; All rights reserved.<br>
+                    Studio Tomás Saraceno {{currentYear}}</small>
             </div>
             <div class="menu-section">
                 <ul class="list-group horiziontal share-items">
-                    <li>F</li>
-                    <li>T</li>
-                    <li>G</li>
-                    <li>M</li>
+                    <li class="menu-item --socialShare">F</li>
+                    <li class="menu-item --socialShare">T</li>
+                    <li class="menu-item --socialShare">G</li>
+                    <li class="menu-item --socialShare">M</li>
                 </ul>
             </div>
         </div>
@@ -55,14 +61,5 @@ export default {
 </script>
 
 <style lang="scss">
-    @import "~@/assets/css/_variables_and_mixins.scss";
-    .main-nav {
-        background-color: $lightBlack;
-        padding: $marginBase;
-        position: fixed;
-        top: 0;
-        right: 0;
-        height: 100vh;
-        z-index: 10;
-    }
+    @import "~css/_variables_and_mixins.scss";
 </style>

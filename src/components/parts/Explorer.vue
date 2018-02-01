@@ -38,7 +38,7 @@ export default {
 
 <style lang="scss">
 @import "~@/assets/css/_variables_and_mixins.scss";
-$r: calc(#{$itemwidth}/2 + 1px );
+$r: calc(#{$itemWidth}/2 + 2px );
 $pi: 3.14159;
 
 .explorer-item {
@@ -48,29 +48,14 @@ $pi: 3.14159;
     align-items: center;
     justify-content: center;
     transition: opacity .3s;
-/*    &:before, &:after {
-        position: absolute;
-        display: block;
-        content: '';
-        border-radius: 50%;
-    }
-    &:before {
-        width: calc(#{$itemwidth} + 8px);
-        height: calc(#{$itemwidth} + 8px);
-        background-color: #fff;
-    }
-    &:after {
-        width: calc(#{$itemwidth} + 4px);
-        height: calc(#{$itemwidth} + 4px);
-        background-color: $bodyColor;
-    }*/
+
     .explorer-id {
         position: absolute;
         z-index: 10;
     }
     svg {
-        height: calc(#{$itemwidth} + 10px);
-        width: calc(#{$itemwidth} + 10px);
+        height: calc(#{$itemWidth} + 10px);
+        width: calc(#{$itemWidth} + 10px);
         transform: rotate(-86deg);
         position: absolute;
     }
@@ -82,6 +67,7 @@ $pi: 3.14159;
         &.handicap {
             stroke-width: 4;
             stroke: $bodyColor;
+            transform: rotate(-1deg);
         }
         &.progress {
             stroke-width: 2;
@@ -89,6 +75,7 @@ $pi: 3.14159;
             stroke-dasharray: calc(#{$r} * 2 * #{$pi}); // circumference
             stroke-dashoffset: calc(#{$r} * 2 * #{$pi});
             stroke: $textColor;
+            transform: rotate(1deg);
             transition: stroke-dashoffset 10s; // depends on speed
         }
     }

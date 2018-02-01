@@ -21,7 +21,9 @@ $asset-base-path: '../../../static/' !default;
 $img-base-path: '../../../static/img/' !default;
 
 $marginBase: 3.125rem;
-$itemwidth: 32px;
+$itemWidth: 2rem;
+$marginItem: .75rem;
+$correction: -.75rem;
 
 /// Asset URL builder
 /// @access private

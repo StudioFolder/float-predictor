@@ -6,6 +6,8 @@
   background-position: center;
   background-size: auto;
   vertical-align: middle;
+  min-width: 15px;
+  min-height: 15px;
 }
 .fp-info {
   background-image: url("assets/icons/ico-info.svg");
@@ -39,4 +41,17 @@
 .fp-play {
   background-image: url("assets/icons/ico-triangle.svg");
   transform: rotate(-90deg);
+}
+.fp-up {
+  background-image: url("assets/icons/ico-triangle.svg");
+  transform: rotate(180deg);
+}
+.fp-down {
+  background-image: url("assets/icons/ico-triangle.svg");
+}
+.fp-hand {
+  background-image: url("assets/icons/ico-hand.svg");
+}
+.fp-zoom {
+  background-image: url("assets/icons/ico-zoom.svg");
 }

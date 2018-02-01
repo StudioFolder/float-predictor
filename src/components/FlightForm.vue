@@ -106,7 +106,7 @@ export default {
         width: 450px;
         margin: 0 auto;
         background: linear-gradient(180deg, $lightGray, rgba(0, 0, 0, 0));
-        padding: 2rem 1rem;
+        padding: $marginBase 1rem;
         color: $gray;
         text-align: center;
     }
@@ -129,7 +129,10 @@ export default {
         }
 
         .type-selector {
-
+            display: flex;
+            //width: 100%;
+            justify-content: center;
+            align-items: center;
             span {
                 color: $gray;
                 &.--isActive {
@@ -166,7 +169,6 @@ export default {
         }
     }
     .coordinates-selector-group {
-
         text-align: left;
         .form-group {
             margin-top: 1em;

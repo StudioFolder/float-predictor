@@ -1,7 +1,7 @@
 <template>
     <nav class="nav-brand">
         <router-link to="/" class="logo">
-            <img src="../assets/img/aerocene_logo.svg">
+            <div class="title">Aerocene</div><div class="subtitle">Float Predictor</div>
         </router-link>
         <p class="intro-description">Travel around the earth lifted only by the sun,
             carried only by the wind,
@@ -16,24 +16,32 @@ export default {
 };
 </script>
 <style lang="scss">
-    @import "~@/assets/css/_variables_and_mixins.scss";
+    @import "~css/_variables_and_mixins.scss";
     .nav-brand {
         color: #fff;
         display: block;
         position: absolute;
         top: 0;
-        padding: 1em;
+        padding: $marginBase;
         z-index: 20;
     }
     .intro-description {
         max-width: 230px;
     }
     .logo {
+        @extend %colfax_med;
         text-transform: uppercase;
         text-decoration: none;
+        font-size: 1.5rem; // 24px
+        .title { margin-bottom: .5rem;
+        }
+        .subtitle {
+            margin-bottom: 2.625rem; // 42px
+            color: $gray;
+        }
     }
     .read-more {
         display: block;
-        margin-top: 1em;
+        margin-top: 1.5rem;
     }
 </style>
