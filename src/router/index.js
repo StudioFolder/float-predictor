@@ -27,9 +27,12 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'HomePage',
+      name: 'home-page',
       component: HomePage,
-      meta: { bodyClass: 'home' },
+      meta: {
+        bodyClass: 'home',
+        position: 'top'
+      },
     },
     {
       path: '/flight-simulator',
