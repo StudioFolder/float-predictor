@@ -83,6 +83,7 @@ export default {
     onSubmit(e) {
       e.preventDefault();
       this.$store.commit('flightSimulator/startAnimation');
+      this.$store.commit('general/toggleForm');
     },
     setDeparture(e) {
       this.departure =
@@ -92,6 +93,9 @@ export default {
       this.destination =
         { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
     },
+  },
+  mounted() {
+    this.$store.commit('general/toggleForm');
   },
 };
 </script>

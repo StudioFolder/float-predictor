@@ -1,5 +1,5 @@
 <template>
-  <div id="gallery" v-infinite-scroll="loadMore"
+  <div id="gallery" class="main-content" v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy" infinite-scroll-distance="10">
     <b-container >
     <h1>Gallery</h1>
@@ -124,11 +124,6 @@ export default {
 }
 .main-application{
   overflow: scroll !important;
-}
-
-#gallery{
-  color: white;
-  margin-top:60px;
 }
 
 .gallery-item{

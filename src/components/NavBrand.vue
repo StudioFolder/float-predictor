@@ -20,7 +20,7 @@ export default {
     .nav-brand {
         color: #fff;
         display: block;
-        position: absolute;
+        position: fixed;
         top: 0;
         padding: $marginBase;
         z-index: 20;
@@ -43,5 +43,8 @@ export default {
     .read-more {
         display: block;
         margin-top: 1.5rem;
+    }
+    body.home .read-more {
+        display: none;
     }
 </style>

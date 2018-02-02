@@ -1,11 +1,21 @@
 <template>
-    <div id="app" class="main-application">
+    <div id="app" class="main-application" :class="{'choosing-destination': isChoosing}">
         <nav-brand/>
-        <div class="router-view">
-            <router-view/>
+        <div class="router-view top">
+            <transition>
+                <router-view/>
+            </transition>
         </div>
         <main-menu />
-        <visualization />
+        <div>
+            <div class="cover"></div><!--to prevent interactions-->
+            <visualization />
+        </div>
+        <div class="router-view bottom">
+            <transition>
+                <router-view/>
+            </transition>
+        </div>
     </div>
 </template>
 
@@ -21,22 +31,41 @@ export default {
     mainMenu,
     navBrand },
   name: 'App',
+  data() {
+    return {
+      transitionName: 'scroll',
+    };
+  },
+  computed: {
+    isChoosing() { return this.$store.state.general.isChosingDestination; },
+  },
+  beforeRouteUpdate(to, from, next) {
+    this.transitionName = 'scroll';
+    next();
+  },
 };
 </script>
 
 <style lang="scss">
-  @import "assets/css/main";
+@import "assets/css/main";
 
-  .main-application {
-    position: relative;
+.main-application {
+position: relative;
     @include medium_up {
       width: 100vw;
       height: 100vh;
-      overflow: hidden;
     }
-  }
-  .main-content {
+    .main-visualization {
+        top: 0;
+    }
+    &.choosing-destination {
+        .main-visualization {
+            top: 40%;
+        }
+    }
+}
+.main-content {
     width: 100%;
     height: 100%;
-  }
+}
 </style>

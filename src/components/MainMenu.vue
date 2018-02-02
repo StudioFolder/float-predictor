@@ -4,7 +4,7 @@
             <b-nav vertical>
                 <b-nav-item @click="toggleMenu" class="--rounded --black --correction">
                     <i class="fp fp-menu"></i></b-nav-item>
-                <b-nav-item @click="toggleInfoBox" class="--rounded">
+                <b-nav-item v-show="isAnimationActive" @click="toggleInfoBox" class="--rounded">
                     <i :class="[isInfoBoxOpen ? 'fp-close' : 'fp-info', 'fp']"></i></b-nav-item>
             </b-nav>
             <flight-dashboard v-show="isAnimationActive" :is-animation-active="isAnimationActive">

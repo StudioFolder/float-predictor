@@ -2,6 +2,7 @@ export default {
   namespaced: true,
   state: {
     flightType: 'planned',
+    isChosingDestination: false,
     isActive: false, // are we flying yet?
     isPlaying: true, // play/pause
     isSaving: false, // saving true sve image then sets to false

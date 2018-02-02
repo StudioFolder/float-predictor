@@ -5,11 +5,19 @@
   padding: $marginBase;
   z-index: 20;
 }
+.menu-items a {
+  text-decoration: none;
+}
 .menu-item {
   color: $gray;
   font-size: .9em;
-  &:hover {
-    color: #fff;
+
+  a {
+    color: $gray;
+    text-decoration: none;
+    &.router-link-active {
+      color: #FFF;
+    }
   }
   &.--logo img{
     max-width: 75px;

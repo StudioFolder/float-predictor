@@ -16,7 +16,7 @@ export default {
   props: ['id', 'explorer', 'day'],
   data() {
     return {
-      r: 17, // calc(#{$itemwidth}/2 + 1px );
+      r: 18, // calc(#{$itemwidth}/2 + 1px );
       speed: 0.10, // todo: speed_d_x_sec
       opacity: 0,
     };
@@ -65,7 +65,7 @@ $pi: 3.14159;
         r: $r;
         fill: transparent;
         &.handicap {
-            stroke-width: 4;
+            stroke-width: 5;
             stroke: $bodyColor;
             transform: rotate(-1deg);
         }

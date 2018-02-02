@@ -103,7 +103,7 @@ export default {
         }
         .list-item {
             height: $itemWidth + $marginItem*2;
-            padding-top: 1.25rem;
+            padding-top: 1rem;
         }
         .header {
             background-color: #fff;

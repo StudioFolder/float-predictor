@@ -7,20 +7,29 @@
             </b-nav>
             <div class="menu-section">
                 <ul class="list-group menu-items">
-                    <li class="menu-item --logo"><img src="~img/globe_illustration.svg"></li>
-                    <li class="menu-item --nav"><p>start a new<br>aerosolar journey</p></li>
+                    <router-link to="/flight-simulator" @click="closeAction">
+                        <li class="menu-item --logo">
+                            <img src="~img/globe_illustration.svg"></li>
+                        <li class="menu-item --nav">start a new<br>aerosolar journey</li>
+                    </router-link>
                 </ul>
             </div>
         </div>
         <div class="body">
             <div class="menu-section">
                 <ul class="list-group menu-items">
-                    <li class="menu-item --nav">About</li>
-                    <li class="menu-item --nav">Aeroglyphs archive</li>
+                    <li class="menu-item --nav" @click="closeAction">
+                        <router-link to="/about">
+                            About</router-link></li>
+                    <li class="menu-item --nav" @click="closeAction">
+                        <router-link to="/gallery">
+                            Aeroglyphs archive</router-link></li>
                     <li class="menu-item --nav">Aerocene explorer</li>
                     <li class="menu-item --nav">Resources and APIs</li>
                     <li class="menu-item --nav">Instructions</li>
-                    <li class="menu-item --nav">Impressum</li>
+                    <li class="menu-item --nav" @click="closeAction">
+                        <router-link to="/impressum">
+                            Impressum</router-link></li>
                     <li class="menu-item --nav">Disclaimer</li>
                 </ul>
             </div>

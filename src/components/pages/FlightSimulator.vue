@@ -6,11 +6,9 @@
 
 <script>
 import FlightForm from '../FlightForm';
-import Visualization from '../Visualization';
 
 export default {
   components: {
-    Visualization,
     FlightForm },
   name: 'FlightSimulator',
 };

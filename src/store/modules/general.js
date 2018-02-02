@@ -2,7 +2,9 @@ export default {
   namespaced: true,
   state: {
     isLoading: true, // are we still loading?
+    isChoosingDestination: false,
     isMenuOpen: false,
+    isInfoBoxOpen: false,
     deviceName: '', // (small, medium, big) or (phone, tablet, desktop) ???
   },
   mutations: {
@@ -14,6 +16,12 @@ export default {
     },
     toggleMenu(state) {
       state.isMenuOpen = !state.isMenuOpen;
+    },
+    closeMenu(state) {
+      state.isMenuOpen = false;
+    },
+    toggleForm(state) {
+      state.isChoosingDestination = !state.isChoosingDestination;
     },
   },
   getters: {

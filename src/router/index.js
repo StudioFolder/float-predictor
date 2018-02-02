@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Vue from 'vue';
 import Router from 'vue-router';
 import HomePage from '@/components/pages/HomePage';
@@ -5,10 +6,24 @@ import TestInterface from '@/components/visualization/TestInterface';
 import Gallery from '@/components/pages/Gallery';
 import FlightSimulator from '@/components/pages/FlightSimulator';
 import About from '@/components/pages/About';
+import Impressum from '@/components/pages/Impressum';
 
 Vue.use(Router);
 
+const scrollBehavior = (to, from) => {
+  console.log(to);
+  if (from.name === 'FlightSimulator') {
+    // animate scroll to top
+    window.scrollTo({
+      "behavior": "smooth",
+      "top": top
+    });
+  }
+};
+
 const router = new Router({
+  // mode: 'history',
+  scrollBehavior,
   routes: [
     {
       path: '/',
@@ -26,7 +41,10 @@ const router = new Router({
       path: '/about',
       name: 'About',
       component: About,
-      meta: { bodyClass: 'about' },
+      meta: {
+        bodyClass: 'about',
+        scrollToTop: true,
+      },
     },
     {
       path: '/gallery',
@@ -35,16 +53,21 @@ const router = new Router({
       meta: { bodyClass: 'gallery' },
     },
     {
+      path: '/impressum',
+      name: 'Impressum',
+      component: Impressum,
+      meta: { bodyClass: 'impressum' },
+    },
+    {
       path: '/test',
       name: 'TestInterface',
       component: TestInterface,
     },
   ],
-//   mode: 'history',
 });
 
 
-router.afterEach(() => { // ( to, from, next ) are the optional arguments
-});
+// router.afterEach(() => { // ( to, from, next ) are the optional arguments
+// });
 
 export default router;
