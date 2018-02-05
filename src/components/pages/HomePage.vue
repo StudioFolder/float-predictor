@@ -1,8 +1,10 @@
 <template>
-    <div class="call-to-action" @click="startAction">
-      <router-link to="/flight-simulator">
-          Start a new<br>aerosolar journey
-      </router-link>
+    <div class="main-content">
+        <div class="call-to-action" @click="startAction">
+          <router-link to="/flight-simulator">
+              Start a new<br>aerosolar journey
+          </router-link>
+        </div>
     </div>
 </template>
 
@@ -14,6 +16,10 @@ export default {
       this.$store.commit('general/closeMenu');
     },
   },
+  created() {
+    this.$store.commit('general/setUpperHeight', 'inherit');
+    this.$store.commit('general/setBottomHeight', 0);
+  },
 };
 </script>
 <style lang="scss">
@@ -24,7 +30,7 @@ export default {
             display: block;
             color: #fff;
             position: fixed;
-            top: 60%;
+            top: 100%;
             left: 50%;
             transform: translate(-50%, -50%);
             max-width: 280px;
@@ -43,16 +49,6 @@ export default {
             transform: translateX(-50%);
             text-align: center;
             top: 10%
-        }
-        .router-view {
-            position: absolute;
-            width:100%;
-            height: 100%;
-            background-color: transparent;
-            z-index: 10;
-        }
-        .main-visualization {
-            top: 400px;
         }
     }
 </style>

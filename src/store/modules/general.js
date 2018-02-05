@@ -2,6 +2,9 @@ export default {
   namespaced: true,
   state: {
     isLoading: true, // are we still loading?
+    transitionName: '',
+    upperHeight: '0px',
+    bottomHeight: '0px',
     isChoosingDestination: false,
     isMenuOpen: false,
     isInfoBoxOpen: false,
@@ -10,6 +13,15 @@ export default {
   mutations: {
     loadingComplete(state) {
       state.isLoading = false;
+    },
+    setTransition(state, value) {
+      state.transitionName = value;
+    },
+    setUpperHeight(state, value) {
+      state.upperHeight = `${value}px`;
+    },
+    setBottomHeight(state, value) {
+      state.bottomHeight = `${value}px`;
     },
     setDevice(state, deviceName) {
       state.deviceName = deviceName;

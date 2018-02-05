@@ -1,6 +1,6 @@
 <template>
     <div class="main-content">
-        <article role="article" class="article">
+        <article role="article" class="article" ref="aboutContent">
             <h1 class="entry-title">About</h1>
             <h3 class="entry-subtitle">
                 Pellentesque dictum aliquam pulvinar. Suspendisse potenti.
@@ -49,9 +49,18 @@
 </template>
 
 <script>
-
 export default {
   name: 'About',
+  data() {
+    return {
+      height: 0,
+    };
+  },
+  mounted() {
+    this.$nextTick(() => {
+      this.$store.commit('general/setUpperHeight', this.$refs.aboutContent.clientHeight);
+    });
+  },
 };
 </script>
 <style lang="scss">

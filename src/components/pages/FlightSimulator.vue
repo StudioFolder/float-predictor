@@ -1,15 +1,15 @@
 <template>
   <div class="main-content">
-    <flight-form></flight-form>
+      <!--just the animation here-->
   </div>
 </template>
 
 <script>
-import FlightForm from '../FlightForm';
-
 export default {
-  components: {
-    FlightForm },
   name: 'FlightSimulator',
+  created() {
+    this.$store.commit('general/setUpperHeight', 0);
+    this.$store.commit('general/setBottomHeight', 0);
+  },
 };
 </script>
