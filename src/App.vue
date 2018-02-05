@@ -2,8 +2,8 @@
     <div id="app" class="main-application" :class="{'choosing-destination': isChoosing}">
         <nav-brand/>
         <main-menu />
-        <div class="router-view top" :style="{height: upperHeight}">
-            <transition name="fade">
+        <div class="router-view top">
+            <transition :name="transitionName">
                 <router-view/>
             </transition>
         </div>
@@ -14,8 +14,8 @@
             </flight-form>
             <visualization />
         </div>
-        <div class="router-view bottom" :style="{height: bottomHeight}">
-            <transition name="fade">
+        <div class="router-view bottom">
+            <transition :name="transitionName">
                 <router-view/>
             </transition>
         </div>
@@ -40,8 +40,6 @@ export default {
   computed: {
     isChoosing() { return this.$store.state.general.isChosingDestination; },
     transitionName() { return this.$store.state.general.transitionName; },
-    upperHeight() { return this.$store.state.general.upperHeight; },
-    bottomHeight() { return this.$store.state.general.bottomHeight; },
   },
 };
 </script>
@@ -54,5 +52,8 @@ export default {
 }
 .fade-enter, .fade-leave-active {
     opacity: 0
+}
+.fade-enter-active, .fade-leave-active {
+    transition: opacity .5s ease;
 }
 </style>

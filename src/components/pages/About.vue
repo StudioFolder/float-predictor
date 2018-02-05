@@ -1,5 +1,5 @@
 <template>
-    <div class="main-content">
+    <div class="main-content" :style="{height: upperHeight}">
         <article role="article" class="article" ref="aboutContent">
             <h1 class="entry-title">About</h1>
             <h3 class="entry-subtitle">
@@ -53,13 +53,11 @@ export default {
   name: 'About',
   data() {
     return {
-      height: 0,
+      upperHeight: 0,
     };
   },
   mounted() {
-    this.$nextTick(() => {
-      this.$store.commit('general/setUpperHeight', this.$refs.aboutContent.clientHeight);
-    });
+    this.upperHeight = `${this.$refs.aboutContent.clientHeight}px`;
   },
 };
 </script>

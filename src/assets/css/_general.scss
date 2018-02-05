@@ -14,9 +14,9 @@ body {
     height: 100vh;
     overflow: hidden;
     transform: translateZ(0);
-    transition: all 1s ease;
+    transition: height 1s ease;
   }
-  .router-view {
+  .router-view .main-content{
     overflow: hidden;
     transform: translateZ(0);
     height: 0px;
@@ -29,26 +29,7 @@ body {
     width: 100%;
     z-index: 19; // 1 meno dei comandi
   }
-
-  //.main-content {
-  //  overflow: scroll;
-  //  max-height: 100%;
-  //}
-  //.main-content {
-  //  transition: height 1s ease;
-  //  transform: translateZ(0);
-  //}
-  //.main-visualization {
-  //  height: 100%;
-  //  width: 100%;
-  //}
-
-
   &.upper-content {
-    .router-view.top {
-      //height: 100%;
-      //overflow: auto;
-    }
     .main-visualization-wrapper {
       bottom: 0;
       height: 30vh;
@@ -60,12 +41,19 @@ body {
   }
   // overrides
   &.home {
-    .router-view.top {
+    .router-view.top .main-content {
       height: 60vh;
+    }
+    .main-visualization-wrapper {
+      bottom: 0;
+      height: 40vh;
     }
   }
   &.flight-simulator {
-    .router-view {
+    .router-view .main-content {
+      height: 0 !important; // to override inline style dependent on content length
+    }
+    .router-view.bottom {
       height: 0;
       overflow: hidden;
     }
@@ -96,9 +84,9 @@ body {
   h1, h2, h3 {
     text-align: center;
   }
-  padding: $marginBase 0;
 }
 article {
+  padding: $marginBase 0;
   max-width: 30rem;
   margin: 0 auto;
 }

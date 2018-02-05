@@ -3,8 +3,8 @@ export default {
   state: {
     isLoading: true, // are we still loading?
     transitionName: '',
-    upperHeight: '0px',
-    bottomHeight: '0px',
+    // upperHeight: '0px',
+    // bottomHeight: '0px',
     isChoosingDestination: false,
     isMenuOpen: false,
     isInfoBoxOpen: false,
@@ -17,12 +17,12 @@ export default {
     setTransition(state, value) {
       state.transitionName = value;
     },
-    setUpperHeight(state, value) {
-      state.upperHeight = `${value}px`;
-    },
-    setBottomHeight(state, value) {
-      state.bottomHeight = `${value}px`;
-    },
+    // setUpperHeight(state, value) {
+    //   state.upperHeight = value;
+    // },
+    // setBottomHeight(state, value) {
+    //   state.bottomHeight = value;
+    // },
     setDevice(state, deviceName) {
       state.deviceName = deviceName;
     },
