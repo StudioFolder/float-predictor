@@ -1,5 +1,5 @@
 <template>
-    <div class="main-content">
+    <div class="main-content" :style="{height: upperHeight}">
         <div class="call-to-action" @click="startAction">
           <router-link to="/flight-simulator">
               Start a new<br>aerosolar journey
@@ -11,15 +11,25 @@
 <script>
 export default {
   name: 'HomePage',
+  data() {
+    return {
+      upperHeight: 0,
+    };
+  },
   methods: {
     startAction() {
       this.$store.commit('general/closeMenu');
     },
   },
+  mounted() {
+    this.upperHeight = '450px';
+  },
+  /*
   created() {
     this.$store.commit('general/setUpperHeight', 'inherit');
     this.$store.commit('general/setBottomHeight', 0);
   },
+  */
 };
 </script>
 <style lang="scss">

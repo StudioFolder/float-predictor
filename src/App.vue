@@ -3,7 +3,8 @@
         <nav-brand/>
         <main-menu />
         <div class="router-view top">
-            <transition :name="transitionName">
+            <transition :name="transitionName"
+                        v-on:before-enter="beforeEnter">
                 <router-view/>
             </transition>
         </div>
@@ -24,6 +25,7 @@
 
 <script>
 
+import Velocity from 'velocity-animate';
 import navBrand from './components/NavBrand';
 import mainMenu from './components/MainMenu';
 import visualization from './components/Visualization';
@@ -41,6 +43,49 @@ export default {
     isChoosing() { return this.$store.state.general.isChosingDestination; },
     transitionName() { return this.$store.state.general.transitionName; },
   },
+  methods: {
+    // --------
+    // ENTERING
+    // --------
+
+    beforeEnter: () => {
+      const body = document.querySelectorAll('body');
+      Velocity(body, 'scroll', { duration: 1000 });
+    },
+    // the done callback is optional when
+    // used in combination with CSS
+    enter: (el, done) => {
+      // ...
+      done();
+    },
+    afterEnter: () => {
+      // ...
+    },
+    enterCancelled: () => {
+      // ...
+    },
+
+    // --------
+    // LEAVING
+    // --------
+
+    beforeLeave: () => {
+      // ...
+    },
+    // the done callback is optional when
+    // used in combination with CSS
+    leave: (el, done) => {
+      // ...
+      done();
+    },
+    afterLeave: () => {
+      // ...
+    },
+    // leaveCancelled only available with v-show
+    leaveCancelled: () => {
+      // ...
+    },
+  },
 };
 </script>
 
@@ -51,9 +96,30 @@ export default {
     transition: opacity .5s ease;
 }
 .fade-enter, .fade-leave-active {
-    opacity: 0
+    opacity: 0;
 }
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .5s ease;
+.router-view.top .middle-to-top-enter-active {
+    animation: slide-down 1.2s ease;
+}
+.router-view.top .top-to-middle-leave-active {
+    animation: slide-up 1.2s;
+}
+@keyframes slide-up {
+    0% {
+        transform: translate3d(0, 0, 0);
+        opacity: 1;
+    }
+    100% {
+        transform: translate3d(0, -160%, 0); // to leverage 3d acceleration
+        opacity: 0;
+    }
+}
+@keyframes slide-down {
+    0% {
+        transform: translate3d(0, -100%, 0); // to leverage 3d acceleration
+    }
+    100% {
+        transform: translate3d(0, 0, 0);
+    }
 }
 </style>

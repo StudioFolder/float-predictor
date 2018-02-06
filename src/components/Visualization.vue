@@ -83,7 +83,7 @@ const pars = {
   move_in_time: false,
   zoom: SCALINGF,
   onboard: false,
-  skip_frame: 8,
+  skip_frame: 16,
   camera_smooth: 0.993,
   camera_distance: 1.5,
   camera_shift: 0.07,

@@ -24,25 +24,6 @@
                     erat, in bibendum dolor. In hac habitasse platea dictumst. Donec ipsum
                     risus, faucibus id nunc at, rutrum tempus augue. Aliquam erat volutpat.
                 </p>
-                <p>
-                    Pellentesque lacus nisl, interdum sed vehicula cursus, scelerisque et ligula.
-                    Vestibulum vitae lacinia est. Praesent molestie elit sed nisl aliquet consequat.
-                    Aliquam interdum neque vitae purus venenatis gravida. Aenean vel neque dolor.
-                    Proin gravida, magna et auctor congue, erat sem rutrum felis, sit amet ultrices
-                    arcu est in ipsum. Proin efficitur, ligula sed tristique vehicula, velit mauris
-                    euismod purus, vel cursus enim risus vitae massa. Donec sit amet arcu non lectus
-                    elementum pretium. Praesent non nulla congue,
-                    tristique urna vitae, ornare lectus.
-                    Pellentesque maximus, quam nec pellentesque rutrum, ex nisl fringilla dui, id
-                    tincidunt justo velit ac leo. Maecenas accumsan auctor luctus.
-                </p>
-                <p>
-                    Pellentesque dictum aliquam pulvinar. Suspendisse potenti.
-                    In condimentum ut ipsum ut mollis. Nulla ut neque tortor.
-                    Vivamus a purus quis quam fringilla volutpat. Donec vehicula
-                    sed mauris a ultrices. Curabitur maximus velit at tristique
-                    faucibus. Donec interdum laoreet mauris quis blandit.
-                </p>
             </div>
         </article>
     </div>
