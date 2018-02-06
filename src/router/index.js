@@ -18,7 +18,7 @@ const router = new Router({
       name: 'HomePage',
       component: HomePage,
       meta: {
-        bodyClass: 'home upper-content',
+        bodyClass: 'home no-scroll',
         position: 'top',
       },
     },
@@ -27,7 +27,7 @@ const router = new Router({
       name: 'FlightSimulator',
       component: FlightSimulator,
       meta: {
-        bodyClass: 'flight-simulator',
+        bodyClass: 'flight-simulator no-scroll',
         position: 'middle',
       },
     },
@@ -64,31 +64,27 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const fromTop = from.matched.some(m => m.meta.position === 'top');
-  const fromBottom = from.matched.some(m => m.meta.position === 'bottom');
+  // const fromBottom = from.matched.some(m => m.meta.position === 'bottom');
   const toTop = to.matched.some(m => m.meta.position === 'top');
   const toBottom = to.matched.some(m => m.meta.position === 'bottom');
   const toMiddle = to.matched.some(m => m.meta.position === 'middle');
-  const fromMiddle = from.matched.some(m => m.meta.position === 'middle');
+  // const fromMiddle = from.matched.some(m => m.meta.position === 'middle');
 
+  // from middle to top -> slide
+  if (toTop) {
+    store.commit('general/setTransition', 'to-top');
+  }
   // from top to top -> fade
   if (fromTop && toTop) {
     store.commit('general/setTransition', 'fade');
   }
   // from top to middle -> slide
-  if (fromTop && toMiddle) {
-    store.commit('general/setTransition', 'top-to-middle');
-  }
-  // from middle to top -> slide
-  if (fromMiddle && toTop) {
-    store.commit('general/setTransition', 'middle-to-top');
+  if (toMiddle) {
+    store.commit('general/setTransition', 'to-middle');
   }
   // from top to bottom -> slide down
-  if (fromTop && toBottom) {
-    store.commit('general/setTransition', 'slide-to-bottom');
-  }
-  // from bottom to top -> slide top
-  if (fromBottom && toTop) {
-    store.commit('general/setTransition', 'slide-to-top');
+  if (toBottom) {
+    store.commit('general/setTransition', 'to-bottom');
   }
   next();
 });

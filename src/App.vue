@@ -1,21 +1,27 @@
 <template>
-    <div id="app" class="main-application" :class="{'choosing-destination': isChoosing}">
+    <div id="app"
+         class="main-application"
+         :class="{'choosing-destination': isChoosing}"
+         ref="mainApplication">
         <nav-brand/>
         <main-menu />
-        <div class="router-view top">
-            <transition :name="transitionName"
-                        v-on:before-enter="beforeEnter">
+        <div class="router-view top" ref="topContent">
+            <transition name="fade"
+                    @before-enter="beforeEnter"
+                    @after-enter="afterEnter"
+                    @before-leave="beforeLeave"
+                    >
                 <router-view/>
             </transition>
         </div>
-        <div class="main-visualization-wrapper">
+        <div class="main-visualization-wrapper" id="middleContent" ref="middleContent">
             <router-link to="/flight-simulator">
                 <div class="cover"></div></router-link>
             <flight-form v-if="isChoosing">
             </flight-form>
             <visualization />
         </div>
-        <div class="router-view bottom">
+        <div class="router-view bottom" ref="bottomContent">
             <transition :name="transitionName">
                 <router-view/>
             </transition>
@@ -39,51 +45,47 @@ export default {
     flightForm,
   },
   name: 'App',
+  data() {
+    return {
+      offsetHeight: 0,
+    };
+  },
   computed: {
     isChoosing() { return this.$store.state.general.isChosingDestination; },
     transitionName() { return this.$store.state.general.transitionName; },
   },
   methods: {
-    // --------
-    // ENTERING
-    // --------
+    beforeEnter() {
+      const mid = document.getElementById('middleContent');
+      let offsetTop = 0;
 
-    beforeEnter: () => {
-      const body = document.querySelectorAll('body');
-      Velocity(body, 'scroll', { duration: 1000 });
+      if (this.transitionName === 'to-middle') {
+        offsetTop = window.innerHeight;
+      }
+      this.scroll(offsetTop, mid);
     },
-    // the done callback is optional when
-    // used in combination with CSS
-    enter: (el, done) => {
-      // ...
-      done();
+    afterEnter() {
     },
-    afterEnter: () => {
-      // ...
+    beforeLeave() {
     },
-    enterCancelled: () => {
-      // ...
-    },
+    scroll(position, mid) {
+      const body = document.querySelector('body');
 
-    // --------
-    // LEAVING
-    // --------
-
-    beforeLeave: () => {
-      // ...
-    },
-    // the done callback is optional when
-    // used in combination with CSS
-    leave: (el, done) => {
-      // ...
-      done();
-    },
-    afterLeave: () => {
-      // ...
-    },
-    // leaveCancelled only available with v-show
-    leaveCancelled: () => {
-      // ...
+      Velocity(body, 'scroll', {
+        offset: position,
+        mobileHA: false,
+        duration: 1000,
+        begin: () => {
+          if (this.transitionName === 'to-middle' && mid.classList.contains('small')) {
+            mid.classList.remove('small');
+          }
+        },
+        complete: () => {
+          if (this.transitionName !== 'to-middle' && !mid.classList.contains('small')) {
+            mid.classList.add('small');
+          }
+        },
+      });
     },
   },
 };
@@ -93,11 +95,12 @@ export default {
 @import "assets/css/main";
 
 .fade-enter-active, .fade-leave-active {
-    transition: opacity .5s ease;
+    transition: opacity 1s ease;
 }
 .fade-enter, .fade-leave-active {
     opacity: 0;
 }
+/*
 .router-view.top .middle-to-top-enter-active {
     animation: slide-down 1.2s ease;
 }
@@ -122,4 +125,5 @@ export default {
         transform: translate3d(0, 0, 0);
     }
 }
+*/
 </style>

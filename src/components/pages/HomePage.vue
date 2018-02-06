@@ -1,5 +1,5 @@
 <template>
-    <div class="main-content" :style="{height: upperHeight}">
+    <div class="main-content">
         <div class="call-to-action" @click="startAction">
           <router-link to="/flight-simulator">
               Start a new<br>aerosolar journey
@@ -22,7 +22,7 @@ export default {
     },
   },
   mounted() {
-    this.upperHeight = '450px';
+    // this.upperHeight = '450px';
   },
   /*
   created() {
@@ -37,12 +37,10 @@ export default {
     body.home {
         .call-to-action {
             background-color: #1E1E1E;
+            height: 100px;
+            margin: 50vh auto 10vh;
             display: block;
             color: #fff;
-            position: fixed;
-            top: 100%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             max-width: 280px;
             text-align: center;
             padding: 1em;

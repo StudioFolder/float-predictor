@@ -22,8 +22,10 @@ export default {
         display: block;
         position: fixed;
         top: 0;
+        left: 0;
         padding: $marginBase;
         z-index: 20;
+        transition: all 1s;
     }
     .intro-description {
         max-width: 230px;

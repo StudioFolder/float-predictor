@@ -1,5 +1,5 @@
 <template>
-    <div class="main-content" :style="{height: upperHeight}">
+    <div class="main-content">
         <article role="article" class="article" ref="aboutContent">
             <h1 class="entry-title">About</h1>
             <h3 class="entry-subtitle">
@@ -18,11 +18,29 @@
                     Ut sagittis justo a mauris mattis mollis. Donec sed lectus
                     et lorem sagittis convallis et vitae turpis.
                     Quisque dignissim id dui ac porttitor.
-                    Fusce rutrum viverra ipsum, sed commodo felis elementum id. Pellentesque
-                    ac condimentum orci. Quisque porta iaculis rutrum. Maecenas vel erat
-                    facilisis, rhoncus quam id, consectetur odio. Phasellus et suscipit
-                    erat, in bibendum dolor. In hac habitasse platea dictumst. Donec ipsum
-                    risus, faucibus id nunc at, rutrum tempus augue. Aliquam erat volutpat.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Pellentesque efficitur justo quis augue pulvinar viverra.
+                    Aliquam sit amet sodales orci. Nunc tristique diam
+                    quis ex venenatis consectetur.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Pellentesque efficitur justo quis augue pulvinar viverra.
+                    Aliquam sit amet sodales orci. Nunc tristique diam
+                    quis ex venenatis consectetur.
+                    Sed imperdiet est iaculis ex dictum malesuada. Quisque et ipsum scelerisque,
+                    condimentum diam non, tempus felis.
+                    Ut sagittis justo a mauris mattis mollis. Donec sed lectus
+                    et lorem sagittis convallis et vitae turpis.
+                    Quisque dignissim id dui ac porttitor.
+                </p>
+                <p>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    Pellentesque efficitur justo quis augue pulvinar viverra.
+                    Aliquam sit amet sodales orci. Nunc tristique diam
+                    quis ex venenatis consectetur.
                 </p>
             </div>
         </article>
@@ -38,7 +56,7 @@ export default {
     };
   },
   mounted() {
-    this.upperHeight = `${this.$refs.aboutContent.clientHeight}px`;
+    // this.upperHeight = `${this.$refs.aboutContent.clientHeight}px`;
   },
 };
 </script>

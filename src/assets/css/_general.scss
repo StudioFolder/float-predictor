@@ -6,21 +6,29 @@ body {
   top: 0;
   position: relative;
 
-  .main-application {
+  &.no-scroll {
+    overflow: hidden;
+  }
+  .main-application, .router-view {
     position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
   }
   .main-visualization-wrapper {
     position: relative;
     height: 100vh;
     overflow: hidden;
-    transform: translateZ(0);
-    transition: height 1s ease;
+    //transition: height 1s;
+    &.small {
+      height: 30vh;
+    }
   }
   .router-view .main-content{
     overflow: hidden;
     transform: translateZ(0);
-    height: 0px;
-    transition: height 1s ease;
+    // transition: height 1s ease;
   }
   .cover {
     position: absolute;
@@ -29,18 +37,27 @@ body {
     width: 100%;
     z-index: 19; // 1 meno dei comandi
   }
+
   &.upper-content {
-    .main-visualization-wrapper {
-      bottom: 0;
-      height: 30vh;
-    }
     .router-view.bottom {
       height: 0;
+      min-height: 0;
       overflow: hidden;
     }
   }
+
   // overrides
   &.home {
+    .call-to-action {
+      //position: relative;
+      //width: 450px;
+      //height: 70vh;
+      //display: flex;
+      //flex-flow: column;
+      //align-items: center;
+      //justify-content: center;
+    }
+  /*
     .router-view.top .main-content {
       //height: 60vh;
     }
@@ -48,8 +65,15 @@ body {
       bottom: 0;
       height: 40vh;
     }
+  */
   }
+
+  
   &.flight-simulator {
+    .cover {
+      //display: none;
+    }
+    /*
     .router-view .main-content {
       height: 0 !important; // to override inline style dependent on content length
     }
@@ -57,6 +81,7 @@ body {
       height: 0;
       overflow: hidden;
     }
+    */
   }
 }
 
