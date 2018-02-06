@@ -68,19 +68,19 @@ router.beforeEach((to, from, next) => {
   const toTop = to.matched.some(m => m.meta.position === 'top');
   const toBottom = to.matched.some(m => m.meta.position === 'bottom');
   const toMiddle = to.matched.some(m => m.meta.position === 'middle');
-  // const fromMiddle = from.matched.some(m => m.meta.position === 'middle');
+  const fromMiddle = from.matched.some(m => m.meta.position === 'middle');
 
   // from middle to top -> slide
-  if (toTop) {
-    store.commit('general/setTransition', 'to-top');
+  if (fromMiddle && toTop) {
+    store.commit('general/setTransition', 'middle-to-top');
   }
   // from top to top -> fade
   if (fromTop && toTop) {
     store.commit('general/setTransition', 'fade');
   }
   // from top to middle -> slide
-  if (toMiddle) {
-    store.commit('general/setTransition', 'to-middle');
+  if (fromTop && toMiddle) {
+    store.commit('general/setTransition', 'top-to-middle');
   }
   // from top to bottom -> slide down
   if (toBottom) {

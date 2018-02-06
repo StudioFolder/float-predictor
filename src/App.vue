@@ -6,10 +6,11 @@
         <nav-brand/>
         <main-menu />
         <div class="router-view top" ref="topContent">
-            <transition name="fade"
+            <transition
+                    :name="transitionName"
                     @before-enter="beforeEnter"
                     @after-enter="afterEnter"
-                    @before-leave="beforeLeave"
+                    @leave ="onLeave"
                     >
                 <router-view/>
             </transition>
@@ -59,14 +60,22 @@ export default {
       const mid = document.getElementById('middleContent');
       let offsetTop = 0;
 
-      if (this.transitionName === 'to-middle') {
+      if (this.transitionName === 'top-to-middle') {
         offsetTop = window.innerHeight;
       }
       this.scroll(offsetTop, mid);
     },
     afterEnter() {
     },
-    beforeLeave() {
+    onLeave(el) {
+      if (this.transitionName === 'top-to-middle') {
+        if (window.innerHeight < el.offsetHeight) {
+          const deltaY = (window.innerHeight - el.offsetHeight);
+          // eslint-disable-next-line
+          console.log(deltaY);
+          Velocity(el, { translateY: `${deltaY}px` }, { duration: 900 }, 'linear');
+        }
+      }
     },
     scroll(position, mid) {
       const body = document.querySelector('body');
@@ -74,14 +83,14 @@ export default {
       Velocity(body, 'scroll', {
         offset: position,
         mobileHA: false,
-        duration: 1000,
+        duration: 900,
         begin: () => {
-          if (this.transitionName === 'to-middle' && mid.classList.contains('small')) {
+          if (this.transitionName === 'top-to-middle' && mid.classList.contains('small')) {
             mid.classList.remove('small');
           }
         },
         complete: () => {
-          if (this.transitionName !== 'to-middle' && !mid.classList.contains('small')) {
+          if (this.transitionName !== 'top-to-middle' && !mid.classList.contains('small')) {
             mid.classList.add('small');
           }
         },
@@ -95,27 +104,14 @@ export default {
 @import "assets/css/main";
 
 .fade-enter-active, .fade-leave-active {
-    transition: opacity 1s ease;
+    transition: opacity .6s ease;
 }
 .fade-enter, .fade-leave-active {
     opacity: 0;
 }
-/*
+
 .router-view.top .middle-to-top-enter-active {
-    animation: slide-down 1.2s ease;
-}
-.router-view.top .top-to-middle-leave-active {
-    animation: slide-up 1.2s;
-}
-@keyframes slide-up {
-    0% {
-        transform: translate3d(0, 0, 0);
-        opacity: 1;
-    }
-    100% {
-        transform: translate3d(0, -160%, 0); // to leverage 3d acceleration
-        opacity: 0;
-    }
+    // animation: fade-up 1.2s ease;
 }
 @keyframes slide-down {
     0% {
@@ -125,5 +121,19 @@ export default {
         transform: translate3d(0, 0, 0);
     }
 }
-*/
+.router-view.top .top-to-middle-leave-active {
+    animation: fade-up .9s;
+    // transition: transform .9s;
+}
+@keyframes fade-up {
+    0% {
+        opacity: 1;
+        // transform: translate3d(0, 0, 0);
+    }
+    100% {
+        opacity: 0;
+        // transform: translate3d(0, -200px, 0); // to leverage 3d acceleration
+        height: 100vh;
+    }
+}
 </style>

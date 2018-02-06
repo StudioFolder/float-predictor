@@ -1,5 +1,5 @@
 <template>
-    <div class="main-content">
+    <div class="main-content" :style="{ height: upperHeight }">
         <article role="article" class="article" ref="aboutContent">
             <h1 class="entry-title">About</h1>
             <h3 class="entry-subtitle">
@@ -56,7 +56,7 @@ export default {
     };
   },
   mounted() {
-    // this.upperHeight = `${this.$refs.aboutContent.clientHeight}px`;
+    this.upperHeight = `${this.$refs.aboutContent.clientHeight}px`;
   },
 };
 </script>

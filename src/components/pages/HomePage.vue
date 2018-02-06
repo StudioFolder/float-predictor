@@ -33,25 +33,25 @@ export default {
 };
 </script>
 <style lang="scss">
-    // homepage
-    body.home {
-        .call-to-action {
-            background-color: #1E1E1E;
-            height: 100px;
-            margin: 50vh auto 10vh;
-            display: block;
-            color: #fff;
-            max-width: 280px;
-            text-align: center;
-            padding: 1em;
-            transition: background-color .2s ease;
-            a {
-                text-decoration: none;
-            }
-            &:hover {
-                background-color: #2E2E2E;
-            }
+
+    .call-to-action {
+        background-color: #1E1E1E;
+        height: 100px;
+        margin: 50vh auto 10vh;
+        display: block;
+        color: #fff;
+        max-width: 280px;
+        text-align: center;
+        padding: 1em;
+        transition: background-color .2s ease;
+        a {
+            text-decoration: none;
         }
+        &:hover {
+            background-color: #2E2E2E;
+        }
+    }
+    body.home {
         .nav-brand {
             left: 50%;
             transform: translateX(-50%);
