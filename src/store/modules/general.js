@@ -4,7 +4,7 @@ export default {
     isLoading: true, // are we still loading?
     transitionName: '',
     transitionMode: '',
-    animationHeight: false,
+    animationHeight: 'small',
     // upperHeight: '0px',
     // bottomHeight: '0px',
     isChoosingDestination: true,

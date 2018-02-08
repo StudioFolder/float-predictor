@@ -22,14 +22,15 @@
                   <label class="small">From</label>
                   <vue-google-autocomplete
                           id="map" classname="form-control" placeholder="Departure"
-                          v-on:placechanged="setDeparture"
+                          @placechanged="setDeparture"
                           types="(cities)"
                           rtypes="geocode">
                   </vue-google-autocomplete>
-                  <label class="small">To</label>
+                  <label v-if="(flightType === 'planned')" class="small">To</label>
                   <vue-google-autocomplete
+                          v-if="(flightType === 'planned')"
                           id="map2" classname="form-control" placeholder="Destination"
-                          v-on:placechanged="setDestination"
+                          @placechanged="setDestination"
                           types="(cities)" rtypes="geocode">
                   </vue-google-autocomplete>
                   <p class="input-label">Click on globe to select locations or enter them here.</p>
@@ -79,7 +80,8 @@ export default {
       e.preventDefault();
       this.$store.commit('flightSimulator/startAnimation');
       this.$store.commit('general/setFormStatus', false);
-      this.$store.commit('general/class');
+      this.$store.commit('general/setAnimationHeight', 'normal');
+      this.upperHeight = 0;
     },
     setDeparture(e) {
       this.departure =

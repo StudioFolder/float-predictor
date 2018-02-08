@@ -9,7 +9,9 @@
                     :name="transitionName"
                     :mode="transitionMode"
                     @before-enter="beforeEnter"
-                    @leave ="onLeave"
+                    @before-leave="beforeLeave"
+                    @leave="onLeave"
+                    @after-leave="afterLeave"
                     >
                 <router-view/>
             </transition>
@@ -63,12 +65,13 @@ export default {
       let offsetTop = 0;
       if (this.transitionName === 'top-to-middle') {
         offsetTop = window.innerHeight;
-        this.scroll(offsetTop);
-      } else {
-        this.scroll(offsetTop);
+        this.scroll(offsetTop, 900);
       }
-      // eslint-disable-next-line
-      console.log(this.transitionName)
+    },
+    beforeLeave() {
+      if (this.transitionName === 'fade-middle-to-top') {
+        this.$store.commit('general/setAnimationHeight', 'small');
+      }
     },
     onLeave(el) {
       if (this.transitionName === 'top-to-middle') {
@@ -76,22 +79,27 @@ export default {
           // little adjustment for content higher than the window
           const deltaY = (window.innerHeight - el.offsetHeight);
           Velocity(el, { translateY: `${deltaY}px` }, { duration: 900 }, 'linear');
+          this.$store.commit('general/setAnimationHeight', 'normal');
         }
       } else if (this.transitionName === 'fade-middle-to-top') {
         const height = el.offsetHeight * -1;
-        // eslint-disable-next-line
-        console.log(height);
         Velocity(el, { translateY: `${height}px` }, { duration: 900 }, 'linear');
-        Velocity(el, { height: '0px' }, { duration: 900 }, 'linear');
+      } else if (this.transitionName === 'fade') {
+        this.scroll(0, 500);
       }
     },
-    scroll(position) {
+    afterLeave() {
+      if (this.transitionName === 'middle-to-top') {
+        this.$store.commit('general/setAnimationHeight', 'small');
+      }
+    },
+    scroll(position, durationTime) {
       const body = document.querySelector('body');
 
       Velocity(body, 'scroll', {
         offset: position,
         mobileHA: false,
-        duration: 900,
+        duration: durationTime,
         begin: () => {
           if (this.transitionName === 'top-to-middle') {
             this.$store.commit('general/setAnimationHeight', 'normal');
@@ -137,7 +145,7 @@ export default {
 }
 .router-view.top .fade-middle-to-top-leave-active {
     opacity: 0;
-    // height: 0;
+    height: 0 !important;
     transition: opacity .9s, height .9s;
 }
 

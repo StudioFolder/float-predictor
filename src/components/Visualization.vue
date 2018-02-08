@@ -420,7 +420,7 @@ export default {
       this.loadTextures();
       // renderer
       renderer = new THREE.WebGLRenderer({
-        antialias: true, // pars.antialias,
+        antialias: false, // pars.antialias,
         preserveDrawingBuffer: true,
       });
       renderer.setSize(window.innerWidth, window.innerHeight);
