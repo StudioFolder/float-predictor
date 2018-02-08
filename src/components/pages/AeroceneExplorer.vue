@@ -30,17 +30,6 @@
                     Pellentesque efficitur justo quis augue pulvinar viverra.
                     Aliquam sit amet sodales orci. Nunc tristique diam
                     quis ex venenatis consectetur.
-                    Sed imperdiet est iaculis ex dictum malesuada. Quisque et ipsum scelerisque,
-                    condimentum diam non, tempus felis.
-                    Ut sagittis justo a mauris mattis mollis. Donec sed lectus
-                    et lorem sagittis convallis et vitae turpis.
-                    Quisque dignissim id dui ac porttitor.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Pellentesque efficitur justo quis augue pulvinar viverra.
-                    Aliquam sit amet sodales orci. Nunc tristique diam
-                    quis ex venenatis consectetur.
                 </p>
             </div>
         </article>
@@ -49,7 +38,7 @@
 
 <script>
 export default {
-  name: 'Aerocene Explorer',
+  name: 'aerocenee-explorer',
   data() {
     return {
       upperHeight: 0,

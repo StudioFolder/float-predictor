@@ -15,7 +15,7 @@ const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'HomePage',
+      name: 'home-page',
       component: HomePage,
       meta: {
         bodyClass: 'home no-scroll',
@@ -72,22 +72,32 @@ router.beforeEach((to, from, next) => {
   const toMiddle = to.matched.some(m => m.meta.position === 'middle');
   const fromMiddle = from.matched.some(m => m.meta.position === 'middle');
 
+  let transitionName = 'fade';
+  let transitionMode = '';
   // from middle to top -> slide
   if (fromMiddle && toTop) {
-    store.commit('general/setTransition', 'middle-to-top');
+    transitionName = 'middle-to-top';
+  } else if (fromTop && toMiddle) {
+    transitionName = 'top-to-middle';
+  } else if (toBottom) {
+    transitionName = 'to-bottom';
+  } else if (fromTop && toTop) {
+    transitionMode = 'out-in';
   }
-  // from top to top -> fade
-  if (fromTop && toTop) {
-    store.commit('general/setTransition', 'fade');
+  // some overwrites for particular cases
+  if (from.name === 'home-page' && (to.name === 'flight-simulator' || toTop)) {
+    transitionName = 'fade';
+    transitionMode = 'out-in';
   }
-  // from top to middle -> slide
-  if (fromTop && toMiddle) {
-    store.commit('general/setTransition', 'top-to-middle');
+  if (from.name === 'flight-simulator'
+    && store.state.general.isChoosingDestination
+    && toTop) {
+    transitionName = 'fade-middle-to-top';
+    transitionMode = '';
   }
-  // from top to bottom -> slide down
-  if (toBottom) {
-    store.commit('general/setTransition', 'to-bottom');
-  }
+
+  store.commit('general/setTransition', transitionName);
+  store.commit('general/setTransitionMode', transitionMode);
   next();
 });
 

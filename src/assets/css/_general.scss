@@ -74,14 +74,18 @@ body {
     .cover {
       // display: none;
     }
+    .router-view.bottom {
+      height: 0vh;
+    }
     .main-application {
-      .main-visualization-wrapper {
-        padding-top: 0;
-        // transition: padding-top 1s .5s;
-      }
-      &.choosing-destination .main-visualization-wrapper {
-        padding-top: 40vh;
-        // transition: none;
+      &.choosing-destination {
+        .router-view.top {
+          //height: 50vh;
+          justify-content: flex-start;
+        }
+        .main-visualization-wrapper {
+          height: 100vh;
+        }
       }
     }
   }

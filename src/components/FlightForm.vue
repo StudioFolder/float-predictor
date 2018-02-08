@@ -84,6 +84,7 @@ export default {
       e.preventDefault();
       this.$store.commit('flightSimulator/startAnimation');
       this.$store.commit('general/setFormStatus', false);
+      this.$store.commit('general/class');
     },
     setDeparture(e) {
       this.departure =
@@ -99,11 +100,9 @@ export default {
 <style lang="scss">
     @import "~@/assets/css/_variables_and_mixins.scss";
     .flight-form.container {
-        position: fixed;
+        position: relative;
         z-index: 5;
         top: 0;
-        left: 50%;
-        transform: translateX(-50%);
         width: 450px;
         margin: 0 auto;
         background: linear-gradient(180deg, $lightGray, rgba(0, 0, 0, 0));

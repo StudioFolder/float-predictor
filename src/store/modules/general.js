@@ -3,6 +3,8 @@ export default {
   state: {
     isLoading: true, // are we still loading?
     transitionName: '',
+    transitionMode: '',
+    animationHeight: false,
     // upperHeight: '0px',
     // bottomHeight: '0px',
     isChoosingDestination: true,
@@ -16,6 +18,9 @@ export default {
     },
     setTransition(state, value) {
       state.transitionName = value;
+    },
+    setTransitionMode(state, value) {
+      state.transitionMode = value;
     },
     // setUpperHeight(state, value) {
     //   state.upperHeight = value;
@@ -34,6 +39,9 @@ export default {
     },
     setFormStatus(state, value) {
       state.isChoosingDestination = value;
+    },
+    setAnimationHeight(state, value) {
+      state.animationHeight = value;
     },
   },
   getters: {

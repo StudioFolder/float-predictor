@@ -25,8 +25,12 @@
                     <li class="menu-item --nav">
                         <router-link to="/gallery">
                             Aeroglyphs archive</router-link></li>
-                    <li class="menu-item --nav">Aerocene explorer</li>
-                    <li class="menu-item --nav">Resources and APIs</li>
+                    <li class="menu-item --nav">
+                        <router-link to="/aerocene-explorer">
+                            Aerocene explorer</router-link></li>
+                    <li class="menu-item --nav">
+                        <router-link to="/resources">
+                            Resources and APIs</router-link></li>
                     <li class="menu-item --nav">
                         <a href="#" @click.prevent v-b-modal.instruction-modal>
                             Instructions</a>
@@ -56,19 +60,12 @@
                 </ul>
             </div>
         </div>
-        <div class="footer modal-contents">
-            <instructions>
-            </instructions>
-        </div>
     </div>
 </template>
 
 <script>
-import instructions from './InstructionsModal';
-
 export default {
   name: 'main-nav',
-  components: { instructions },
   data() {
     return {
       currentYear: new Date().getFullYear(),

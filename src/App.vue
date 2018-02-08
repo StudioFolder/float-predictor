@@ -4,18 +4,17 @@
          :class="{'choosing-destination': isChoosing}">
         <nav-brand/>
         <main-menu />
-        <flight-form v-if="isChoosing">
-        </flight-form>
         <div class="router-view top" id="topContent">
             <transition
                     :name="transitionName"
+                    :mode="transitionMode"
                     @before-enter="beforeEnter"
                     @leave ="onLeave"
                     >
                 <router-view/>
             </transition>
         </div>
-        <div class="main-visualization-wrapper" id="middleContent">
+        <div class="main-visualization-wrapper" id="middleContent" :class="{small: isSmall}">
             <router-link to="/flight-simulator">
                 <div class="cover"></div></router-link>
             <visualization />
@@ -24,6 +23,10 @@
             <transition :name="transitionName">
                 <router-view/>
             </transition>
+        </div>
+        <div class="footer modal-contents">
+            <instructions>
+            </instructions>
         </div>
     </div>
 </template>
@@ -34,14 +37,14 @@ import Velocity from 'velocity-animate';
 import navBrand from './components/NavBrand';
 import mainMenu from './components/MainMenu';
 import visualization from './components/Visualization';
-import flightForm from './components/FlightForm';
+import instructions from './components/parts/InstructionsModal';
 
 export default {
   components: {
     visualization,
     mainMenu,
     navBrand,
-    flightForm,
+    instructions,
   },
   name: 'App',
   data() {
@@ -52,16 +55,20 @@ export default {
   computed: {
     isChoosing() { return (this.$route.name === 'flight-simulator' && this.$store.state.general.isChoosingDestination); },
     transitionName() { return this.$store.state.general.transitionName; },
+    transitionMode() { return this.$store.state.general.transitionMode; },
+    isSmall() { return this.$store.state.general.animationHeight === 'small'; },
   },
   methods: {
     beforeEnter() {
-      const mid = document.getElementById('middleContent');
       let offsetTop = 0;
-
       if (this.transitionName === 'top-to-middle') {
         offsetTop = window.innerHeight;
+        this.scroll(offsetTop);
+      } else {
+        this.scroll(offsetTop);
       }
-      this.scroll(offsetTop, mid);
+      // eslint-disable-next-line
+      console.log(this.transitionName)
     },
     onLeave(el) {
       if (this.transitionName === 'top-to-middle') {
@@ -70,9 +77,15 @@ export default {
           const deltaY = (window.innerHeight - el.offsetHeight);
           Velocity(el, { translateY: `${deltaY}px` }, { duration: 900 }, 'linear');
         }
+      } else if (this.transitionName === 'fade-middle-to-top') {
+        const height = el.offsetHeight * -1;
+        // eslint-disable-next-line
+        console.log(height);
+        Velocity(el, { translateY: `${height}px` }, { duration: 900 }, 'linear');
+        Velocity(el, { height: '0px' }, { duration: 900 }, 'linear');
       }
     },
-    scroll(position, mid) {
+    scroll(position) {
       const body = document.querySelector('body');
 
       Velocity(body, 'scroll', {
@@ -80,13 +93,13 @@ export default {
         mobileHA: false,
         duration: 900,
         begin: () => {
-          if (this.transitionName === 'top-to-middle' && mid.classList.contains('small')) {
-            mid.classList.remove('small');
+          if (this.transitionName === 'top-to-middle') {
+            this.$store.commit('general/setAnimationHeight', 'normal');
           }
         },
         complete: () => {
-          if (this.transitionName !== 'top-to-middle' && !mid.classList.contains('small')) {
-            mid.classList.add('small');
+          if (this.transitionName !== 'top-to-middle') {
+            this.$store.commit('general/setAnimationHeight', 'small');
           }
         },
       });
@@ -98,27 +111,44 @@ export default {
 <style lang="scss">
 @import "assets/css/main";
 
-.main-application {
-    transition: padding-top .9s ease;
-    padding-top: 0;
-    &.choosing-destination {
-        padding-top: 40vh;
-    }
-}
+// fade
 .fade-enter-active, .fade-leave-active {
-    transition: opacity .6s ease;
+    transition: opacity .4s ease;
 }
 .fade-enter, .fade-leave-active {
     opacity: 0;
 }
+
+// middle to top
 .middle-to-top-enter {
     height: 100vh;
 }
 .router-view.top .middle-to-top-enter-active {
     transition: height .6s;
-    animation: fade-down .9s;
+    animation: fade .9s;
 }
-@keyframes fade-down {
+
+// fade middle to top
+.fade-middle-to-top-enter-active {
+    animation: fade .9s;
+}
+.fade-middle-to-top-leave {
+    opacity: 1;
+}
+.router-view.top .fade-middle-to-top-leave-active {
+    opacity: 0;
+    // height: 0;
+    transition: opacity .9s, height .9s;
+}
+
+// top to middle
+.router-view.top .top-to-middle-leave-active {
+    animation: fade-up .9s;
+    // transition: transform .9s;
+}
+
+// animations
+@keyframes fade {
     0% {
         opacity: 0;
         // transform: translate3d(0, 200px, 0);
@@ -127,10 +157,6 @@ export default {
         opacity: 1;
         // transform: translate3d(0, -200px, 0); // to leverage 3d acceleration
     }
-}
-.router-view.top .top-to-middle-leave-active {
-    animation: fade-up .9s;
-    // transition: transform .9s;
 }
 @keyframes fade-up {
     0% {
