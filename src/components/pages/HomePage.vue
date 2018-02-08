@@ -19,6 +19,7 @@ export default {
   methods: {
     startAction() {
       this.$store.commit('general/closeMenu');
+      this.$store.commit('general/setFormStatus', true);
     },
   },
   mounted() {
@@ -36,7 +37,6 @@ export default {
 
     .call-to-action {
         background-color: #1E1E1E;
-        height: 100px;
         margin: 50vh auto 10vh;
         display: block;
         color: #fff;

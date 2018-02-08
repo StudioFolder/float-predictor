@@ -1,28 +1,26 @@
 <template>
     <div id="app"
          class="main-application"
-         :class="{'choosing-destination': isChoosing}"
-         ref="mainApplication">
+         :class="{'choosing-destination': isChoosing}">
         <nav-brand/>
         <main-menu />
-        <div class="router-view top" ref="topContent">
+        <flight-form v-if="isChoosing">
+        </flight-form>
+        <div class="router-view top" id="topContent">
             <transition
                     :name="transitionName"
                     @before-enter="beforeEnter"
-                    @after-enter="afterEnter"
                     @leave ="onLeave"
                     >
                 <router-view/>
             </transition>
         </div>
-        <div class="main-visualization-wrapper" id="middleContent" ref="middleContent">
+        <div class="main-visualization-wrapper" id="middleContent">
             <router-link to="/flight-simulator">
                 <div class="cover"></div></router-link>
-            <flight-form v-if="isChoosing">
-            </flight-form>
             <visualization />
         </div>
-        <div class="router-view bottom" ref="bottomContent">
+        <div class="router-view bottom" id="bottomContent">
             <transition :name="transitionName">
                 <router-view/>
             </transition>
@@ -52,7 +50,7 @@ export default {
     };
   },
   computed: {
-    isChoosing() { return this.$store.state.general.isChosingDestination; },
+    isChoosing() { return (this.$route.name === 'flight-simulator' && this.$store.state.general.isChoosingDestination); },
     transitionName() { return this.$store.state.general.transitionName; },
   },
   methods: {
@@ -65,14 +63,11 @@ export default {
       }
       this.scroll(offsetTop, mid);
     },
-    afterEnter() {
-    },
     onLeave(el) {
       if (this.transitionName === 'top-to-middle') {
         if (window.innerHeight < el.offsetHeight) {
+          // little adjustment for content higher than the window
           const deltaY = (window.innerHeight - el.offsetHeight);
-          // eslint-disable-next-line
-          console.log(deltaY);
           Velocity(el, { translateY: `${deltaY}px` }, { duration: 900 }, 'linear');
         }
       }
@@ -103,22 +98,34 @@ export default {
 <style lang="scss">
 @import "assets/css/main";
 
+.main-application {
+    transition: padding-top .9s ease;
+    padding-top: 0;
+    &.choosing-destination {
+        padding-top: 40vh;
+    }
+}
 .fade-enter-active, .fade-leave-active {
     transition: opacity .6s ease;
 }
 .fade-enter, .fade-leave-active {
     opacity: 0;
 }
-
-.router-view.top .middle-to-top-enter-active {
-    // animation: fade-up 1.2s ease;
+.middle-to-top-enter {
+    height: 100vh;
 }
-@keyframes slide-down {
+.router-view.top .middle-to-top-enter-active {
+    transition: height .6s;
+    animation: fade-down .9s;
+}
+@keyframes fade-down {
     0% {
-        transform: translate3d(0, -100%, 0); // to leverage 3d acceleration
+        opacity: 0;
+        // transform: translate3d(0, 200px, 0);
     }
     100% {
-        transform: translate3d(0, 0, 0);
+        opacity: 1;
+        // transform: translate3d(0, -200px, 0); // to leverage 3d acceleration
     }
 }
 .router-view.top .top-to-middle-leave-active {

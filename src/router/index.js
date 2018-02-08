@@ -1,12 +1,12 @@
 import Vue from 'vue';
 import store from '@/store/index';
 import Router from 'vue-router';
-import HomePage from '@/components/pages/HomePage';
-import TestInterface from '@/components/visualization/TestInterface';
-import Gallery from '@/components/pages/Gallery';
-import FlightSimulator from '@/components/pages/FlightSimulator';
-import About from '@/components/pages/About';
-import Impressum from '@/components/pages/Impressum';
+import HomePage from 'Pages/HomePage';
+import TestInterface from 'Components/visualization/TestInterface';
+import Gallery from 'Pages/Gallery';
+import FlightSimulator from 'Pages/FlightSimulator';
+import About from 'Pages/About';
+import AeroceneExplorer from 'Pages/AeroceneExplorer';
 
 Vue.use(Router);
 
@@ -24,7 +24,7 @@ const router = new Router({
     },
     {
       path: '/flight-simulator',
-      name: 'FlightSimulator',
+      name: 'flight-simulator',
       component: FlightSimulator,
       meta: {
         bodyClass: 'flight-simulator no-scroll',
@@ -37,21 +37,23 @@ const router = new Router({
       component: About,
       meta: {
         bodyClass: 'about upper-content',
-        scrollToTop: true,
+        position: 'top',
+      },
+    },
+    {
+      path: '/aerocene-explorer',
+      name: 'aerocene-explorer',
+      component: AeroceneExplorer,
+      meta: {
+        bodyClass: 'aerocene-explorer upper-content',
         position: 'top',
       },
     },
     {
       path: '/gallery',
-      name: 'Gallery',
+      name: 'gallery',
       component: Gallery,
       meta: { bodyClass: 'gallery' },
-    },
-    {
-      path: '/impressum',
-      name: 'Impressum',
-      component: Impressum,
-      meta: { bodyClass: 'impressum' },
     },
     {
       path: '/test',

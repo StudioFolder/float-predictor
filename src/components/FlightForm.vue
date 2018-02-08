@@ -83,7 +83,7 @@ export default {
     onSubmit(e) {
       e.preventDefault();
       this.$store.commit('flightSimulator/startAnimation');
-      this.$store.commit('general/toggleForm');
+      this.$store.commit('general/setFormStatus', false);
     },
     setDeparture(e) {
       this.departure =
@@ -94,15 +94,12 @@ export default {
         { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
     },
   },
-  mounted() {
-    this.$store.commit('general/toggleForm');
-  },
 };
 </script>
 <style lang="scss">
     @import "~@/assets/css/_variables_and_mixins.scss";
     .flight-form.container {
-        position: absolute;
+        position: fixed;
         z-index: 5;
         top: 0;
         left: 50%;

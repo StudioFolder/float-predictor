@@ -1,8 +1,8 @@
 <template>
     <nav class="nav-brand">
-        <router-link to="/" class="logo">
+        <div class="logo">
             <div class="title">Aerocene</div><div class="subtitle">Float Predictor</div>
-        </router-link>
+        </div>
         <p class="intro-description">Travel around the earth lifted only by the sun,
             carried only by the wind,
             towards a clean and sustainable future.

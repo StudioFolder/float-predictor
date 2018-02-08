@@ -5,7 +5,7 @@ export default {
     transitionName: '',
     // upperHeight: '0px',
     // bottomHeight: '0px',
-    isChoosingDestination: false,
+    isChoosingDestination: true,
     isMenuOpen: false,
     isInfoBoxOpen: false,
     deviceName: '', // (small, medium, big) or (phone, tablet, desktop) ???
@@ -32,8 +32,8 @@ export default {
     closeMenu(state) {
       state.isMenuOpen = false;
     },
-    toggleForm(state) {
-      state.isChoosingDestination = !state.isChoosingDestination;
+    setFormStatus(state, value) {
+      state.isChoosingDestination = value;
     },
   },
   getters: {
