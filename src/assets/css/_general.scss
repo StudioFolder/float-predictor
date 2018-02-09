@@ -50,32 +50,28 @@ body {
       height: 70vh;
     }
     .call-to-action {
-      //position: relative;
-      //width: 450px;
-      //height: 70vh;
-      //display: flex;
-      //flex-flow: column;
-      //align-items: center;
-      //justify-content: center;
     }
-  /*
-    .router-view.top .main-content {
-      //height: 60vh;
-    }
-    .main-visualization-wrapper {
-      bottom: 0;
-      height: 40vh;
-    }
-  */
   }
 
+  &.gallery {
+    .router-view.top .main-content {
+      height: 0;
+    }
+    .main-visualization-wrapper {
+      margin-top: -70vh;
+      height: 100vh;
+    }
+  }
   
   &.flight-simulator {
     .cover {
-      // display: none;
+      display: none;
     }
     .router-view.bottom {
       height: 0vh;
+    }
+    .main-visualization-wrapper {
+      height: 100vh;
     }
     .main-application {
       &.choosing-destination {

@@ -8,36 +8,35 @@
             <div class="menu-section">
                 <ul class="list-group menu-items">
                     <router-link to="/flight-simulator">
-                        <li class="menu-item --logo" @click="closeAction">
-                            <img src="~img/globe_illustration.svg"></li>
-                        <li class="menu-item --nav" @click="closeAction">
-                            start a new<br>aerosolar journey</li>
+                        <li class="menu-item --logo">
+                            <img src="~img/globe_illustration.svg" @click="closeAction"></li>
+                        <li class="menu-item --nav">
+                            <div @click="closeAction">start a new<br>aerosolar journey</div></li>
                     </router-link>
                 </ul>
             </div>
         </div>
         <div class="body">
             <div class="menu-section">
-                <ul class="list-group menu-items" @click="closeAction">
-                    <li class="menu-item --nav">
+                <ul class="list-group menu-items">
+                    <li class="menu-item --nav" @click="closeAction">
                         <router-link to="/about">
                             About</router-link></li>
-                    <li class="menu-item --nav">
+                    <li class="menu-item --nav" @click="closeAction">
                         <router-link to="/gallery">
                             Aeroglyphs archive</router-link></li>
-                    <li class="menu-item --nav">
+                    <li class="menu-item --nav" @click="closeAction">
                         <router-link to="/aerocene-explorer">
                             Aerocene explorer</router-link></li>
-                    <li class="menu-item --nav">
+                    <li class="menu-item --nav" @click="closeAction">
                         <router-link to="/resources">
                             Resources and APIs</router-link></li>
-                    <li class="menu-item --nav">
+                    <li class="menu-item --nav" @click="closeAction">
                         <a href="#" @click.prevent v-b-modal.instruction-modal>
-                            Instructions</a>
-                    </li>
-                    <li class="menu-item --nav">
-                        <router-link to="/impressum">
-                            Impressum</router-link></li>
+                            Instructions</a></li>
+                    <li class="menu-item --nav" @click="closeAction">
+                        <a href="#" @click.prevent v-b-modal.impressum-modal>
+                            Impressum</a></li>
                     <li class="menu-item --nav">Disclaimer</li>
                 </ul>
             </div>

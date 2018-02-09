@@ -93,7 +93,7 @@ export default {
     },
   },
   mounted() {
-    this.upperHeight = `${this.$refs.content.clientHeight}px`;
+    this.upperHeight = (this.$refs.content) ? `${this.$refs.content.clientHeight}px` : 0;
   },
 };
 </script>

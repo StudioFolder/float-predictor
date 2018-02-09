@@ -1,5 +1,7 @@
 <template>
-    <li class="nav-item explorer-item --rounded" :style="{opacity: opacity}">
+    <li class="nav-item explorer-item --rounded"
+        :style="{opacity: opacity}"
+        @click="onClick">
         <div class="explorer-id">
             {{explorer}}
         </div>
@@ -26,6 +28,11 @@ export default {
     dashOffset() { return this.circumference * ((16 - this.day) / 16); },
     dashArray() { return `${this.circumference * ((this.id) / 16)}, 1000`; },
   },
+  methods: {
+    onClick() {
+      this.$store.commit('flightSimulator/setFocusedExplorer', this.day);
+    },
+  },
   watch: {
     day(day) {
       if (day >= this.explorer) {
@@ -41,14 +48,18 @@ export default {
 $r: calc(#{$itemWidth}/2 + 2px );
 $pi: 3.14159;
 
-.explorer-item {
+.explorers-dashboard .explorer-item {
     margin-bottom: 1rem;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: opacity .3s;
-
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0);
+    &:hover {
+        background-color: rgba(255, 255, 255, .1);
+    }
     .explorer-id {
         position: absolute;
         z-index: 10;

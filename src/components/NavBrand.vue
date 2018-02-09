@@ -3,16 +3,25 @@
         <div class="logo">
             <div class="title">Aerocene</div><div class="subtitle">Float Predictor</div>
         </div>
-        <p class="intro-description">Travel around the earth lifted only by the sun,
+        <p class="intro-description"
+           v-if="isDescriptionActive">
+            Travel around the earth lifted only by the sun,
             carried only by the wind,
             towards a clean and sustainable future.
         </p>
-        <div><router-link to="/about" class="read-more">read more</router-link></div>
+        <div v-if="isDescriptionActive">
+            <router-link to="/about" class="read-more">read more</router-link>
+        </div>
     </nav>
 </template>
 <script>
 export default {
   name: 'navigation',
+  computed: {
+    isDescriptionActive() {
+      return !this.$store.state.flightSimulator.isActive;
+    },
+  },
 };
 </script>
 <style lang="scss">

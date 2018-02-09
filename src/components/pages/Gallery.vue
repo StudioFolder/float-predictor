@@ -4,14 +4,18 @@
     <b-container >
     <h1>Gallery</h1>
     <b-row>
-      <b-col class="gallery-item" lg ="2" md="3" sm="4" cols="6"
-        v-for="item in data" :key="item.id">
-        <img v-bind:src="getSVGPath(item)"/>
-        <span>
+      <b-col cols="10" offset="1">
+        <b-row>
+          <b-col class="gallery-item" lg="2" md="3" sm="4" cols="6"
+                 v-for="item in data" :key="item.id">
+            <img v-bind:src="getSVGPath(item)"/>
+            <span>
           <strong>{{item.departure.city}}</strong>
           to <strong>{{item.destination.city}}</strong>
         </span>
-        <span>{{getDate(item.created)}}</span>
+            <span>{{getDate(item.created)}}</span>
+          </b-col>
+        </b-row>
       </b-col>
     </b-row>
   <div v-if="!done" class='small-loader'>

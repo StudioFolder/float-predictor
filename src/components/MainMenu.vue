@@ -2,7 +2,7 @@
     <div class="main-menu">
         <div class="menu">
             <b-nav vertical>
-                <b-nav-item @click="toggleMenu" class="--rounded --black --correction">
+                <b-nav-item @click="openMenu" class="--rounded --black --correction">
                     <i class="fp fp-menu"></i></b-nav-item>
                 <b-nav-item v-show="isAnimationActive" @click="toggleInfoBox" class="--rounded">
                     <i :class="[isInfoBoxOpen ? 'fp-close' : 'fp-info', 'fp']"></i></b-nav-item>
@@ -35,7 +35,8 @@ export default {
     toggleInfoBox() {
       this.isInfoBoxOpen = !this.isInfoBoxOpen;
     },
-    toggleMenu() {
+    openMenu() {
+      this.isInfoBoxOpen = false;
       this.$store.commit('general/toggleMenu');
     },
   },

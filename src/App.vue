@@ -4,6 +4,8 @@
          :class="{'choosing-destination': isChoosing}">
         <nav-brand/>
         <main-menu />
+        <on-board-navigation>
+        </on-board-navigation>
         <div class="router-view top" id="topContent">
             <transition
                     :name="transitionName"
@@ -29,6 +31,8 @@
         <div class="footer modal-contents">
             <instructions>
             </instructions>
+            <impressum>
+            </impressum>
         </div>
     </div>
 </template>
@@ -40,6 +44,8 @@ import navBrand from './components/NavBrand';
 import mainMenu from './components/MainMenu';
 import visualization from './components/Visualization';
 import instructions from './components/parts/InstructionsModal';
+import impressum from './components/parts/ImpressumModal';
+import onBoardNavigation from './components/parts/OnBoardNavigation';
 
 export default {
   components: {
@@ -47,6 +53,8 @@ export default {
     mainMenu,
     navBrand,
     instructions,
+    impressum,
+    onBoardNavigation,
   },
   name: 'App',
   data() {
@@ -61,6 +69,14 @@ export default {
     isSmall() { return this.$store.state.general.animationHeight === 'small'; },
   },
   methods: {
+    onClick(e) {
+      if (this.$store.state.general.isMenuOpen
+        && !e.target.classList.contains('fp-menu')
+        && !e.target.classList.contains('main-nav')
+      ) {
+        this.$store.commit('general/closeMenu');
+      }
+    },
     beforeEnter() {
       let offsetTop = 0;
       if (this.transitionName === 'top-to-middle') {
