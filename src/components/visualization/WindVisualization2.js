@@ -82,13 +82,23 @@ class WindVisualization {
         a *= this.magnitude;
         uma *= this.magnitude;
         const array = this.lines.geometry.attributes.position.array;
+        // let minv = 900000000000;
+        // let maxv = -1;
+
         for (let i = 0; i < data.length; i += 3) {
+          /*
+          const ddd = new THREE.Vector3(data[i], data[i + 1],
+          data[i + 2]).length(new THREE.Vector3(0, 0, 0));
+          minv = Math.min(ddd, minv);
+          maxv = Math.max(ddd, maxv);
+          */
           const j = i * 2;
           const k = i * 2 + 3;
           array[j] = array[k] + datan[i] * a + data[i] * uma;
           array[j + 1] = array[k + 1] + datan[i + 1] * a + data[i + 1] * uma;
           array[j + 2] = array[k + 2] + datan[i + 2] * a + data[i + 2] * uma;
         }
+        // console.log(`${minv} ${maxv}`);
         this.lines.geometry.attributes.position.needsUpdate = true;
         this.lastUpdateTime = elapsedTime;
         return true;

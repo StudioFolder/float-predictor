@@ -1,7 +1,7 @@
 
 <template>
   <div id ="visualization" class="main-visualization">
-    <div class="labels">
+    <div id="labels">
       <div class="label" id="dialog-label">
         <div class="labeldata">
           The Aerocene Explorer that left from <b>{{departure.city}}</b>
@@ -25,7 +25,7 @@
         {{destination.city}}
       </div>
     </div>
-    <Loading v-if="(loading || saving)"></Loading>
+    <Loading v-if="(loading < 1.0 || saving)"></Loading>
   </div>
 </template>
 <script>
@@ -41,6 +41,8 @@ import animator from './visualization/Animator';
 import Explorer from './visualization/Explorer';
 import WindVisualization from './visualization/WindVisualization';
 import downloader from './visualization/WindDataDownloader';
+import Cities from './visualization/Cities';
+
 
 import colorMap from '../assets/img/colormap/4096.jpg';
 import colorMapA from '../assets/img/colormap/4096A.jpg';
@@ -56,6 +58,7 @@ const STATE_MOVING_TO_DEPARTURE = 1;
 const STATE_ANIMATION_ACTIVE = 2;
 const STATE_MOVING_TO_DESTINATION = 3;
 const STATE_ANIMATION_END = 4;
+const STATE_UNFOCUSED = 5;
 
 
 const THREE = require('three');
@@ -80,9 +83,11 @@ const pars = {
   state: 0,
   speed_d_x_sec: 0.05,
   move_in_time: false,
+  pan_x: 0,
+  pan_y: 0,
   zoom: SCALINGF,
   onboard: false,
-  skip_frame: 0,
+  skip_frame: 1,
   camera_smooth: 0.993,
   camera_distance: 1.5,
   camera_shift: 0.07,
@@ -101,7 +106,7 @@ const pars = {
   sun_light_color: '#ffffff',
   ambient_light_intensity: 0.09,
   ambient_light_color: '#acdfef',
-  auto_rotate: true,
+  auto_rotate: false,
   // EXPLORER
   elapsed_days: 0.001,
   explorer_height_base: 0.025,
@@ -109,6 +114,9 @@ const pars = {
   layers: {
     wind: {
       visible: true,
+      mapping: 0.0,
+      opacity_mapping: false,
+      threshold: 60.0,
       start_color: '#000000',
       end_color: '#ffffff',
       opacity: 0.35,
@@ -123,9 +131,16 @@ const pars = {
 export default {
   name: 'visualization',
   computed: {
-    animationActive() { return this.$store.state.flightSimulator.isActive; },
     activeExplorers() { return this.$store.state.flightSimulator.activeExplorers; },
     focusedExplorer() { return this.$store.state.flightSimulator.focusedExplorer; },
+    active: {
+      get() {
+        return this.$store.state.flightSimulator.isActive;
+      },
+      set(active) {
+        this.$store.commit('flightSimulator/setActive', active);
+      },
+    },
     departure: {
       get() {
         return this.$store.state.flightSimulator.departure;
@@ -140,6 +155,14 @@ export default {
       },
       set(destination) {
         this.$store.commit('flightSimulator/setDestination', destination);
+      },
+    },
+    coordinatesValid: {
+      get() {
+        return this.$store.state.flightSimulator.coordinatesValid;
+      },
+      set(v) {
+        this.$store.commit('flightSimulator/setCoordinatesValid', v);
       },
     },
     elapsedDays: {
@@ -168,7 +191,7 @@ export default {
     },
     loading: {
       get() {
-        return this.$store.state.flightSimulator.isLoading;
+        return this.$store.state.flightSimulator.loading;
       },
       set(value) {
         this.$store.commit('flightSimulator/setLoading', value);
@@ -182,9 +205,33 @@ export default {
         this.$store.commit('flightSimulator/setWinningExplorerData', value);
       },
     },
+    focusedExplorerSpeed: {
+      get() {
+        return this.$store.state.flightSimulator.focusedExplorerSpeed;
+      },
+      set(s) {
+        this.$store.commit('flightSimulator/setFocusedExplorerSpeed', s);
+      },
+    },
+    focusedExplorerDistance: {
+      get() {
+        return this.$store.state.flightSimulator.focusedExplorerDistance;
+      },
+      set(d) {
+        this.$store.commit('flightSimulator/setFocusedExplorerDistance', d);
+      },
+    },
+    visualizationState: {
+      get() {
+        return this.$store.state.flightSimulator.visualizationState;
+      },
+      set(v) {
+        this.$store.commit('flightSimulator/setVisualizationState', v);
+      },
+    },
   },
   watch: {
-    animationActive(isActive) {
+    active(isActive) {
       if (isActive) {
         this.start();
         _.each(this.explorers, () => {
@@ -205,13 +252,33 @@ export default {
       console.log(`Departure: ${departure.lat} ${departure.lng}`);
       const t = Util.latLon2XYZPosition(departure.lat, departure.lng, radius);
       departingSphere.visible = true;
+      destinationSphere.visible = true;
       departingSphere.position.set(t.x, t.y, t.z);
+
+      this.clear();
+
+      const polar = (1.0 - ((this.departure.lat + 270) / 180.0) % 1) * Math.PI;
+      const azimuth = ((this.departure.lng + 90) / 360.0) * 2 * Math.PI;
+      controls.setAzimuthalAngle(azimuth - Math.PI * 0.5);
+      controls.setPolarAngle(polar);
+      const ts = (-earthRotation - azimuth) / (Math.PI * 2) % 1;
+      this.startingDate.setTime(this.startingDate.getTime() + (ts * 24.0 * 60 * 60 * 1000));
+      const r = Util.getEarthAzimuthRotation(this.startingDate);
+      const sunP = new THREE.Vector3(Math.sin(-r) * radius, Math.sin(axesRotation) * radius, Math.cos(-r) * radius);
+      const angle = departingSphere.position.angleTo(sunP);
+      if (angle >= 1.5) {
+        this.coordinatesValid = false;
+      }
+      console.log(`Angle: ${angle} <= 1.5 ?`);
     },
     destination(destination) {
       console.log(`Destination: ${destination.lat} ${destination.lng}`);
       const t = Util.latLon2XYZPosition(destination.lat, destination.lng, radius);
       destinationSphere.visible = true;
       destinationSphere.position.set(t.x, t.y, t.z);
+    },
+    visualizationState(s) {
+      this.setState(s);
     },
   },
   data() {
@@ -263,8 +330,8 @@ export default {
       this.initStarfield();
       this.setupExplorers();
       this.initNightMap();
-      this.initLabel();
-      this.setState(STATE_IDLE);
+      this.initLabels();
+      this.visualizationState = STATE_IDLE;
       this.initWindVisualization();
       this.initFPSChecker();
       // Setting default destination / departure
@@ -299,21 +366,19 @@ export default {
                 this.lowFPS -= 1;
                 this.highFPS = 0;
                 if (this.lowFPS <= 0) {
-                  if (pars.skip_frame < 1) {
+                  if (pars.skip_frame < 3) {
                     pars.skip_frame += 1;
                     console.log(`-------------------------- Setting skip to ${pars.skip_frame}`);
                   } else {
                     const lpr = pars.pixel_ratio;
                     if (fps < 40) {
-                      pars.pixel_ratio = Math.max(1, pars.pixel_ratio - 0.5);
-                    } else if (fps < 50) {
-                      pars.pixel_ratio = Math.max(1, pars.pixel_ratio - 0.25);
+                      pars.pixel_ratio = Math.max(1, pars.pixel_ratio - 1.0);
                     } else {
-                      pars.pixel_ratio = Math.max(1, pars.pixel_ratio - 0.1);
+                      pars.pixel_ratio = Math.max(1, pars.pixel_ratio - 0.5);
                     }
                     if (pars.pixel_ratio !== lpr) {
                       renderer.setPixelRatio(pars.pixel_ratio);
-                      // console.log(`--------------------------------- Setting PixelRatio to ${pars.pixel_ratio}`);
+                      console.log(`--------------------------------- Setting PixelRatio to ${pars.pixel_ratio}`);
                     }
                   }
                   this.lowFPS = COUNTDOWN;
@@ -325,11 +390,14 @@ export default {
                   this.highFPS = 0;
                 }
                 if (this.highFPS > 7) {
-                  const lpr = pars.pixel_ratio;
-                  pars.pixel_ratio = Math.min(2, pars.pixel_ratio + 0.1);
-                  if (pars.pixel_ratio !== lpr) {
-                    renderer.setPixelRatio(pars.pixel_ratio);
-                    // console.log(` += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1 += 1+ Setting PixelRatio to ${pars.pixel_ratio}`);
+                  if (pars.skip_frame > 0) {
+                    pars.skip_frame -= 1;
+                  } else {
+                    const lpr = pars.pixel_ratio;
+                    pars.pixel_ratio = Math.min(2, pars.pixel_ratio + 0.1);
+                    if (pars.pixel_ratio !== lpr) {
+                      renderer.setPixelRatio(pars.pixel_ratio);
+                    }
                   }
                   this.highFPS = 0;
                 }
@@ -338,6 +406,22 @@ export default {
             }
             pars.fps = fps;
             fps = 0;
+            if (pars.onboard) {
+              this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(2);
+              this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
+              const coord = Util.XYZ2LatLon(explorers[this.onboardIndex].animatingSphere.position);
+              const cities = Cities.get(coord);
+              for (let i = 0; i < this.cityLabels.length; i += 1) {
+                if (i < cities.length) {
+                  if (this.rotationIndex === undefined) {
+                    this.rotationIndex = 0;
+                  }
+                  this.rotationIndex = this.rotationIndex % this.cityLabels.length;
+                  this.cityLabels[this.rotationIndex].reset(cities[i]);
+                  this.rotationIndex += 1;
+                }
+              }
+            }
           },
           1000,
         );
@@ -352,10 +436,45 @@ export default {
       NightMap.setColor(pars.nightmap_color);
     },
 
-    initLabel() {
-      this.label = new Label(scene, camera, explorers[0].animatingSphere, document.getElementById('dialog-label'), false);
-      this.departureLabel = new Label(scene, camera, departingSphere, document.getElementById('departure-label'), false);
-      this.destinationLabel = new Label(scene, camera, destinationSphere, document.getElementById('destination-label'), false);
+    initLabels() {
+      this.labels = [];
+      this.labels.push(new Label(scene, camera, explorers[0].animatingSphere, document.getElementById('dialog-label'), true));
+      this.labels.push(new Label(scene, camera, departingSphere, document.getElementById('departure-label'), true));
+      this.labels.push(new Label(scene, camera, destinationSphere, document.getElementById('destination-label'), true));
+
+      this.cityLabels = [];
+      Cities.init();
+      for (let i = 0; i < 8; i += 1) {
+        const el = document.createElement('div');
+        el.classList.add('label');
+        document.getElementById('labels').appendChild(el);
+        const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+        sphere.visible = false;
+        scene.add(sphere);
+        // class="label"
+        this.cityLabels.push(new Label(scene, camera, sphere, el, true));
+      }
+      /*
+
+      const array = Cities.getList();
+      for (let y = 0; y < array.length; y += 1) {
+        for (let x = 0; x < array[y].length; x += 1) {
+          for (let j = 0; j < array[y][x].length; j += 1) {
+            const el = document.createElement('div');
+            el.classList.add('label');
+            document.getElementById('labels').appendChild(el);
+            el.innerHTML += array[y][x][j].city;
+            const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+            const pos = Util.latLon2XYZPosition(array[y][x][j].lat, array[y][x][j].lng, radius);
+            sphere.position.set(pos.x, pos.y, pos.z);
+            scene.add(sphere);
+            // class="label"
+            this.labels.push(new Label(scene, camera, sphere, el, true));
+            break;
+          }
+        }
+      }
+      */
     },
 
     initWindVisualization() {
@@ -372,6 +491,10 @@ export default {
       WindVisualization.lines.material.color = new THREE.Color(pars.layers.wind.color);
       WindVisualization.setOpacity(pars.layers.wind.opacity);
       WindVisualization.setMagnitude(pars.layers.wind.magnitude);
+      WindVisualization.setMapping(pars.layers.wind.mapping);
+      WindVisualization.setOpacityMapping(pars.layers.wind.opacity_mapping);
+      WindVisualization.setThreshold(pars.layers.wind.threshold);
+
       WindVisualization.precision = pars.layers.wind.precision;
       scene.add(WindVisualization.lines);
     },
@@ -432,7 +555,7 @@ export default {
       this.renderer = renderer;
       // scene
       scene = new THREE.Scene();
-      scene.scale.set(SCALINGF, SCALINGF, SCALINGF);
+      this.setScale(SCALINGF);
       // scene.fog = new THREE.Fog( 0x333333, 0.0001 );
       // camera
       camera = new THREE.PerspectiveCamera(40, renderer.getSize().width / renderer.getSize().height, 0.1, 10000);
@@ -449,6 +572,8 @@ export default {
       controls.addEventListener('change', this.updateLabels);
       controls.addEventListener('start', () => { this.interacting = true; this.autoMode = false; }, false);
       controls.addEventListener('end', () => { this.interacting = false; }, false);
+      controls.addEventListener('scale', () => { this.setScale(scene.scale.x); }, false);
+
       // light
       pointLight = new THREE.PointLight(pars.sun_light_color);
       pointLight.intensity = pars.spot_light_intensity;
@@ -474,11 +599,11 @@ export default {
 
       earthSphere.material.needsUpdate = true;
 
-      departingSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      departingSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
       scene.add(departingSphere);
       departingSphere.visible = false;
 
-      destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
       scene.add(destinationSphere);
       destinationSphere.visible = false;
 
@@ -500,10 +625,8 @@ export default {
       // textures
       console.log('loading textures');
       const afterLoad = () => {
-        loaded += 1;
-        if (loaded === 3) { // All 3 textures are loaded
-          this.loading = false;
-        }
+        this.loading += 0.34;
+        console.log(`loading: ${this.loading}`);
       };
       bumpTexture = new THREE.TextureLoader().load(bumpMap, () => { console.log('bumb loaded'); afterLoad(); });
       colorTexture = new THREE.TextureLoader().load(colorMap, () => { console.log('color loaded'); afterLoad(); });
@@ -511,13 +634,19 @@ export default {
     },
 
     updateLabels() {
-      this.label.updatePosition();
-      this.departureLabel.updatePosition();
-      this.destinationLabel.updatePosition();
+      for (let i = 0; i < this.labels.length; i += 1) {
+        this.labels[i].updatePosition();
+      }
+      if (pars.onboard) {
+        for (let i = 0; i < this.cityLabels.length; i += 1) {
+          this.cityLabels[i].updatePosition();
+        }
+      }
     },
 
     start() {
-      this.setState(STATE_MOVING_TO_DEPARTURE);
+      this.visualizationState = STATE_IDLE;
+      this.visualizationState = STATE_MOVING_TO_DEPARTURE;
     },
 
     initGUI() {
@@ -525,16 +654,22 @@ export default {
       general.add(pars, 'active').onChange(() => {
         this.start();
       });
-      general.add(pars, 'state', 0, 10).step(1).listen().onChange(value => this.setState(value));
+      general.add(pars, 'state', 0, 10).step(1).listen().onChange((value) => { this.visualizationState = value; });
       general.add(pars, 'elapsed_days', 0.0, 16.0).listen();
       general.add(pars, 'auto_rotate');// .onChange(function(value) {controls.autoRotate=value;});
       general.add(pars, 'sun_visible').onChange((value) => { sunSphere.visible = value; });
       general.add(pars, 'move_in_time');
       general.add(pars, 'speed_d_x_sec', 0, 2);
       general.add(pars, 'pixel_ratio', 1, 3).listen().onChange((value) => { renderer.setPixelRatio(value); });
-      general.add(pars, 'skip_frame', 0, 2).step(1).listen();
+      general.add(pars, 'skip_frame', 0, 60).step(1).listen();
       general.add(pars, 'fps', 0, 60).listen();
-      general.add(pars, 'zoom', 0.1, 2.0).listen().onChange((value) => { console.log('changed'); scene.scale.set(value, value, value); });
+      general.add(controls.target, 'x', -1000.0, 1000.0).listen().onChange(() => {
+        controls.update();
+      });
+      general.add(controls.target, 'y', -1000.0, 1000.0).listen().onChange(() => {
+        controls.update();
+      });
+      general.add(pars, 'zoom', 0.1, 2.0).listen().onChange((value) => { console.log('changed'); this.setScale(value); });
       general.add(pars, 'zoom_enabled').onChange((value) => { controls.enableZoom = value; });
       const onboard = gui.addFolder('onboard');
       onboard.add(pars, 'onboard');
@@ -584,6 +719,9 @@ export default {
       wind.addColor(pars.layers.wind, 'start_color').onChange(() => { WindVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
       wind.addColor(pars.layers.wind, 'end_color').onChange(() => { WindVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
 
+      wind.add(pars.layers.wind, 'mapping', { 'NO MAPPING': 0.0, 'RGB MAPPING': 1.0, 'HUE MAPPING': 2.0 }).onChange((v) => { WindVisualization.setMapping(v); });
+      wind.add(pars.layers.wind, 'opacity_mapping').onChange((value) => { WindVisualization.setOpacityMapping(value); });
+      wind.add(pars.layers.wind, 'threshold', 0, 200).onChange((value) => { WindVisualization.setThreshold(value); });
       wind.add(pars.layers.wind, 'opacity', 0, 1).onChange((value) => { WindVisualization.setOpacity(value); });
       wind.add(pars.layers.wind, 'magnitude', 0, 3).onChange(() => { WindVisualization.setMagnitude(pars.layers.wind.magnitude); });
       wind.add(pars.layers.wind, 'precision', 0, 5).step(1).onChange((value) => { WindVisualization.precision = value; });
@@ -606,18 +744,12 @@ export default {
           break;
         }
         case STATE_MOVING_TO_DEPARTURE: { // MOVING TO DEPARTURE POINT
-          pars.auto_rotate = false;
           this.clear();
-
-          const polar = (1.0 - ((this.departure.lat + 270) / 180.0) % 1) * Math.PI;
-          const azimuth = ((this.departure.lng + 90) / 360.0) * 2 * Math.PI;
-          controls.setAzimuthalAngle(azimuth - Math.PI * 0.5);
-          controls.setPolarAngle(polar);
-          const t = (-earthRotation - azimuth) / (Math.PI * 2) % 1;
-          this.startingDate.setTime(this.startingDate.getTime() + (t * 24.0 * 60 * 60 * 1000));
+          this.departure = this.departure;
+          pars.auto_rotate = false;
           this.process();
           // controls.update();
-          this.rotateTo({ lat: this.departure.lat, lng: this.departure.lng, time: 0.5, onAnimationEnd: () => this.setState(STATE_ANIMATION_ACTIVE) });
+          this.rotateTo({ lat: this.departure.lat, lng: this.departure.lng, time: 0.5, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_ACTIVE; } });
           break;
         }
         case STATE_ANIMATION_ACTIVE: {
@@ -638,14 +770,19 @@ export default {
           explorers[i].segments.visible = true;
           explorers[i].lineSegmentMaterial.setOpacity(0.2, 2);
           explorers[i].facesMaterial.setOpacity(0.15, 2);
+
+          for (let j = 0; j < this.cityLabels.length; j += 1) {
+            this.cityLabels[j].setVisible(false, true);
+          }
           // GO TO DESTINATION POINT
           const d = Util.XYZ2LatLon(explorers[this.minTrack].animatingSphere.position);// explorers[this.minTrack].destination;
-          this.resetTo({ lat: d.lat, lng: d.lng, time: 1.0, onAnimationEnd: () => this.setState(STATE_ANIMATION_END) });
+          this.resetTo({ lat: d.lat, lng: d.lng, time: 1.0, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_END; } });
           break;
         }
         case STATE_ANIMATION_END: {
           pars.auto_rotate = false;
-          this.label.object = explorers[this.minTrack].animatingSphere;
+          this.active = false;
+          this.labels[0].object = explorers[this.minTrack].animatingSphere;
           const dt = new Date(this.startingDate);// this.valueOf()
           dt.setDate(dt.getDate() + this.minTrack);
           const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -654,14 +791,34 @@ export default {
           console.log(dt);
           console.log(this.departure);
           console.log(`${this.departureDay} ${this.departureMonth} ${this.destination.city} ${this.departure.city}`);
-          this.label.setVisible(true);
+          this.labels[0].setVisible(true);
+          break;
+        }
+        case STATE_UNFOCUSED: {
+          pars.auto_rotate = true;
+          const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
+          const ev = [150, 0.8, Math.PI * 0.5];
+          animator.start({
+            init_values: iv,
+            end_values: ev,
+            time_start: 0,
+            time_interval: 1,
+            sine_interpolation: true,
+            onAnimationEnd: () => {
+            },
+            onAnimationUpdate: (v) => {
+              controls.target.set(controls.target.x, v[0], controls.target.z);
+              this.setScale(v[1]);
+              controls.setPolarAngle(v[2]);
+              controls.update();
+            },
+          });
           break;
         }
         default: {
           break;
         }
       }
-
       pars.state = state;
     },
 
@@ -711,8 +868,8 @@ export default {
       const iv = [controls.getAzimuthalAngle(), controls.getPolarAngle()];
       const ev = [azimuth, polar];
       if (config.zoom) {
-        console.log(`Zooming from ${scene.scale.x} to ${config.zoom}`);
-        iv.push(scene.scale.x);
+        console.log(`Zooming from ${this.getScale()} to ${config.zoom}`);
+        iv.push(this.getScale());
         ev.push(config.zoom);
       }
       if (config.resetTarget) {
@@ -734,7 +891,7 @@ export default {
           let i = 2;
           if (config.zoom) {
             i += 1;
-            scene.scale.set(v[2], v[2], v[2]);
+            this.setScale(v[2]);
           // console.log(v[2])
           }
           if (config.resetTarget) { controls.target.set(v[i], v[i + 1], v[i + 2]); }
@@ -764,8 +921,8 @@ export default {
       // controls.update();
       const iv = [controls.getAzimuthalAngle(), controls.getPolarAngle()];
       const ev = [azimuth, polar];
-      console.log(`Zooming from ${scene.scale.x} to ${config.zoom}`);
-      iv.push(scene.scale.x);
+      console.log(`Zooming from ${this.getScale()} to ${config.zoom}`);
+      iv.push(this.getScale());
       ev.push(SCALINGF);
       iv.push(controls.target.x, controls.target.y, controls.target.z);
       ev.push(0, 0, 0);
@@ -787,7 +944,7 @@ export default {
           controls.setPolarAngle(v[1]);
           let i = 2;
           i += 1;
-          scene.scale.set(v[2], v[2], v[2]);
+          this.setScale(v[2]);
           // console.log(v[2])
           controls.target.set(v[i], v[i + 1], v[i + 2]);
           camera.position.setLength(v[i + 3]);
@@ -795,10 +952,29 @@ export default {
         },
       });
     },
+    setScale(s) {
+      pars.zoom = s;
+      scene.scale.set(s, s, s);
+      for (let i = 0; i < explorers.length; i += 1) {
+        explorers[i].animatingSphere.scale.set(1 / s, 1 / s, 1 / s);
+      }
+      // departingSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
+      // destinationSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
+      if (departingSphere) departingSphere.scale.set(0.5 / s, 0.5 / s, 0.5 / s);
+      if (destinationSphere) destinationSphere.scale.set(0.5 / s, 0.5 / s, 0.5 / s);
+    },
+    getScale() {
+      return pars.zoom;
+    },
 
     setOnboard(v) {
       pars.onboard = v;
       this.autoMode = true;
+      if (!v) {
+        for (let j = 0; j < this.cityLabels.length; j += 1) {
+          this.cityLabels[j].setVisible(v, true);
+        }
+      }
     },
 
     incrementTime() {
@@ -811,11 +987,14 @@ export default {
     },
 
     animate() {
-      if (!this.loading && this.playing) {
+      if (this.loading >= 1 && this.playing) {
         fps += 1;
         WindVisualization.update(pars.elapsed_days);
         animator.update(pars.speed_d_x_sec / 60.0);
-        if (pars.auto_rotate)controls.setAzimuthalAngle(controls.getAzimuthalAngle() + 0.002);
+        if (pars.auto_rotate) {
+          controls.setAzimuthalAngle(controls.getAzimuthalAngle() + 0.002);
+          controls.update();
+        }
         if (pars.move_in_time) { this.incrementTime(); }
 
         const d = new Date(this.startingDate);//
@@ -843,8 +1022,8 @@ export default {
                     const umv = 1 - v;
                     // zoom en
                     if (this.autoMode) {
-                      const t = scene.scale.x * v + pars.camera_zoom * umv;
-                      scene.scale.set(t, t, t);
+                      const t = this.getScale() * v + pars.camera_zoom * umv;
+                      this.setScale(t);
                     }
                     camera.position.set(
                       camera.position.x * v + umv * c.x * pars.camera_distance,
@@ -869,8 +1048,8 @@ export default {
                   const uma = 1 - a;
                   controls.target.set(controls.target.x * a, controls.target.y * a, controls.target.z * a);
                   if (this.autoMode) {
-                    const t = scene.scale.x * a + SCALINGF * uma;
-                    scene.scale.set(t, t, t);
+                    const t = this.getScale() * a + SCALINGF * uma;
+                    this.setScale(t);
                     camera.position.set(camera.position.x * a + v.x * uma, camera.position.y * a + v.y * uma, camera.position.z * a + v.z * uma);
                   }
                   controls.update();
@@ -881,7 +1060,7 @@ export default {
             } else {
               //  console.log("network problems");
             }
-            if (alpha >= 1) { this.setState(STATE_MOVING_TO_DESTINATION); }
+            if (alpha >= 1) { this.visualizationState = STATE_MOVING_TO_DESTINATION; }
             break;
           }
           default:
@@ -891,6 +1070,19 @@ export default {
       //  controls.update();
       if (timer % (1 + pars.skip_frame) === 0) {
         renderer.render(scene, camera);
+        /*
+        MULTI SCREEN EXAMPLE CODE
+        renderer.clear();
+        renderer.autoClear = false;
+        camera.aspect = window.innerWidth * 0.5 / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setViewport(window.innerWidth * 0.0, 0, window.innerWidth * 0.5, window.innerHeight * 1);
+        renderer.render(scene, camera);
+        controls.setAzimuthalAngle(controls.getAzimuthalAngle() + Math.PI);
+        renderer.setViewport(window.innerWidth * 0.5, 0, window.innerWidth * 0.5, window.innerHeight * 1);
+        renderer.render(scene, camera);
+        controls.setAzimuthalAngle(controls.getAzimuthalAngle() - Math.PI);
+        */
       }
       timer += 1;
 
@@ -913,7 +1105,7 @@ export default {
 
     clear() {
       console.log('reset');
-      this.label.setVisible(false);
+      this.labels[0].setVisible(false);
       pars.elapsed_days = 0;
       for (let i = 0; i < explorers.length; i += 1) {
         explorers[i].reset(departingSphere.position);
@@ -941,6 +1133,9 @@ export default {
       this.elapsed_days = 0;
       this.api_data = [];
       console.log('started multi');
+      this.downloadMulti();
+    },
+    downloadMulti() {
       downloader.downloadMulti(this.departure, this.destination,
         (data) => { // ON UPDATE
           if (data.mindist < this.minDist) {
@@ -1015,7 +1210,8 @@ export default {
             min_dist: this.minDist,
             min_time: this.minTime,
             timestamp: this.timestamp,
-            speed: 0,
+            speed: explorers[this.minTrack].avgSpeed,
+            distanceTraveled: explorers[this.minTrack].totalDistance,
             path: data,
             svg: this.svg,
           });
@@ -1039,11 +1235,8 @@ export default {
         },
       );
     },
-
   },
 };
-
-
 </script>
 
 <style>
@@ -1054,11 +1247,12 @@ export default {
   z-index: 0;
 }
 
-.labels{
+#labels{
   width: 100vw;
   height: 100vh;
   position:relative;;
   overflow: hidden;
+  font-size: 10px;
 }
 
 #canvas{

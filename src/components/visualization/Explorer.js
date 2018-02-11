@@ -5,6 +5,8 @@ const THREE = require('three');
 const USE_SPHERES = false;
 let MAX_POINTS = 128;
 const ATTACK_DECAY = 12;
+const EARTH_RADIUS = 6378.137;
+const SCENE_SCALE = EARTH_RADIUS / 200.0;
 
 class Explorer {
   constructor(scene, shift = 0, nPoints = 1) {
@@ -26,26 +28,31 @@ class Explorer {
     };
     this.nPoints = nPoints;
     MAX_POINTS = 128 * this.nPoints;
+    console.log(MAX_POINTS);
     this.scene = scene;
     this.coordinates = [];
     this.index = 0;
     this.destination = { lat: 0, lng: 0 };
     this.array = new Float32Array(MAX_POINTS * 3 * 2);
     this.shift = shift;
-
+    this.speed = [];
+    this.distance = [];
+    this.avgSpeed = 0;
+    this.totalDistance = 0;
     const c = 0xffffff;
     this.lineMaterial = new THREE.LineBasicMaterial({ transparent: true, color: c, linewidth: 1.0 });
     this.sphereMaterial = new THREE.MeshBasicMaterial({ transparent: true, color: c, opacity: 0.0 });
     this.animatingSphereMaterial = new THREE.MeshBasicMaterial({ transparent: true, color: c, opacity: 1.0 });
     this.facesMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.0, side: THREE.DoubleSide });
     this.lineSegmentMaterial = new THREE.LineBasicMaterial({ transparent: true, color: 0xaaaaaa, opacity: 0.0, linewidth: 1.0 });
-
+    this.lastPosition = new THREE.Vector3(0, 0, 0);
     this.spheres = [];
     const lineIndexes = [];
     const segmentIndexes = [];
-
     // console.log(MAX_POINTS);
     for (let i = 0; i < MAX_POINTS; i += 1) {
+      this.distance.push(0);
+      this.speed.push(0);
       // lineIndexes.push((i-1)*2);
       lineIndexes.push(((i) * 2) + 1);
       // lineIndexes.push((i+1)*2+1);
@@ -81,7 +88,7 @@ class Explorer {
     this.reset();
   }
 
-  getCurrentCoordinates = function getCurrentCoordinates() {
+  getCoordinates = function getCoordinates() {
     return this.coordinates[this.index];
   };
 
@@ -153,7 +160,12 @@ class Explorer {
     }
     return false;
   };
-
+  getSpeed = function getSpeed() {
+    return this.speed[this.index];
+  };
+  getDistance = function getDistance() {
+    return this.distance[this.index];
+  };
   addDataSample = function addDataSample(position, coordinates, h) {
     let s = 0;
     const pIndex = this.length - this.shift;
@@ -173,6 +185,12 @@ class Explorer {
 
     if (this.length === MAX_POINTS - 1) {
       this.destination = { lat: coordinates.lat, lng: coordinates.lng };
+      this.avgSpeed = 0;
+      for (let i = 0; i < this.speed.length; i += 1) {
+        this.avgSpeed += this.speed[i];
+      }
+      this.avgSpeed = this.avgSpeed / this.speed.length;
+      this.totalDistance = this.distance[this.distance.length - 1];
     }
     if (this.length < MAX_POINTS) {
       this.array[2 * this.length * 3] = position.x;
@@ -185,6 +203,13 @@ class Explorer {
     } else {
       console.log('this is strange...got more points than expected - Explorer');
     }
+    if (this.length > 0) {
+      const d = position.distanceTo(this.lastPosition) * SCENE_SCALE;
+      this.distance[this.length] = this.distance[this.length - 1] + d;
+      this.speed[this.length] = d;
+    }
+    this.lastPosition.set(position.x, position.y, position.z);
+    this.coordinates[this.length] = { lat: coordinates.lat, lng: coordinates.lng };
     this.length += 1;
   }
 }

@@ -445,6 +445,12 @@ module.exports = function(THREE) {
 
 		};
 
+		this.panUp = function (y) {
+
+			return constraint.panUp(y);
+
+		};
+
 		// Set to false to disable this control
 		this.enabled = true;
 
@@ -511,6 +517,7 @@ module.exports = function(THREE) {
 		var changeEvent = { type: 'change' };
 		var startEvent = { type: 'start' };
 		var endEvent = { type: 'end' };
+		var scaleEvent = { type: 'scale' };
 
 		// pass in x,y of change desired in pixel space,
 		// right and down are positive
@@ -710,6 +717,8 @@ module.exports = function(THREE) {
 			else
 				constraint.scene.scale.set(constraint.scene.scale.x*dscaling,constraint.scene.scale.x*dscaling,constraint.scene.scale.x*dscaling);
 			scope.dispatchEvent( changeEvent );
+			scope.dispatchEvent( scaleEvent );
+
 			scope.update();
 			scope.dispatchEvent( startEvent );
 			scope.dispatchEvent( endEvent );

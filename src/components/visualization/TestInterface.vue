@@ -42,13 +42,12 @@
         </li>
       </ul>
     </div>
-    <div class="bottom-right-panel">
-      <!--
-      <a v-on:click="playing=!playing"><span style="white-space: pre;"
-      v-if="playing">PAUSE ||</span><span style="white-space: pre;" v-else> PLAY ></span> </a>
-      <a v-on:click="toSave=true"> SAVE </a>
-      <a v-on:click="toShare=true;toSave=true;"> SHARE </a>
-      -->
+    <div v-if="focusedExplorer!=0" class="bottom-right-panel">
+      <ul>
+        <li>EXPLORER DATA</li>
+        <li>Speed: {{focusedExplorerSpeed}}</li>
+        <li>Distance: {{focusedExplorerDistance}}</li>
+      </ul>
     </div>
   </div>
 </template>
@@ -77,6 +76,12 @@ export default {
       set(value) {
         this.$store.commit('flightSimulator/setFocusedExplorer', value);
       },
+    },
+    focusedExplorerSpeed() {
+      return this.$store.state.flightSimulator.focusedExplorerSpeed;
+    },
+    focusedExplorerDistance() {
+      return this.$store.state.flightSimulator.focusedExplorerDistance;
     },
     saving: {
       get() {

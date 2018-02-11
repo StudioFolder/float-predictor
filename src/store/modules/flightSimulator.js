@@ -1,4 +1,4 @@
-import _ from 'lodash';
+// import _ from 'lodash';
 
 export default {
   namespaced: true,
@@ -7,12 +7,14 @@ export default {
     isActive: false, // are we flying yet?
     isPlaying: true, // play/pause
     isSaving: false, // saving true sve image then sets to false
-    isLoading: true, // if true show loading spinner while loading assets
+    loading: 0, // percentage of loading assets. Value in range [0-1].
     isWindVisible: true, // not yet implemented
     focusedExplorer: 0, // this is for onBoardExperience, if 0 none is focused
     focusedExplorerSpeed: 0, // onBoard data
     focusedExplorerDistance: 0, // onBoard data
     elapsedDays: 0,
+    coordinatesValid: false,
+    visualizationState: 0,
     departure: {
       lat: 52.520645,
       lng: 13.409779,
@@ -42,6 +44,9 @@ export default {
     startAnimation(state) {
       state.isActive = true;
     },
+    setActive(state, active) {
+      state.isActive = active;
+    },
     saveImage(state) { // the image will be saved after the next rendering
       state.isSaving = true;
     },
@@ -64,19 +69,25 @@ export default {
       state.focusedExplorerSpeed = explorerSpeed;
     },
     setFocusedExplorerDistance(state, explorerDistance) {
-      state.focusedExplorerSpeed = explorerDistance;
+      state.focusedExplorerDistance = explorerDistance;
     },
     setElapsedDays(state, days) {
       state.elapsedDays = days;
     },
     setLoading(state, isLoading) {
-      state.isLoading = isLoading;
+      state.loading = isLoading;
     },
     setSaving(state, isSaving) {
       state.isSaving = isSaving;
     },
     setWinningExplorerData(state, data) {
       state.winningExplorerData = data;
+    },
+    setCoordinatesValid(state, v) {
+      state.coordinatesValid = v;
+    },
+    setVisualizationState(state, s) {
+      state.visualizationState = s;
     },
   },
   actions: {
