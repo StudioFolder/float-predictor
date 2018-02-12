@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="14px" height="14px" viewBox="0 0 14 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Icons-/-Legend-Hover-Copy" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-23.000000, -23.000000)" stroke-linecap="round">
+        <g id="Group-2" transform="translate(24.000000, 24.000000)" stroke="#1E1E1E" stroke-width="2">
+            <path d="M0.352941176,0.352941176 L11.9946512,11.9946512" id="Line"></path>
+            <path d="M0.352941176,0.352941176 L11.9946512,11.9946512" id="Line-Copy" transform="translate(6.000000, 6.000000) scale(-1, 1) translate(-6.000000, -6.000000) "></path>
+        </g>
+    </g>
+</svg>

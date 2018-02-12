@@ -1,8 +1,119 @@
 body {
   background-color: $bodyColor;
   color: $textColor;
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  font-weight: 300;
-  letter-spacing: 1px;
+  top: 0;
+  position: relative;
+
+  &.no-scroll {
+    overflow: hidden;
+  }
+  .main-application, .router-view {
+    position: relative;
+    // height: 100vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-end;
+  }
+  .main-visualization-wrapper {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    //transition: height 1s;
+    &.small {
+      height: 30vh;
+    }
+  }
+  .router-view .main-content{
+    overflow: hidden;
+    transform: translateZ(0);
+    // transition: height .9s ease;
+  }
+  .cover {
+    position: absolute;
+    background: transparent;
+    height: 100%;
+    width: 100%;
+    z-index: 19; // 1 meno dei comandi
+  }
+
+  &.upper-content {
+    .router-view.bottom {
+      height: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+  }
+
+  // overrides
+  &.home {
+    .router-view.top .main-content{
+      height: 70vh;
+    }
+    .call-to-action {
+    }
+  }
+
+  &.gallery {
+    .router-view.top .main-content {
+      height: 0;
+    }
+    .main-visualization-wrapper {
+      margin-top: -70vh;
+      height: 100vh;
+    }
+  }
+  
+  &.flight-simulator {
+    .cover {
+      display: none;
+    }
+    .router-view.bottom {
+      height: 0vh;
+    }
+    .main-visualization-wrapper {
+      height: 100vh;
+    }
+    .main-application {
+      &.choosing-destination {
+        .router-view.top {
+          //height: 50vh;
+          justify-content: flex-start;
+        }
+        .main-visualization-wrapper {
+          height: 100vh;
+        }
+      }
+    }
+  }
 }
 
+// buttons
+.btn {
+  font-size: 0.9em;
+  padding: 0.3em 1.6em;
+  text-transform: uppercase;
+  margin-top: 1em;
+
+  &.btn-primary {
+    border: 1px solid #fff;
+    border-radius: 4px;
+    background-color: transparent;
+    color: #fff;
+
+    &:not(:disabled):hover, &:not(:disabled):active {
+      background-color: #FFF;
+      color: $bodyColor;
+    }
+  }
+}
+
+.main-content {
+  h1, h2, h3 {
+    text-align: center;
+  }
+}
+article {
+  padding: $marginBase 0;
+  max-width: 30rem;
+  margin: 0 auto;
+}

@@ -11,14 +11,19 @@ $xsmall: 320px;
 $primary: #2936e7;
 $bodyColor: #000;
 $textColor: #fff;
+$gray: rgba(255, 255, 255, 0.5);
 $lightGray: rgba(255, 255, 255, 0.2);
+$lightBlack: #1E1E1E;
 
 
 /* static assets paths */
 $asset-base-path: '../../../static/' !default;
 $img-base-path: '../../../static/img/' !default;
 
-
+$marginBase: 3.125rem;
+$itemWidth: 2rem;
+$marginItem: .55rem;
+$correction: -.75rem;
 
 /// Asset URL builder
 /// @access private

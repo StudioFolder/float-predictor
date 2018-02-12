@@ -4,7 +4,7 @@ import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
 import BootstrapCSS from 'bootstrap/dist/css/bootstrap.min.css';
 import InfiniteScroll from 'vue-infinite-scroll';
-
+import vbclass from 'vue-body-class';
 import App from './App';
 import router from './router';
 import store from './store';
@@ -14,6 +14,7 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(BootstrapCSS);
 Vue.use(InfiniteScroll);
+Vue.use(vbclass, router);
 
 /* eslint-disable no-new */
 new Vue({

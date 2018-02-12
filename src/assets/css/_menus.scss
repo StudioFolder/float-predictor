@@ -1,0 +1,85 @@
+.main-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  padding: $marginBase;
+  z-index: 20;
+}
+.menu-items a {
+  text-decoration: none;
+}
+.menu-item {
+  color: $gray;
+  font-size: .9em;
+
+  a {
+    color: $gray;
+    text-decoration: none;
+    &.router-link-active {
+      color: #FFF;
+    }
+  }
+  &.--logo img{
+    max-width: 75px;
+  }
+  &.--nav {
+    margin: $marginItem 0;
+    @extend %colfax_med;
+    text-transform: uppercase;
+  }
+  &.--link {
+    margin: .5rem 0;
+  }
+}
+.list-group {
+  &.horiziontal {
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+  }
+}
+
+.main-nav {
+  background-color: $lightBlack;
+  padding: $marginBase;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 10;
+  .header {
+    .nav {
+      align-items: flex-end;
+      margin-bottom: .5rem;
+    }
+    .menu-items {
+      text-align: center;
+    }
+  }
+  .menu-section {
+    padding: .75rem 0;
+  }
+}
+.nav-item {
+  margin: $marginItem 0;
+  width: $itemWidth;
+  height: $itemWidth;
+  &.--rounded {
+    background-color: $lightGray;
+    border-radius: 50%;
+  }
+  &.--black {
+    background-color: transparent;
+  }
+  &.--white {
+    background-color: #FFF;
+  }
+  &.--correction {
+    margin-top: -$marginItem;
+  }
+  i {
+    margin: 0 auto;
+    line-height: 2em;
+    height: 100%
+  }
+}

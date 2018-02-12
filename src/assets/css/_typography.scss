@@ -1,65 +1,63 @@
 @font-face {
   font-family: "Colfax-Bold";
-  src: url("/static/fonts/Colfax/Colfax-Bold.ttf") format("ttf");
+  src: url("/static/fonts/Colfax/ColfaxWebBold.woff") format("woff"),
+       url("/static/fonts/Colfax/Colfax-Bold.ttf") format("truetype");
 }
 @font-face {
   font-family: "Colfax-Medium";
-  src: url("/static/fonts/Colfax/Colfax-Medium.ttf") format("ttf");
+  src: url("/static/fonts/Colfax/ColfaxWebRegular.woff") format("woff"),
+       url("/static/fonts/Colfax/Colfax-Medium.ttf") format("truetype");
 }
 @font-face {
   font-family: "Colfax-Regular";
-  src: url("/static/fonts/Colfax/Colfax-Regular.ttf") format("ttf");
+  src: url("/static/fonts/Colfax/ColfaxWebThin.woff") format("woff"),
+       url("/static/fonts/Colfax/Colfax-Regular.ttf") format("truetype");
 }
 
 
 
 html {
-  @extend %colfax_reg;
   font-size: 16px;
   @include medium_down {
     font-size: 14px
   }
 }
 body {
+  @extend %colfax_reg;
   font-size: 1em;
+  line-height: 1.45;
 }
 h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
-  @extend %colfax_med;
   margin: 1.414em 0 0.5em;
   line-height: 1.2;
 }
+
+// http://type-scale.com/ A visual Type Scale - perfect fourth
 h1, .h1 {
   margin-top: 0;
-  font-size: 3.157em;
+  font-size: 3.157em; // 50
 }
 h2, .h2 {
-  font-size: 2.369em;
+  font-size: 2.369em; // 38
 }
 h3, .h3 {
-  font-size: 1.777em;
+  font-size: 1.777em; // 28
+  margin-bottom: 1.414em;
 }
 h4, .h4 {
-  font-size: 1.333em;
+  font-size: 1.333em; // 21
 }
-.small {
+small, .font-small {
   font-size: .75em; // 12px
 }
 p {
   font-size: 1em;
-  margin-bottom: 1.3em;
 }
-.btn {
-  font-size: 0.9em;
-  padding: 0.3em 1.6em;
-  text-transform: uppercase;
+p + p {
+  margin-top: 1.3em;
 }
-.btn-primary {
-  border: 1px solid #fff;
-  border-radius: 4px;
-  background-color: transparent;
+a, a:visited, a:hover {
   color: #fff;
-}
-a, a:visited {
-  color: #fff;
+  text-decoration: underline;
   text-transform: uppercase;
 }

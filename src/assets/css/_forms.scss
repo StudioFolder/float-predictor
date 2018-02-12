@@ -1,3 +1,27 @@
 fieldset {
   border: none;
 }
+input.form-control,
+input.form-control:focus {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid $lightGray;
+  color: $gray;
+  &::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: $gray;
+    opacity: 1; /* Firefox */
+  }
+
+  &:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: $gray;
+  }
+
+  &::-ms-input-placeholder { /* Microsoft Edge */
+    color: $gray;
+  }
+}
+label {
+  text-transform: uppercase;
+  color: #fff;
+}

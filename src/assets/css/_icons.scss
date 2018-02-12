@@ -1,10 +1,13 @@
 .fp {
-  display: block;
+  display: inline-block;
   width: 1em;
   height: 1em;
   background-repeat: no-repeat;
   background-position: center;
   background-size: auto;
+  vertical-align: middle;
+  min-width: 15px;
+  min-height: 15px;
 }
 .fp-info {
   background-image: url("assets/icons/ico-info.svg");
@@ -13,4 +16,43 @@
   background-image: url("assets/icons/ico-menu.svg");
   background-size: contain;
   width: 1.8em;
+}
+.fp-close {
+  background-image: url("assets/icons/ico-close.svg");
+}
+.fp-close-w {
+  background-image: url("assets/icons/ico-close-w.svg");
+}
+.fp-caret-right {
+  background-image: url("assets/icons/ico-caret-right.svg");
+}
+.fp-wind {
+  background-image: url("assets/icons/ico-wind.svg");
+}
+.fp-no-wind {
+  background-image: url("assets/icons/ico-no-wind.svg");
+}
+.fp-camera {
+  background-image: url("assets/icons/ico-camera.svg");
+}
+.fp-pause {
+  background-image: url("assets/icons/ico-pause.svg");
+  background-size: 60%;
+}
+.fp-play {
+  background-image: url("assets/icons/ico-triangle.svg");
+  transform: rotate(-90deg);
+}
+.fp-up {
+  background-image: url("assets/icons/ico-triangle.svg");
+  transform: rotate(180deg);
+}
+.fp-down {
+  background-image: url("assets/icons/ico-triangle.svg");
+}
+.fp-hand {
+  background-image: url("assets/icons/ico-hand.svg");
+}
+.fp-zoom {
+  background-image: url("assets/icons/ico-zoom.svg");
 }
