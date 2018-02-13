@@ -59,6 +59,9 @@ const STATE_ANIMATION_ACTIVE = 2;
 const STATE_MOVING_TO_DESTINATION = 3;
 const STATE_ANIMATION_END = 4;
 const STATE_UNFOCUSED = 5;
+const STATE_UNFOCUSED_PAGES = 6;
+const STATE_UNFOCUSED_GALLERY = 7;
+const STATE_INITIAL = 8;
 
 
 const THREE = require('three');
@@ -331,7 +334,7 @@ export default {
       this.setupExplorers();
       this.initNightMap();
       this.initLabels();
-      this.visualizationState = STATE_IDLE;
+      this.visualizationState = STATE_INITIAL;
       this.initWindVisualization();
       this.initFPSChecker();
       // Setting default destination / departure
@@ -795,6 +798,69 @@ export default {
           break;
         }
         case STATE_UNFOCUSED: {
+          pars.auto_rotate = false;
+          const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
+          const ev = [150, 0.8, Math.PI * 0.5];
+          animator.start({
+            init_values: iv,
+            end_values: ev,
+            time_start: 0,
+            time_interval: 0.4,
+            sine_interpolation: true,
+            onAnimationEnd: () => {
+            },
+            onAnimationUpdate: (v) => {
+              controls.target.set(controls.target.x, v[0], controls.target.z);
+              this.setScale(v[1]);
+              controls.setPolarAngle(v[2]);
+              controls.update();
+            },
+          });
+          break;
+        }
+        case STATE_UNFOCUSED_PAGES: {
+          pars.auto_rotate = false;
+          const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
+          const ev = [90, 0.8, Math.PI * 0.5];
+          animator.start({
+            init_values: iv,
+            end_values: ev,
+            time_start: 0,
+            time_interval: 0.4,
+            sine_interpolation: true,
+            onAnimationEnd: () => {
+            },
+            onAnimationUpdate: (v) => {
+              controls.target.set(controls.target.x, v[0], controls.target.z);
+              this.setScale(v[1]);
+              controls.setPolarAngle(v[2]);
+              controls.update();
+            },
+          });
+          break;
+        }
+        case STATE_UNFOCUSED_GALLERY: {
+          pars.auto_rotate = false;
+          const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
+          const ev = [-75, 0.8, Math.PI * 0.5];
+          animator.start({
+            init_values: iv,
+            end_values: ev,
+            time_start: 0,
+            time_interval: 1,
+            sine_interpolation: true,
+            onAnimationEnd: () => {
+            },
+            onAnimationUpdate: (v) => {
+              controls.target.set(controls.target.x, v[0], controls.target.z);
+              this.setScale(v[1]);
+              controls.setPolarAngle(v[2]);
+              controls.update();
+            },
+          });
+          break;
+        }
+        case STATE_INITIAL: {
           pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
           const ev = [150, 0.8, Math.PI * 0.5];
@@ -802,7 +868,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 1,
+            time_interval: 0.4,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
