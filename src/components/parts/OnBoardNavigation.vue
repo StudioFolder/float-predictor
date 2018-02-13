@@ -55,6 +55,9 @@ export default {
             position: relative;
             padding: 2px;
             cursor: unset;
+            &:hover .label {
+                opacity: 1;
+            }
         }
         i { cursor: pointer }
         .label {
@@ -67,6 +70,7 @@ export default {
             transform: translateY(-100%);
             padding-bottom: 5px;
             margin-left: -25px;
+            opacity: 0;
         }
         .header {
             text-align: center;

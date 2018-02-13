@@ -46,7 +46,10 @@
   top: 0;
   right: 0;
   height: 100vh;
-  z-index: 10;
+  @include medium_down {
+    width: 100%;
+    overflow: scroll;
+  }
   .header {
     .nav {
       align-items: flex-end;

@@ -1,5 +1,5 @@
 <template>
-    <div class="main-content">
+    <div class="main-content over">
         <div class="call-to-action" @click="startAction">
           <router-link to="/flight-simulator">
               Start a new<br>aerosolar journey
@@ -23,7 +23,6 @@ export default {
     },
   },
   mounted() {
-    // this.upperHeight = '450px';
   },
   /*
   created() {
@@ -35,28 +34,20 @@ export default {
 </script>
 <style lang="scss">
 
-    .call-to-action {
+.call-to-action {
+    margin: 60vh auto 0;
+    color: #fff;
+    width: auto;
+    text-align: center;
+    a {
+        display: inline-block;
         background-color: #1E1E1E;
-        margin: 50vh auto 10vh;
-        display: block;
-        color: #fff;
-        max-width: 280px;
-        text-align: center;
         padding: 1em;
+        text-decoration: none;
         transition: background-color .2s ease;
-        a {
-            text-decoration: none;
-        }
         &:hover {
             background-color: #2E2E2E;
         }
     }
-    body.home {
-        .nav-brand {
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            top: 10%
-        }
-    }
+}
 </style>

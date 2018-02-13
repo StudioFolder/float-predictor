@@ -1,0 +1,82 @@
+$duration: .8s;
+// fade
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .4s ease;
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0;
+}
+
+
+// fade-form-from-top
+.fade-form-from-top-enter-active {
+  transform: translateY(0%);
+  transition: transform $duration ease;
+}
+.fade-form-from-top-enter {
+  transform: translateY(-100%);
+}
+.main-application.fade-form-from-top-entering {
+  .nav-brand {
+    opacity: 0 !important;
+  }
+}
+
+
+// fade middle to top
+.fade-middle-to-top-leave-active {
+  opacity: 0;
+  transition: opacity $duration ease;
+}
+.fade-middle-to-top-enter-active{
+  transition: height $duration ease;
+  animation: translate-down $duration ease; // transition isn't working
+}
+.main-visualization-wrapper.--small {
+  height: 30vh;
+  @include up($xlarge) {
+    height: 45vh;
+  }
+}
+
+
+.main-application.top-to-middle-leaving {
+  .main-visualization-wrapper {
+    // animation: translate-up $duration;
+    height: 100vh;
+    transition: height $duration ease;
+  }
+}
+// top to middle
+.top-to-middle-leave-active {
+  height: 0 !important;
+  transition: height $duration ease;
+  animation: translate-up $duration ease;
+}
+.top-to-middle-enter {
+  opacity: 0;
+}
+.top-to-middle-enter-active {
+  transition: opacity $duration ease;
+}
+
+
+
+
+// animations
+@keyframes translate-down {
+  0% {
+    transform: translate3d(0, -100vh, 0)
+  }
+  100% {
+    transform: translate3d(0, 0, 0)
+  }
+}
+@keyframes translate-up {
+  0% {
+    transform: translate3d(0, 0, 0)
+  }
+  100% {
+    transform: translate3d(0, -100vh, 0)
+  }
+}

@@ -19,7 +19,7 @@ const router = new Router({
       component: HomePage,
       meta: {
         bodyClass: 'home no-scroll',
-        position: 'top',
+        position: 'middle',
       },
     },
     {
@@ -33,7 +33,7 @@ const router = new Router({
     },
     {
       path: '/about',
-      name: 'About',
+      name: 'about',
       component: About,
       meta: {
         bodyClass: 'about upper-content',
@@ -76,23 +76,26 @@ router.beforeEach((to, from, next) => {
   let transitionMode = '';
   // from middle to top -> slide
   if (fromMiddle && toTop) {
-    transitionName = 'middle-to-top';
+    transitionName = 'fade-middle-to-top';
+    store.commit('flightSimulator/setFocusedExplorer', 0);
   } else if (fromTop && toMiddle) {
     transitionName = 'top-to-middle';
+    // transitionMode = 'out-in';
+    if (store.state.general.isChoosingDestination) {
+      store.commit('flightSimulator/setVisualizationState', 5); // start to move the earth
+    } else {
+      store.commit('flightSimulator/setVisualizationState', 2);
+      store.commit('flightSimulator/setPlaying', true);
+    }
   } else if (toBottom) {
     transitionName = 'to-bottom';
   } else if (fromTop && toTop) {
     transitionMode = 'out-in';
   }
   // some overwrites for particular cases
-  if (from.name === 'home-page' && (to.name === 'flight-simulator' || toTop)) {
-    transitionName = 'fade';
-    transitionMode = 'out-in';
-  }
-  if (from.name === 'flight-simulator'
-    && store.state.general.isChoosingDestination
-    && toTop) {
-    transitionName = 'fade-middle-to-top';
+  if (from.name === 'home-page'
+    && (to.name === 'flight-simulator' && store.state.general.isChoosingDestination)) {
+    transitionName = 'fade-form-from-top';
     transitionMode = '';
   }
 

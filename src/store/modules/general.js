@@ -4,7 +4,7 @@ export default {
     isLoading: true, // are we still loading?
     transitionName: '',
     transitionMode: '',
-    animationHeight: 'small',
+    animationHeight: 'normal',
     // upperHeight: '0px',
     // bottomHeight: '0px',
     isChoosingDestination: true,
@@ -22,12 +22,6 @@ export default {
     setTransitionMode(state, value) {
       state.transitionMode = value;
     },
-    // setUpperHeight(state, value) {
-    //   state.upperHeight = value;
-    // },
-    // setBottomHeight(state, value) {
-    //   state.bottomHeight = value;
-    // },
     setDevice(state, deviceName) {
       state.deviceName = deviceName;
     },

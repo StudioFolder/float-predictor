@@ -40,7 +40,8 @@ module.exports = {
       img: resolve('src/assets/img'),
       Components: resolve('src/components'),
       Parts: resolve('src/components/parts'),
-      Pages: resolve('src/components/pages')
+      Pages: resolve('src/components/pages'),
+      Video: resolve('src/assets/video')
     }
   },
   module: {

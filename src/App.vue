@@ -1,32 +1,36 @@
 <template>
     <div id="app"
-         class="main-application"
-         :class="{'choosing-destination': isChoosing}">
-        <nav-brand/>
-        <main-menu />
-        <on-board-navigation>
-        </on-board-navigation>
-        <div class="router-view top" id="topContent">
-            <transition
-                    :name="transitionName"
-                    :mode="transitionMode"
-                    @before-enter="beforeEnter"
-                    @before-leave="beforeLeave"
-                    @leave="onLeave"
-                    @after-leave="afterLeave"
-                    >
-                <router-view/>
-            </transition>
+         class="main-application" :class="classObject">
+        <div class="site-header">
+            <main-menu />
+            <nav-brand ref="navBrand" />
+            <on-board-navigation />
         </div>
-        <div class="main-visualization-wrapper" id="middleContent" :class="{small: isSmall}">
-            <router-link to="/flight-simulator">
-                <div class="cover"></div></router-link>
-            <visualization />
-        </div>
-        <div class="router-view bottom" id="bottomContent">
-            <transition :name="transitionName">
-                <router-view/>
-            </transition>
+        <div class="site-content">
+            <div class="router-view" ref="content">
+                <transition
+                        appear
+                        :name="transitionName"
+                        :mode="transitionMode"
+                        @before-enter="beforeEnter"
+                        @enter="onEnter"
+                        @afterEnter="afterEnter"
+                        @before-leave="beforeLeave"
+                        @leave="onLeave"
+                        @after-leave="afterLeave"
+                >
+                    <router-view/>
+                </transition>
+            </div>
+            <div class="main-visualization-wrapper" ref="simulator" :class="{'--small': isSmall}">
+                <div class="cover">
+                    <router-link to="/flight-simulator" class="link-to-flight-sim">
+                    </router-link>
+                </div>
+                <transition>
+                    <visualization />
+                </transition>
+            </div>
         </div>
         <div class="footer modal-contents">
             <instructions>
@@ -39,7 +43,6 @@
 
 <script>
 
-import Velocity from 'velocity-animate';
 import navBrand from './components/NavBrand';
 import mainMenu from './components/MainMenu';
 import visualization from './components/Visualization';
@@ -60,73 +63,58 @@ export default {
   data() {
     return {
       offsetHeight: 0,
+      transitionEnter: false,
+      transitionLeave: false,
     };
   },
   computed: {
-    isChoosing() { return (this.$route.name === 'flight-simulator' && this.$store.state.general.isChoosingDestination); },
     transitionName() { return this.$store.state.general.transitionName; },
     transitionMode() { return this.$store.state.general.transitionMode; },
     isSmall() { return this.$store.state.general.animationHeight === 'small'; },
+    classObject() { // to synchronize other transitions i put some classes in main app too
+      const obj = {
+        'transition-enter': this.transitionEnter,
+        'transition-leave': this.transitionLeave,
+      };
+      obj[`${this.transitionName}-entering`] = this.transitionEnter;
+      obj[`${this.transitionName}-leaving`] = this.transitionLeave;
+      return obj;
+    },
   },
   methods: {
-    onClick(e) {
-      if (this.$store.state.general.isMenuOpen
-        && !e.target.classList.contains('fp-menu')
-        && !e.target.classList.contains('main-nav')
-      ) {
-        this.$store.commit('general/closeMenu');
-      }
-    },
     beforeEnter() {
-      let offsetTop = 0;
-      if (this.transitionName === 'top-to-middle') {
-        offsetTop = window.innerHeight;
-        this.scroll(offsetTop, 900);
+      this.transitionEnter = true;
+    },
+    onEnter() {
+    },
+    afterEnter() {
+      this.transitionEnter = false;
+      // after enter of new element
+      if (this.transitionName === 'fade-middle-to-top') {
+        this.$store.commit('general/setAnimationHeight', 'small');
+      } else {
+        this.$store.commit('general/setAnimationHeight', 'normal');
+      }
+      if (this.$route.name === 'about' || this.$route.name === 'aerocene-explorer') {
+        this.$store.commit('general/setAnimationHeight', 'small');
+      }
+
+      // animate nav brand
+      if (this.$route.name === 'home-page') {
+        this.$refs.navBrand.$el.classList.remove('--pages');
+        this.$refs.navBrand.$el.classList.add('--home');
+      } else {
+        this.$refs.navBrand.$el.classList.remove('--home');
+        this.$refs.navBrand.$el.classList.add('--pages');
       }
     },
     beforeLeave() {
-      if (this.transitionName === 'fade-middle-to-top') {
-        this.$store.commit('general/setAnimationHeight', 'small');
-      }
+      this.transitionLeave = true;
     },
-    onLeave(el) {
-      if (this.transitionName === 'top-to-middle') {
-        if (window.innerHeight < el.offsetHeight) {
-          // little adjustment for content higher than the window
-          const deltaY = (window.innerHeight - el.offsetHeight);
-          Velocity(el, { translateY: `${deltaY}px` }, { duration: 900 }, 'linear');
-          this.$store.commit('general/setAnimationHeight', 'normal');
-        }
-      } else if (this.transitionName === 'fade-middle-to-top') {
-        const height = el.offsetHeight * -1;
-        Velocity(el, { translateY: `${height}px` }, { duration: 900 }, 'linear');
-      } else if (this.transitionName === 'fade') {
-        this.scroll(0, 500);
-      }
+    onLeave() {
     },
     afterLeave() {
-      if (this.transitionName === 'middle-to-top') {
-        this.$store.commit('general/setAnimationHeight', 'small');
-      }
-    },
-    scroll(position, durationTime) {
-      const body = document.querySelector('body');
-
-      Velocity(body, 'scroll', {
-        offset: position,
-        mobileHA: false,
-        duration: durationTime,
-        begin: () => {
-          if (this.transitionName === 'top-to-middle') {
-            this.$store.commit('general/setAnimationHeight', 'normal');
-          }
-        },
-        complete: () => {
-          if (this.transitionName !== 'top-to-middle') {
-            this.$store.commit('general/setAnimationHeight', 'small');
-          }
-        },
-      });
+      this.transitionLeave = false;
     },
   },
 };
@@ -134,63 +122,4 @@ export default {
 
 <style lang="scss">
 @import "assets/css/main";
-
-// fade
-.fade-enter-active, .fade-leave-active {
-    transition: opacity .4s ease;
-}
-.fade-enter, .fade-leave-active {
-    opacity: 0;
-}
-
-// middle to top
-.middle-to-top-enter {
-    height: 100vh;
-}
-.router-view.top .middle-to-top-enter-active {
-    transition: height .6s;
-    animation: fade .9s;
-}
-
-// fade middle to top
-.fade-middle-to-top-enter-active {
-    animation: fade .9s;
-}
-.fade-middle-to-top-leave {
-    opacity: 1;
-}
-.router-view.top .fade-middle-to-top-leave-active {
-    opacity: 0;
-    height: 0 !important;
-    transition: opacity .9s, height .9s;
-}
-
-// top to middle
-.router-view.top .top-to-middle-leave-active {
-    animation: fade-up .9s;
-    // transition: transform .9s;
-}
-
-// animations
-@keyframes fade {
-    0% {
-        opacity: 0;
-        // transform: translate3d(0, 200px, 0);
-    }
-    100% {
-        opacity: 1;
-        // transform: translate3d(0, -200px, 0); // to leverage 3d acceleration
-    }
-}
-@keyframes fade-up {
-    0% {
-        opacity: 1;
-        // transform: translate3d(0, 0, 0);
-    }
-    100% {
-        opacity: 0;
-        // transform: translate3d(0, -200px, 0); // to leverage 3d acceleration
-        height: 100vh;
-    }
-}
 </style>

@@ -26,36 +26,75 @@ export default {
 </script>
 <style lang="scss">
     @import "~css/_variables_and_mixins.scss";
+    @import"~css/_typography.scss";
     .nav-brand {
         color: #fff;
         display: block;
+        opacity: 0;
         position: fixed;
         top: 0;
         left: 0;
         padding: $marginBase;
-        z-index: 20;
-        transition: all 1s;
-    }
-    .intro-description {
-        max-width: 230px;
+        transition: opacity .2s ease;
+
+        .intro-description {
+            max-width: 300px;
+        }
+        &.--pages {
+            opacity: 1;
+        }
+        &.--home {
+            opacity: 1;
+            text-align: center;
+            top: 10%;
+            @include medium_up {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            .intro-description {
+                @extend .h4;
+                @include medium_up {
+                    max-width: 500px;
+                }
+                @include medium_down {
+                    text-align: left;
+                }
+            }
+        }
     }
     .logo {
         @extend %colfax_med;
         text-transform: uppercase;
         text-decoration: none;
         font-size: 1.5rem; // 24px
-        .title { margin-bottom: .5rem;
+        .title {
         }
         .subtitle {
-            margin-bottom: 2.625rem; // 42px
+            @include medium-up{
+                margin-bottom: 2.625rem; // 42px
+            }
             color: $gray;
+        }
+        @include medium_down {
+            position: fixed;
+            top: $marginBase;
+            left: $marginBase;
+            text-align: left;
+            transform: translateY(-25%);
+            font-size: 1rem;
         }
     }
     .read-more {
-        display: block;
         margin-top: 1.5rem;
-    }
-    body.home .read-more {
         display: none;
+    }
+    .choosing-destination {
+        .read-more,
+        .intro-description {
+            display: block;
+            @include medium_down {
+                display: none;
+            }
+        }
     }
 </style>

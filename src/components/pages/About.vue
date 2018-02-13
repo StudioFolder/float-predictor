@@ -37,6 +37,9 @@ export default {
       upperHeight: 0,
     };
   },
+  created() {
+    this.$store.commit('flightSimulator/setVisualizationState', 6);
+  },
   mounted() {
     this.upperHeight = `${this.$refs.aboutContent.clientHeight}px`;
   },

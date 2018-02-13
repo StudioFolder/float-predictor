@@ -1,5 +1,5 @@
 <template>
-  <div class="main-content" :style="{ height: upperHeight }">
+  <div class="main-content over" :style="{ height: upperHeight }">
       <!--just the animation here-->
       <div v-if="isChoosing" ref="content" class="flight-form container">
           <b-form @submit="onSubmit">
@@ -101,7 +101,6 @@ export default {
     @import "~@/assets/css/_variables_and_mixins.scss";
     .flight-form.container {
         position: relative;
-        z-index: 5;
         top: 0;
         width: 450px;
         margin: 0 auto;
@@ -109,6 +108,12 @@ export default {
         padding: $marginBase 1rem;
         color: $gray;
         text-align: center;
+        @include medium_down {
+            width: auto;
+            padding: 1em;
+            margin: $marginBase+3rem $marginBase;
+            background: $lightBlack;
+        }
     }
     .type-selector-group{
         position: relative;
