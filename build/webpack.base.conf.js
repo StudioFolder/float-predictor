@@ -54,6 +54,7 @@ module.exports = {
       },
       {
         test: /\.js$/,
+        exclude: /node_modules\/(?!(dom7|swiper)\/).*/,
         loader: 'babel-loader',
         include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
       },

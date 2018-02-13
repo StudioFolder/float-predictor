@@ -4,38 +4,59 @@
              centered hide-footer size="lg" title="Instructions">
         <i slot="modal-header-close" class="fp fp-close"></i>
         <div class="instructions-sections">
-            Sections
-            <span @click="changeSlide(0)">1</span>
-            <span @click="changeSlide(1)">2</span>
-            <span @click="changeSlide(2)">3</span>
-            <span @click="changeSlide(3)">4</span>
         </div>
+        <!--main slider -->
+        <div class="swiper-container main-slider">
+            <div class="swiper-wrapper">
+                <div class="swiper-slide">
+                    <!--inner slider section 1-->
+                    <div class="swiper-container inner-slider">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <video autoplay>
+                                    <source src="/static/video/instructions_1-2.mp4"
+                                            type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="swiper-slide">
+                                <video autoplay>
+                                    <source src="/static/video/instructions_1-3.mp4"
+                                            type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="swiper-slide">
+                    <!--inner slider section 2-->
+                    <div class="swiper-container inner-slider">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <video autoplay>
+                                    <source src="/static/video/instructions_2-1a.mp4"
+                                            type="video/mp4">
+                                </video>
+                            </div>
+                            <div class="swiper-slide">
+                                <video autoplay>
+                                    <source src="/static/video/instructions_2-1b.mp4"
+                                            type="video/mp4">
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- If we need pagination -->
+            <div class="swiper-pagination"></div>
 
-        <!-- swiper -->
-        <swiper :options="swiperOption">
-            <swiper-slide>
-                <video>
-                    <source src="/static/video/instructions_1-2.mp4" type="video/mp4">
-                </video>
-            </swiper-slide>
-            <swiper-slide>
-                <video>
-                    <source src="/static/video/instructions_1-3.mp4" type="video/mp4">
-                </video>
-            </swiper-slide>
-            <swiper-slide>
-                <video>
-                    <source src="/static/video/instructions_2-1a.mp4" type="video/mp4">
-                </video>
-            </swiper-slide>
-            <swiper-slide>
-                <video>
-                    <source src="/static/video/instructions_2-1b.mp4" type="video/mp4">
-                </video>
-            </swiper-slide>
-            <div class="swiper-pagination" slot="pagination"></div>
-        </swiper>
+            <!-- If we need navigation buttons -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
 
+            <!-- If we need scrollbar -->
+            <div class="swiper-scrollbar"></div>
+        </div>
         <p class="mt-4">
             Slide #: {{ slide }}<br>
         </p>
@@ -43,42 +64,50 @@
 </template>
 
 <script>
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
-import 'swiper/dist/css/swiper.css';
+import Swiper from 'swiper';
+import 'swiper/dist/css/swiper.min.css';
 
 export default {
   name: 'instruction-modal',
-  components: {
-    swiper,
-    swiperSlide,
-  },
+  components: {},
   data() {
     return {
       slide: 0,
       sliding: null,
       interval: 0,
-      swiperOption: {
-        direction: 'vertical',
-        slidesPerView: 1,
-        spaceBetween: 30,
-        mousewheel: true,
-        pagination: {
-          el: '.swiper-pagination',
-          clickable: true,
-        },
-      },
     };
   },
   methods: {
-    onSlideStart() { // optional slide argument
-      this.sliding = true;
-    },
-    onSlideEnd() {
-      this.sliding = false;
-    },
-    changeSlide(val) {
-      this.slide = val;
-    },
+  },
+  mounted() {
+    // eslint-disable-next-line
+    const mainSlider = new Swiper('.swiper-container.main-slider', {
+      // Optional parameters
+      direction: 'vertical',
+      loop: false,
+      mousewheel: false,
+      slidesPerView: 1,
+
+      // Navigation arrows
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+    });
+    // eslint-disable-next-line
+    const innerSlider = new Swiper('.swiper-container.inner-slider', {
+      // Optional parameters
+      direction: 'vertical',
+      loop: false,
+      mousewheel: true,
+      slidesPerView: 1,
+
+      // If we need pagination
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    });
   },
 };
 </script>
@@ -100,9 +129,30 @@ export default {
     .carousel-control-next-icon {
     }
     .instruction-modal {
+        position: relative;
+        width:100%;
+        height: 100%;
         .modal-dialog {
             margin-top: $marginBase;
             margin-bottom: 0;
+        }
+    }
+    .swiper-container.main-slider {
+        width: 100%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .swiper-container.main-slider {
+        width: 600px;
+        height: 350px;
+    }
+    .swiper-slide {
+        text-align: center;
+        display: flex;
+        flex-flow: row wrap;
+        video {
+            width: 100%;
         }
     }
 </style>
