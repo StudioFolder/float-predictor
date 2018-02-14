@@ -4,155 +4,185 @@
              centered hide-footer size="lg" title="Instructions">
         <i slot="modal-header-close" class="fp fp-close"></i>
         <div class="instructions-sections">
+            <div class="section-title">{{sectionTitle}}</div>
+            <span class="main-pagination"></span>
         </div>
-        <!--main slider -->
-        <div class="swiper-container main-slider">
-            <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                    <!--inner slider section 1-->
-                    <div class="swiper-container inner-slider">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <video autoplay>
-                                    <source src="/static/video/instructions_1-2.mp4"
-                                            type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="swiper-slide">
-                                <video autoplay>
-                                    <source src="/static/video/instructions_1-3.mp4"
-                                            type="video/mp4">
-                                </video>
-                            </div>
+        <swiper :options="mainSliderOptions" ref="mainSlider">
+            <!-- slides -->
+            <swiper-slide>
+                <swiper :options="internalSliderOptions" ref="journeysSlider">
+                    <swiper-slide class="internal-slide">
+                        <h4 class="title">Aerocene Sculptures</h4>
+                        <div class="animation-wrapper">
+                            <img class="animation"
+                                 src="~img/instructions/instructions_1-2.gif">
                         </div>
-                    </div>
-                </div>
-                <div class="swiper-slide">
-                    <!--inner slider section 2-->
-                    <div class="swiper-container inner-slider">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <video autoplay>
-                                    <source src="/static/video/instructions_2-1a.mp4"
-                                            type="video/mp4">
-                                </video>
-                            </div>
-                            <div class="swiper-slide">
-                                <video autoplay>
-                                    <source src="/static/video/instructions_2-1b.mp4"
-                                            type="video/mp4">
-                                </video>
-                            </div>
+                        <div class="description">
+                            The Aerocene Explorer is your personal tool for solar-powered
+                            atmospheric exploration: a tethered-flight starter kit offering
+                            a new way to sense the environment.
+                            Enclosed in a portable backpack is everything you
+                            need to float an Explorer sculpture and start exploring the skies.
                         </div>
-                    </div>
-                </div>
-            </div>
-            <!-- If we need pagination -->
-            <div class="swiper-pagination"></div>
-
-            <!-- If we need navigation buttons -->
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-button-next"></div>
-
-            <!-- If we need scrollbar -->
-            <div class="swiper-scrollbar"></div>
-        </div>
-        <p class="mt-4">
-            Slide #: {{ slide }}<br>
-        </p>
+                    </swiper-slide>
+                    <swiper-slide>
+                        <div class="animation-wrapper">
+                            <img class="animation"
+                                 src="~img/instructions/instructions_1-3.gif">
+                        </div>
+                    </swiper-slide>
+                </swiper>
+                <div class="internal-pagination"></div>
+            </swiper-slide>
+            <swiper-slide>
+                <swiper :options="internalSliderOptions" ref="floatSlider">
+                    <swiper-slide>
+                        <div class="animation-wrapper">
+                            <img class="animation"
+                                 src="~img/instructions/instructions_2-3.gif">
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide>
+                        <div class="animation-wrapper">
+                            <img class="animation"
+                                 src="~img/instructions/instructions_2-5.gif">
+                        </div>
+                    </swiper-slide>
+                </swiper>
+            </swiper-slide>
+        </swiper>
     </b-modal>
 </template>
 
 <script>
-import Swiper from 'swiper';
-import 'swiper/dist/css/swiper.min.css';
+// require styles
+import 'swiper/dist/css/swiper.css';
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
 
 export default {
   name: 'instruction-modal',
-  components: {},
+  components: { swiper, swiperSlide },
   data() {
     return {
-      slide: 0,
-      sliding: null,
-      interval: 0,
+      activeIndex: 0,
     };
   },
-  methods: {
+  computed: {
+    sectionTitle() {
+      let title = '';
+      switch (this.activeIndex) {
+        case 0:
+          title = '1—Aerosolar Journeys';
+          break;
+        case 1:
+          title = '2—How to Float';
+          break;
+        default:
+          title = '';
+      }
+      return title;
+    },
+    mainSliderOptions() {
+      return {
+        direction: 'vertical',
+        mousewheel: false,
+        slidesPerView: 1,
+        autoHeight: true,
+        height: 639,
+        pagination: {
+          el: '.main-pagination',
+          type: 'fraction',
+          renderFraction: currentClass => `<span class="${currentClass}"></span>`,
+        },
+      };
+    },
+    internalSliderOptions() {
+      return {
+        direction: 'vertical',
+        mousewheel: true,
+        slidesPerView: 1,
+        autoHeight: true,
+        height: 600,
+        pagination: {
+          el: '.internal-pagination',
+        },
+      };
+    },
   },
   mounted() {
-    // eslint-disable-next-line
-    const mainSlider = new Swiper('.swiper-container.main-slider', {
-      // Optional parameters
-      direction: 'vertical',
-      loop: false,
-      mousewheel: false,
-      slidesPerView: 1,
-
-      // Navigation arrows
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
+    this.$watch(
+      () => this.$refs.mainSlider.swiper.activeIndex,
+      (newVal) => {
+        this.activeIndex = newVal;
       },
-    });
-    // eslint-disable-next-line
-    const innerSlider = new Swiper('.swiper-container.inner-slider', {
-      // Optional parameters
-      direction: 'vertical',
-      loop: false,
-      mousewheel: true,
-      slidesPerView: 1,
-
-      // If we need pagination
-      pagination: {
-        el: '.swiper-pagination',
-        clickable: true,
-      },
-    });
+    );
   },
 };
 </script>
 
 <style lang="scss">
 @import "~@/assets/css/_variables_and_mixins.scss";
-    .instructions-sections {
+.instruction-modal {
+    .modal-dialog {
+        max-width: 1024px;
+        margin-bottom: 0;
+        margin-top: 20vh;
+        height: 80vh;
+        overflow: hidden;
+        min-height: unset;
+    }
+    .modal-content {
+        height: 100%;
+    }
+}
+.instructions-sections {
+    display: flex;
+    justify-content: space-around;
+    .section-title {
+        width: 50%;
+        text-align: left;
+    }
+    .main-pagination {
+        width: 50%;
+        text-align: right;
+    }
+}
+.internal-slide {
+    display: flex;
+    flex-flow: column;
+    .title {
+        height: 8%;
         display: flex;
-        flex-flow: row;
-        justify-content: flex-end;
-        margin: 0 0 1em auto;
-        span {
-            width: 10px;
-            margin-left: 20px;
-            text-align: center;
-            cursor: pointer;
-        }
+        align-items: center;
+        margin: 0;
     }
-    .carousel-control-next-icon {
-    }
-    .instruction-modal {
-        position: relative;
-        width:100%;
-        height: 100%;
-        .modal-dialog {
-            margin-top: $marginBase;
-            margin-bottom: 0;
-        }
-    }
-    .swiper-container.main-slider {
-        width: 100%;
-        height: 100%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-    .swiper-container.main-slider {
-        width: 600px;
-        height: 350px;
-    }
-    .swiper-slide {
+    .animation-wrapper {
         text-align: center;
-        display: flex;
-        flex-flow: row wrap;
-        video {
-            width: 100%;
+        height: 80%;
+        .animation {
+            max-height: 100%;
         }
     }
+    .description {
+        height: 12%;
+        align-items: center;
+    }
+}
+.internal-pagination {
+    position: absolute;
+    height: 600px;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    .swiper-pagination-bullet {
+        background-color: #fff;
+        opacity: .4;
+        margin: .5em 0;
+    }
+    .swiper-pagination-bullet-active {
+        opacity: 1;
+    }
+}
 </style>
