@@ -5,7 +5,7 @@
             <i class="fp fp-camera"></i></b-nav-item>
         <b-nav-item @click="toggleWinds" class="--rounded">
             <i :class="[isWindOn ? 'fp-no-wind' : 'fp-wind', 'fp']"></i></b-nav-item>
-        <b-nav-item @click="toggleAnimation" class="--rounded">
+        <b-nav-item @click="toggleAnimation" class="--rounded --play">
             <i :class="[isPlaying ? 'fp-pause' : 'fp-play', 'fp']"></i></b-nav-item>
         <!--explorers-->
         <ul class="explorers-dashboard">

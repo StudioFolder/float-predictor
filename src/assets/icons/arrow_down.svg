@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="36px" height="19px" viewBox="0 0 36 19" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Buttons / Arrow down</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Instructions-2.6-Copy-3" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-702.000000, -983.000000)" stroke-linecap="round">
+        <g id="Buttons-/-Arrow-down" transform="translate(720.000000, 992.000000) rotate(-360.000000) translate(-720.000000, -992.000000) translate(700.000000, 972.000000)" stroke="#FFFFFF">
+            <g id="Group-2" transform="translate(3.000000, 12.000000)">
+                <path d="M0.5,0.5 L16.9924225,16.9924225" id="Line" stroke-width="2"></path>
+                <path d="M17.5,0.5 L33.9924225,16.9924225" id="Line-Copy" stroke-width="2" transform="translate(25.500000, 8.500000) scale(-1, 1) translate(-25.500000, -8.500000) "></path>
+            </g>
+        </g>
+    </g>
+</svg>

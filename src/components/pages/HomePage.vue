@@ -42,7 +42,7 @@ export default {
     a {
         display: inline-block;
         background-color: #1E1E1E;
-        padding: 1em;
+        padding: .7em 1.5em;
         text-decoration: none;
         transition: background-color .2s ease;
         &:hover {

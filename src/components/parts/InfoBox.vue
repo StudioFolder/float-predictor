@@ -19,7 +19,7 @@
                     </div>
                     <i class="fp fp-caret-right"></i>
                 </li>
-                <li class="list-item">
+                <li class="list-item elapsed-days">
                     <div class="title">
                         Total elapsed day
                         <div class="description">Click to pause and play</div>
@@ -104,6 +104,10 @@ export default {
         .list-item {
             height: $itemWidth + $marginItem*2;
             padding-top: 1rem;
+            &.elapsed-days {
+                margin-top: 0.6rem;
+                margin-bottom: 0.3rem;
+            }
         }
         .header {
             background-color: #fff;

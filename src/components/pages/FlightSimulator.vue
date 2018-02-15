@@ -33,7 +33,9 @@
                           @placechanged="setDestination"
                           types="(cities)" rtypes="geocode">
                   </vue-google-autocomplete>
-                  <p class="input-label">Click on globe to select locations or enter them here.</p>
+                  <p class="input-label">
+                      Aerocene sculptures always leave at noon with sun light.
+                  </p>
               </div>
               <b-button type="submit" variant="primary">Launch</b-button>
           </b-form>
@@ -185,6 +187,9 @@ export default {
         }
         .input-label {
             text-align: center;
+        }
+        .small {
+            font-size: .6em;
         }
     }
 </style>

@@ -30,7 +30,7 @@
   background-image: url("assets/icons/ico-wind.svg");
 }
 .fp-no-wind {
-  background-image: url("assets/icons/ico-no-wind.svg");
+  background-image: url("assets/icons/winds_off.svg");
 }
 .fp-camera {
   background-image: url("assets/icons/ico-camera.svg");
@@ -56,3 +56,47 @@
 .fp-zoom {
   background-image: url("assets/icons/ico-zoom.svg");
 }
+.fp-facebook {
+  background-image: url("assets/icons/facebook.svg");
+}
+.fp-mail {
+  background-image: url("assets/icons/mail.svg");
+}
+.fp-twitter {
+  background-image: url("assets/icons/twitter.svg");
+}
+.fp-google {
+  background-image: url("assets/icons/google+.svg");
+}
+.fp-scroll {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 35px;
+  box-shadow: inset 0 0 0 1px #fff;
+  border-radius: 25px;
+}
+.fp-scroll:before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  position: absolute;
+  left: 50%;
+  background: #fff;
+  margin-left: -2px;
+  top: 8px;
+  border-radius: 4px;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-name: fpscroll;
+}
+@keyframes fpscroll {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+}
+

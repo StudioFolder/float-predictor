@@ -7,6 +7,9 @@
 }
 .menu-items a {
   text-decoration: none;
+  &:hover {
+    text-decoration: none;
+  }
 }
 .menu-item {
   color: $gray;
@@ -20,37 +23,65 @@
     }
   }
   &.--logo img{
-    max-width: 75px;
+    max-width: 120px;
   }
   &.--nav {
-    margin: $marginItem 0;
+    margin: $marginItem*1.2 0;
     @extend %colfax_med;
     text-transform: uppercase;
+    @media screen and (min-height: 900px) {
+      margin: $marginItem*1.8 0;
+    }
   }
   &.--link {
     margin: .5rem 0;
+  }
+  &.--socialShare {
+    background-color: #fff;
+    border-radius: 50%;
+    height: 32px;
+    width: 32px;
+    background-color: rgba(255,255,255,.5);
+    text-align: center;
+    line-height: 32px;
+    transition: background-color .2s ease;
+    cursor: pointer;
+
+    .fp {
+      width: 28px;
+      height: 28px;
+    }
+    &:hover {
+      background-color: rgba(255,255,255,1);
+    }
   }
 }
 .list-group {
   &.horiziontal {
     display: flex;
     flex-flow: row;
-    justify-content: space-around;
+    justify-content: space-between;
   }
 }
 
 .main-nav {
   background-color: $lightBlack;
   padding: $marginBase;
+  padding-left: $marginBase+$marginBase/3;
   position: fixed;
   top: 0;
   right: 0;
   height: 100vh;
+  width: 27vw;
+  max-width: 332px;
+  display: flex;
+  flex-flow: column;
   @include medium_down {
     width: 100%;
     overflow: scroll;
   }
   .header {
+    flex: 0 0 auto;
     .nav {
       align-items: flex-end;
       margin-bottom: .5rem;
@@ -58,9 +89,30 @@
     .menu-items {
       text-align: center;
     }
+    .menu-item.--nav{
+      margin-top: 0px;
+      &:hover {
+        color: #fff;
+      }
+    }
   }
-  .menu-section {
-    padding: .75rem 0;
+  .body {
+    flex: 1 0 auto;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+    .macro-section.--bottom .menu-section{
+      padding-bottom: 0;
+      &.--rights {
+        padding-top: 1.25rem;
+      }
+    }
+    .menu-section {
+      padding: .75rem 0;
+      @media screen and (min-height: 991px) {
+        padding: 1.8rem 0 .75rem;
+      }
+    }
   }
 }
 .nav-item {
@@ -68,11 +120,17 @@
   width: $itemWidth;
   height: $itemWidth;
   &.--rounded {
-    background-color: $lightGray;
+    background-color: $gray;
     border-radius: 50%;
+    &:hover {
+      background-color: #fff;
+    }
   }
   &.--black {
     background-color: transparent;
+    &:hover {
+      background-color: transparent;
+    }
   }
   &.--white {
     background-color: #FFF;
@@ -80,9 +138,15 @@
   &.--correction {
     margin-top: -$marginItem;
   }
+  &.--play {
+    margin-top: $marginItem + .5rem;
+  }
   i {
     margin: 0 auto;
     line-height: 2em;
-    height: 100%
+    height: 100%;
+    &.fp-no-wind {
+      width: 100%;
+    }
   }
 }

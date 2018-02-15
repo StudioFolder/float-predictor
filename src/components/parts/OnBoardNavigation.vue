@@ -1,4 +1,5 @@
 <template>
+    <transition name="fade">
     <div class="onboard-nav" v-show="id > 0">
         <a class="close" href="#">
             <div class="label">Back to global view</div>
@@ -22,6 +23,7 @@
             </ul>
         </div>
     </div>
+    </transition>
 </template>
 <script>
 export default {

@@ -138,7 +138,7 @@ body {
   }
 }
 article {
-  padding: $marginBase 0;
+  padding: $marginBase*3 0 $marginBase;
   max-width: 30rem;
   margin: 0 auto;
 }

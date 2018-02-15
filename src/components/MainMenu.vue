@@ -9,8 +9,8 @@
             </b-nav>
             <flight-dashboard v-show="isAnimationActive" :is-animation-active="isAnimationActive">
             </flight-dashboard>
-            <main-nav v-show="isMenuOpen"></main-nav>
-            <info-box v-show="isInfoBoxOpen"></info-box>
+            <transition name="fade"><main-nav v-show="isMenuOpen"></main-nav></transition>
+            <transition name="fade"><info-box v-show="isInfoBoxOpen"></info-box></transition>
         </div>
     </div>
 </template>

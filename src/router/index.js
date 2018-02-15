@@ -53,7 +53,10 @@ const router = new Router({
       path: '/gallery',
       name: 'gallery',
       component: Gallery,
-      meta: { bodyClass: 'gallery' },
+      meta: {
+        bodyClass: 'gallery',
+        position: 'bottom',
+      },
     },
     {
       path: '/test',
@@ -89,6 +92,7 @@ router.beforeEach((to, from, next) => {
     }
   } else if (toBottom) {
     transitionName = 'to-bottom';
+    // store.commit('flightSimulator/setVisualizationState', 7);
   } else if (fromTop && toTop) {
     transitionMode = 'out-in';
   }

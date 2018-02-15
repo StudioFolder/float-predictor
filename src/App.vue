@@ -90,7 +90,7 @@ export default {
     afterEnter() {
       this.transitionEnter = false;
       // after enter of new element
-      if (this.transitionName === 'fade-middle-to-top') {
+      if (this.transitionName === 'fade-middle-to-top' || this.transitionName === 'to-bottom') {
         this.$store.commit('general/setAnimationHeight', 'small');
       } else {
         this.$store.commit('general/setAnimationHeight', 'normal');
@@ -122,4 +122,17 @@ export default {
 
 <style lang="scss">
 @import "assets/css/main";
+
+body.gallery {
+/*    .site-content {
+        display: flex;
+        flex-flow: column;
+        .router-view {
+            order: 2;
+        }
+        .main-visualization-wrapper {
+            order: 1;
+        }
+    }*/
+}
 </style>

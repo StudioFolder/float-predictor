@@ -49,7 +49,7 @@ $r: calc(#{$itemWidth}/2 + 2px );
 $pi: 3.14159;
 
 .explorers-dashboard .explorer-item {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
     position: relative;
     display: flex;
     align-items: center;
@@ -59,6 +59,9 @@ $pi: 3.14159;
     background-color: rgba(255, 255, 255, 0);
     &:hover {
         background-color: rgba(255, 255, 255, .1);
+    }
+    &:first-child {
+        margin-top: 1rem;
     }
     .explorer-id {
         position: absolute;

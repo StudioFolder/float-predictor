@@ -9,7 +9,7 @@
                 <ul class="list-group menu-items">
                     <router-link to="/flight-simulator">
                         <li class="menu-item --logo">
-                            <img src="~img/globe_illustration.svg" @click="closeAction"></li>
+                            <img src="~img/globe_gif.gif" @click="closeAction"></li>
                         <li class="menu-item --nav">
                             <div @click="closeAction">start a new<br>aerosolar journey</div></li>
                     </router-link>
@@ -17,46 +17,50 @@
             </div>
         </div>
         <div class="body">
-            <div class="menu-section">
-                <ul class="list-group menu-items">
-                    <li class="menu-item --nav" @click="closeAction">
-                        <router-link to="/about">
-                            About</router-link></li>
-                    <li class="menu-item --nav" @click="closeAction">
-                        <router-link to="/gallery">
-                            Aeroglyphs archive</router-link></li>
-                    <li class="menu-item --nav" @click="closeAction">
-                        <router-link to="/aerocene-explorer">
-                            Aerocene explorer</router-link></li>
-                    <li class="menu-item --nav" @click="closeAction">
-                        <router-link to="/resources">
-                            Resources and APIs</router-link></li>
-                    <li class="menu-item --nav" @click="closeAction">
-                        <a href="#" @click.prevent v-b-modal.instruction-modal>
-                            Instructions</a></li>
-                    <li class="menu-item --nav" @click="closeAction">
-                        <a href="#" @click.prevent v-b-modal.impressum-modal>
-                            Impressum</a></li>
-                    <li class="menu-item --nav">Disclaimer</li>
-                </ul>
+            <div class="macro-section --main">
+                <div class="menu-section">
+                    <ul class="list-group menu-items">
+                        <li class="menu-item --nav" @click="closeAction">
+                            <router-link to="/about">
+                                About</router-link></li>
+                        <li class="menu-item --nav" @click="closeAction">
+                            <router-link to="/gallery">
+                                Aeroglyphs archive</router-link></li>
+                        <li class="menu-item --nav" @click="closeAction">
+                            <router-link to="/aerocene-explorer">
+                                Aerocene explorer</router-link></li>
+                        <li class="menu-item --nav" @click="closeAction">
+                            <router-link to="/resources">
+                                Resources and APIs</router-link></li>
+                        <li class="menu-item --nav" @click="closeAction">
+                            <a href="#" @click.prevent v-b-modal.instruction-modal>
+                                Instructions</a></li>
+                        <li class="menu-item --nav" @click="closeAction">
+                            <a href="#" @click.prevent v-b-modal.impressum-modal>
+                                Impressum</a></li>
+                        <li class="menu-item --nav">Disclaimer</li>
+                    </ul>
+                </div>
+                <div class="menu-section">
+                    <ul class="list-group link-items">
+                        <li class="menu-item --link">aerocene.org</li>
+                        <li class="menu-item --link">forum</li>
+                    </ul>
+                </div>
             </div>
-            <div class="menu-section">
-                <ul class="list-group link-items">
-                    <li class="menu-item --link">aerocene.org</li>
-                    <li class="menu-item --link">forum</li>
-                </ul>
-            </div>
-            <div class="menu-section">
-                <small>&copy; All rights reserved.<br>
-                    Studio Tomás Saraceno {{currentYear}}</small>
-            </div>
-            <div class="menu-section">
-                <ul class="list-group horiziontal share-items">
-                    <li class="menu-item --socialShare">F</li>
-                    <li class="menu-item --socialShare">T</li>
-                    <li class="menu-item --socialShare">G</li>
-                    <li class="menu-item --socialShare">M</li>
-                </ul>
+            <div class="macro-section --bottom">
+                <div class="menu-section">
+                    <ul class="list-group horiziontal share-items">
+                        <li class="menu-item --socialShare"><i class="fp fp-facebook"></i></li>
+                        <li class="menu-item --socialShare"><i class="fp fp-twitter"></i></li>
+                        <li class="menu-item --socialShare"><i class="fp fp-mail"></i></li>
+                        <li class="menu-item --socialShare"><i class="fp fp-google"></i></li>
+                    </ul>
+                </div>
+                <div class="menu-section --rights">
+                    <small>&copy; All rights reserved.<br>
+                        Studio Tomás Saraceno {{currentYear}}</small>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group 2</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Icons-/-Recentre" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-18.000000, -18.000000)">
+        <g id="Group-2" transform="translate(18.000000, 18.000000)" fill="#1E1E1E">
+            <polygon id="Path-17-Copy" transform="translate(12.218428, 13.055246) rotate(17.000000) translate(-12.218428, -13.055246) " points="9.86657122 15.4662958 8.7825599 9.8651591 13.9024505 10.5120598 15.6542967 12.4028002 12.9771454 16.245332"></polygon>
+            <g id="Group" fill-rule="nonzero">
+                <path d="M12,22 C6.4771525,22 2,17.5228475 2,12 C2,6.4771525 6.4771525,2 12,2 C17.5228475,2 22,6.4771525 22,12 C22,17.5228475 17.5228475,22 12,22 Z M12,20 C16.418278,20 20,16.418278 20,12 C20,7.581722 16.418278,4 12,4 C7.581722,4 4,7.581722 4,12 C4,16.418278 7.581722,20 12,20 Z" id="Oval-3"></path>
+                <polygon id="Line" points="24 11 24 13 18 13 18 11"></polygon>
+                <polygon id="Line-Copy-3" points="13 6 11 6 11 0 13 0"></polygon>
+                <polygon id="Line-Copy-4" points="13 24 11 24 11 18 13 18"></polygon>
+                <polygon id="Line-Copy-2" points="6 11 6 13 0 13 0 11"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
