@@ -50,6 +50,9 @@ h4, .h4 {
 small, .font-small {
   font-size: .75em; // 12px
 }
+b {
+  @extend %colfax_med;
+}
 p {
   font-size: 1em;
 }

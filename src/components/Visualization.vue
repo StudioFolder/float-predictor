@@ -2,22 +2,17 @@
 <template>
   <div id ="visualization" class="main-visualization">
     <div id="labels">
-      <div class="label" id="dialog-label">
-        <div class="labeldata">
-          The Aerocene Explorer that left from <b>{{departure.city}}</b>
+      <modal-winner-explorer>
+        <div class="message" slot="message">
+          The Aerocene Sculpture that left from <b>{{departure.city}}</b>
           on <b>{{formatDate(winningExplorerData.departureDate)}}</b>
           arrived within <b>{{winningExplorerData.minDist}}km</b>
           from <b>{{destination.city}}</b> in <b>{{winningExplorerData.minTime}} days.</b>
-          <br/><br/>
-          <div id="imgel" style="text-align:center;padding-top:10px;padding-bottom:10px;" ></div>
-          <button class="restart-button" v-on:click="restart">
-            <span style="float:left">Start a new journey</span>
-            <img style="margin-left:60px;margin-bottom:20px;width:40px;height:40px;"
-            src="../assets/icons/ico-arrow.svg"/>
-          </button>
         </div>
-        <div class="arrow"></div>
-      </div>
+        <div slot="image"
+               id="imgel">
+        </div>
+      </modal-winner-explorer>
       <div class="label" id="departure-label">
         <img style=""
         src="../assets/icons/departure_arrow_up.svg"/>
@@ -39,6 +34,7 @@
 import _ from 'lodash';
 import { saveAs } from 'file-saver';
 import Loading from './Loading';
+import modalWinnerExplorer from './parts/ModalWinnerExplorer.Vue';
 import Util from './visualization/Util';
 import Label from './visualization/Label';
 import NightMap from './visualization/NightMap';
@@ -350,6 +346,7 @@ export default {
 
   components: {
     Loading,
+    modalWinnerExplorer,
   },
 
   mounted() {
@@ -1431,18 +1428,6 @@ export default {
 }
 
 .labeldata{
-  white-space: pre-line;
-  font-weight: 100;
-  text-align: left;
-  line-height: 1.3;
-  width: 320px;
-  background:white;
-  padding-left: 20px;
-  padding-right: 20px;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  font-size: 18px;
-  color:black;
 }
 
 .arrow{

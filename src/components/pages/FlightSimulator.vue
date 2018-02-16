@@ -192,4 +192,9 @@ export default {
             font-size: .6em;
         }
     }
+body.flight-simulator {
+    .cover {
+        width: 0;
+    }
+}
 </style>

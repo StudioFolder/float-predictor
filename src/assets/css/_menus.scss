@@ -76,6 +76,7 @@
   max-width: 332px;
   display: flex;
   flex-flow: column;
+  z-index: 50;
   @include medium_down {
     width: 100%;
     overflow: scroll;
