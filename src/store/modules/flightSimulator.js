@@ -8,7 +8,7 @@ export default {
     isPlaying: true, // play/pause
     isSaving: false, // saving true sve image then sets to false
     loading: 0, // percentage of loading assets. Value in range [0-1].
-    isWindVisible: true, // not yet implemented
+    winds: 0, // 0 = none, 1 = B/W, 2 = Color
     focusedExplorer: 0, // this is for onBoardExperience, if 0 none is focused
     focusedExplorerSpeed: 0, // onBoard data
     focusedExplorerDistance: 0, // onBoard data
@@ -53,8 +53,8 @@ export default {
     setPlaying(state, playing) {
       state.isPlaying = playing;
     },
-    setWindVisible(state, visible) {
-      state.isWindVisible = visible;
+    setWinds(state, w) {
+      state.winds = w;
     },
     setDestination(state, destination) { // FORMAT: { lat, lng, city, country };
       state.destination = destination;

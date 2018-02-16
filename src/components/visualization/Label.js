@@ -9,7 +9,6 @@ class Label {
     this.object = obj;
     this.scene = scene;
     this.camera = cam;
-    this.element = element;
     // this.setVisible(visible);
     if (this.visible) {
       this.label.style.opacity = 1;
@@ -22,8 +21,15 @@ class Label {
     this.setVisible(true, true);
     const p = Util.latLon2XYZPosition(obj.lat, obj.lng, 200);
     // if(p.distanceTo(position))
-    this.element.innerHTML = obj.city;
+    this.label.innerHTML = obj.city;
     this.object.position.set(p.x, p.y, p.z);
+  }
+
+  set(text, position) {
+    this.setVisible(true, true);
+    // if(p.distanceTo(position))
+    this.label.innerHTML = text;
+    this.object.position.set(position.x, position.y, position.z);
   }
 
   setVisible(v, hideObject = false) {

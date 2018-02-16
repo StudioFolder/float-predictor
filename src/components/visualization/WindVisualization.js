@@ -31,7 +31,7 @@ const vshader =
 '  if(isEnd == 0.0){                                               ' +
 '      float d = distance(vec3(0,0,0), blend)/threshold;           ' +
 '      if(d>1.0)d=1.0;                                             ' +
-'      if(opacityMapping > 0.0) vOpacity = 0.1+0.9*d*opacity;      ' +
+'      if(opacityMapping > 0.0) vOpacity = 0.25+0.75*d*opacity;      ' +
 '      if(mapping == 2.0){                                         ' +
 '          float h = startHue+d*(endHue-startHue);                 ' +
 '          vColor = hsv2rgb(vec3(h,1.0,1.0));                      ' +

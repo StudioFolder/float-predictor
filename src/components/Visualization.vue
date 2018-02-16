@@ -19,9 +19,14 @@
         <div class="arrow"></div>
       </div>
       <div class="label" id="departure-label">
+        <img style=""
+        src="../assets/icons/departure_arrow_up.svg"/>
+
         {{departure.city}}
       </div>
       <div class="label" id="destination-label">
+        <img style=""
+        src="../assets/icons/destination_arrow_down.svg"/>
         {{destination.city}}
       </div>
     </div>
@@ -76,12 +81,13 @@ const axesRotation = Util.getEarthPolarRotation(new Date());
 const colors = [0x003769, 0x2e6a9c, 0x0095d7, 0x587a98, 0x7eafd4, 0xb9e5fb, 0x656868, 0xffffff];
 
 // eslint-disable-next-line
-let bumpTexture, colorTexture, nightMapTexture, container, renderer, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departingSphere, destinationSphere, earthRotation, loaded, timer, explorers, explorerHS, fps;
+let bumpTexture, colorTexture, nightMapTexture, container, renderer, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departingSphere, destinationSphere, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps;
 
 // GUI PARAMETERS
 const pars = {
   // GENERAL
   active: false,
+  winds: 0,
   fps: 0,
   state: 0,
   speed_d_x_sec: 0.05,
@@ -90,7 +96,7 @@ const pars = {
   pan_y: 0,
   zoom: SCALINGF,
   onboard: false,
-  skip_frame: 6,
+  skip_frame: 1,
   camera_smooth: 0.993,
   camera_distance: 1.5,
   camera_shift: 0.07,
@@ -98,7 +104,7 @@ const pars = {
   sun_visible: false,
   zoom_enabled: true,
   // MATERIAL
-  use_bump: false,
+  use_bump: true,
   use_nightmap: true,
   nightmap_intensity: 0.9,
   nightmap_threshold: 0.7,
@@ -116,13 +122,13 @@ const pars = {
   explorer_height_shift: 0.025,
   layers: {
     wind: {
-      visible: true,
+      visible: false,
       mapping: 0.0,
       opacity_mapping: false,
-      threshold: 60.0,
+      threshold: 44.0,
       start_color: '#000000',
       end_color: '#ffffff',
-      opacity: 0.35,
+      opacity: 0.7,
       magnitude: 0.25,
       step: 1,
       precision: 2,
@@ -136,6 +142,7 @@ export default {
   computed: {
     activeExplorers() { return this.$store.state.flightSimulator.activeExplorers; },
     focusedExplorer() { return this.$store.state.flightSimulator.focusedExplorer; },
+    flightType() { return this.$store.state.flightSimulator.flightType; },
     active: {
       get() {
         return this.$store.state.flightSimulator.isActive;
@@ -232,12 +239,20 @@ export default {
         this.$store.commit('flightSimulator/setVisualizationState', v);
       },
     },
+    winds: {
+      get() {
+        return this.$store.state.flightSimulator.winds;
+      },
+      set(v) {
+        this.$store.commit('flightSimulator/setWinds', v);
+      },
+    },
   },
   watch: {
     active(isActive) {
       if (isActive) {
         this.start();
-        _.each(this.explorers, () => {
+        _.each(explorers, () => {
           // todo: start explorers and communicate to the dashboard
 
         });
@@ -249,6 +264,17 @@ export default {
       } else {
         this.onboardIndex = explorerId - 1;
         this.setOnboard(true);
+      }
+    },
+    flightType(ft) {
+      explorers = [];
+      if (ft === 'planned') {
+        _.each(allExplorers, (e) => {
+          explorers.push(e);
+        });
+      } else {
+        this.minTrack = 0;
+        explorers.push(allExplorers[0]);
       }
     },
     departure(departure) {
@@ -283,6 +309,27 @@ export default {
     visualizationState(s) {
       this.setState(s);
     },
+    winds(w) {
+      switch (w) {
+        case 0: // NONE
+          WindVisualization.lines.visible = false;
+          break;
+        case 1: // B/W
+          WindVisualization.setColor(new THREE.Color('#000000'), new THREE.Color('#ffffff'));
+          WindVisualization.setMapping(1);
+          WindVisualization.setOpacityMapping(true);
+          WindVisualization.lines.visible = true;
+          break;
+        case 2: // COLOR
+          WindVisualization.setColor(new THREE.Color('#073a9e'), new THREE.Color('#f80000'));
+          WindVisualization.setMapping(2);
+          WindVisualization.setOpacityMapping(false);
+          WindVisualization.lines.visible = true;
+          break;
+        default:
+          break;
+      }
+    },
   },
   data() {
     return {
@@ -312,6 +359,7 @@ export default {
     timer = 0;
     fps = 0;
     explorers = [];
+    allExplorers = [];
     explorerHS = [0, 0, 0, 0, 0, 0, 0, 0];
     this.initVis();
     this.addDebugTools();
@@ -457,6 +505,18 @@ export default {
         // class="label"
         this.cityLabels.push(new Label(scene, camera, sphere, el, true));
       }
+      this.daysLabels = [];
+      for (let i = 0; i < 16; i += 1) {
+        const el = document.createElement('div');
+        el.classList.add('label');
+        el.classList.add('days-label');
+        document.getElementById('labels').appendChild(el);
+        const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.002, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+        sphere.visible = false;
+        scene.add(sphere);
+        // class="label"
+        this.daysLabels.push(new Label(scene, camera, sphere, el, false));
+      }
       /*
 
       const array = Cities.getList();
@@ -537,6 +597,7 @@ export default {
         const explorer = new Explorer(scene, i * 8 * CATMULL_NUM_POINTS, CATMULL_NUM_POINTS);
         explorer.line.material.color = new THREE.Color(colors[i]);
         explorer.animatingSphere.material.color = new THREE.Color(colors[i]);
+        allExplorers.push(explorer);
         explorers.push(explorer);
       }
     },
@@ -545,7 +606,7 @@ export default {
       this.loadTextures();
       // renderer
       renderer = new THREE.WebGLRenderer({
-        antialias: false, // pars.antialias,
+        antialias: true, // pars.antialias,
         preserveDrawingBuffer: true,
       });
       renderer.setSize(window.innerWidth, window.innerHeight);
@@ -645,6 +706,9 @@ export default {
           this.cityLabels[i].updatePosition();
         }
       }
+      for (let i = 0; i < this.daysLabels.length; i += 1) {
+        this.daysLabels[i].updatePosition();
+      }
     },
 
     start() {
@@ -666,6 +730,8 @@ export default {
       general.add(pars, 'pixel_ratio', 1, 3).listen().onChange((value) => { renderer.setPixelRatio(value); });
       general.add(pars, 'skip_frame', 0, 60).step(1).listen();
       general.add(pars, 'fps', 0, 60).listen();
+      general.add(pars, 'winds', 0, 2).step(1).listen().onChange((value) => { this.winds = value; });
+
       general.add(controls.target, 'x', -1000.0, 1000.0).listen().onChange(() => {
         controls.update();
       });
@@ -740,7 +806,6 @@ export default {
 
     setState(state) {
       console.log(`Setting state: ${state}`);
-
       switch (state) {
         case STATE_IDLE: {
           pars.auto_rotate = false;
@@ -783,6 +848,10 @@ export default {
           break;
         }
         case STATE_ANIMATION_END: {
+          for (let j = this.minTrack; j < this.daysLabels.length; j += 1) {
+            this.daysLabels[j].set(j + 1, explorers[this.minTrack].getPosition(j / 15.0));
+            this.daysLabels[j].updatePosition();
+          }
           pars.auto_rotate = false;
           this.active = false;
           this.labels[0].object = explorers[this.minTrack].animatingSphere;
@@ -885,6 +954,12 @@ export default {
           break;
         }
       }
+      switch (pars.state) {
+        case STATE_ANIMATION_END:
+          _.each(this.daysLabels, (l) => { l.setVisible(false, true); });
+          break;
+        default:
+      }
       pars.state = state;
     },
 
@@ -893,7 +968,7 @@ export default {
       let t = '<svg height="210" width="210">';
       t += '<rect width="210" height="210" fill="gray" />';
       t += '<circle cx="105" cy="105" r="100" stroke="black" stroke-width="1" fill="gray" style="opacity:1" />';
-      for (let i = 0; i < 8; i += 1) {
+      for (let i = 0; i < explorers.length; i += 1) {
         if (i === this.minTrack) {
           t += '<polyline points="';
           for (let j = 0; j < explorers[i].array.length; j += 6) {
@@ -1212,7 +1287,7 @@ export default {
           this.api_data.push(data.d);
           this.timestamp = data.timestamp.substring(11);
           // console.log('length ' + this.api_data.length)
-          for (let j = 0; j < 8; j += 1) {
+          for (let j = 0; j < explorers.length; j += 1) {
             const pts = [];
             for (let i = j; i < data.d.length; i += 8) { pts.push(Util.latLon2XYZPosition(data.d[i][2], data.d[i][3], radius)); }
             // console.log(pts.length)
@@ -1240,6 +1315,9 @@ export default {
           }
         },
         () => { // ON END
+          if (this.flightType !== 'planned') {
+            this.minTrack = 0;
+          }
           this.toSVG();
           // TODO: actual startingDate! Add minTrack days
           this.winningExplorerData = {
@@ -1305,7 +1383,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import "~@/assets/css/_variables_and_mixins.scss";
+
 .main-visualization {
   width: 100vw;
   height: 100vh;
@@ -1330,7 +1410,7 @@ export default {
 }
 
 .dg.ac{
-  z-index: 3!important;
+  z-index: 16!important;
 }
 
 
@@ -1381,5 +1461,14 @@ export default {
   font-size:18px;
   padding-left: 0px;
 }
-
+#departure-label, #destination-label{
+  background-color: $lightBlack;
+  border-radius: 15%;
+  padding: 2px 5px 2px 5px;
+  margin-left: -8px;
+  z-index:6;
+}
+.label img{
+  margin-right: 4px;
+}
 </style>
