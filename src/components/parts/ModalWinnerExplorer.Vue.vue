@@ -39,8 +39,13 @@ export default {
     animationEnd() {
       return this.$store.state.flightSimulator.visualizationState === 4;
     },
-    modalVisible() {
-      return (this.animationEnd && this.modalShow);
+    modalVisible: {
+      get() {
+        return (this.animationEnd && this.modalShow);
+      },
+      set() {
+        this.modalShow = false;
+      },
     },
   },
   methods: {

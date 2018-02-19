@@ -52,6 +52,7 @@ export default {
 
   mounted() {
     this.init();
+    this.$store.commit('flightSimulator/setVisualizationState', 7);
   },
 
   unmounted() {

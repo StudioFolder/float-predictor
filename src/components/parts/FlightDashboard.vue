@@ -8,17 +8,17 @@
                 <i :class="windPanelClass" class="fp"></i>
             </b-nav-item>
             <transition name="fade">
-            <span class="winds-panel" v-if="isWindsPanelOpen">
-                <b-nav-item @click="toggleWinds(2)" class="--rounded" v-if="winds!==2">
-                    <i class="fp fp-winds-en"></i>
-                </b-nav-item>
-                <b-nav-item @click="toggleWinds(1)" class="--rounded" v-if="winds!==1">
-                    <i class="fp fp-winds-on"></i>
-                </b-nav-item>
-                <b-nav-item @click="toggleWinds(0)" class="--rounded" v-if="winds!==0">
-                    <i class="fp fp-no-winds"></i>
-                </b-nav-item>
-            </span>
+                <span class="winds-panel" v-if="isWindsPanelOpen">
+                    <b-nav-item @click="toggleWinds(2)" class="--rounded" v-if="winds!==2">
+                        <i class="fp fp-winds-en"></i>
+                    </b-nav-item>
+                    <b-nav-item @click="toggleWinds(1)" class="--rounded" v-if="winds!==1">
+                        <i class="fp fp-winds-on"></i>
+                    </b-nav-item>
+                    <b-nav-item @click="toggleWinds(0)" class="--rounded" v-if="winds!==0">
+                        <i class="fp fp-no-winds"></i>
+                    </b-nav-item>
+                </span>
             </transition>
         </div>
         <div class="play-animation">

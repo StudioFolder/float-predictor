@@ -32,10 +32,15 @@ $duration: .8s;
   transition: height $duration ease;
   animation: translate-down $duration ease; // transition isn't working
 }
-.main-visualization-wrapper.--small {
-  height: 30vh;
-  @include up($xlarge) {
-    height: 45vh;
+.main-visualization-wrapper {
+  &.--small {
+    height: 30vh;
+    @include up($xlarge) {
+      height: 45vh;
+    }
+  }
+  &.--bottom {
+    align-items: flex-end;
   }
 }
 

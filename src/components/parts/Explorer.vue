@@ -4,10 +4,10 @@
         @click="onClick"
         @mouseenter="mouseEnter" @mouseleave="mouseLeave">
         <div class="explorer-id">
-            <div v-if="!hover">{{explorer}}</div>
-            <div v-if="hover" class="explorer-gif">
+            <div v-if="(hover || highlighted)" class="explorer-gif">
                 <img src="~img/explorer_anim.gif">
             </div>
+            <div v-else>{{explorer}}</div>
         </div>
         <svg>
             <circle class="progress" :style="{ strokeDasharray: dashArray }"></circle>
@@ -30,6 +30,9 @@ export default {
   },
   computed: { // ${this.circumference * ((this.id) / 16)}
     circumference() { return this.r * 2 * Math.PI; },
+    highlighted() {
+      return (this.$store.state.flightSimulator.focusedExplorer === this.explorer);
+    },
     dashArray() {
       if (this.id === 0) {
         return `${this.circumference * ((this.day) / 16)}, 10000`;

@@ -22,7 +22,7 @@
                     <router-view/>
                 </transition>
             </div>
-            <div class="main-visualization-wrapper" ref="simulator" :class="{'--small': isSmall}">
+            <div class="main-visualization-wrapper" ref="simulator" :class="{'--small': isSmall, '--bottom': isBottom}">
                 <div class="cover">
                     <router-link to="/flight-simulator" class="link-to-flight-sim">
                     </router-link>
@@ -65,6 +65,7 @@ export default {
       offsetHeight: 0,
       transitionEnter: false,
       transitionLeave: false,
+      isBottom: false,
     };
   },
   computed: {
@@ -107,6 +108,9 @@ export default {
         this.$refs.navBrand.$el.classList.remove('--home');
         this.$refs.navBrand.$el.classList.add('--pages');
       }
+
+      // set bottom class
+      this.isBottom = (this.$route.name === 'gallery');
     },
     beforeLeave() {
       this.transitionLeave = true;
@@ -122,17 +126,4 @@ export default {
 
 <style lang="scss">
 @import "assets/css/main";
-
-body.gallery {
-/*    .site-content {
-        display: flex;
-        flex-flow: column;
-        .router-view {
-            order: 2;
-        }
-        .main-visualization-wrapper {
-            order: 1;
-        }
-    }*/
-}
 </style>
