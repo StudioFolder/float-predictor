@@ -83,6 +83,8 @@ export default {
       this.$store.commit('flightSimulator/startAnimation');
       this.$store.commit('general/setFormStatus', false);
       this.$store.commit('general/setAnimationHeight', 'normal');
+      this.$store.commit('flightSimulator/setDeparture', this.departure);
+      this.$store.commit('flightSimulator/setDestination', this.destination);
       this.upperHeight = 0;
     },
     setDeparture(e) {
