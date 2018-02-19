@@ -866,7 +866,7 @@ export default {
         case STATE_UNFOCUSED: {
           pars.auto_rotate = false;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [150, 0.8, Math.PI * 0.5];
+          const ev = [150, 0.8, Math.PI * 0.4];
           animator.start({
             init_values: iv,
             end_values: ev,
@@ -887,7 +887,7 @@ export default {
         case STATE_UNFOCUSED_PAGES: {
           pars.auto_rotate = false;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [90, 0.8, Math.PI * 0.5];
+          const ev = [90, 0.8, Math.PI * 0.4];
           animator.start({
             init_values: iv,
             end_values: ev,
@@ -908,7 +908,7 @@ export default {
         case STATE_UNFOCUSED_GALLERY: {
           pars.auto_rotate = false;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [-75, 0.8, Math.PI * 0.5];
+          const ev = [-100, 0.8, Math.PI * 0.4];
           animator.start({
             init_values: iv,
             end_values: ev,
