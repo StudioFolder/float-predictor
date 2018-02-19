@@ -5,14 +5,16 @@
         <i slot="modal-header-close" class="fp fp-close"></i>
         <div class="instructions-sections">
             <div class="section-title">{{sectionTitle}}</div>
-            <span class="main-pagination"></span>
+            <div class="main-pagination-wrapper">
+                <span class="sections">Sections</span> <span class="main-pagination"></span>
+            </div>
         </div>
         <swiper :options="mainSliderOptions" ref="mainSlider">
             <div v-show="navIcon === 'scroll'" class="nav-icon --scroll">
                 <i class="fp-scroll"></i></div>
             <div v-show="navIcon === 'down'" class="nav-icon --down" @click="goToNextSection">
-                <small>Go to section {{activeIndex + 2}}</small>
-                <i class="fp-next-down"></i></div>
+                <small>Go to section {{activeIndex + 2}}<br></small>
+                <i class="fp fp-next-down"></i></div>
             <!-- slides -->
             <swiper-slide>
                 <swiper :options="journeysSliderOptions"
@@ -77,20 +79,18 @@
                         ref="floatSlider"
                         class="internal-slider">
                     <swiper-slide>
+                        <h4 class="title">Planned float or Free float</h4>
                         <div class="animation-wrapper">
-                            <h4 class="title">Planned float or Free float</h4>
-                            <div class="animation-wrapper">
-                                <img class="animation"
-                                     src="~img/instructions/instructions_2-1a.gif">
-                                <img class="animation"
-                                     src="~img/instructions/instructions_2-1b.gif">
-                            </div>
-                            <div class="description">
-                                Planned Flights try to reach a specific destination
-                                starting from a selected departure point.
-                                Free Flights start from a selected departure
-                                point to float free with winds.
-                            </div>
+                            <img class="animation"
+                                 src="~img/instructions/instructions_2-1a.gif">
+                            <img class="animation"
+                                 src="~img/instructions/instructions_2-1b.gif">
+                        </div>
+                        <div class="description">
+                            Planned Flights try to reach a specific destination
+                            starting from a selected departure point.
+                            Free Flights start from a selected departure
+                            point to float free with winds.
                         </div>
                     </swiper-slide>
                     <swiper-slide>
@@ -303,6 +303,9 @@ export default {
         mousewheel: true,
         slidesPerView: 1,
         autoHeight: true,
+        pagination: {
+          clickable: true,
+        },
       },
     };
   },
@@ -424,21 +427,35 @@ export default {
     .modal-dialog {
         max-width: 1024px;
         margin-bottom: 0;
-        margin-top: 20vh;
-        height: 80vh;
+        margin-top: 15vh;
+        height: 85vh;
         overflow: hidden;
         min-height: unset;
     }
     .modal-content {
         height: 100%;
     }
+    .modal-body {
+        // padding: 1rem 10rem;
+    }
 }
 .instructions-sections {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding-left: 7rem;
+    padding-right: 7rem;
+    margin-top: 15px;
+    .main-pagination-wrapper {
+        font-size: .8em;
+        padding-top: 5px;
+    }
+    .sections {
+        color: $gray;
+    }
     .section-title {
         width: 50%;
         text-align: left;
+        color: $gray;
     }
     .main-pagination {
         width: 50%;
@@ -448,8 +465,11 @@ export default {
 .internal-slider .swiper-slide {
     display: flex;
     flex-flow: column;
+    padding-left: 7rem;
+    padding-right: 7rem;
     .title {
         flex: 0 0 auto;
+        margin-top: 10px;
     }
     .animation-wrapper {
         text-align: center;
@@ -457,13 +477,14 @@ export default {
         height: 400px;
         .animation {
             max-height: 100%;
+            max-width: 100%;
         }
     }
     .description {
         flex: 0 0 auto;
-        padding: .5em 3em;
+        padding: .5em 0;
         overflow: hidden;
-        max-width: 42em;
+        max-width: 38em;
     }
 }
 .nav-icon {
@@ -471,6 +492,7 @@ export default {
     bottom: 0;
     left: 50%;
     z-index: 9;
+    text-align: center;
     transform: translateX(-50%);
     &.--down {
         cursor: pointer;
@@ -494,7 +516,7 @@ export default {
     position: absolute;
     height: 600px;
     top: 0;
-    right: 0;
+    right: 2rem;
     display: flex;
     flex-flow: column;
     justify-content: center;

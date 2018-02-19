@@ -1,13 +1,18 @@
 <template>
     <li class="nav-item explorer-item --rounded"
         :style="{opacity: opacity}"
-        @click="onClick">
+        @click="onClick"
+        @mouseenter="mouseEnter" @mouseleave="mouseLeave">
         <div class="explorer-id">
-            {{explorer}}
+            <div v-if="!hover">{{explorer}}</div>
+            <div v-if="hover" class="explorer-gif">
+                <img src="~img/explorer_anim.gif">
+            </div>
         </div>
         <svg>
-            <circle class="progress" :style="{ strokeDashoffset: dashOffset }"></circle>
-            <circle class="handicap" :style="{ strokeDasharray: dashArray }"></circle>
+            <circle class="progress" :style="{ strokeDasharray: dashArray }"></circle>
+            <circle class="baseline"></circle>
+            <!--<circle class="handicap" :style="{ strokeDasharray: dashArray }"></circle>-->
         </svg>
     </li>
 </template>
@@ -18,19 +23,30 @@ export default {
   props: ['id', 'explorer', 'day'],
   data() {
     return {
-      r: 18, // calc(#{$itemwidth}/2 + 1px );
-      speed: 0.10, // todo: speed_d_x_sec
+      r: 17, // calc(#{$itemwidth}/2 + 1px ); // raggio definitivo 15
+      speed: 0.05, // todo: speed_d_x_sec
       opacity: 0,
+      hover: false,
     };
   },
-  computed: {
+  computed: { // ${this.circumference * ((this.id) / 16)}
     circumference() { return this.r * 2 * Math.PI; },
-    dashOffset() { return this.circumference * ((16 - this.day) / 16); },
-    dashArray() { return `${this.circumference * ((this.id) / 16)}, 1000`; },
+    dashArray() {
+      if (this.id === 0) {
+        return `${this.circumference * ((this.day) / 16)}, 10000`;
+      }
+      return `0, ${this.circumference * ((this.id) / 16)}, ${this.circumference * ((this.day - this.id) / 16)}, 10000`;
+    },
   },
   methods: {
     onClick() {
       this.$store.commit('flightSimulator/setFocusedExplorer', this.day);
+    },
+    mouseEnter() {
+      this.hover = true;
+    },
+    mouseLeave() {
+      this.hover = false;
     },
   },
   watch: {
@@ -44,54 +60,4 @@ export default {
 </script>
 
 <style lang="scss">
-@import "~@/assets/css/_variables_and_mixins.scss";
-$r: calc(#{$itemWidth}/2 + 2px );
-$pi: 3.14159;
-
-.explorers-dashboard .explorer-item {
-    margin-bottom: 1.5rem;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity .3s;
-    cursor: pointer;
-    background-color: rgba(255, 255, 255, 0);
-    &:hover {
-        background-color: rgba(255, 255, 255, .1);
-    }
-    &:first-child {
-        margin-top: 1rem;
-    }
-    .explorer-id {
-        position: absolute;
-        z-index: 10;
-    }
-    svg {
-        height: calc(#{$itemWidth} + 10px);
-        width: calc(#{$itemWidth} + 10px);
-        transform: rotate(-86deg);
-        position: absolute;
-    }
-    circle {
-        cx: 50%;
-        cy: 50%;
-        r: $r;
-        fill: transparent;
-        &.handicap {
-            stroke-width: 5;
-            stroke: $bodyColor;
-            transform: rotate(-1deg);
-        }
-        &.progress {
-            stroke-width: 2;
-            stroke-linecap: square;
-            stroke-dasharray: calc(#{$r} * 2 * #{$pi}); // circumference
-            stroke-dashoffset: calc(#{$r} * 2 * #{$pi});
-            stroke: $textColor;
-            transform: rotate(1deg);
-            transition: stroke-dashoffset 10s; // depends on speed
-        }
-    }
-}
 </style>

@@ -39,12 +39,11 @@
   background-image: url("assets/icons/ico-camera.svg");
 }
 .fp-pause {
-  background-image: url("assets/icons/ico-pause.svg");
+  background-image: url("assets/icons/pause.svg");
   background-size: 60%;
 }
 .fp-play {
-  background-image: url("assets/icons/ico-triangle.svg");
-  transform: rotate(-90deg);
+  background-image: url("assets/icons/play.svg");
 }
 .fp-up {
   background-image: url("assets/icons/ico-triangle.svg");
@@ -52,6 +51,9 @@
 }
 .fp-down {
   background-image: url("assets/icons/ico-triangle.svg");
+}
+.fp-next-down {
+  background-image: url("assets/icons/arrow_down.svg");
 }
 .fp-hand {
   background-image: url("assets/icons/ico-hand.svg");

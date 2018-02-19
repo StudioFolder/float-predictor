@@ -2,26 +2,37 @@
   <div id="gallery" class="main-content" v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy" infinite-scroll-distance="10">
     <b-container >
-    <h1>Gallery</h1>
-    <b-row>
-      <b-col cols="10" offset="1">
-        <b-row>
-          <b-col class="gallery-item" lg="2" md="3" sm="4" cols="6"
-                 v-for="item in data" :key="item.id">
+      <h1 class="entry-title">The Aeroglyphs Archive</h1>
+      <h3 class="entry-subtitle">
+        Each imaginary Aerocene journey is an air signature
+        that we can use to advocate the independence from fossil fuels.
+      </h3>
+      <div class="stats">
+        <div class="saved">
+          <div class="h2">25,432</div>
+          <p>Aeroglyphs saved</p>
+        </div>
+        <div class="travelled">
+          <div class="h2">1,342,453</div>
+          <p>Kilometers travelled</p>
+        </div>
+      </div>
+      <div class="path-wrapper">
+        <div class="gallery-item" v-for="item in data" :key="item.id">
+          <div class="gallery-item-inside">
             <img v-bind:src="getSVGPath(item)"/>
-            <span>
-          <strong>{{item.departure.city}}</strong>
-          to <strong>{{item.destination.city}}</strong>
-        </span>
-            <span>{{getDate(item.created)}}</span>
-          </b-col>
-        </b-row>
-      </b-col>
-    </b-row>
-  <div v-if="!done" class='small-loader'>
-    <Loading></Loading>
-  </div>
-</b-container>
+            <div>
+              <strong>{{item.departure.city}}</strong>
+              to <strong>{{item.destination.city}}</strong>
+            </div>
+            <div>{{getDate(item.created)}}</div>
+          </div>
+        </div>
+      </div>
+      <div v-if="!done" class='small-loader'>
+        <Loading></Loading>
+      </div>
+    </b-container>
 </div>
 </template>
 
@@ -112,14 +123,27 @@ export default {
   },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-.main-application{
-  overflow: scroll !important;
+<style scoped lang="scss">
+  @import '~css/_variables_and_mixins.scss';
+  .container {
+    padding-left: 9rem;
+    padding-right: 9rem;
+  }
+  .main-content {
+    padding-top: 9.375rem;
+    text-align: center;
+  }
+  .path-wrapper {
+    display: flex;
+    flex-flow: row wrap;
+    position: relative;
+    padding: 1rem;
+  }
+.entry-subtitle {
+  max-width: 20em;
+  margin-left: auto;
+  margin-right: auto;
 }
-</style>
-<style scoped>
 .small-loader{
   transition: opacity 1.0s ease;
   height: 50px;
@@ -129,21 +153,37 @@ export default {
 .main-application{
   overflow: scroll !important;
 }
-
-.gallery-item{
-  margin-top: 20px;
-  padding-left: 0px;
-  min-height: 227px;
-
+p {
+  color: $gray;
 }
-
-.gallery-item img{
-  width:100%;
-  margin-bottom: 5%;
+.stats {
+  display: flex;
+  flex-flow: row wrap;
+  div {
+    width: 50%;
+    text-align: center;
+    .h2 {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    @include medium_down {
+      width: 100%;
+    }
+  }
 }
-
-.gallery-item span{
-  display: block;
+.gallery-item {
+  min-height: 200px;
+  width: 20%;
+  @include medium_down {
+    width: 50%;
+  }
+  .gallery-item-inside {
+    padding: 3rem 1rem 0;
+  }
+  img {
+    width: 80%;
+    margin-bottom: 5%;
+  }
 }
 
 h1, h2 {

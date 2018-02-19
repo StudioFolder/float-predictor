@@ -1,6 +1,6 @@
 <template>
     <!-- Modal Component -->
-    <b-modal v-model="modalShow"
+    <b-modal v-model="modalVisible"
              id="dialog-label"
              size="sm"
              hide-footer
@@ -35,6 +35,14 @@ export default {
       modalShow: true,
     };
   },
+  computed: {
+    animationEnd() {
+      return this.$store.state.flightSimulator.visualizationState === 4;
+    },
+    modalVisible() {
+      return (this.animationEnd && this.modalShow);
+    },
+  },
   methods: {
     onSubmit() {
       this.modalShow = false;
@@ -47,6 +55,10 @@ export default {
 @import "~css/_typography.scss";
 .winner-explorer-modal {
     font-size: 1rem;
+    .modal-header {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
     .modal-title {
         @extend .h4;
         margin: 0;
@@ -56,6 +68,10 @@ export default {
     }
     .modal{
         transform: none !important;
+    }
+    .modal-backdrop.show {
+        opacity: 0;
+        display: none;
     }
     #imgel {
         background: transparent !important;

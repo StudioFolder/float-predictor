@@ -92,6 +92,7 @@
     }
     .menu-item.--nav{
       margin-top: 0px;
+      transition: color .3s ease;
       &:hover {
         color: #fff;
       }
@@ -141,6 +142,13 @@
   }
   &.--play {
     margin-top: $marginItem + .5rem;
+    background-color: transparent;
+    &:hover {
+      background-color: $lightGray;
+    }
+    i.fp-play {
+      margin-left: 3px;
+    }
   }
   i {
     margin: 0 auto;
@@ -150,4 +158,7 @@
       width: 100%;
     }
   }
+}
+.dg.main.a {
+  display: none;
 }

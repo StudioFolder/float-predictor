@@ -9,9 +9,9 @@
                 <ul class="list-group menu-items">
                     <router-link to="/flight-simulator">
                         <li class="menu-item --logo">
-                            <img src="~img/globe_gif.gif" @click="closeAction"></li>
+                            <img src="~img/globe_gif.gif" @click="startNew"></li>
                         <li class="menu-item --nav">
-                            <div @click="closeAction">start a new<br>aerosolar journey</div></li>
+                            <div @click="startNew">start a new<br>aerosolar journey</div></li>
                     </router-link>
                 </ul>
             </div>
@@ -30,14 +30,12 @@
                             <router-link to="/aerocene-explorer">
                                 Aerocene explorer</router-link></li>
                         <li class="menu-item --nav" @click="closeAction">
-                            <router-link to="/resources">
-                                Resources and APIs</router-link></li>
+                                Resources and APIs</li>
                         <li class="menu-item --nav" @click="closeAction">
                             <a href="#" @click.prevent v-b-modal.instruction-modal>
                                 Instructions</a></li>
-                        <li class="menu-item --nav" @click="closeAction">
-                            <a href="#" @click.prevent v-b-modal.impressum-modal>
-                                Impressum</a></li>
+                        <li class="menu-item --nav" >
+                                Impressum</li>
                         <li class="menu-item --nav">Disclaimer</li>
                     </ul>
                 </div>
@@ -76,6 +74,13 @@ export default {
   },
   methods: {
     closeAction() { this.$store.commit('general/toggleMenu'); },
+    startNew() {
+      this.$store.commit('flightSimulator/setActive', false);
+      this.$store.commit('flightSimulator/setPlaying', false);
+      this.$store.commit('flightSimulator/setVisualizationState', 1);
+      this.$store.commit('general/setFormStatus', true);
+      this.$store.commit('general/toggleMenu');
+    },
   },
 };
 </script>
@@ -93,11 +98,13 @@ export default {
         color: #000;
         display: flex;
         align-items: center;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
 
         .modal-title {
             @extend .h2;
             @extend %colfax_med;
-            margin: .4rem 0;
+            margin: .4rem 0 .4rem $marginItem*2.5;
         }
     }
     .modal-body {

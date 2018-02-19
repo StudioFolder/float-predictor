@@ -15,7 +15,6 @@
 }
 
 
-
 html {
   font-size: 16px;
   @include medium_down {
@@ -63,4 +62,5 @@ a, a:visited, a:hover {
   color: #fff;
   text-decoration: underline;
   text-transform: uppercase;
+  transition: color .3s ease;
 }

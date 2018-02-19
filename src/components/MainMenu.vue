@@ -29,7 +29,9 @@ export default {
   },
   computed: {
     isMenuOpen() { return this.$store.state.general.isMenuOpen; },
-    isAnimationActive() { return this.$store.state.flightSimulator.isActive; },
+    isAnimationActive() {
+      return (this.$store.state.flightSimulator.isActive && this.$route.name === 'flight-simulator');
+    },
   },
   methods: {
     toggleInfoBox() {
