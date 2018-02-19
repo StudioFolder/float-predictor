@@ -24,7 +24,6 @@ export default {
   data() {
     return {
       r: 17, // calc(#{$itemwidth}/2 + 1px ); // raggio definitivo 15
-      speed: 0.05, // todo: speed_d_x_sec
       opacity: 0,
       hover: false,
     };
@@ -40,7 +39,7 @@ export default {
   },
   methods: {
     onClick() {
-      this.$store.commit('flightSimulator/setFocusedExplorer', this.day);
+      this.$store.commit('flightSimulator/setFocusedExplorer', this.explorer);
     },
     mouseEnter() {
       this.hover = true;
