@@ -21,7 +21,8 @@
               <div class="coordinates-selector-group">
                   <label class="small">From</label>
                   <vue-google-autocomplete
-                          id="map" classname="form-control" placeholder="Departure"
+                          id="map" classname="form-control"
+                          :placeholder="placeholder.departure"
                           @placechanged="setDeparture"
                           types="(cities)"
                           rtypes="geocode">
@@ -29,9 +30,11 @@
                   <label v-if="(flightType === 'planned')" class="small">To</label>
                   <vue-google-autocomplete
                           v-if="(flightType === 'planned')"
-                          id="map2" classname="form-control" placeholder="Destination"
+                          id="map2" classname="form-control"
+                          :placeholder="placeholder.destination"
                           @placechanged="setDestination"
-                          types="(cities)" rtypes="geocode">
+                          types="(cities)"
+                          rtypes="geocode">
                   </vue-google-autocomplete>
                   <p class="input-label">
                       Aerocene sculptures always leave at noon with sun light.
@@ -45,7 +48,7 @@
 
 <script>
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
-// import flightForm from 'Components/FlightForm';
+import _ from 'lodash';
 
 export default {
   name: 'FlightSimulator',
@@ -54,14 +57,38 @@ export default {
     return {
       upperHeight: 0,
       form: {
-        departure: '',
-        destination: '',
+        errors: {
+        },
       },
     };
   },
   computed: {
-    isChoosing() { return (this.$route.name === 'flight-simulator' && this.$store.state.general.isChoosingDestination); },
-    flightType: {
+    hasErrors() {
+      return (this.form.errors.departure || this.form.errors.destination);
+    },
+    placeholder() {
+      return {
+        departure: (this.form.errors.departure) ? this.form.errors.departure : 'Departure',
+        destination: (this.form.errors.destination) ? this.form.errors.destination : 'Destination',
+      };
+    },
+    departure: {
+      get() {
+        return this.$store.state.flightSimulator.departure;
+      },
+      set(value) {
+        this.$store.commit('flightSimulator/setDeparture', value);
+      },
+    },
+    destination: {
+      get() {
+        return this.$store.state.flightSimulator.destination;
+      },
+      set(value) {
+        this.$store.commit('flightSimulator/setDestination', value);
+      },
+    },
+    flightType: { // free or planned
       get() {
         return this.$store.state.flightSimulator.flightType;
       },
@@ -69,6 +96,7 @@ export default {
         this.$store.commit('flightSimulator/changeFlightType', value);
       },
     },
+    isChoosing() { return (this.$route.name === 'flight-simulator' && this.$store.state.general.isChoosingDestination); },
     isFree() { return (this.$store.getters['flightSimulator/isFreeFlight']); },
     isPlanned() { return (this.$store.getters['flightSimulator/isPlannedFlight']); },
     label() {
@@ -80,12 +108,14 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      this.$store.commit('flightSimulator/startAnimation');
-      this.$store.commit('general/setFormStatus', false);
-      this.$store.commit('general/setAnimationHeight', 'normal');
-      this.$store.commit('flightSimulator/setDeparture', this.departure);
-      this.$store.commit('flightSimulator/setDestination', this.destination);
-      this.upperHeight = 0;
+      // this.upperHeight = 0;
+      this.validateForm()
+        .then(() => {
+          this.form.errors = {}; // reset previous errors
+          this.startAnimation();
+        }).catch((errors) => {
+          this.form.errors = errors;
+        });
     },
     setDeparture(e) {
       this.departure =
@@ -94,6 +124,30 @@ export default {
     setDestination(e) {
       this.destination =
         { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
+    },
+    validateForm() {
+      const errors = {};
+      let hasErrors = false;
+      return new Promise((resolve, reject) => {
+        if (_.isEmpty(this.departure)) { // departure always filled
+          errors.departure = 'Please choose a departure location';
+          hasErrors = true;
+        }
+        if (_.isEmpty(this.destination) && this.flightType === 'planned') {
+          errors.destination = 'Please choose a destination for a planned flight';
+          hasErrors = true;
+        }
+        if (hasErrors) {
+          reject(errors);
+        } else {
+          resolve();
+        }
+      });
+    },
+    startAnimation() {
+      this.$store.commit('flightSimulator/startAnimation');
+      this.$store.commit('general/setFormStatus', false);
+      this.$store.commit('general/setAnimationHeight', 'normal');
     },
   },
   mounted() {

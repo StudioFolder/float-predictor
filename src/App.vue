@@ -17,12 +17,13 @@
                         @afterEnter="afterEnter"
                         @before-leave="beforeLeave"
                         @leave="onLeave"
-                        @after-leave="afterLeave"
-                >
+                        @after-leave="afterLeave">
                     <router-view/>
                 </transition>
             </div>
-            <div class="main-visualization-wrapper" ref="simulator" :class="{'--small': isSmall, '--bottom': isBottom}">
+            <div class="main-visualization-wrapper"
+                 ref="simulator"
+                 :class="{'--small': isSmall, '--bottom': isBottom}">
                 <div class="cover">
                     <router-link to="/flight-simulator" class="link-to-flight-sim">
                     </router-link>

@@ -16,16 +16,8 @@ export default {
     coordinatesValid: false,
     visualizationState: 0,
     departure: {
-      lat: 52.520645,
-      lng: 13.409779,
-      city: 'Berlin',
-      country: 'Germany',
     },
     destination: {
-      lat: 35.652832,
-      lng: 139.839478,
-      city: 'Tokio',
-      country: 'Japan',
     },
     // used for the final recap: e.g.
     // The Aerocene Explorer that left from Milan...arrived within *km in *hours

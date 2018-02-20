@@ -78,7 +78,6 @@ export default {
       this.$store.commit('flightSimulator/setActive', false);
       this.$store.commit('flightSimulator/setActive', true);
       this.$store.commit('flightSimulator/setElapsedDays', 0);
-      // this.$store.commit('flightSimulator/setPlaying', false);
       this.$store.commit('flightSimulator/setVisualizationState', 8);
       this.$store.commit('general/setFormStatus', true);
       this.$store.commit('general/toggleMenu');
