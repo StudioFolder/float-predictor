@@ -9,9 +9,7 @@
           arrived within <b>{{winningExplorerData.minDist}}km</b>
           from <b>{{destination.city}}</b> in <b>{{winningExplorerData.minTime}} days.</b>
         </div>
-        <div slot="image"
-               id="imgel">
-        </div>
+        <div slot="image" id="imgel"></div>
       </modal-winner-explorer>
       <div class="label" id="departure-label">
         <img style=""
@@ -72,12 +70,12 @@ const CATMULL_NUM_POINTS = 3;
 const radius = 200;
 // const EARTH_RADIUS = 6378.137
 // const SCENE_SCALE = EARTH_RADIUS / radius
-const SCALINGF = 0.5;
+const INITIAL_ZOOM = 0.5;
 const axesRotation = Util.getEarthPolarRotation(new Date());
 const colors = [0x003769, 0x2e6a9c, 0x0095d7, 0x587a98, 0x7eafd4, 0xb9e5fb, 0x656868, 0xffffff];
 
 // eslint-disable-next-line
-let bumpTexture, colorTexture, nightMapTexture, container, renderer, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departingSphere, destinationSphere, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps;
+let bumpTexture, colorTexture, nightMapTexture, container, renderer, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels;
 
 // GUI PARAMETERS
 const pars = {
@@ -90,7 +88,7 @@ const pars = {
   move_in_time: false,
   pan_x: 0,
   pan_y: 0,
-  zoom: SCALINGF,
+  zoom: INITIAL_ZOOM,
   onboard: false,
   skip_frame: 1,
   camera_smooth: 0.993,
@@ -276,31 +274,23 @@ export default {
     departure(departure) {
       console.log(`Departure: ${departure.lat} ${departure.lng}`);
       const t = Util.latLon2XYZPosition(departure.lat, departure.lng, radius);
-      departingSphere.visible = true;
-      destinationSphere.visible = true;
-      departingSphere.position.set(t.x, t.y, t.z);
-
-      this.clear();
-
-      const polar = (1.0 - ((this.departure.lat + 270) / 180.0) % 1) * Math.PI;
+      departureLabel.setPosition(t);
+      // const polar = (1.0 - ((this.departure.lat + 270) / 180.0) % 1) * Math.PI;
       const azimuth = ((this.departure.lng + 90) / 360.0) * 2 * Math.PI;
-      controls.setAzimuthalAngle(azimuth - Math.PI * 0.5);
-      controls.setPolarAngle(polar);
+      // controls.setAzimuthalAngle(azimuth - Math.PI * 0.5);
+      // controls.setPolarAngle(polar);
       const ts = (-earthRotation - azimuth) / (Math.PI * 2) % 1;
       this.startingDate.setTime(this.startingDate.getTime() + (ts * 24.0 * 60 * 60 * 1000));
       const r = Util.getEarthAzimuthRotation(this.startingDate);
       const sunP = new THREE.Vector3(Math.sin(-r) * radius, Math.sin(axesRotation) * radius, Math.cos(-r) * radius);
-      const angle = departingSphere.position.angleTo(sunP);
-      if (angle >= 1.5) {
-        this.coordinatesValid = false;
-      }
+      const angle = departureLabel.getPosition().angleTo(sunP);
+      this.coordinatesValid = angle < 1.5;
       console.log(`Angle: ${angle} <= 1.5 ?`);
     },
     destination(destination) {
       console.log(`Destination: ${destination.lat} ${destination.lng}`);
       const t = Util.latLon2XYZPosition(destination.lat, destination.lng, radius);
-      destinationSphere.visible = true;
-      destinationSphere.position.set(t.x, t.y, t.z);
+      destinationLabel.setPosition(t);
     },
     visualizationState(s) {
       this.setState(s);
@@ -379,6 +369,7 @@ export default {
       this.setupExplorers();
       this.initNightMap();
       this.initLabels();
+      this.setScale(INITIAL_ZOOM);
       this.visualizationState = STATE_INITIAL;
       this.initWindVisualization();
       this.initFPSChecker();
@@ -459,13 +450,13 @@ export default {
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
               const coord = Util.XYZ2LatLon(explorers[this.onboardIndex].animatingSphere.position);
               const cities = Cities.get(coord);
-              for (let i = 0; i < this.cityLabels.length; i += 1) {
+              for (let i = 0; i < cityLabels.length; i += 1) {
                 if (i < cities.length) {
                   if (this.rotationIndex === undefined) {
                     this.rotationIndex = 0;
                   }
-                  this.rotationIndex = this.rotationIndex % this.cityLabels.length;
-                  this.cityLabels[this.rotationIndex].reset(cities[i]);
+                  this.rotationIndex = this.rotationIndex % cityLabels.length;
+                  cityLabels[this.rotationIndex].setCity(cities[i]);
                   this.rotationIndex += 1;
                 }
               }
@@ -485,12 +476,15 @@ export default {
     },
 
     initLabels() {
-      this.labels = [];
-      this.labels.push(new Label(scene, camera, explorers[0].animatingSphere, document.getElementById('dialog-label'), true));
-      this.labels.push(new Label(scene, camera, departingSphere, document.getElementById('departure-label'), true));
-      this.labels.push(new Label(scene, camera, destinationSphere, document.getElementById('destination-label'), true));
+      const departureSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      scene.add(departureSphere);
+      departureLabel = new Label(scene, camera, departureSphere, document.getElementById('departure-label'), false);
 
-      this.cityLabels = [];
+      const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      scene.add(destinationSphere);
+      destinationLabel = new Label(scene, camera, destinationSphere, document.getElementById('destination-label'), false);
+
+      cityLabels = [];
       Cities.init();
       for (let i = 0; i < 8; i += 1) {
         const el = document.createElement('div');
@@ -500,9 +494,9 @@ export default {
         sphere.visible = false;
         scene.add(sphere);
         // class="label"
-        this.cityLabels.push(new Label(scene, camera, sphere, el, true));
+        cityLabels.push(new Label(scene, camera, sphere, el, true));
       }
-      this.daysLabels = [];
+      daysLabels = [];
       for (let i = 0; i < 16; i += 1) {
         const el = document.createElement('div');
         el.classList.add('label');
@@ -512,29 +506,8 @@ export default {
         sphere.visible = false;
         scene.add(sphere);
         // class="label"
-        this.daysLabels.push(new Label(scene, camera, sphere, el, false));
+        daysLabels.push(new Label(scene, camera, sphere, el, false));
       }
-      /*
-
-      const array = Cities.getList();
-      for (let y = 0; y < array.length; y += 1) {
-        for (let x = 0; x < array[y].length; x += 1) {
-          for (let j = 0; j < array[y][x].length; j += 1) {
-            const el = document.createElement('div');
-            el.classList.add('label');
-            document.getElementById('labels').appendChild(el);
-            el.innerHTML += array[y][x][j].city;
-            const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-            const pos = Util.latLon2XYZPosition(array[y][x][j].lat, array[y][x][j].lng, radius);
-            sphere.position.set(pos.x, pos.y, pos.z);
-            scene.add(sphere);
-            // class="label"
-            this.labels.push(new Label(scene, camera, sphere, el, true));
-            break;
-          }
-        }
-      }
-      */
     },
 
     initWindVisualization() {
@@ -616,7 +589,6 @@ export default {
       this.renderer = renderer;
       // scene
       scene = new THREE.Scene();
-      this.setScale(SCALINGF);
       // scene.fog = new THREE.Fog( 0x333333, 0.0001 );
       // camera
       camera = new THREE.PerspectiveCamera(40, renderer.getSize().width / renderer.getSize().height, 0.1, 10000);
@@ -660,14 +632,6 @@ export default {
 
       earthSphere.material.needsUpdate = true;
 
-      departingSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      scene.add(departingSphere);
-      departingSphere.visible = false;
-
-      destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      scene.add(destinationSphere);
-      destinationSphere.visible = false;
-
       sunSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 2, 20, 20), new THREE.MeshBasicMaterial({ color: 0xFFE893 }));
       sunSphere.visible = pars.sun_visible;
       scene.add(sunSphere);
@@ -695,17 +659,16 @@ export default {
     },
 
     updateLabels() {
-      for (let i = 0; i < this.labels.length; i += 1) {
-        this.labels[i].updatePosition();
-      }
       if (pars.onboard) {
-        for (let i = 0; i < this.cityLabels.length; i += 1) {
-          this.cityLabels[i].updatePosition();
+        for (let i = 0; i < cityLabels.length; i += 1) {
+          cityLabels[i].updatePosition();
         }
       }
-      for (let i = 0; i < this.daysLabels.length; i += 1) {
-        this.daysLabels[i].updatePosition();
+      for (let i = 0; i < daysLabels.length; i += 1) {
+        daysLabels[i].updatePosition();
       }
+      destinationLabel.updatePosition();
+      departureLabel.updatePosition();
     },
 
     start() {
@@ -806,19 +769,23 @@ export default {
       switch (state) {
         case STATE_IDLE: {
           pars.auto_rotate = false;
+          this.clear();
           break;
         }
         case STATE_MOVING_TO_DEPARTURE: { // MOVING TO DEPARTURE POINT
           this.clear();
-          this.departure = this.departure;
+          departureLabel.setVisible(true);
+          if (this.flightType === 'planned') {
+            destinationLabel.setVisible(true);
+          }
           pars.auto_rotate = false;
-          this.process();
-          // controls.update();
-          this.rotateTo({ lat: this.departure.lat, lng: this.departure.lng, time: 0.5, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_ACTIVE; } });
+          this.downloadMulti();
+          // this.rotateTo({ lat: this.departure.lat, lng: this.departure.lng, time: 0.5, target: new THREE.Vector3(0, 0, 0), zoom: INITIAL_ZOOM, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_ACTIVE; } });
+          this.resetTo({ lat: this.departure.lat, lng: this.departure.lng, time: 0.5, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_ACTIVE; } });
           break;
         }
         case STATE_ANIMATION_ACTIVE: {
-          // pars.auto_rotate=true;
+          pars.auto_rotate = false;
           break;
         }
         case STATE_MOVING_TO_DESTINATION: {
@@ -836,31 +803,31 @@ export default {
           explorers[i].lineSegmentMaterial.setOpacity(0.2, 2);
           explorers[i].facesMaterial.setOpacity(0.15, 2);
 
-          for (let j = 0; j < this.cityLabels.length; j += 1) {
-            this.cityLabels[j].setVisible(false, true);
+          for (let j = 0; j < cityLabels.length; j += 1) {
+            cityLabels[j].setVisible(false, true);
           }
           // GO TO DESTINATION POINT
           const d = Util.XYZ2LatLon(explorers[this.minTrack].animatingSphere.position);// explorers[this.minTrack].destination;
           this.resetTo({ lat: d.lat, lng: d.lng, time: 1.0, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_END; } });
+
+          for (let j = this.minTrack + 1; j <= daysLabels.length; j += 1) {
+            const dt = new Date();// this.valueOf()
+            dt.setDate(dt.getDate() + j);
+            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const text = `${dt.getDate()} ${monthNames[dt.getMonth()]}`;
+            daysLabels[j - 1].set(text, explorers[this.minTrack].getPosition(j / 16.0));
+            daysLabels[j - 1].updatePosition();
+          }
           break;
         }
         case STATE_ANIMATION_END: {
-          for (let j = this.minTrack; j < this.daysLabels.length; j += 1) {
-            this.daysLabels[j].set(j + 1, explorers[this.minTrack].getPosition(j / 15.0));
-            this.daysLabels[j].updatePosition();
-          }
           pars.auto_rotate = false;
           this.active = false;
-          this.labels[0].object = explorers[this.minTrack].animatingSphere;
           const dt = new Date(this.startingDate);// this.valueOf()
           dt.setDate(dt.getDate() + this.minTrack);
           const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
           this.departureDay = dt.getDate();
           this.departureMonth = monthNames[dt.getMonth()];
-          console.log(dt);
-          console.log(this.departure);
-          console.log(`${this.departureDay} ${this.departureMonth} ${this.destination.city} ${this.departure.city}`);
-          this.labels[0].setVisible(true);
           break;
         }
         case STATE_UNFOCUSED: {
@@ -928,6 +895,7 @@ export default {
         }
         case STATE_INITIAL: {
           pars.auto_rotate = true;
+          this.clear();
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
           const ev = [150, 0.8, Math.PI * 0.5];
           animator.start({
@@ -951,12 +919,6 @@ export default {
           break;
         }
       }
-      switch (pars.state) {
-        case STATE_ANIMATION_END:
-          _.each(this.daysLabels, (l) => { l.setVisible(false, true); });
-          break;
-        default:
-      }
       pars.state = state;
     },
 
@@ -979,9 +941,7 @@ export default {
         }
       }
       t += '</svg>';
-      // this.svg = t
-      document.getElementById('imgel').innerHTML = t;
-      document.getElementById('imgel').style.background = 'gray';
+      return t;
     },
 
     rotateTo(config) {
@@ -1010,9 +970,9 @@ export default {
         iv.push(this.getScale());
         ev.push(config.zoom);
       }
-      if (config.resetTarget) {
+      if (config.target) {
         iv.push(controls.target.x, controls.target.y, controls.target.z);
-        ev.push(0, 0, 0);
+        ev.push(config.target.x, config.target.y, config.target.z);
       }
       animator.start({
         init_values: iv,
@@ -1028,11 +988,12 @@ export default {
           controls.setPolarAngle(v[1]);
           let i = 2;
           if (config.zoom) {
+            this.setScale(v[i]);
             i += 1;
-            this.setScale(v[2]);
-          // console.log(v[2])
           }
-          if (config.resetTarget) { controls.target.set(v[i], v[i + 1], v[i + 2]); }
+          if (config.target) {
+            controls.target.set(v[i], v[i + 1], v[i + 2]);
+          }
           controls.update();
         },
       });
@@ -1061,7 +1022,7 @@ export default {
       const ev = [azimuth, polar];
       console.log(`Zooming from ${this.getScale()} to ${config.zoom}`);
       iv.push(this.getScale());
-      ev.push(SCALINGF);
+      ev.push(INITIAL_ZOOM);
       iv.push(controls.target.x, controls.target.y, controls.target.z);
       ev.push(0, 0, 0);
       iv.push(camera.position.length());
@@ -1096,10 +1057,10 @@ export default {
       for (let i = 0; i < explorers.length; i += 1) {
         explorers[i].animatingSphere.scale.set(1 / s, 1 / s, 1 / s);
       }
-      // departingSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
+      // departureSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
       // destinationSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
-      if (departingSphere) departingSphere.scale.set(0.5 / s, 0.5 / s, 0.5 / s);
-      if (destinationSphere) destinationSphere.scale.set(0.5 / s, 0.5 / s, 0.5 / s);
+      departureLabel.getAnchorObject().scale.set(0.5 / s, 0.5 / s, 0.5 / s);
+      destinationLabel.getAnchorObject().scale.set(0.5 / s, 0.5 / s, 0.5 / s);
     },
     getScale() {
       return pars.zoom;
@@ -1109,8 +1070,8 @@ export default {
       pars.onboard = v;
       this.autoMode = true;
       if (!v) {
-        for (let j = 0; j < this.cityLabels.length; j += 1) {
-          this.cityLabels[j].setVisible(v, true);
+        for (let j = 0; j < cityLabels.length; j += 1) {
+          cityLabels[j].setVisible(v, true);
         }
       }
     },
@@ -1186,7 +1147,7 @@ export default {
                   const uma = 1 - a;
                   controls.target.set(controls.target.x * a, controls.target.y * a, controls.target.z * a);
                   if (this.autoMode) {
-                    const t = this.getScale() * a + SCALINGF * uma;
+                    const t = this.getScale() * a + INITIAL_ZOOM * uma;
                     this.setScale(t);
                     camera.position.set(camera.position.x * a + v.x * uma, camera.position.y * a + v.y * uma, camera.position.z * a + v.z * uma);
                   }
@@ -1243,11 +1204,19 @@ export default {
 
     clear() {
       console.log('reset');
-      this.labels[0].setVisible(false);
       pars.elapsed_days = 0;
-      for (let i = 0; i < explorers.length; i += 1) {
-        explorers[i].reset(departingSphere.position);
-      }
+      _.each(explorers, (e) => { e.reset(new THREE.Vector3(0, 0, 0)); });
+      _.each(daysLabels, (l) => { l.setVisible(false); });
+      _.each(cityLabels, (l) => { l.setVisible(false); });
+      departureLabel.setVisible(false);
+      destinationLabel.setVisible(false);
+      this.minDist = 10000000000000000;
+      this.minTrack = 0;
+      this.minTime = 0;
+      this.onboardIndex = 0;
+      this.elapsed_days = 0;
+      this.api_data = [];
+      this.setOnboard(false);
     },
 
     error() {
@@ -1262,17 +1231,6 @@ export default {
       return `${day} ${month}`;
     },
 
-    process() {
-      this.minDist = 10000000000000000;
-      this.minTrack = 0;
-      this.minTime = 0;
-      this.onboardIndex = 0;
-      this.setOnboard(false);
-      this.elapsed_days = 0;
-      this.api_data = [];
-      console.log('started multi');
-      this.downloadMulti();
-    },
     downloadMulti() {
       downloader.downloadMulti(this.departure, this.destination,
         (data) => { // ON UPDATE
@@ -1315,12 +1273,12 @@ export default {
           if (this.flightType !== 'planned') {
             this.minTrack = 0;
           }
-          this.toSVG();
           // TODO: actual startingDate! Add minTrack days
           this.winningExplorerData = {
             minDist: this.minDist,
             minTime: this.minTime,
             departureDate: this.startingDate,
+            svg: this.toSVG(),
           };
           const data = [];
           for (let i = 0; i < this.api_data.length; i += 1) {
@@ -1455,5 +1413,8 @@ export default {
 }
 .label img{
   margin-right: 4px;
+}
+.dg.main.a {
+    display: inherit!important;
 }
 </style>

@@ -3,62 +3,60 @@ import Util from './Util';
 
 class Label {
   constructor(scene, cam, obj, element, visible = false) {
-    this.visible = visible;
     this.updateRate = 50;
     this.label = element;
-    this.object = obj;
+    this.anchorObject = obj;
     this.scene = scene;
     this.camera = cam;
-    // this.setVisible(visible);
-    if (this.visible) {
-      this.label.style.opacity = 1;
-    } else {
-      this.label.style.opacity = 0;
-    }
+    this.setVisible(visible);
   }
 
-  reset(obj) {
-    this.setVisible(true, true);
+  getAnchorObject() {
+    return this.anchorObject;
+  }
+
+  setCity(obj) {
     const p = Util.latLon2XYZPosition(obj.lat, obj.lng, 200);
-    // if(p.distanceTo(position))
-    this.label.innerHTML = obj.city;
-    this.object.position.set(p.x, p.y, p.z);
+    this.set(obj.city, p);
   }
 
   set(text, position) {
-    this.setVisible(true, true);
-    // if(p.distanceTo(position))
+    this.setVisible(true);
     this.label.innerHTML = text;
-    this.object.position.set(position.x, position.y, position.z);
+    this.anchorObject.position.set(position.x, position.y, position.z);
   }
 
-  setVisible(v, hideObject = false) {
+  setVisible(v, hideObject = true) {
     this.visible = v;
     if (hideObject) {
-      this.object.visible = v;
-    }
-    // console.log(this.label.style.pointerEvents);
-    if (v) {
-      this.label.style.pointerEvents = 'auto';
-    } else {
-      this.label.style.pointerEvents = 'none';
+      this.anchorObject.visible = v;
     }
     if (this.timerId) { clearInterval(this.timerId); }
     if (this.visible) {
       this.label.style.opacity = 1;
+      this.label.style.pointerEvents = 'auto';
     } else {
       this.label.style.opacity = 0;
       this.timerId = undefined;
+      this.label.style.pointerEvents = 'none';
     }
     this.updatePosition();
   }
 
+  setPosition(p) {
+    this.anchorObject.position.set(p.x, p.y, p.z);
+  }
+
+  getPosition() {
+    return this.anchorObject.position;
+  }
+
   updatePosition() {
     if (this.visible) {
-      const angle = this.camera.position.angleTo(this.object.position);
+      const angle = this.camera.position.angleTo(this.anchorObject.position);
       const w = window.innerWidth;
       const h = window.innerHeight;
-      let pos = this.object.position.clone();
+      let pos = this.anchorObject.position.clone();
       pos = pos.multiplyScalar(this.scene.scale.x).project(this.camera);
       this.label.style.transform = `translate(${w * 0.5 * pos.x + w * 0.5}px` +
         `,${-this.label.clientHeight - 10 + h * 0.5 - h * 0.5 * pos.y}px)`; // top = (h*0.5- h*0.5 * pos.y ) + 'px';
