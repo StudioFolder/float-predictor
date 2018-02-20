@@ -15,10 +15,8 @@ export default {
     elapsedDays: 0,
     coordinatesValid: false,
     visualizationState: 0,
-    departure: {
-    },
-    destination: {
-    },
+    departure: {},
+    destination: {},
     // used for the final recap: e.g.
     // The Aerocene Explorer that left from Milan...arrived within *km in *hours
     // TODO: still to implement. Sync these variables with the viz local variables
@@ -84,6 +82,14 @@ export default {
   },
   actions: {
     // for async operations, https://vuex.vuejs.org/en/actions.html
+    resetVisualization({ commit }) {
+      commit('setFocusedExplorer', 0);
+      commit('setElapsedDays', 0);
+      commit('setActive', false);
+      // commit('setDestination', {});
+      // commit('setDeparture', {});
+      commit('setWinds', 0);
+    },
   },
   getters: {
     isFreeFlight: state => state.flightType === 'free',

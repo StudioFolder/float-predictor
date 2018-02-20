@@ -53,9 +53,7 @@ export default {
   },
   watch: {
     day(day) {
-      if (day >= this.explorer) {
-        this.opacity = 1;
-      }
+      this.opacity = (day >= this.explorer) ? 1 : 0;
     },
   },
 };
