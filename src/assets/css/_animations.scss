@@ -40,10 +40,11 @@ $duration: .8s;
   }
 }
 .middle-to-bottom-enter {
-  opacity: 0;
+  min-height: 100vh; // the glyphs are still loading
 }
 .middle-to-bottom-enter-active {
-  transition: opacity $duration ease;
+  animation: translate-up-from-bottom $duration ease;
+  min-height: 100vh; // the glyphs are still loading
 }
 
 
@@ -86,11 +87,21 @@ $duration: .8s;
     transform: translate3d(0, -100vh, 0)
   }
 }
-@keyframes partial-translate-up {
+@keyframes partial-translate-up { // earth
   0% {
     top: 0;
   }
   100% {
     top: -50vh;
+  }
+}
+@keyframes translate-up-from-bottom { // archive
+  0% {
+    opacity: 0;
+    padding-top: 100vh;
+  }
+  100% {
+    opacity: 1;
+    padding-top: 50vh;
   }
 }

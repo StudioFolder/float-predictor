@@ -69,7 +69,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const fromTop = from.matched.some(m => m.meta.position === 'top');
-  const fromBottom = from.matched.some(m => m.meta.position === 'bottom');
+  // const fromBottom = from.matched.some(m => m.meta.position === 'bottom');
   const toTop = to.matched.some(m => m.meta.position === 'top');
   const toBottom = to.matched.some(m => m.meta.position === 'bottom');
   const toMiddle = to.matched.some(m => m.meta.position === 'middle');
@@ -77,6 +77,7 @@ router.beforeEach((to, from, next) => {
 
   let transitionName = 'fade';
   let transitionMode = '';
+  let time = 0;
   // from middle to top -> slide
   if (fromMiddle && toTop) {
     transitionName = 'fade-middle-to-top';
@@ -85,9 +86,13 @@ router.beforeEach((to, from, next) => {
     transitionName = 'top-to-middle';
     // transitionMode = 'out-in';
   } else if (fromMiddle && toBottom) {
+    store.commit('flightSimulator/setVisualizationState', 7); // start to move the earth
+    // wait a little bit for the earth to move
+    time = 1400;
     transitionName = 'middle-to-bottom';
-  } else if (fromTop && toTop) {
     transitionMode = 'out-in';
+  } else if (fromTop && toTop) {
+    transitionMode = 'in-out';
   }
   // if to middle we need some logic to change the viz state
   if (toMiddle) {
@@ -107,7 +112,9 @@ router.beforeEach((to, from, next) => {
 
   store.commit('general/setTransition', transitionName);
   store.commit('general/setTransitionMode', transitionMode);
-  next();
+  setTimeout(() => {
+    next();
+  }, time); // todo: refactor with event
 });
 
 export default router;

@@ -92,7 +92,6 @@ export default {
     onEnter() {
     },
     afterEnter() {
-      this.transitionEnter = false;
       // after enter of new element
       if (this.transitionName === 'fade-middle-to-top'/* || this.transitionName === 'to-bottom' */) {
         this.$store.commit('general/setAnimationHeight', 'small');
@@ -115,6 +114,7 @@ export default {
 
       // set bottom class
       this.isBottom = (this.$route.name === 'gallery');
+      this.transitionEnter = false;
     },
     beforeLeave() {
       this.transitionLeave = true;
