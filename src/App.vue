@@ -6,7 +6,7 @@
             <nav-brand ref="navBrand" />
             <on-board-navigation />
         </div>
-        <div class="site-content">
+        <div class="site-content" :class="{'--bottom': isBottom}">
             <div class="router-view" ref="content">
                 <transition
                         appear
@@ -86,17 +86,20 @@ export default {
   methods: {
     beforeEnter() {
       this.transitionEnter = true;
+      // eslint-disable-next-line
+      console.log('test')
     },
     onEnter() {
     },
     afterEnter() {
       this.transitionEnter = false;
       // after enter of new element
-      if (this.transitionName === 'fade-middle-to-top' || this.transitionName === 'to-bottom') {
+      if (this.transitionName === 'fade-middle-to-top'/* || this.transitionName === 'to-bottom' */) {
         this.$store.commit('general/setAnimationHeight', 'small');
       } else {
         this.$store.commit('general/setAnimationHeight', 'normal');
       }
+      // for the case in which this pages are landing pages
       if (this.$route.name === 'about' || this.$route.name === 'aerocene-explorer') {
         this.$store.commit('general/setAnimationHeight', 'small');
       }

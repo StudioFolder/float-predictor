@@ -7,12 +7,6 @@ body {
   &.no-scroll {
     overflow: hidden;
   }
-  .main-visualization-wrapper {
-    position: absolute;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-  }
   .main-content {
     &.over {
       position: absolute;
@@ -79,15 +73,28 @@ article {
 }
 
 .site-content {
-  display: flex;
-  flex-flow: column;
-  .router-view {
-    order: 1;
-    &.bottom {
-      order: 3;
+  &.--bottom {
+    .router-view {
+      padding-top: 50vh;
     }
+  //  .main-visualization-wrapper {
+  //    order: 1;
+  //  }
   }
-  .router-view {
-    order: 2;
+  .main-visualization-wrapper {
+    position: absolute;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    &.--small {
+      height: 30vh;
+      @include up($xlarge) {
+        height: 45vh;
+      }
+    }
+    &.--bottom {
+      //align-items: flex-end;
+      top: -50vh;
+    }
   }
 }

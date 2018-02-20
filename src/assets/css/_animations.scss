@@ -32,27 +32,28 @@ $duration: .8s;
   transition: height $duration ease;
   animation: translate-down $duration ease; // transition isn't working
 }
-.main-visualization-wrapper {
-  &.--small {
-    height: 30vh;
-    @include up($xlarge) {
-      height: 45vh;
-    }
+
+// fade middle to bottom
+.main-application.middle-to-bottom-entering{
+  .main-visualization-wrapper {
+    animation: partial-translate-up $duration ease;
   }
-  &.--bottom {
-    align-items: flex-end;
-  }
+}
+.middle-to-bottom-enter {
+  opacity: 0;
+}
+.middle-to-bottom-enter-active {
+  transition: opacity $duration ease;
 }
 
 
+// top to middle
 .main-application.top-to-middle-leaving {
   .main-visualization-wrapper {
-    // animation: translate-up $duration;
     height: 100vh;
     transition: height $duration ease;
   }
 }
-// top to middle
 .top-to-middle-leave-active {
   height: 0 !important;
   transition: height $duration ease;
@@ -83,5 +84,13 @@ $duration: .8s;
   }
   100% {
     transform: translate3d(0, -100vh, 0)
+  }
+}
+@keyframes partial-translate-up {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: -50vh;
   }
 }

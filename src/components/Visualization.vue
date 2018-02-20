@@ -14,7 +14,6 @@
       <div class="label" id="departure-label">
         <img style=""
         src="../assets/icons/departure_arrow_up.svg"/>
-
         {{departure.city}}
       </div>
       <div class="label" id="destination-label">
@@ -84,13 +83,13 @@ const pars = {
   winds: 0,
   fps: 0,
   state: 0,
-  speed_d_x_sec: 0.05,
+  speed_d_x_sec: 0.05, // modify for dev
   move_in_time: false,
   pan_x: 0,
   pan_y: 0,
   zoom: INITIAL_ZOOM,
   onboard: false,
-  skip_frame: 1,
+  skip_frame: 1, // modify for dev
   camera_smooth: 0.993,
   camera_distance: 1.5,
   camera_shift: 0.07,
@@ -98,7 +97,7 @@ const pars = {
   sun_visible: false,
   zoom_enabled: true,
   // MATERIAL
-  use_bump: true,
+  use_bump: true, // modify for dev
   use_nightmap: true,
   nightmap_intensity: 0.9,
   nightmap_threshold: 0.7,
@@ -373,7 +372,7 @@ export default {
       this.visualizationState = STATE_INITIAL;
       this.initWindVisualization();
       this.initFPSChecker();
-      // Setting default destination / departure
+      // Setting default destination / departure  // modify for dev
       this.destination = {
         lat: 35.652832,
         lng: 139.839478,
@@ -833,7 +832,7 @@ export default {
         case STATE_UNFOCUSED: {
           pars.auto_rotate = false;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [150, 0.8, Math.PI * 0.4];
+          const ev = [150, 0.8, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
@@ -854,7 +853,7 @@ export default {
         case STATE_UNFOCUSED_PAGES: {
           pars.auto_rotate = false;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [90, 0.8, Math.PI * 0.4];
+          const ev = [90, 0.8, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
@@ -875,12 +874,12 @@ export default {
         case STATE_UNFOCUSED_GALLERY: {
           pars.auto_rotate = false;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [-100, 0.8, Math.PI * 0.4];
+          const ev = [-100, 0.8, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 1,
+            time_interval: 0.1,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1413,8 +1412,5 @@ export default {
 }
 .label img{
   margin-right: 4px;
-}
-.dg.main.a {
-    display: inherit!important;
 }
 </style>

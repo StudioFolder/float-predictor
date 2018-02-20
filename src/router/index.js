@@ -69,7 +69,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const fromTop = from.matched.some(m => m.meta.position === 'top');
-  // const fromBottom = from.matched.some(m => m.meta.position === 'bottom');
+  const fromBottom = from.matched.some(m => m.meta.position === 'bottom');
   const toTop = to.matched.some(m => m.meta.position === 'top');
   const toBottom = to.matched.some(m => m.meta.position === 'bottom');
   const toMiddle = to.matched.some(m => m.meta.position === 'middle');
@@ -84,16 +84,19 @@ router.beforeEach((to, from, next) => {
   } else if (fromTop && toMiddle) {
     transitionName = 'top-to-middle';
     // transitionMode = 'out-in';
+  } else if (fromMiddle && toBottom) {
+    transitionName = 'middle-to-bottom';
+  } else if (fromTop && toTop) {
+    transitionMode = 'out-in';
+  }
+  // if to middle we need some logic to change the viz state
+  if (toMiddle) {
     if (store.state.general.isChoosingDestination) {
       store.commit('flightSimulator/setVisualizationState', 5); // start to move the earth
     } else {
       store.commit('flightSimulator/setVisualizationState', 2);
       store.commit('flightSimulator/setPlaying', true);
     }
-  } else if (toBottom) {
-    transitionName = 'to-bottom';
-  } else if (fromTop && toTop) {
-    transitionMode = 'out-in';
   }
   // some overwrites for particular cases
   if (from.name === 'home-page'
