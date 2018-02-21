@@ -75,6 +75,7 @@ export default {
     isSmall() { return this.$store.state.general.animationHeight === 'small'; },
     classObject() { // to synchronize other transitions i put some classes in main app too
       const obj = {
+        'choosing-destination': this.$store.state.general.isChoosingDestination,
         'transition-enter': this.transitionEnter,
         'transition-leave': this.transitionLeave,
       };

@@ -7,11 +7,16 @@ body {
   &.no-scroll {
     overflow: hidden;
   }
-  .main-content {
-    &.over {
+
+  .main-application {
+    .main-content.over {
       position: absolute;
       width: 100%;
-      z-index: 15;
+    }
+    &.choosing-destination {
+      .main-content.over {
+        z-index: 15;
+      }
     }
   }
   .site-header {
@@ -96,5 +101,10 @@ article {
       //align-items: flex-end;
       top: -50vh;
     }
+  }
+}
+body.modal-open {
+  .main-content .over {
+    z-index: 0;
   }
 }

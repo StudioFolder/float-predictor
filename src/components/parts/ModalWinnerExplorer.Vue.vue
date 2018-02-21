@@ -43,8 +43,8 @@ export default {
       get() {
         return (this.animationEnd && this.modalShow);
       },
-      set() {
-        this.modalShow = false;
+      set(val) {
+        this.modalShow = val;
       },
     },
   },
