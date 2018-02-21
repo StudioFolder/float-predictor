@@ -9,7 +9,7 @@
       </h3>
       <div class="stats">
         <div class="saved">
-          <div class="h2">25,432</div>
+          <div class="h2">{{parseInt(data[0].id).toLocaleString('en')}}</div>
           <p>Aeroglyphs saved</p>
         </div>
         <div class="travelled">
@@ -21,11 +21,21 @@
         <div class="gallery-item" v-for="item in data" :key="item.id">
           <div class="gallery-item-inside">
             <img v-bind:src="getSVGPath(item)"/>
-            <div>
-              <strong>{{item.departure.city}}</strong>
-              to <strong>{{item.destination.city}}</strong>
+            <div class="info">
+              <div class="aer-code">
+                AER {{parseInt(item.id).toLocaleString('en')}}
+              </div>
+              <div class="date-created">
+                {{getDate(item.created)}}
+              </div>
+              <div class="additional-info">
+                Departed from <strong>{{item.departure.city}}</strong><br>
+                Arrived within <strong>{{item.min_dist}}</strong> kilometers
+                from <strong>{{item.destination.city}}</strong>
+                in <strong>{{item.min_time}} days</strong>
+              </div>
             </div>
-            <div>{{getDate(item.created)}}</div>
+            <div></div>
           </div>
         </div>
       </div>
@@ -37,6 +47,7 @@
 </template>
 
 <script>
+import moment from 'moment';
 import Loading from '../Loading';
 
 export default {
@@ -49,25 +60,18 @@ export default {
       page: 1,
     };
   },
-
   mounted() {
     this.init();
     this.$store.commit('flightSimulator/setVisualizationState', 7);
   },
-
-  unmounted() {
-  },
-
   components: {
     Loading,
   },
-
   methods: {
     init() {
       this.done = false;
       this.addPage(this.page);
     },
-
     loadMore() {
       if (!this.done) {
         // console.log('Load more ');
@@ -78,13 +82,11 @@ export default {
         }, 1000);
       }
     },
-
     clear() {
       this.done = false;
       this.data = [];
       this.busy = true;
     },
-
     addPage(i) {
       // console.log('Add page ' + i)
       fetch(`http://54.190.63.219/api.php?page=${String(i)}`, {
@@ -102,25 +104,12 @@ export default {
         // console.log('done')
       });
     },
-
     getDate(dt) {
-      const date = new Date(dt);
-      const monthNames = [
-        'Jan', 'Feb', 'Mar',
-        'Apr', 'May', 'Jun', 'Jul',
-        'Aug', 'Sep', 'Oct',
-        'Nov', 'Dec',
-      ];
-      const day = date.getDate();
-      const monthIndex = date.getMonth();
-      const year = date.getFullYear();
-      return `${day} ${monthNames[monthIndex]} ${year}`;
+      return moment(dt).format('MMM Do, YYYY');
     },
-
     getSVGPath(item) {
       return `http://54.190.63.219/svg/${String(item.id)}.svg`;
     },
-
   },
 };
 </script>
@@ -156,42 +145,5 @@ export default {
 }
 p {
   color: $gray;
-}
-.stats {
-  display: flex;
-  flex-flow: row wrap;
-  div {
-    width: 50%;
-    text-align: center;
-    .h2 {
-      margin-left: auto;
-      margin-right: auto;
-    }
-    @include medium_down {
-      width: 100%;
-    }
-  }
-}
-.gallery-item {
-  min-height: 200px;
-  width: 20%;
-  @include medium_down {
-    width: 50%;
-  }
-  .gallery-item-inside {
-    padding: 3rem 1rem 0;
-  }
-  img {
-    width: 80%;
-    margin-bottom: 5%;
-  }
-}
-
-h1, h2 {
-  text-align: center;
-}
-
-a {
-  color: #42b983;
 }
 </style>

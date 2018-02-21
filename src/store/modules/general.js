@@ -5,8 +5,6 @@ export default {
     transitionName: '',
     transitionMode: '',
     animationHeight: 'normal',
-    // upperHeight: '0px',
-    // bottomHeight: '0px',
     isChoosingDestination: true,
     isMenuOpen: false,
     isInfoBoxOpen: false,
@@ -28,8 +26,14 @@ export default {
     toggleMenu(state) {
       state.isMenuOpen = !state.isMenuOpen;
     },
+    toggleInfoBox(state) {
+      state.isInfoBoxOpen = !state.isInfoBoxOpen;
+    },
     closeMenu(state) {
       state.isMenuOpen = false;
+    },
+    closeInfoBox(state) {
+      state.isInfoBoxOpen = false;
     },
     setFormStatus(state, value) {
       state.isChoosingDestination = value;

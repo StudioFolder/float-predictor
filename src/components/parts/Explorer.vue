@@ -1,11 +1,12 @@
 <template>
     <li class="nav-item explorer-item --rounded"
+        :class="{'--focused': highlighted}"
         :style="{opacity: opacity}"
         @click="onClick"
         @mouseenter="mouseEnter" @mouseleave="mouseLeave">
         <div class="explorer-id">
             <div v-if="(hover || highlighted)" class="explorer-gif">
-                <img src="~img/explorer_anim.gif">
+                <img src="~img/explorer_anim_03.gif">
             </div>
             <div v-else>{{explorer}}</div>
         </div>
@@ -23,7 +24,7 @@ export default {
   props: ['id', 'explorer', 'day'],
   data() {
     return {
-      r: 17, // calc(#{$itemwidth}/2 + 1px ); // raggio definitivo 15
+      r: 15, // synchronize with css for animation
       opacity: 0,
       hover: false,
     };

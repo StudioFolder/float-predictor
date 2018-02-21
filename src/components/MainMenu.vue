@@ -4,7 +4,7 @@
             <b-nav vertical>
                 <b-nav-item @click="openMenu" class="--rounded --black --correction">
                     <i class="fp fp-menu"></i></b-nav-item>
-                <b-nav-item v-show="isAnimationActive" @click="toggleInfoBox" class="--rounded">
+                <b-nav-item @click="toggleInfoBox" class="--rounded">
                     <i :class="[isInfoBoxOpen ? 'fp-close' : 'fp-info', 'fp']"></i></b-nav-item>
             </b-nav>
             <flight-dashboard v-show="isAnimationActive" :is-animation-active="isAnimationActive">
@@ -22,23 +22,21 @@ import flightDashboard from './parts/FlightDashboard';
 export default {
   name: 'main-menu',
   components: { infoBox, mainNav, flightDashboard },
-  data() {
-    return {
-      isInfoBoxOpen: false,
-    };
-  },
   computed: {
     isMenuOpen() { return this.$store.state.general.isMenuOpen; },
     isAnimationActive() {
       return (this.$store.state.flightSimulator.isActive && this.$route.name === 'flight-simulator');
     },
+    isInfoBoxOpen() {
+      return this.$store.state.general.isInfoBoxOpen;
+    },
   },
   methods: {
     toggleInfoBox() {
-      this.isInfoBoxOpen = !this.isInfoBoxOpen;
+      this.$store.commit('general/toggleInfoBox');
     },
     openMenu() {
-      this.isInfoBoxOpen = false;
+      this.$store.commit('general/closeInfoBox');
       this.$store.commit('general/toggleMenu');
     },
   },

@@ -97,6 +97,9 @@ export default {
 <style lang="scss">
     @import "~@/assets/css/_variables_and_mixins.scss";
     $speed: calc(100s/6); // depends on speed
+    $r: 15px;
+    $pi: 3.14159;
+
     .toggle-winds {
         position: relative;
     }
@@ -117,7 +120,7 @@ export default {
                 r: 16px;
                 fill: transparent;
                 &.progress {
-                    stroke-width: 2;
+                    stroke-width: 5;
                     r: 18px;
                     stroke: $textColor;
                     transition: stroke-dasharray $speed;
@@ -161,61 +164,68 @@ export default {
             left: -80px;
         }
     }
-
-    $r: 15px;
-    $pi: 3.14159;
-
-    .explorers-dashboard .explorer-item {
-        margin-bottom: 1.5rem;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: opacity .3s;
-        cursor: pointer;
-        background-color: rgba(255, 255, 255, 0);
-        &:hover {
-            background-color: transparent;
-            circle.progress {
-                stroke: $textColor;
-                // stroke-width: 5px;
+    .explorers-dashboard {
+        .explorer-item {
+            margin-bottom: 1.4rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity .3s;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0);
+            &:hover, &.--focused {
+                background-color: transparent;
+                circle.progress {
+                    stroke: $primary;
+                    r: $r+4;
+                    stroke-width: 4px;
+                }
+                circle.baseline {
+                    r: $r+1;
+                }
             }
-        }
-        &:first-child {
-            margin-top: 1rem;
-        }
-        .explorer-id {
-            position: absolute;
-            z-index: 10;
-            color: $gray;
-        }
-        .explorer-gif {
-            width: 20px;
-            margin-top: 6px;
-            img {
-                max-width: 100%;
+            &:first-child {
+                margin-top: 1rem;
             }
-        }
-        svg {
-            height: calc(#{$itemWidth} + 10px);
-            width: calc(#{$itemWidth} + 10px);
-            transform: rotate(-86deg);
-            position: absolute;
-        }
-        circle {
-            cx: 50%;
-            cy: 50%;
-            r: $r;
-            fill: transparent;
-            &.progress {
-                stroke-width: 2;
-                r: $r+2;
-                stroke: $gray;
-                transition: stroke-dasharray $speed;
+            &.--focused {
+                //height: $itemWidth*1.4;
+                //width: $itemWidth*1.3;
             }
-            &.baseline {
-                stroke-width: 1;
-                stroke: $lightGray;
+            .explorer-id {
+                position: absolute;
+                z-index: 10;
+                color: $gray;
+            }
+            .explorer-gif {
+                width: 20px;
+                margin-top: 8px;
+                margin-left: 2px;
+                img {
+                    max-width: 100%;
+                }
+            }
+            svg {
+                height: calc(#{$itemWidth} + 10px);
+                width: calc(#{$itemWidth} + 10px);
+                transform: rotate(-86deg);
+                position: absolute;
+            }
+            circle {
+                cx: 50%;
+                cy: 50%;
+                r: ($r - 2);
+                fill: transparent;
+                &.progress {
+                    stroke-width: 2;
+                    r: $r;
+                    stroke: $gray;
+                    transition: stroke-dasharray $speed;
+                }
+                &.baseline {
+                    stroke-width: 1;
+                    stroke: $lightGray;
+                }
             }
         }
     }

@@ -38,15 +38,14 @@
                 <div class="group-title small">Locations</div>
                 <ul>
                     <li>
-                        <div class="nav-item --rounded --white"><i class="fp fp-up"></i></div>
-                        <div class="title">
-                            Departure point
-                        </div>
+                        <div class="nav-item --rounded --black">
+                            <i class="fp fp-departure"></i></div>
+                        <div class="title">Departure point</div>
                     </li>
                     <li>
-                        <div class="nav-item --rounded --white"><i class="fp fp-down"></i></div>
-                        <div class="title">
-                            Destination point
+                        <div class="nav-item --rounded --black">
+                            <i class="fp fp-destination"></i></div>
+                        <div class="title">Destination point
                             <div class="description">(for Planned Flight)</div>
                         </div>
                     </li>
@@ -61,19 +60,18 @@
                 </ul>
             </div>
             <div class="info-group globe">
-                <div class="group-title small">Globe</div>
-                <ul>
-                    <li><i class="fp fp-hand"></i>
-                        <div class="title">Click and drag the globe with the mouse<br>
-                            (or tap with your finger) to tilt the view.</div>
-                    </li>
-                    <li><i class="fp fp-zoom"></i>
-                        <div class="title">Zoom in and out to get a more detailed view.</div>
-                    </li>
-                    <li><i class="fp"></i>
-                        <div class="title">Complete instructions can be found here.</div>
-                    </li>
-                </ul>
+                <div class="group-title small"><!--Globe--></div>
+
+                    <!--<li><i class="fp fp-hand"></i>-->
+                        <!--<div class="title">Click and drag the globe with the mouse<br>-->
+                            <!--(or tap with your finger) to tilt the view.</div>-->
+                    <!--</li>-->
+                    <!--<li><i class="fp fp-zoom"></i>-->
+                        <!--<div class="title">Zoom in and out to get a more detailed view.</div>-->
+                    <!--</li>-->
+
+                <div class="title">Complete instructions can be found here.</div>
+
             </div>
         </div>
     </div>
@@ -91,7 +89,7 @@ export default {
 <style lang="scss">
     @import "~@/assets/css/_variables_and_mixins.scss";
     .info-box {
-        background-color: $lightGray;
+        background-color: $lightBlack;
         position: fixed;
         top: $marginBase + $itemWidth;
         right: $marginBase + $itemWidth + $marginItem;

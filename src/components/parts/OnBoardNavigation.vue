@@ -14,7 +14,7 @@
                 </li>
                 <li class="explorer-datum">
                     <div class="subtitle">Distance</div>
-                    {{distance}} km
+                    {{parseInt(distance).toLocaleString('en')}} km
                 </li>
                 <li class="explorer-datum">
                     <div class="subtitle">Current Speed</div>
@@ -47,14 +47,15 @@ export default {
         position: fixed;
         bottom: $marginBase;
         left: $marginBase;
-        width: 170px;
+        width: 190px;
         z-index: 9;
         .close {
             opacity: 1;
             background-color: $lightBlack;
             border-radius: 50%;
-            transform: translateY(-50%);
-            position: relative;
+            transform: translate(-50%, -50%);
+            position: absolute;
+            right: 0;
             padding: 2px;
             cursor: unset;
             &:hover .label {
@@ -65,7 +66,7 @@ export default {
         .label {
             position: absolute;
             text-align: center;
-            width: 80px;
+            width: 82px;
             color: #fff;
             font-size: .9rem;
             text-transform: initial;
@@ -73,15 +74,17 @@ export default {
             padding-bottom: 5px;
             margin-left: -25px;
             opacity: 0;
+            letter-spacing: 1px;
         }
         .header {
-            text-align: center;
             background-color: #fff;
             color: $bodyColor;
             padding: 1em 0;
+            text-align: center;
         }
         .title {
             margin: 0;
+            text-align: center;
         }
         .subtitle {
             color: $gray;
@@ -89,10 +92,13 @@ export default {
             font-size: .7rem;
         }
         .explorer-datum {
-            margin: $marginItem 0;
+            margin-bottom: $marginItem;
+            &:last-child {
+                margin-bottom: 0;
+            }
         }
         .body {
-            padding: $marginItem;
+            padding: $marginItem*2;
             font-size: .9rem;
             background-color: $lightBlack;
         }

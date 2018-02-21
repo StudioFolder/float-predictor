@@ -95,6 +95,12 @@
   animation-iteration-count: infinite;
   animation-name: fpscroll;
 }
+.fp-departure {
+  background-image: url("assets/icons/departure.svg");
+}
+.fp-destination {
+  background-image: url("assets/icons/destination.svg");
+}
 @keyframes fpscroll {
   0% {
     opacity: 1;
