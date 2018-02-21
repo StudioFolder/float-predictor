@@ -30,7 +30,7 @@ $duration: .8s;
 }
 .fade-middle-to-top-enter-active{
   transition: height $duration ease;
-  animation: translate-down $duration ease; // transition isn't working
+  animation: translate-down-from-top $duration ease; // transition isn't working
 }
 
 // fade middle to bottom
@@ -43,8 +43,20 @@ $duration: .8s;
   min-height: 100vh; // the glyphs are still loading
 }
 .middle-to-bottom-enter-active {
-  animation: translate-up-from-bottom $duration ease;
+  animation: translate-up-from-bottom $duration ease-in;
   min-height: 100vh; // the glyphs are still loading
+}
+
+
+
+// Bottom to middle
+.main-application.bottom-to-middle-leaving{
+  .main-visualization-wrapper {
+    animation: partial-translate-down $duration ease;
+  }
+}
+.bottom-to-middle-leave-active {
+  animation: translate-down-to-bottom $duration ease;
 }
 
 
@@ -71,12 +83,20 @@ $duration: .8s;
 
 
 // animations
-@keyframes translate-down {
+@keyframes translate-down-from-top {
   0% {
     transform: translate3d(0, -100vh, 0)
   }
   100% {
     transform: translate3d(0, 0, 0)
+  }
+}
+@keyframes translate-down-to-bottom {
+  0% {
+    padding-top: 50vh;
+  }
+  100% {
+    padding-top: 100vh;
   }
 }
 @keyframes translate-up {
@@ -93,6 +113,14 @@ $duration: .8s;
   }
   100% {
     top: -50vh;
+  }
+}
+@keyframes partial-translate-down {
+  0% {
+    top: -50vh;
+  }
+  100% {
+    top: 0;
   }
 }
 @keyframes translate-up-from-bottom { // archive

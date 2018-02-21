@@ -69,7 +69,7 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   const fromTop = from.matched.some(m => m.meta.position === 'top');
-  // const fromBottom = from.matched.some(m => m.meta.position === 'bottom');
+  const fromBottom = from.matched.some(m => m.meta.position === 'bottom');
   const toTop = to.matched.some(m => m.meta.position === 'top');
   const toBottom = to.matched.some(m => m.meta.position === 'bottom');
   const toMiddle = to.matched.some(m => m.meta.position === 'middle');
@@ -93,6 +93,8 @@ router.beforeEach((to, from, next) => {
     transitionMode = 'out-in';
   } else if (fromTop && toTop) {
     transitionMode = 'in-out';
+  } else if (fromBottom && toMiddle) {
+    transitionName = 'bottom-to-middle';
   }
   // if to middle we need some logic to change the viz state
   if (toMiddle) {
