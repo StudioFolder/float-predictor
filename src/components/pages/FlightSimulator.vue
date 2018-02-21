@@ -67,9 +67,21 @@ export default {
       return (this.form.errors.departure || this.form.errors.destination);
     },
     placeholder() {
+      let departureStr = 'Departure';
+      let destinationStr = 'Destination';
+      if (this.form.errors.departure) {
+        departureStr = this.form.errors.departure;
+      } else if (!_.isEmpty(this.departure)) {
+        departureStr = `${this.departure.city}, ${this.departure.country}`;
+      }
+      if (this.form.errors.destination) {
+        destinationStr = this.form.errors.destination;
+      } else if (!_.isEmpty(this.destination)) {
+        destinationStr = `${this.destination.city}, ${this.destination.country}`;
+      }
       return {
-        departure: (this.form.errors.departure) ? this.form.errors.departure : 'Departure',
-        destination: (this.form.errors.destination) ? this.form.errors.destination : 'Destination',
+        departure: departureStr,
+        destination: destinationStr,
       };
     },
     departure: {

@@ -86,8 +86,6 @@ export default {
   methods: {
     beforeEnter() {
       this.transitionEnter = true;
-      // eslint-disable-next-line
-      console.log('test')
     },
     onEnter() {
     },

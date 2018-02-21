@@ -96,6 +96,7 @@ export default {
 </script>
 <style lang="scss">
     @import "~@/assets/css/_variables_and_mixins.scss";
+    $speed: calc(100s/6); // depends on speed
     .toggle-winds {
         position: relative;
     }
@@ -119,7 +120,7 @@ export default {
                     stroke-width: 2;
                     r: 18px;
                     stroke: $textColor;
-                    transition: stroke-dasharray 20s; // depends on speed
+                    transition: stroke-dasharray $speed;
                 }
                 &.baseline {
                     stroke-width: 1;
@@ -210,7 +211,7 @@ export default {
                 stroke-width: 2;
                 r: $r+2;
                 stroke: $gray;
-                transition: stroke-dasharray 20s; // depends on speed
+                transition: stroke-dasharray $speed;
             }
             &.baseline {
                 stroke-width: 1;
