@@ -83,7 +83,7 @@ const pars = {
   winds: 0,
   fps: 0,
   state: 0,
-  speed_d_x_sec: 0.05, // modify for dev
+  speed_d_x_sec: 0.06, // modify for dev
   move_in_time: false,
   pan_x: 0,
   pan_y: 0,
@@ -372,19 +372,6 @@ export default {
       this.visualizationState = STATE_INITIAL;
       this.initWindVisualization();
       this.initFPSChecker();
-      // Setting default destination / departure  // modify for dev
-      this.destination = {
-        lat: 35.652832,
-        lng: 139.839478,
-        city: 'Tokio',
-        country: 'Japan',
-      };
-      this.departure = {
-        lat: 52.520645,
-        lng: 13.409779,
-        city: 'Berlin',
-        country: 'Germany',
-      };
       this.animate();
     },
 
