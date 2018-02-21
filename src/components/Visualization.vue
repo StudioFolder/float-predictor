@@ -83,7 +83,7 @@ const pars = {
   winds: 0,
   fps: 0,
   state: 0,
-  speed_d_x_sec: 0.06, // modify for dev
+  speed_d_x_sec: 0.1, // modify for dev
   move_in_time: false,
   pan_x: 0,
   pan_y: 0,

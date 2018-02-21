@@ -96,7 +96,7 @@ export default {
 </script>
 <style lang="scss">
     @import "~@/assets/css/_variables_and_mixins.scss";
-    $speed: calc(100s/6); // depends on speed
+    $speed: 10s; // depends on speed
     $r: 15px;
     $pi: 3.14159;
 
