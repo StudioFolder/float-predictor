@@ -62,6 +62,8 @@ export default {
       state.focusedExplorerDistance = explorerDistance;
     },
     setElapsedDays(state, days) {
+      // eslint-disable-next-line
+      console.log('elapsed')
       state.elapsedDays = days;
     },
     setLoading(state, isLoading) {
@@ -85,10 +87,8 @@ export default {
     resetVisualization({ commit }) {
       commit('setPlaying', true); // if was stopped
       commit('setFocusedExplorer', 0);
-      commit('setElapsedDays', 0);
+      // commit('setElapsedDays', 0); // it is better to reset days before starting a new simulation
       commit('setActive', false);
-      // commit('setDestination', {});
-      // commit('setDeparture', {});
       commit('setWinds', 0);
     },
   },
@@ -98,10 +98,3 @@ export default {
     visualMode: state => (state.focusedExplorer === 0 ? 'global' : 'onBoard'),
   },
 };
-
-/*
-isPlaying: state => state.isPlaying,
-departure: state => state.departure,
-destination: state => state.destination,
-
-*/

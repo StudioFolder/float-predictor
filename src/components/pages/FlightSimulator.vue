@@ -124,6 +124,8 @@ export default {
       this.validateForm()
         .then(() => {
           this.form.errors = {}; // reset previous errors
+          // reset elapsed days from previous simulation if necessary
+          this.$store.commit('flightSimulator/setElapsedDays', 0);
           this.startAnimation();
         }).catch((errors) => {
           this.form.errors = errors;
