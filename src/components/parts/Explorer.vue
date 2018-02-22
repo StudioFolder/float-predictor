@@ -44,6 +44,7 @@ export default {
   methods: {
     onClick() {
       this.$store.commit('flightSimulator/setFocusedExplorer', this.explorer);
+      this.$store.commit('flightSimulator/setPlaying', true);
     },
     mouseEnter() {
       this.hover = true;
