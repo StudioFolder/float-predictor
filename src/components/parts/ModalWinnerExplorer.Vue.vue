@@ -5,7 +5,7 @@
              size="sm"
              hide-footer
              centered
-             class="winner-explorer-modal"
+             class="winner-explorer-modal --box"
              title="Your Aerosolar Journey">
         <slot name="image"></slot>
         <slot class="message" name="message"></slot>
@@ -67,9 +67,6 @@ export default {
     .modal-title {
         @extend .h4;
         margin: 0;
-    }
-    .modal-dialog {
-        max-width: 350px;
     }
     .modal{
         transform: none !important;

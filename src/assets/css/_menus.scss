@@ -27,8 +27,8 @@
   }
   &.--nav {
     margin: $marginItem*1.2 0;
-    @extend %colfax_med;
-    text-transform: uppercase;
+    @extend %colfax_bold;
+    // text-transform: uppercase;
     @media screen and (min-height: 900px) {
       margin: $marginItem*1.8 0;
     }
@@ -53,6 +53,15 @@
     }
     &:hover {
       background-color: rgba(255,255,255,1);
+    }
+  }
+}
+.menu-section {
+  &.--rights {
+    a {
+      @extend %colfax_bold;
+      text-transform: lowercase;
+      text-decoration: none;
     }
   }
 }

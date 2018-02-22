@@ -30,19 +30,30 @@
                             <router-link to="/aerocene-explorer">
                                 Aerocene explorer</router-link></li>
                         <li class="menu-item --nav" @click="closeAction">
-                                Resources and APIs</li>
+                            <a href="#" @click.prevent>
+                                Resources and API<span class="lowercase">s</span></a></li>
                         <li class="menu-item --nav" @click="closeAction">
                             <a href="#" @click.prevent v-b-modal.instruction-modal>
                                 Instructions</a></li>
                         <li class="menu-item --nav" >
-                                Impressum</li>
-                        <li class="menu-item --nav">Disclaimer</li>
+                            <a href="#" @click.prevent>
+                                Impressum</a></li>
+                        <li class="menu-item --nav">
+                            <a href="#" @click.prevent>Disclaimer</a></li>
                     </ul>
                 </div>
                 <div class="menu-section">
                     <ul class="list-group link-items">
-                        <li class="menu-item --link">aerocene.org</li>
-                        <li class="menu-item --link">forum</li>
+                        <li class="menu-item --link">
+                            <a href="#" @click.prevent>
+                                <span class="lowercase">aerocene.org</span>
+                            </a>
+                        </li>
+                        <li class="menu-item --link">
+                            <a href="#" @click.prevent>
+                                <span class="lowercase">forum</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -56,8 +67,10 @@
                     </ul>
                 </div>
                 <div class="menu-section --rights">
-                    <small>&copy; All rights reserved.<br>
-                        Studio Tomás Saraceno {{currentYear}}</small>
+                    <div class="font-small">
+                        &copy; {{currentYear}} <a href="http://tomassaraceno.com/">Studio Tomás Saraceno</a><br>
+                        Design and Development <a href="http://www.studiofolder.it/">Studio Folder</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -83,43 +96,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-    @import "~css/_variables_and_mixins.scss";
-    @import "~css/_typography.scss";
-    .modal-content {
-        border-radius: 0;
-    }
-    .modal-backdrop.show {
-        opacity: .8;
-    }
-    .modal-header {
-        color: #000;
-        display: flex;
-        align-items: center;
-        padding-top: 2rem;
-        padding-bottom: 2rem;
-
-        .modal-title {
-            @extend .h2;
-            @extend %colfax_med;
-            margin: .4rem 0 .4rem $marginItem*2.5;
-        }
-    }
-    .modal-body {
-        background-color: $lightBlack;
-    }
-    .modal-footer {
-        background-color: $lightBlack;
-        border-top: none;
-    }
-    .carousel-indicators {
-        bottom: -25px;
-        li {
-            height: 10px;
-            width: 10px;
-            border-radius: 50%;
-            margin: 0 10px;
-        }
-    }
-</style>

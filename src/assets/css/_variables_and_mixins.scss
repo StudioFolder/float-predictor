@@ -47,21 +47,15 @@ $correction: -.75rem;
 
 
 // fonts mixins
-// mixins
-%colfax_reg {
-  font-family: "Colfax-Regular", Arial, "Helvetica Neue", Helvetica, sans-serif;
-  font-weight: normal;
-  font-style: normal;
+%colfax_base {
+  font-family: "Colfax-Light", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: normal !important;
+  font-style: normal !important;
 }
 %colfax_bold {
-  font-family: "Colfax-Bold", Arial, "Helvetica Neue", Helvetica, sans-serif;
-  font-weight: normal;
-  font-style: normal;
-}
-%colfax_med {
-  font-family: "Colfax-Medium", Arial, "Helvetica Neue", Helvetica, sans-serif;
-  font-weight: normal;
-  font-style: normal;
+  font-family: "Colfax-Regular", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: 600 !important;
+  font-style: normal ;
 }
 
 
