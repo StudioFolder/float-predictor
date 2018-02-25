@@ -465,7 +465,7 @@ export default {
         console.log(this.selected);
         this.focusedExplorer = this.selected + 1;
         this.playing = true;
-        this.selectLabel.setVisible(false);
+        selectLabel.setVisible(false);
       }
     },
 
@@ -553,8 +553,12 @@ export default {
       pars.antialias = aa;
       if (aa) {
         renderer = rendererAA;
+        rendererNAA.domElement.style.display = 'none';
+        rendererAA.domElement.style.display = 'block';
       } else {
         renderer = rendererNAA;
+        rendererNAA.domElement.style.display = 'block';
+        rendererAA.domElement.style.display = 'none';
       }
     },
     initNightMap() {
@@ -695,14 +699,17 @@ export default {
       });
       rendererAA.setSize(window.innerWidth, window.innerHeight);
       rendererAA.setClearColor(0x000000);
-      rendererAA.domElement.id = 'canvas';
+      rendererAA.domElement.classList.add('canvas');
+      rendererAA.domElement.id = 'canvasAA';
       container.appendChild(rendererAA.domElement);
 
       rendererNAA = new THREE.WebGLRenderer({
         antialias: false, // pars.antialias,
         preserveDrawingBuffer: true,
-        canvas: rendererAA.domElement,
       });
+      rendererNAA.domElement.classList.add('canvas');
+      rendererNAA.domElement.id = 'canvasNAA';
+      container.appendChild(rendererNAA.domElement);
       rendererNAA.setSize(window.innerWidth, window.innerHeight);
       rendererNAA.setClearColor(0x000000);
 
@@ -1363,7 +1370,6 @@ export default {
         );
         return;
       }
-
       if (this.alive) { // Needed for hot reload
         requestAnimationFrame(this.animate);
       }
@@ -1521,7 +1527,7 @@ export default {
   font-size: 10px;
 }
 
-#canvas{
+.canvas{
   position: absolute;
   top:0px;
   left:0px;
@@ -1579,7 +1585,7 @@ export default {
 .label img{
   margin-right: 4px;
 }
-.dg .c input{
+.dg .c input[type=text]{
   height: 100%;
 }
 </style>
