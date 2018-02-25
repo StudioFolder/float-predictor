@@ -10,22 +10,6 @@ const SCENE_SCALE = EARTH_RADIUS / 200.0;
 
 class Explorer {
   constructor(scene, shift = 0, nPoints = 1) {
-    THREE.Material.prototype.setOpacity =
-    function setOpacity(opacity, animationTime = 0, callback) {
-      function animate(material, countdown, v) {
-        material.opacity += v;
-        // material.nee
-        if (countdown > 0) {
-          setTimeout(() => { animate(material, countdown - 1, v); }, 1000 / 30);
-        } else if (callback) { callback(); }
-      }
-      if (animationTime > 0) {
-        let v = 30.0 * animationTime;
-        const countdown = (30.0 * animationTime);
-        v = (opacity - this.opacity) / countdown;
-        animate(this, countdown, v);
-      }
-    };
     this.nPoints = nPoints;
     MAX_POINTS = 128 * this.nPoints;
     console.log(MAX_POINTS);
@@ -85,7 +69,59 @@ class Explorer {
 
     this.currentPosition = new THREE.Vector3(0, 0, 0);
 
+    THREE.Material.prototype.setOpacity =
+    function setOpacity(opacity, animationTime, callback) {
+      function animate(material, countdown, v) {
+        material.opacity += v;
+        // material.nee
+        if (countdown > 0) {
+          setTimeout(() => { animate(material, countdown - 1, v); }, 1000 / 30);
+        } else if (callback) { callback(); }
+      }
+      if (animationTime > 0) {
+        let v = 30.0 * animationTime;
+        const countdown = (30.0 * animationTime);
+        v = (opacity - this.opacity) / countdown;
+        animate(this, countdown, v);
+      } else {
+        this.opacity = opacity;
+      }
+    };
     this.reset();
+  }
+
+  setStyle(s) {
+    const t = 0.0;
+    console.log(s);
+    switch (s) {
+      case Explorer.SELECTED:
+        this.mesh.visible = true;
+        this.segments.visible = true;
+        this.line.visible = true;
+        this.lineMaterial.setOpacity(1, t);
+        this.lineSegmentMaterial.setOpacity(0.3, t);
+        this.facesMaterial.setOpacity(0.15, t);
+        break;
+      case Explorer.UNSELECTED:
+        this.line.visible = true;
+        this.lineMaterial.setOpacity(0.25, t);
+        this.lineSegmentMaterial.setOpacity(0, t, () => { this.segments.visible = false; });
+        this.facesMaterial.setOpacity(0, t, () => { this.mesh.visible = false; });
+        break;
+      case Explorer.MOVING:
+        this.line.visible = true;
+        this.lineMaterial.setOpacity(1, t);
+        this.lineSegmentMaterial.setOpacity(0, t, () => { this.segments.visible = false; });
+        this.facesMaterial.setOpacity(0, t, () => { this.mesh.visible = false; });
+        break;
+      case Explorer.HIDDEN:
+        this.lineMaterial.setOpacity(0, t, () => { this.line.visible = false; });
+        this.lineSegmentMaterial.setOpacity(0, t, () => { this.segments.visible = false; });
+        this.facesMaterial.setOpacity(0, t, () => { this.mesh.visible = false; });
+        break;
+      default:
+        break;
+    }
   }
 
   getCoordinates = function getCoordinates() {
@@ -213,5 +249,8 @@ class Explorer {
     this.length += 1;
   }
 }
-
+Explorer.SELECTED = 0;
+Explorer.UNSELECTED = 1;
+Explorer.MOVING = 2;
+Explorer.HIDDEN = 3;
 export default Explorer;

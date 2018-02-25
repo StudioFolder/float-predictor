@@ -1,6 +1,5 @@
 <template>
   <div id="simple-interface">
-    <visualization></visualization>
     <div class="bottom-left-panel">
       <h4>GENERAL</h4>
       <span class="subtext">From</span>
@@ -126,6 +125,20 @@ export default {
       },
     },
   },
+  mounted() {
+    this.destination = {
+      lat: 35.652832,
+      lng: 139.839478,
+      city: 'Tokio',
+      country: 'Japan',
+    };
+    this.departure = {
+      lat: 52.520645,
+      lng: 13.409779,
+      city: 'Berlin',
+      country: 'Germany',
+    };
+  },
   methods: {
     setDeparture(e) {
       this.departure =
@@ -140,7 +153,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style >
 input{
   background: black;
   color:white;
@@ -157,10 +170,9 @@ li:hover{
   color:blue;
 }
 #simple-interface{
-  z-index: 3;
-  height: 100%;
+  z-index: 10;
   position: absolute;
-  height: 100%;
+  height: 100vh;
 }
 .bottom-right-panel{
   z-index: 2;
@@ -192,5 +204,12 @@ li:hover{
   color:white;
   z-index:2;
   width: 300px;
+}
+.cover{
+  display: none !important;
+}
+.dg.ac, .dg.main.a{
+  z-index: 16 !important;
+  display: inherit;
 }
 </style>

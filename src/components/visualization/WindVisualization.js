@@ -7,6 +7,8 @@ const vshader =
 'uniform float alpha;' +
 'uniform float magnitude;' +
 'uniform float opacity;' +
+'uniform float minOpacity;' +
+
 'uniform vec3  startColor;' +
 'uniform vec3  endColor;' +
 'uniform float startHue;' +
@@ -31,7 +33,7 @@ const vshader =
 '  if(isEnd == 0.0){                                               ' +
 '      float d = distance(vec3(0,0,0), blend)/threshold;           ' +
 '      if(d>1.0)d=1.0;                                             ' +
-'      if(opacityMapping > 0.0) vOpacity = 0.25+0.75*d*opacity;      ' +
+'      if(opacityMapping > 0.0) vOpacity = minOpacity+(1.0-minOpacity)*d*opacity;      ' +
 '      if(mapping == 2.0){                                         ' +
 '          float h = startHue+d*(endHue-startHue);                 ' +
 '          vColor = hsv2rgb(vec3(h,1.0,1.0));                      ' +
@@ -147,10 +149,16 @@ class WindVisualization {
   setThreshold(t) {
     this.lines.material.uniforms.threshold.value = t;
   }
+
+  setMinOpacity(mo) {
+    this.lines.material.uniforms.minOpacity.value = mo;
+  }
+
   createMaterial() {
     const uniforms = {
       alpha: { type: 'f', value: 0.0 },
       opacity: { type: 'f', value: 0.2 },
+      minOpacity: { type: 'f', value: 0.5 },
       magnitude: { type: 'f', value: this.magnitude },
       opacityMapping: { type: 'f', value: 0 },
       mapping: { type: 'f', value: 0 },

@@ -19,7 +19,6 @@ export default {
     destination: {},
     // used for the final recap: e.g.
     // The Aerocene Explorer that left from Milan...arrived within *km in *hours
-    // TODO: still to implement. Sync these variables with the viz local variables
     winningExplorerData: {
       departureDate: new Date(),
       minDist: 0,

@@ -10,13 +10,14 @@ class WindDataDownloader {
     for (let i = 0; i < 8; i += 1) {
       url += `${departure.lat},${departure.lng},`;
     }
-    this.downloadMultiS(0, url, destination);
+    this.downloadMultiS(0, url, departure, destination);
   }
 
-  downloadMultiS(day, departures, destination) {
-    let url = `http://float.aerocene.org/traj4multi2d.php?${day},250,${destination.lat},${destination.lng} ${departures}`;
-    //  console.log(destination.lat+" "+destination.lng);
-    if (destination.lat === 35.652832 && destination.lng === 139.839478) {
+  downloadMultiS(day, urls, departure, destination) {
+    let url = `http://float.aerocene.org/traj4multi2d.php?${day},250,${destination.lat},${destination.lng} ${urls}`;
+    console.log(`${departure.lat} ${departure.lng}`);
+    if (departure.lat === 52.520645 && departure.lng === 13.409779 &&
+      destination.lat === 35.652832 && destination.lng === 139.839478) {
       url = `static/data/gfs/test/${day}.json`;
     }
     fetch(url)
@@ -29,7 +30,7 @@ class WindDataDownloader {
           url += `${json.d[index][2]},${json.d[index][3]},`;
         }
         if (day < 15) {
-          this.downloadMultiS(day + 1, url, destination);
+          this.downloadMultiS(day + 1, url, departure, destination);
         } else {
           // eslint-disable-next-line no-console
           console.log('Done!');
