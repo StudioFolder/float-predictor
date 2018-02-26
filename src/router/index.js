@@ -88,7 +88,7 @@ router.beforeEach((to, from, next) => {
   } else if (fromMiddle && toBottom) {
     store.commit('flightSimulator/setVisualizationState', 7); // start to move the earth
     // wait a little bit for the earth to move
-    time = 1000;
+    time = 0;
     transitionName = 'middle-to-bottom';
     transitionMode = 'out-in';
   } else if (fromTop && toTop) {

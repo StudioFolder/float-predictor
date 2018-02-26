@@ -77,13 +77,13 @@ const pars = {
   fps: 0,
   antialias: true,
   state: 0,
-  speed_d_x_sec: 0.1, // modify for dev
+  speed_d_x_sec: 0.09,
   move_in_time: false,
   pan_x: 0,
   pan_y: 0,
   zoom: INITIAL_ZOOM,
   onboard: false,
-  skip_frame: 1, // modify for dev
+  skip_frame: 16, // modify for dev
   camera_smooth: 0.993,
   camera_distance: 1.5,
   camera_shift: 0.07,
@@ -91,7 +91,7 @@ const pars = {
   sun_visible: false,
   zoom_enabled: true,
   // MATERIAL
-  use_bump: true, // modify for dev
+  use_bump: false, // modify for dev
   use_nightmap: true,
   nightmap_intensity: 0.9,
   nightmap_threshold: 0.7,
@@ -1008,7 +1008,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.4,
+            time_interval: 0.5,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1029,7 +1029,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.4,
+            time_interval: 0.5,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1050,7 +1050,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.1,
+            time_interval: 0.5,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1072,7 +1072,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.4,
+            time_interval: 0.5,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
