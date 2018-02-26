@@ -92,7 +92,6 @@ class Explorer {
 
   setStyle(s) {
     const t = 0.0;
-    console.log(s);
     switch (s) {
       case Explorer.SELECTED:
         this.mesh.visible = true;

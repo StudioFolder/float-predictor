@@ -408,8 +408,10 @@ export default {
       controls.addEventListener('end', () => { this.interacting = false; }, false);
       controls.addEventListener('scale', () => { this.setScale(scene.scale.x); }, false);
       this.mouse = new THREE.Vector2();
-      renderer.domElement.addEventListener('mousemove', this.onMouseMove, false);
-      renderer.domElement.addEventListener('click', this.onMouseClick, false);
+      rendererAA.domElement.addEventListener('mousemove', this.onMouseMove, false);
+      rendererAA.domElement.addEventListener('click', this.onMouseClick, false);
+      rendererNAA.domElement.addEventListener('mousemove', this.onMouseMove, false);
+      rendererNAA.domElement.addEventListener('click', this.onMouseClick, false);
 
       this.animate();
     },
@@ -560,6 +562,7 @@ export default {
         rendererNAA.domElement.style.display = 'block';
         rendererAA.domElement.style.display = 'none';
       }
+      controls = new OrbitControls(camera, renderer.domElement);
     },
     initNightMap() {
       NightMap.init(radius, scene, nightMapTexture);
@@ -713,16 +716,16 @@ export default {
       rendererNAA.setSize(window.innerWidth, window.innerHeight);
       rendererNAA.setClearColor(0x000000);
 
+      camera = new THREE.PerspectiveCamera(40, rendererAA.getSize().width / rendererAA.getSize().height, 0.1, 10000);
+      camera.position.set(0, radius * 0.25, radius * 1.7);
+
       this.setAntialias(pars.antialias);
       pars.pixel_ratio = window.devicePixelRatio;
       // scene
       scene = new THREE.Scene();
       // scene.fog = new THREE.Fog( 0x333333, 0.0001 );
       // camera
-      camera = new THREE.PerspectiveCamera(40, renderer.getSize().width / renderer.getSize().height, 0.1, 10000);
-      camera.position.set(0, radius * 0.25, radius * 1.7);
       // (camera) controls
-      controls = new OrbitControls(camera, renderer.domElement);
       // controls.autoRotate=pars.auto_rotate;
       controls.dampingFactor = 0.017;
       controls.autoRotateSpeed = 1;
