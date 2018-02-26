@@ -125,7 +125,9 @@ export default {
       // set bottom class
       // eslint-disable-next-line
       console.log(el)
-      if (el.id === 'gallery') {
+      if (el.id === 'gallery' || el.id === 'about') {
+        // eslint-disable-next-line
+        console.log('check if class --bottom')
         this.isBottom = (this.$route.name === 'gallery');
       }
     },
