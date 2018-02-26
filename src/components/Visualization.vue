@@ -11,7 +11,7 @@
           arrived within <b>{{winningExplorerData.minDist}}km</b>
           from <b>{{destination.city}}</b> in <b>{{winningExplorerData.minTime}} days.</b>
         </div>
-        <div slot="image" id="imgel"></div>
+        <div slot="image" v-html="winningExplorerData.svg"></div>
       </modal-winner-explorer>
     </div>
     <Loading v-if="(loading < 1.0 || saving)"></Loading>
@@ -77,13 +77,13 @@ const pars = {
   fps: 0,
   antialias: true,
   state: 0,
-  speed_d_x_sec: 0.09,
+  speed_d_x_sec: 0.1,
   move_in_time: false,
   pan_x: 0,
   pan_y: 0,
   zoom: INITIAL_ZOOM,
   onboard: false,
-  skip_frame: 1, // modify for dev
+  skip_frame: 1,
   camera_smooth: 0.993,
   camera_distance: 1.5,
   camera_shift: 0.07,
@@ -91,7 +91,7 @@ const pars = {
   sun_visible: false,
   zoom_enabled: true,
   // MATERIAL
-  use_bump: true, // modify for dev
+  use_bump: true,
   use_nightmap: true,
   nightmap_intensity: 0.9,
   nightmap_threshold: 0.7,
@@ -377,8 +377,8 @@ export default {
 
     initVis() {
       if (process.env.NODE_ENV === 'development') {
-        pars.speed_d_x_sec = 0.7;
-        pars.skip_frame = 1;
+        pars.speed_d_x_sec = 0.9;
+        pars.skip_frame = 4;
         pars.use_bump = false;
         pars.antialias = false;
       }
@@ -574,18 +574,18 @@ export default {
 
     initLabels() {
       const departureSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      departureLabel = new THREELabel(scene, 'Colfax-Medium', 12, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', departureSphere);
+      departureLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', departureSphere);
       departureLabel.setIcon(document.getElementById('up'));
       departureLabel.set(departure.city, departureSphere.position);
       scene.add(departureSphere);
 
-      selectLabel = new THREELabel(scene, 'Colfax-Medium', 12, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', departureSphere);
+      selectLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', departureSphere);
       selectLabel.margin = 10;
       selectLabel.set('Explorer >', departureSphere.position);
       scene.add(departureSphere);
 
       const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      destinationLabel = new THREELabel(scene, 'Colfax-Medium', 12, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
+      destinationLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
       destinationLabel.setIcon(document.getElementById('down'));
       destinationLabel.set(destination.city, destinationSphere.position);
       scene.add(destinationSphere);
@@ -606,7 +606,7 @@ export default {
 
         const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
         scene.add(sphere);
-        const label = new THREELabel(scene, 'Colfax-Medium', 12, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
+        const label = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
         cityLabels.push(label);
       }
 
@@ -614,7 +614,7 @@ export default {
       for (let i = 0; i < 16; i += 1) {
         const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
         scene.add(sphere);
-        const label = new THREELabel(scene, 'Colfax-Medium', 12, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
+        const label = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
         daysLabels.push(label);
         /*
         const el = document.createElement('div');
@@ -1001,14 +1001,14 @@ export default {
           break;
         }
         case STATE_UNFOCUSED: {
-          pars.auto_rotate = false;
+          pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
           const ev = [150, 0.8, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 1,
+            time_interval: 0.4,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1022,14 +1022,14 @@ export default {
           break;
         }
         case STATE_UNFOCUSED_PAGES: {
-          pars.auto_rotate = false;
+          pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
           const ev = [90, 0.8, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 1,
+            time_interval: 0.4,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1043,14 +1043,14 @@ export default {
           break;
         }
         case STATE_UNFOCUSED_GALLERY: {
-          pars.auto_rotate = false;
+          pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
           const ev = [-100, 0.8, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 1,
+            time_interval: 0.1,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1072,7 +1072,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 1,
+            time_interval: 0.4,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1095,6 +1095,8 @@ export default {
     toSVG() {
       this.svg = [];
       let t = '<svg height="210" width="210">';
+      let initX = 0;
+      let initY = 0;
       // t += '<rect width="210" height="210" fill="gray" />';
       // t += '<circle cx="105" cy="105" r="100" stroke="black" stroke-width="1" fill="gray" style="opacity:1" />';
       for (let i = 0; i < explorers.length; i += 1) {
@@ -1105,11 +1107,24 @@ export default {
             const x2 = (105 - 0.5 * explorers[i].array[j + 2]).toFixed(2);
             this.svg.push([x1, x2]);
             t += `${x1},${x2} `;
+            if (j === 0) {
+              initX = x1;
+              initY = x2;
+            }
           }
           t += `" style="fill:none;stroke:${webColors[i]};stroke-width:1" />`;
         // } else { t += '" style="fill:none;stroke:black;opacity:0.1;stroke-width:1" />' }
         }
       }
+      t += `<circle cx="${initX}" cy="${initY}" r="10" style="fill:#FFFFFF"></circle>`;
+      const triangleAx = initX;
+      const triangleAy = initY + 4;
+      const triangleBx = initX - 4;
+      const triangleBy = initY - 4;
+      const triangleCx = initX + 4;
+      const triangleCy = initY - 4;
+      t += `<polygon stroke="#1E1E1E" stroke-width="2" fill="#1E1E1E"
+            points="${triangleAx} ${triangleAy} ${triangleBx} ${triangleBy} ${triangleCx} ${triangleCy}"></polygon>`;
       t += '</svg>';
       return t;
     },
@@ -1517,7 +1532,7 @@ export default {
 
 .main-visualization {
   width: 100vw;
-  height: 100vh;
+  height: 200vh;
   position: relative;
   z-index: 0;
 }

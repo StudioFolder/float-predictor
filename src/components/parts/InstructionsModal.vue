@@ -54,7 +54,6 @@
                             inside the balloon is lighter than the ambient air,
                             the resultant force is a vertical upwards force: the
                             aerostatics force or "lift".
-
                         </div>
                     </swiper-slide>
                     <swiper-slide>
@@ -437,11 +436,11 @@ $lateralSpace: 7rem;
 .instruction-modal {
     .modal-dialog {
         max-width: 1024px;
-        margin-bottom: 0;
-        display: flex;
-        align-items: flex-end;
-        min-height: 0;
-        height: calc(100vh - 1.75rem);
+        // margin-bottom: 0;
+        // display: flex;
+        // align-items: flex-end;
+        // min-height: 0;
+        // height: calc(100vh - 1.75rem);
     }
     .carousel-indicators {
         bottom: -25px;

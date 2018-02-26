@@ -5,6 +5,7 @@
             <main-menu />
             <nav-brand ref="navBrand" />
             <on-board-navigation />
+            <recentre />
         </div>
         <div class="site-content" :class="{'--bottom': isBottom}">
             <div class="router-view" ref="content">
@@ -50,6 +51,7 @@ import visualization from './components/Visualization';
 import instructions from './components/parts/InstructionsModal';
 import impressum from './components/parts/ImpressumModal';
 import onBoardNavigation from './components/parts/OnBoardNavigation';
+import recentre from './components/parts/Recentre';
 
 export default {
   components: {
@@ -59,6 +61,7 @@ export default {
     instructions,
     impressum,
     onBoardNavigation,
+    recentre,
   },
   name: 'App',
   data() {

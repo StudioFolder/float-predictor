@@ -25,7 +25,7 @@ class THREELabel {
       bottom: fontSize * 3,
     };
     this.canvas = document.createElement('canvas');
-    document.body.appendChild(this.canvas);
+    // document.body.appendChild(this.canvas);
     this.context = this.canvas.getContext('2d');
     this.text = '';
     this.bgColor = bgColor;

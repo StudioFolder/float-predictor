@@ -178,29 +178,22 @@ export default {
                 background-color: transparent;
                 circle.progress {
                     stroke: $primary;
-                    r: $r+4;
                     stroke-width: 4px;
-                }
-                circle.baseline {
-                    r: $r+1;
                 }
             }
             &:first-child {
                 margin-top: 1rem;
             }
-            &.--focused {
-                //height: $itemWidth*1.4;
-                //width: $itemWidth*1.3;
-            }
             .explorer-id {
                 position: absolute;
-                z-index: 10;
+                margin-top: 1px;
                 color: $gray;
+                font-size: .9rem;
             }
             .explorer-gif {
-                width: 20px;
-                margin-top: 8px;
-                margin-left: 2px;
+                width: 15px;
+                margin-top: 4px;
+                margin-left: 1px;
                 img {
                     max-width: 100%;
                 }

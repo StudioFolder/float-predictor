@@ -7,7 +7,7 @@
              centered
              class="winner-explorer-modal --box"
              title="Your Aerosolar Journey">
-        <slot name="image"></slot>
+        <slot name="image" class="aeroglyph"></slot>
         <slot class="message" name="message"></slot>
         <b-form @submit="onSubmit">
             <div class="name-selector-group">
@@ -75,21 +75,9 @@ export default {
         opacity: 0;
         display: none;
     }
-    #imgel {
-        background: transparent !important;
         text-align: center;
-        svg {
-            rect {
-                fill: $lightBlack;
-            }
-            circle {
-                fill: $lightBlack;
-                stroke: $lightBlack;
-            }
-            polyline {
-                stroke: #4A90E2 !important;
-            }
-        }
+    .aeroglyph {
+        text-align: center;
     }
     .message {
         font-size: 1rem;
