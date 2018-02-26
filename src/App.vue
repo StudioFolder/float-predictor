@@ -120,8 +120,14 @@ export default {
     },
     onLeave() {
     },
-    afterLeave() {
+    afterLeave(el) {
       this.transitionLeave = false;
+      // set bottom class
+      // eslint-disable-next-line
+      console.log(el)
+      if (el.id === 'gallery') {
+        this.isBottom = (this.$route.name === 'gallery');
+      }
     },
   },
 };
@@ -129,4 +135,7 @@ export default {
 
 <style lang="scss">
 @import "assets/css/main";
+    canvas {
+        display: none;
+    }
 </style>

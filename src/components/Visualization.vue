@@ -83,7 +83,7 @@ const pars = {
   pan_y: 0,
   zoom: INITIAL_ZOOM,
   onboard: false,
-  skip_frame: 16, // modify for dev
+  skip_frame: 1, // modify for dev
   camera_smooth: 0.993,
   camera_distance: 1.5,
   camera_shift: 0.07,
@@ -91,7 +91,7 @@ const pars = {
   sun_visible: false,
   zoom_enabled: true,
   // MATERIAL
-  use_bump: false, // modify for dev
+  use_bump: true, // modify for dev
   use_nightmap: true,
   nightmap_intensity: 0.9,
   nightmap_threshold: 0.7,

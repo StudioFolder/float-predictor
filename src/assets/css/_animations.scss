@@ -81,6 +81,20 @@ $duration: .8s;
 
 
 
+// Bottom to top
+.main-application.bottom-to-top-leaving{
+  .main-visualization-wrapper {
+    animation: partial-translate-down $duration ease;
+  }
+}
+.bottom-to-top-leave-active {
+  animation: translate-down-to-bottom $duration ease;
+}
+.bottom-to-top-enter-active {
+  transition: height $duration ease;
+  animation: translate-down-from-top $duration ease; // transition isn't working
+}
+
 
 // animations
 @keyframes translate-down-from-top {

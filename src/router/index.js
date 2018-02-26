@@ -95,6 +95,9 @@ router.beforeEach((to, from, next) => {
     transitionMode = 'in-out';
   } else if (fromBottom && toMiddle) {
     transitionName = 'bottom-to-middle';
+  } else if (fromBottom && toTop) {
+    transitionName = 'bottom-to-top';
+    transitionMode = 'out-in';
   }
   // if to middle we need some logic to change the viz state
   if (toMiddle) {
