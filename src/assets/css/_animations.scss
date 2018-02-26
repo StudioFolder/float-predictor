@@ -1,4 +1,4 @@
-$duration: .8s;
+$duration: .9s;
 // fade
 .fade-enter-active, .fade-leave-active {
   transition: opacity .4s ease;
@@ -138,7 +138,7 @@ $duration: .8s;
     padding-top: 50vh;
   }
   100% {
-    padding-top: 100vh;
+    padding-top: 180vh;
   }
 }
 @keyframes translate-up {

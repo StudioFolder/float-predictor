@@ -1008,7 +1008,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.5,
+            time_interval: 1,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1029,7 +1029,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.5,
+            time_interval: 1,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1050,7 +1050,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.5,
+            time_interval: 1,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1072,7 +1072,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.5,
+            time_interval: 1,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },

@@ -98,7 +98,7 @@ router.beforeEach((to, from, next) => {
     store.commit('flightSimulator/setVisualizationState', 6);
   } else if (fromTop && toBottom) {
     transitionName = 'top-to-bottom';
-    // transitionMode = 'out-in';
+    store.commit('flightSimulator/setVisualizationState', 7);
   }
   // if to middle we need some logic to change the viz state
   if (toMiddle) {
