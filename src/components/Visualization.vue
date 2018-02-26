@@ -22,7 +22,7 @@
 
 import _ from 'lodash';
 import { saveAs } from 'file-saver';
-import Loading from './Loading';
+import Loading from 'Parts/Loading';
 import modalWinnerExplorer from './parts/ModalWinnerExplorer.Vue';
 import Util from './visualization/Util';
 import THREELabel from './visualization/THREELabel';

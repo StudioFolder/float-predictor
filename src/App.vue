@@ -123,11 +123,7 @@ export default {
     afterLeave(el) {
       this.transitionLeave = false;
       // set bottom class
-      // eslint-disable-next-line
-      console.log(el)
-      if (el.id === 'gallery' || el.id === 'about') {
-        // eslint-disable-next-line
-        console.log('check if class --bottom')
+      if (el.id === 'gallery') {
         this.isBottom = (this.$route.name === 'gallery');
       }
     },

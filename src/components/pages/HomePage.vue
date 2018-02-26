@@ -22,14 +22,6 @@ export default {
       this.$store.commit('general/setFormStatus', true);
     },
   },
-  mounted() {
-  },
-  /*
-  created() {
-    this.$store.commit('general/setUpperHeight', 'inherit');
-    this.$store.commit('general/setBottomHeight', 0);
-  },
-  */
 };
 </script>
 <style lang="scss">

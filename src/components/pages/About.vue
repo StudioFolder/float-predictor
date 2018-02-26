@@ -1,6 +1,6 @@
 <template>
     <div class="main-content" :style="{ height: upperHeight }">
-        <article role="article" class="article" ref="aboutContent">
+        <article role="article" class="article" ref="content">
             <h1 class="entry-title">About</h1>
             <h3 class="entry-subtitle">
                 Aerocene holds a message of simplicity,
@@ -26,12 +26,18 @@
                 </p>
             </div>
         </article>
+        <back-to-viz />
     </div>
 </template>
 
 <script>
+import backToViz from 'Parts/BackToViz';
+
 export default {
   name: 'About',
+  components: {
+    backToViz,
+  },
   data() {
     return {
       upperHeight: 0,
@@ -41,10 +47,7 @@ export default {
     this.$store.commit('flightSimulator/setVisualizationState', 6);
   },
   mounted() {
-    this.upperHeight = `${this.$refs.aboutContent.clientHeight}px`;
+    this.upperHeight = `${this.$refs.content.clientHeight}px`;
   },
 };
 </script>
-<style lang="scss">
-    @import '~css/_variables_and_mixins.scss';
-</style>

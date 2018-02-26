@@ -48,7 +48,7 @@
 
 <script>
 import moment from 'moment';
-import Loading from '../Loading';
+import Loading from 'Parts/Loading';
 
 export default {
   name: 'Gallery',

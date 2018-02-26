@@ -27,12 +27,18 @@
                 </p>
             </div>
         </article>
+        <back-to-viz />
     </div>
 </template>
 
 <script>
+import backToViz from 'Parts/BackToViz';
+
 export default {
   name: 'aerocenee-explorer',
+  components: {
+    backToViz,
+  },
   data() {
     return {
       upperHeight: 0,
@@ -46,6 +52,3 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-    @import '~css/_variables_and_mixins.scss';
-</style>
