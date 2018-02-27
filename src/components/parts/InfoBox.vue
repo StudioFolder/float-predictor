@@ -9,6 +9,12 @@
             <ul class="dashboard-legend" v-if="isAnimationActive">
                 <li class="list-item">
                     <div class="title">
+                        Complete Instructions
+                    </div>
+                    <i class="fp fp-caret-right"></i>
+                </li>
+                <li class="list-item">
+                    <div class="title">
                         Take a Screenshot
                     </div>
                     <i class="fp fp-caret-right"></i>
@@ -52,26 +58,14 @@
                 </ul>
             </div>
             <div class="info-group wind">
-                <div class="group-title small">Winds</div>
-                <ul>
-                    <li>10 km/h</li>
-                    <li>50 km/h</li>
-                    <li>100 km/h</li>
+                <div class="group-title small">Winds ( km/h )</div>
+                <div class="wind-legend"></div>
+                <div class="wind-legend --enhanced"></div>
+                <ul class="list-group horiziontal">
+                    <li>0</li>
+                    <li>50</li>
+                    <li>>100</li>
                 </ul>
-            </div>
-            <div class="info-group globe">
-                <div class="group-title small"><!--Globe--></div>
-
-                    <!--<li><i class="fp fp-hand"></i>-->
-                        <!--<div class="title">Click and drag the globe with the mouse<br>-->
-                            <!--(or tap with your finger) to tilt the view.</div>-->
-                    <!--</li>-->
-                    <!--<li><i class="fp fp-zoom"></i>-->
-                        <!--<div class="title">Zoom in and out to get a more detailed view.</div>-->
-                    <!--</li>-->
-
-                <div class="title">Complete instructions can be found here.</div>
-
             </div>
         </div>
     </div>
@@ -143,12 +137,22 @@ export default {
             .description {
                 color: $gray;
             }
-            ul {
-                li {
-                    display: flex;
-                    align-items: center;
-                    padding: $marginItem 0;
-                }
+            ul li {
+                display: flex;
+                align-items: center;
+                padding: $marginItem 0;
+            }
+        }
+        .wind-legend {
+            background: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,1) 100%);
+            height: 5px;
+            &.--enhanced {
+                background: linear-gradient(to right,
+                        rgba(7,58,158,0.7) 0%,
+                        rgba(0,244,175,0.7) 35%,
+                        rgba(0,247,61,0.7) 56%,
+                        rgba(247,230,0,0.7) 77%,
+                        rgba(248,0,0,0.7) 100%);
             }
         }
     }

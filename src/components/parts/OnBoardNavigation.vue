@@ -10,14 +10,18 @@
             <ul class="explorer-data">
                 <li class="explorer-datum">
                     <div class="subtitle">Departed</div>
-                    Day {{id}}
+                    {{day}}
                 </li>
                 <li class="explorer-datum">
-                    <div class="subtitle">Distance</div>
-                    {{parseInt(distance).toLocaleString('en')}} km
+                    <div class="subtitle">Distance travelled</div>
+                    {{distance}} km
                 </li>
                 <li class="explorer-datum">
-                    <div class="subtitle">Current Speed</div>
+                    <div class="subtitle">Altitude</div>
+                    {{altitude}} km
+                </li>
+                <li class="explorer-datum">
+                    <div class="subtitle">Speed</div>
                     {{speed}} km/h
                 </li>
             </ul>
@@ -26,12 +30,22 @@
     </transition>
 </template>
 <script>
+import moment from 'moment';
+
 export default {
   name: 'onboard-navigation',
   computed: {
+    day() {
+      return moment().add((this.id - 1), 'days').format('MMM Do, YYYY');
+    },
     id() { return this.$store.state.flightSimulator.focusedExplorer; },
-    distance() { return this.$store.state.flightSimulator.focusedExplorerDistance; },
-    speed() { return this.$store.state.flightSimulator.focusedExplorerSpeed; },
+    distance() {
+      return parseInt(this.$store.state.flightSimulator.focusedExplorerDistance, 10).toLocaleString('en');
+    },
+    altitude() { return 0; },
+    speed() {
+      return parseInt(this.$store.state.flightSimulator.focusedExplorerSpeed, 10).toLocaleString('en');
+    },
   },
   methods: {
     onClick() {
@@ -74,7 +88,6 @@ export default {
             padding-bottom: 5px;
             margin-left: -25px;
             opacity: 0;
-            //letter-spacing: 1px;
             -webkit-font-smoothing: antialiased;
         }
         .header {

@@ -256,6 +256,7 @@ export default {
             margin-bottom: 1em;
         }
         .input-label {
+            color: #FFF;
             text-align: center;
         }
         .small {

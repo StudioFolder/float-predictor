@@ -75,8 +75,26 @@ body {
 }
 article {
   padding: $marginBase*3 0 $marginBase;
-  max-width: 30rem;
+  max-width: 36rem;
   margin: 0 auto;
+  .entry-body p{
+    font-size: 1.3em;
+    line-height: 1.5;
+  }
+  .entry-subtitle {
+    margin-bottom: 5rem;
+  }
+}
+
+form {
+  ::placeholder {
+    color: $lightGray;
+  }
+  .form-control {
+    margin-bottom: 1rem;
+    border-radius: 0;
+    border-color: $gray;
+  }
 }
 
 .site-content {
@@ -141,9 +159,12 @@ body.modal-open {
 }
 // modal small
 .modal-sm {
-  max-width: 350px;
+  max-width: 420px;
   .modal-header {
     padding: 2rem $marginBase/2;
+  }
+  .modal-body {
+    padding: $marginBase/2;
   }
 }
 // modal medium
@@ -157,4 +178,23 @@ body.modal-open {
 
 // box modal
 .--box {
+  .modal-header {
+    justify-content: center;
+    .close {
+      position: absolute;
+      background-color: $lightBlack;
+      border-radius: 50%;
+      right: $marginBase/2;
+      top: -12px;
+      width: 25px;
+      height: 25px;
+      opacity: 1;
+      i {
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        background-size: 50%;
+      }
+    }
+  }
 }

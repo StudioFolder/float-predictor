@@ -1,8 +1,6 @@
 <template>
     <b-nav vertical class="flight-dashboard">
         <!--tools-->
-        <b-nav-item @click="saveScreenshot" class="--rounded">
-            <i class="fp fp-camera"></i></b-nav-item>
         <div class="toggle-winds">
             <b-nav-item @click="toggleWindsPanel" class="--rounded wind-selector">
                 <i :class="windPanelClass" class="fp"></i>
@@ -62,7 +60,6 @@ export default {
         'fp-no-winds': this.winds === 0,
         'fp-winds-on': this.winds === 1,
         'fp-winds-en': this.winds === 2,
-        inactive: !this.isInfoboxClosed,
       };
     },
     winds() { return this.$store.state.flightSimulator.winds; },
@@ -75,9 +72,6 @@ export default {
     },
   },
   methods: {
-    saveScreenshot() {
-      this.$store.commit('flightSimulator/saveImage');
-    },
     toggleWindsPanel() {
       this.isWindsPanelOpen = !this.isWindsPanelOpen;
     },

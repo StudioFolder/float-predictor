@@ -2,11 +2,11 @@
     <div class="main-content" :style="{ height: upperHeight }">
         <article role="article" class="article" ref="content">
             <h1 class="entry-title">The Aerocene Sculptures</h1>
-            <h3 class="entry-subtitle">
+            <h2 class="entry-subtitle">
                 Each imaginary Aerocene journey is an "air signature"
                 that we can use to advocate the independence
                 from fossil fuels.
-            </h3>
+            </h2>
             <div class="entry-body">
                 <p>
                     The Aerocene Explorer is your personal tool for

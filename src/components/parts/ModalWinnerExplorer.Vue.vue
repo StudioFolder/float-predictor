@@ -7,8 +7,9 @@
              centered
              class="winner-explorer-modal --box"
              title="Your Aerosolar Journey">
+        <i slot="modal-header-close" class="fp fp-close-w"></i>
         <div class="aeroglyph" v-html="winningExplorerData.svg"></div>
-        <div class="message" name="message">
+        <div class="message">
             The Aerocene Sculpture that left from <b>{{departure.city}}</b>
             on <b>{{depDate}}</b>
             arrived within <b>{{winningExplorerData.minDist}}km</b>
@@ -30,6 +31,24 @@
             </div>
             <b-button type="submit" variant="primary">Submit</b-button>
         </b-form>
+        <ul class="bottom-links">
+            <li class="share">
+                <small>Share</small>
+                <ul class="list-group horiziontal share-items">
+                    <li class="menu-item --socialShare"><i class="fp fp-facebook"></i></li>
+                    <li class="menu-item --socialShare"><i class="fp fp-twitter"></i></li>
+                    <li class="menu-item --socialShare"><i class="fp fp-mail"></i></li>
+                    <li class="menu-item --socialShare"><i class="fp fp-google"></i></li>
+                </ul>
+            </li>
+            <li class="separator"></li>
+            <li class="download">
+                <small>Download</small>
+                <ul>
+                    <li class="menu-item --socialShare"><i class="fp fp-download"></i></li>
+                </ul>
+            </li>
+        </ul>
     </b-modal>
 </template>
 <script>
@@ -79,10 +98,6 @@ export default {
 @import "~css/_typography.scss";
 .winner-explorer-modal {
     font-size: 1rem;
-    .modal-header {
-        padding-top: 1rem;
-        padding-bottom: 1rem;
-    }
     .modal-title {
         @extend .h4;
         margin: 0;
@@ -90,30 +105,56 @@ export default {
     .modal{
         transform: none !important;
     }
-    .modal-backdrop.show {
-        opacity: 0;
-        display: none;
-    }
-        text-align: center;
     .aeroglyph {
         text-align: center;
     }
     .message {
+        @extend %colfax_base;
         font-size: 1rem;
         text-align: center;
-    }
-    label {
-        margin-top: 20px;
+        margin-bottom: 1rem;
     }
     .input-label {
         margin-top: 20px;
         font-size: .8rem;
+        color: $gray;
     }
     form {
         text-align: center;
+        .name-selector-group {
+            text-align: left;
+            margin-bottom: 1rem;
+            label {
+                margin-bottom: .2em;
+            }
+        }
     }
-    .name-selector-group {
-        text-align: left;
+    .bottom-links {
+        margin-top: 2rem;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        color: $lightGray;
+        .share {
+            flex: 0 1 50%;
+        }
+        .download {
+            flex: 0 1 20%;
+            text-align: center;
+            ul li{
+                margin: 0 auto;
+            }
+        }
+        ul { margin-top: .5em}
+        >li {
+            text-align: left
+        }
+        .separator {
+            flex: 0 1 1px;
+            height: 24px;
+            background-color: $lightGray;
+            margin-bottom: 5px;
+        }
     }
 }
 </style>

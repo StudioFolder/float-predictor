@@ -123,6 +123,35 @@
         padding: 1.8rem 0 .75rem;
       }
     }
+    .menu-item.--nav,
+    .menu-item.--link {
+      position: relative;
+      &:before {
+        content: '';
+        opacity: 0;
+        transition: opacity .2s ease-out, transform .2s ease;
+        display: block;
+        width: 18px;
+        height: 100%;
+        position: absolute;
+        left: -40px;
+        background-position: center center;
+        background-repeat: no-repeat;
+        transform: translate(-4px, 0);
+      }
+      &:hover:before {
+        opacity: 1;
+        transform: translate(0px, 0);
+      }
+    }
+    .menu-item.--nav:before {
+      background-image: url("assets/icons/menu_hover_arrow.svg");
+      background-size: 30%;
+    }
+    .menu-item.--link:before {
+      background-image: url("assets/icons/menu_hover_outbound.svg");
+      background-size: 50%;
+    }
   }
 }
 .nav-item {

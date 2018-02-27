@@ -2,11 +2,11 @@
     <div class="main-content" :style="{ height: upperHeight }">
         <article role="article" class="article" ref="content">
             <h1 class="entry-title">About</h1>
-            <h3 class="entry-subtitle">
+            <h2 class="entry-subtitle">
                 Aerocene holds a message of simplicity,
                 creativity and cooperation for a world of tumultuous geopolitical relations,
                 reminding us of our symbiotic relationship with the Earth and all its species.
-            </h3>
+            </h2>
             <div class="entry-body">
                 <p>
                     The Aerocene Explorer is your personal tool for solar-powered atmospheric

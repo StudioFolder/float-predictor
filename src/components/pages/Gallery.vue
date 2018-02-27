@@ -1,5 +1,5 @@
 <template>
-  <div id="gallery" class="main-content" v-infinite-scroll="loadMore"
+  <div id="gallery" class="main-content gallery" v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy" infinite-scroll-distance="10">
     <b-container >
       <h1 class="entry-title">The Aeroglyphs Archive</h1>

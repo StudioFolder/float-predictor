@@ -13,7 +13,10 @@ export default {
   name: 'back-to-viz',
   computed: {
     isVisible() {
-      return (this.$route.name === 'flight-simulator' && !this.$store.state.general.isChoosingDestination);
+      return (
+        this.$route.name === 'flight-simulator'
+        && !this.$store.state.general.isChoosingDestination
+        && this.$store.state.flightSimulator.isActive);
     },
   },
   methods: {
