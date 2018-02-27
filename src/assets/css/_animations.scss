@@ -36,14 +36,14 @@ $duration: .9s;
 // fade middle to bottom
 .main-application.middle-to-bottom-entering{
   .main-visualization-wrapper {
-    animation: partial-translate-up $duration ease;
+    animation: partial-translate-up $duration*2 ease-out;
   }
 }
 .middle-to-bottom-enter {
   min-height: 100vh; // the glyphs are still loading
 }
 .middle-to-bottom-enter-active {
-  animation: translate-up-from-bottom $duration ease-in;
+  animation: translate-up-from-bottom $duration*2 ease-out;
   min-height: 100vh; // the glyphs are still loading
 }
 
@@ -84,16 +84,16 @@ $duration: .9s;
 // Bottom to top
 .main-application.bottom-to-top-leaving{
   .main-visualization-wrapper {
-    animation: partial-translate-down $duration/2 linear;
+    animation: partial-translate-down $duration*1.2 ease-in;
   }
 }
 .bottom-to-top-leave-active {
   width: 100%;
-  animation: translate-down-to-bottom $duration/2 linear;
+  animation: translate-down-to-bottom $duration*1.2 ease-in;
 }
 .bottom-to-top-enter-active {
-  transition: height $duration linear;
-  animation: translate-down-from-top $duration linear; // transition isn't working
+  transition: height $duration*2 linear;
+  animation: translate-down-from-top $duration*2 linear;
 }
 
 
@@ -101,26 +101,23 @@ $duration: .9s;
 // Top to bottom
 .main-application.top-to-bottom-leaving{
   .main-visualization-wrapper {
-    height: 100vh;
+    height: 100vh !important;
     transition: height $duration linear;
   }
 }
 .main-application.top-to-bottom-entering{
   .main-visualization-wrapper {
-    height: 100vh;
-    animation: partial-translate-up $duration linear;
+    height: 100vh !important;
+    animation: partial-translate-up $duration ease-out;
   }
 }
 .top-to-bottom-leave-active {
   height: 0 !important;
-  transition: height $duration linear;
-  animation: translate-up $duration linear;
-}
-.top-to-bottom-enter {
-  min-height: 100vh; // the glyphs are still loading
+  transition: height $duration*0.75 linear;
+  animation: translate-up $duration*0.75 linear;
 }
 .top-to-bottom-enter-active {
-  animation: translate-up-from-bottom $duration linear;
+  animation: translate-up-from-bottom $duration ease-out;
   min-height: 100vh; // the glyphs are still loading
 }
 

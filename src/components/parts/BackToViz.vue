@@ -14,7 +14,7 @@ export default {
   name: 'back-to-viz',
   computed: {
     isVisible() {
-      return (this.$route.name === 'about' || this.$route.name === 'aerocene-explorer');
+      return (this.$route.name === 'about' || this.$route.name === 'aerocene-explorer' || this.$route.name === 'gallery');
     },
   },
 };
@@ -24,19 +24,22 @@ export default {
 .back-to-viz {
     transition: opacity .4s ease;
     position: absolute;
+    top: unset;
     bottom: $marginBase;
     left: $marginBase;
-    display: flex;
-    flex-flow: column;
-    text-align: center;
     max-width: 150px;
-    a { text-decoration: none;
+    a {
+        text-decoration: none;
+        display: flex;
+        flex-flow: column;
+        align-items: center;
     }
     img {
         max-width: 100%;
         padding: 0 40px 10px;
     }
     div {
+        text-align: center;
         font-size: .9em;
     }
 }
@@ -44,6 +47,20 @@ export default {
 .bottom-to-top-enter-active {
     .back-to-viz{
         opacity: 0;
+    }
+}
+body.gallery .back-to-viz {
+    top: calc(#{$marginBase} + 50vh);
+    bottom: unset;
+    i {
+        order: 1;
+        transform: rotate(180deg);
+    }
+    img {
+        order: 2;
+    }
+    div {
+        order: 3;
     }
 }
 </style>

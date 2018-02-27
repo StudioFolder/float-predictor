@@ -7,8 +7,13 @@
              centered
              class="winner-explorer-modal --box"
              title="Your Aerosolar Journey">
-        <slot name="image" class="aeroglyph"></slot>
-        <slot class="message" name="message"></slot>
+        <div class="aeroglyph" v-html="winningExplorerData.svg"></div>
+        <div class="message" name="message">
+            The Aerocene Sculpture that left from <b>{{departure.city}}</b>
+            on <b>{{depDate}}</b>
+            arrived within <b>{{winningExplorerData.minDist}}km</b>
+            from <b>{{destination.city}}</b> in <b>{{winningExplorerData.minTime}} days.</b>
+        </div>
         <b-form @submit="onSubmit">
             <div class="name-selector-group">
                 <label for="name" class="small">Name</label>
@@ -28,6 +33,8 @@
     </b-modal>
 </template>
 <script>
+import moment from 'moment';
+
 export default {
   name: 'modal-winner-explorer',
   data() {
@@ -36,6 +43,18 @@ export default {
     };
   },
   computed: {
+    winningExplorerData() {
+      return this.$store.state.flightSimulator.winningExplorerData;
+    },
+    depDate() {
+      return moment(this.winningExplorerData.departureDate).format('MMM Do, YYYY');
+    },
+    departure() {
+      return this.$store.state.flightSimulator.departure;
+    },
+    destination() {
+      return this.$store.state.flightSimulator.destination;
+    },
     animationEnd() {
       return this.$store.state.flightSimulator.visualizationState === 4;
     },

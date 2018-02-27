@@ -35,10 +35,9 @@
             </div>
         </div>
         <div class="footer modal-contents">
-            <instructions>
-            </instructions>
-            <impressum>
-            </impressum>
+            <instructions />
+            <impressum />
+            <modal-winner-explorer />
         </div>
     </div>
 </template>
@@ -50,6 +49,7 @@ import mainMenu from './components/MainMenu';
 import visualization from './components/Visualization';
 import instructions from './components/parts/InstructionsModal';
 import impressum from './components/parts/ImpressumModal';
+import modalWinnerExplorer from './components/parts/ModalWinnerExplorer.Vue';
 import onBoardNavigation from './components/parts/OnBoardNavigation';
 import recentre from './components/parts/Recentre';
 
@@ -59,6 +59,7 @@ export default {
     mainMenu,
     navBrand,
     instructions,
+    modalWinnerExplorer,
     impressum,
     onBoardNavigation,
     recentre,

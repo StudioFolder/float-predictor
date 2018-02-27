@@ -66,15 +66,16 @@ export default {
         .label {
             position: absolute;
             text-align: center;
-            width: 82px;
+            width: 80px;
             color: #fff;
-            font-size: .9rem;
+            font-size: .8rem;
             text-transform: initial;
             transform: translateY(-100%);
             padding-bottom: 5px;
             margin-left: -25px;
             opacity: 0;
-            letter-spacing: 1px;
+            //letter-spacing: 1px;
+            -webkit-font-smoothing: antialiased;
         }
         .header {
             background-color: #fff;

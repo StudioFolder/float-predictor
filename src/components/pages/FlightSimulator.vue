@@ -176,7 +176,7 @@ export default {
         top: 0;
         width: 450px;
         margin: 0 auto;
-        background: linear-gradient(180deg, $lightGray, rgba(0, 0, 0, 0));
+        background: linear-gradient(180deg, $lightBlack, black);
         padding: $marginBase 1rem;
         color: $gray;
         text-align: center;

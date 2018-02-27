@@ -57,7 +57,7 @@ body {
   &.btn-primary {
     border: 1px solid #fff;
     border-radius: 4px;
-    background-color: black;
+    background-color: transparent;
     color: #fff;
 
     &:not(:disabled):hover, &:not(:disabled):active {
@@ -66,6 +66,7 @@ body {
     }
   }
 }
+
 
 .main-content {
   h1, h2, h3 {
@@ -83,9 +84,6 @@ article {
     .router-view .main-content{
       padding-top: 50vh;
     }
-  //  .main-visualization-wrapper {
-  //    order: 1;
-  //  }
   }
   .main-visualization-wrapper {
     position: absolute;
@@ -144,6 +142,9 @@ body.modal-open {
 // modal small
 .modal-sm {
   max-width: 350px;
+  .modal-header {
+    padding: 2rem $marginBase/2;
+  }
 }
 // modal medium
 

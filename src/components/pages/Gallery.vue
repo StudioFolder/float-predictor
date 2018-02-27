@@ -43,12 +43,14 @@
         <Loading></Loading>
       </div>
     </b-container>
-</div>
+    <back-to-viz />
+  </div>
 </template>
 
 <script>
 import moment from 'moment';
 import Loading from 'Parts/Loading';
+import BackToViz from 'Parts/BackToViz';
 
 export default {
   name: 'Gallery',
@@ -65,6 +67,7 @@ export default {
     this.$store.commit('flightSimulator/setVisualizationState', 7);
   },
   components: {
+    BackToViz,
     Loading,
   },
   methods: {

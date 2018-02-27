@@ -3,17 +3,7 @@
   <div id ="visualization" class="main-visualization">
     <img id="down" src="../assets/icons/destination_arrow_down.svg"/>
     <img id="up" src="../assets/icons/departure_arrow_up.svg"/>
-    <div id="labels">
-      <modal-winner-explorer>
-        <div class="message" slot="message">
-          The Aerocene Sculpture that left from <b>{{departure.city}}</b>
-          on <b>{{formatDate(winningExplorerData.departureDate)}}</b>
-          arrived within <b>{{winningExplorerData.minDist}}km</b>
-          from <b>{{destination.city}}</b> in <b>{{winningExplorerData.minTime}} days.</b>
-        </div>
-        <div slot="image" v-html="winningExplorerData.svg"></div>
-      </modal-winner-explorer>
-    </div>
+    <div id="labels"></div>
     <Loading v-if="(loading < 1.0 || saving)"></Loading>
   </div>
 </template>
@@ -23,7 +13,6 @@
 import _ from 'lodash';
 import { saveAs } from 'file-saver';
 import Loading from 'Parts/Loading';
-import modalWinnerExplorer from './parts/ModalWinnerExplorer.Vue';
 import Util from './visualization/Util';
 import THREELabel from './visualization/THREELabel';
 import NightMap from './visualization/NightMap';
@@ -77,7 +66,7 @@ const pars = {
   fps: 0,
   antialias: true,
   state: 0,
-  speed_d_x_sec: 0.1,
+  speed_d_x_sec: 0.09,
   move_in_time: false,
   pan_x: 0,
   pan_y: 0,
@@ -348,7 +337,6 @@ export default {
 
   components: {
     Loading,
-    modalWinnerExplorer,
   },
 
   mounted() {
@@ -1024,12 +1012,12 @@ export default {
         case STATE_UNFOCUSED_PAGES: {
           pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [90, 0.8, Math.PI * 0.5];
+          const ev = [90, 0.7, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.4,
+            time_interval: 0.3,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1045,12 +1033,12 @@ export default {
         case STATE_UNFOCUSED_GALLERY: {
           pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [-100, 0.8, Math.PI * 0.5];
+          const ev = [-100, 0.7, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.1,
+            time_interval: 0.18,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1108,21 +1096,21 @@ export default {
             this.svg.push([x1, x2]);
             t += `${x1},${x2} `;
             if (j === 0) {
-              initX = x1;
-              initY = x2;
+              initX = parseFloat(x1);
+              initY = parseFloat(x2);
             }
           }
           t += `" style="fill:none;stroke:${webColors[i]};stroke-width:1" />`;
         // } else { t += '" style="fill:none;stroke:black;opacity:0.1;stroke-width:1" />' }
         }
       }
-      t += `<circle cx="${initX}" cy="${initY}" r="10" style="fill:#FFFFFF"></circle>`;
+      t += `<circle cx="${initX}" cy="${initY}" r="8" style="fill:#FFFFFF"></circle>`;
       const triangleAx = initX;
-      const triangleAy = initY + 4;
-      const triangleBx = initX - 4;
-      const triangleBy = initY - 4;
-      const triangleCx = initX + 4;
-      const triangleCy = initY - 4;
+      const triangleAy = initY - 1.5;
+      const triangleBx = initX - 2;
+      const triangleBy = initY + 2;
+      const triangleCx = initX + 2;
+      const triangleCy = initY + 2;
       t += `<polygon stroke="#1E1E1E" stroke-width="2" fill="#1E1E1E"
             points="${triangleAx} ${triangleAy} ${triangleBx} ${triangleBy} ${triangleCx} ${triangleCy}"></polygon>`;
       t += '</svg>';
@@ -1413,13 +1401,6 @@ export default {
     error() {
       console.log('ERROR ROUTINES');
       animator.stop();
-    },
-
-    formatDate(dt) {
-      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-      const day = dt.getDate();
-      const month = monthNames[dt.getMonth()];
-      return `${day} ${month}`;
     },
 
     downloadMulti() {
