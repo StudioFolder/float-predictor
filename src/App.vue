@@ -1,7 +1,7 @@
 <template>
     <div id="app"
          class="main-application" :class="classObject">
-        <site-header />
+        <site-header ref="siteHeader" />
         <dashboard />
         <div class="site-content" :class="{'--bottom': isBottom}">
             <div class="router-view" ref="content">
@@ -90,11 +90,11 @@ export default {
 
       // animate nav brand
       if (this.$route.name === 'home-page') {
-        this.$refs.navBrand.$el.classList.remove('--pages');
-        this.$refs.navBrand.$el.classList.add('--home');
+        this.$refs.siteHeader.$el.classList.remove('--pages');
+        this.$refs.siteHeader.$el.classList.add('--home');
       } else {
-        this.$refs.navBrand.$el.classList.remove('--home');
-        this.$refs.navBrand.$el.classList.add('--pages');
+        this.$refs.siteHeader.$el.classList.remove('--home');
+        this.$refs.siteHeader.$el.classList.add('--pages');
       }
 
       // set bottom class
@@ -119,7 +119,4 @@ export default {
 
 <style lang="scss">
 @import "assets/css/main";
-    canvas {
-        display: none;
-    }
 </style>

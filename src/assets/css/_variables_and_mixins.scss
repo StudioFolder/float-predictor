@@ -16,14 +16,17 @@ $lightGray: rgba(255, 255, 255, 0.2);
 $lightBlack: #1E1E1E;
 
 
+$marginBase: 3.125rem; // 50px
+$marginMobile: 2.144rem; // 30px in mobile when include medium down
+$itemWidth: 32px;
+$marginItem: .65rem;
+$correction: -.75rem;
+
+
 /* static assets paths */
 $asset-base-path: '../../../static/' !default;
 $img-base-path: '../../../static/img/' !default;
 
-$marginBase: 3.125rem;
-$itemWidth: 2rem;
-$marginItem: .65rem;
-$correction: -.75rem;
 
 /// Asset URL builder
 /// @access private

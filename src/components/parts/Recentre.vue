@@ -11,12 +11,13 @@
 <script>
 export default {
   name: 'back-to-viz',
+  props: ['isAnimationActive'],
   computed: {
     isVisible() {
       return (
         this.$route.name === 'flight-simulator'
         && !this.$store.state.general.isChoosingDestination
-        && this.$store.state.flightSimulator.isActive);
+        && this.isAnimationActive);
     },
   },
   methods: {

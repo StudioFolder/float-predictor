@@ -170,102 +170,104 @@ export default {
 };
 </script>
 <style lang="scss">
-    @import "~@/assets/css/_variables_and_mixins.scss";
-    .flight-form.container {
-        position: relative;
-        top: 0;
-        width: 450px;
-        margin: 0 auto;
-        background: linear-gradient(180deg, $lightBlack, black);
-        padding: $marginBase 1rem;
-        color: $gray;
-        text-align: center;
-        @include medium_down {
-            width: auto;
-            padding: 1em;
-            margin: $marginBase+3rem $marginBase;
-            background: $lightBlack;
-        }
-    }
-    .type-selector-group{
-        position: relative;
-        display: block;
-        text-align: center;
-
-        input {
-            display:none;
-        }
-        label[for="FlightTypeSelector"] {
-            &:after, &:before {
-                display: none;
-            }
-        }
-        .description {
-            margin: 1em auto .5em;
-            min-height: 48px;
-        }
-
-        .type-selector {
+@import "~@/assets/css/_variables_and_mixins.scss";
+.flight-form.container {
+    position: relative;
+    top: 0;
+    width: 450px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, $lightBlack, black);
+    padding: $marginBase 1rem;
+    color: $gray;
+    text-align: center;
+    @include medium_down {
+        width: auto;
+        padding: $marginMobile*2/3;
+        height: calc(100vh - 80px - #{$marginMobile});
+        margin: 80px $marginMobile;
+        background: $lightBlack;
+        form {
+            height: 100%;
             display: flex;
-            //width: 100%;
-            justify-content: center;
-            align-items: center;
-            span {
-                color: $gray;
-                &.--isActive {
-                    color: #fff;
-                }
+            flex-flow: column;
+            justify-content: space-between;
+        }
+    }
+}
+.type-selector-group{
+    position: relative;
+    display: block;
+    text-align: center;
+
+    input {
+        display:none;
+    }
+    label[for="FlightTypeSelector"] {
+        &:after, &:before {
+            display: none;
+        }
+    }
+    .description {
+        margin: 1em auto .5em;
+        min-height: 48px;
+    }
+
+    .type-selector {
+        display: flex;
+        //width: 100%;
+        justify-content: center;
+        align-items: center;
+        span {
+            color: $gray;
+            &.--isActive {
+                color: #fff;
             }
-            .slider {
-                display: inline-block;
-                width: 44px;
-                height: 25px;
-                position: relative;
-                cursor: pointer;
-                background-color: rgba(255, 255, 255, .2);
-                -webkit-transition: .4s;
-                transition: .4s;
-                border-radius: 34px;
-                margin: 0 10px;
-            }
+        }
+        .slider {
+            display: inline-block;
+            width: 44px;
+            height: 25px;
+            position: relative;
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, .2);
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 34px;
+            margin: 0 10px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 25px;
+            width: 25px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        &.planned {
             .slider:before {
-                position: absolute;
-                content: "";
-                height: 25px;
-                width: 25px;
-                background-color: white;
-                -webkit-transition: .4s;
-                transition: .4s;
-                border-radius: 50%;
-            }
-            &.planned {
-                .slider:before {
-                    transform: translateX(-22px);
-                }
+                transform: translateX(-22px);
             }
         }
     }
-    .coordinates-selector-group {
-        text-align: left;
-        .form-group {
-            margin-top: 1em;
-        }
-        .form-control {
-            font-size: 1em;
-            padding: 0.6em 0 0.3em 0;
-            margin-bottom: 1em;
-        }
-        .input-label {
-            color: #FFF;
-            text-align: center;
-        }
-        .small {
-            font-size: .6em;
-        }
+}
+.coordinates-selector-group {
+    text-align: left;
+    .form-group {
+        margin-top: 1em;
     }
-body.flight-simulator {
-    .cover {
-        width: 0;
+    .form-control {
+        font-size: 1em;
+        padding: 0.6em 0 0.3em 0;
+        margin-bottom: 1em;
+    }
+    .input-label {
+        color: #FFF;
+        text-align: center;
+    }
+    .small {
+        font-size: .6em;
     }
 }
 </style>

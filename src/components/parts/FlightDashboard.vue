@@ -1,5 +1,5 @@
 <template>
-    <b-nav vertical class="flight-dashboard">
+    <ul class="flight-dashboard">
         <!--tools-->
         <div class="toggle-winds">
             <b-nav-item @click="toggleWindsPanel" class="--rounded wind-selector">
@@ -20,7 +20,7 @@
             </transition>
         </div>
         <div class="play-animation">
-            <div v-if="isInfoboxClosed" class="elapsed-days">Day {{elapsedDays}}/16</div>
+            <div v-if="!isInfoboxOpen" class="elapsed-days">Day {{elapsedDays}}/16</div>
             <b-nav-item @click="toggleAnimation" class="--rounded --play">
                 <svg>
                     <circle class="progress" :style="{ strokeDasharray: dashArray }"></circle>
@@ -38,16 +38,16 @@
                     :explorer="explorer"
                     :day="elapsedDays"> </explorer>
         </ul>
-    </b-nav>
+    </ul>
 </template>
 
 <script>
 import Explorer from './Explorer';
 
 export default {
-  components: { Explorer },
   name: 'flight-dashboard',
-  props: ['isAnimationActive'],
+  props: ['isInfoboxOpen'],
+  components: { Explorer },
   data() {
     return {
       activeExplorers: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -65,7 +65,6 @@ export default {
     winds() { return this.$store.state.flightSimulator.winds; },
     isPlaying() { return this.$store.state.flightSimulator.isPlaying; },
     elapsedDays() { return this.$store.state.flightSimulator.elapsedDays; },
-    isInfoboxClosed() { return !this.$store.state.general.isInfoBoxOpen; },
     circumference() { return 35.8 * Math.PI; },
     dashArray() {
       return `${this.circumference * ((this.elapsedDays) / 16)}, 10000`;

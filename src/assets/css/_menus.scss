@@ -4,6 +4,9 @@
   right: 0;
   padding: $marginBase;
   z-index: 20;
+  @include medium_down {
+    padding: $marginMobile;
+  }
 }
 .menu-items a {
   text-decoration: none;
@@ -11,6 +14,70 @@
     text-decoration: none;
   }
 }
+
+.onboard-tools {
+  display: flex;
+  flex-flow: column wrap;
+}
+body.flight-simulator .onboard-tools {
+  @include medium_down {
+    position: fixed;
+    bottom: $marginItem*2;
+    left: 0;
+    flex-flow: row;
+    width: 50vw;
+    justify-content: flex-end;
+    padding-right: calc(#{$itemWidth/2} + #{$marginItem*2});
+    .nav-item {
+      margin-left: $marginItem*2;
+    }
+    .complete-instruction {
+      display: none;
+    }
+  }
+}
+.flight-dashboard {
+  display: flex;
+  flex-flow: column wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  /**
+   * MOBILE
+   */
+  @include medium_down {
+    position: fixed;
+    z-index: 19; // as the main-menu
+    bottom: $marginItem*2;
+    left: 50%;
+    margin-left: -$itemWidth/2;
+    flex-flow: row;
+    .play-animation {
+      width: $itemWidth;
+      order: 1;
+      .elapsed-days {
+        left: -$itemWidth;
+        top: -$itemWidth*(3/2);
+        width: $itemWidth*3;
+        text-align: center;
+      }
+    }
+    .toggle-winds {//mobile
+      width: $itemWidth;
+      order: 2;
+      display: flex;
+      align-items: flex-end;
+      margin-left: $marginItem*2;
+      .nav-item {
+        //margin-bottom: 5px;
+      }
+    }
+    .explorers-dashboard {
+      display: none;
+    }
+  }
+}
+
 .menu-item {
   color: $gray;
   font-size: .9em;
@@ -196,7 +263,4 @@
       width: 100%;
     }
   }
-}
-.dg.main.a {
-  display: none;  // modify for dev
 }

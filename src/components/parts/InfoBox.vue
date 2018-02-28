@@ -74,9 +74,7 @@
 <script>
 export default {
   name: 'info-box',
-  computed: {
-    isAnimationActive() { return this.$store.state.flightSimulator.isActive; },
-  },
+  props: ['isAnimationActive'],
 };
 </script>
 
@@ -85,8 +83,8 @@ export default {
     .info-box {
         background-color: $lightBlack;
         position: fixed;
-        top: $marginBase + $itemWidth;
-        right: $marginBase + $itemWidth + $marginItem;
+        top: calc(#{$marginBase} + #{$itemWidth});
+        right: calc(#{$marginBase} + #{$itemWidth} + #{$marginItem});
         width: 13.5rem;
         font-size: .9em;
 
@@ -94,7 +92,7 @@ export default {
             margin-bottom: $marginBase;
         }
         .list-item {
-            height: $itemWidth + $marginItem*2;
+            height: calc(#{$itemWidth} + #{$marginItem*2});
             padding-top: 1rem;
             &.elapsed-days {
                 margin-top: 0.6rem;

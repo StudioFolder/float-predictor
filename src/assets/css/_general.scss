@@ -24,7 +24,7 @@ body {
     z-index: 20;
     background: transparent;
     @include medium_down {
-      height: 90px;
+      height: 80px;
       width: 100%;
       background: black;
     }
@@ -58,7 +58,9 @@ body {
   padding: 0.3em 1.6em;
   text-transform: uppercase;
   margin-top: 1em;
-
+  @include medium_down {
+    padding: .5em 1.6em;
+  }
   &.btn-primary {
     border: 1px solid #fff;
     border-radius: 4px;
