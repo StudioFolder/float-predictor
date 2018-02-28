@@ -42,6 +42,7 @@ module.exports = {
       Components: resolve('src/components'),
       Parts: resolve('src/components/parts'),
       Pages: resolve('src/components/pages'),
+      Modals: resolve('src/components/modals'),
       Video: resolve('src/assets/video')
     }
   },

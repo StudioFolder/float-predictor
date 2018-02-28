@@ -12,21 +12,17 @@
                 <b-nav-item v-show="!isChoosing" @click="saveScreenshot" class="--rounded">
                     <i class="fp fp-camera"></i></b-nav-item>
             </b-nav>
-            <flight-dashboard v-show="isAnimationActive" :is-animation-active="isAnimationActive">
-            </flight-dashboard>
             <transition name="fade"><main-nav v-show="isMenuOpen"></main-nav></transition>
-            <transition name="fade"><info-box v-show="isInfoBoxOpen"></info-box></transition>
         </div>
     </div>
 </template>
 <script>
-import infoBox from './parts/InfoBox';
-import mainNav from './parts/MainNav';
-import flightDashboard from './parts/FlightDashboard';
+import infoBox from 'Parts/InfoBox';
+import mainNav from 'Parts/MainNav';
 
 export default {
   name: 'main-menu',
-  components: { infoBox, mainNav, flightDashboard },
+  components: { infoBox, mainNav },
   computed: {
     isMenuOpen() { return this.$store.state.general.isMenuOpen; },
     isAnimationActive() {

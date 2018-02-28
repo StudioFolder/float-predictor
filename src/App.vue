@@ -1,12 +1,8 @@
 <template>
     <div id="app"
          class="main-application" :class="classObject">
-        <div class="site-header">
-            <main-menu />
-            <nav-brand ref="navBrand" />
-            <on-board-navigation />
-            <recentre />
-        </div>
+        <site-header />
+        <dashboard />
         <div class="site-content" :class="{'--bottom': isBottom}">
             <div class="router-view" ref="content">
                 <transition
@@ -29,40 +25,26 @@
                     <router-link to="/flight-simulator" class="link-to-flight-sim">
                     </router-link>
                 </div>
-                <transition>
-                    <visualization />
-                </transition>
+                <visualization />
             </div>
         </div>
-        <div class="footer modal-contents">
-            <instructions />
-            <impressum />
-            <modal-winner-explorer />
-        </div>
+        <site-footer />
     </div>
 </template>
 
 <script>
 
-import navBrand from './components/NavBrand';
-import mainMenu from './components/MainMenu';
 import visualization from './components/Visualization';
-import instructions from './components/parts/InstructionsModal';
-import impressum from './components/parts/ImpressumModal';
-import modalWinnerExplorer from './components/parts/ModalWinnerExplorer.Vue';
-import onBoardNavigation from './components/parts/OnBoardNavigation';
-import recentre from './components/parts/Recentre';
+import siteHeader from './components/Header';
+import dashboard from './components/Dashboard';
+import siteFooter from './components/Footer';
 
 export default {
   components: {
     visualization,
-    mainMenu,
-    navBrand,
-    instructions,
-    modalWinnerExplorer,
-    impressum,
-    onBoardNavigation,
-    recentre,
+    siteHeader,
+    dashboard,
+    siteFooter,
   },
   name: 'App',
   data() {

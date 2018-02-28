@@ -35,19 +35,34 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4 {
 h1, .h1 {
   margin-top: 0;
   font-size: 3.157em; // 50
+  @include medium_down {
+    font-size: 2.441em;
+  }
 }
 h2, .h2 {
   font-size: 2.369em; // 38
+  @include medium_down {
+    font-size: 1.953em;
+  }
 }
 h3, .h3 {
   font-size: 1.777em; // 28
   margin-bottom: 1.414em;
+  @include medium_down {
+    font-size: 1.563em;
+  }
 }
 h4, .h4 {
   font-size: 1.333em; // 21
+  @include medium_down {
+    font-size: 1.25em;
+  }
 }
 small, .font-small {
   font-size: .75em; // 12px
+  @include medium_down {
+    font-size: .8em;
+  }
 }
 b, strong {
   @extend %colfax_bold;

@@ -23,6 +23,11 @@ body {
     position: absolute;
     z-index: 20;
     background: transparent;
+    @include medium_down {
+      height: 90px;
+      width: 100%;
+      background: black;
+    }
   }
   .cover {
     position: absolute;
@@ -77,7 +82,10 @@ article {
   padding: $marginBase*3 0 $marginBase;
   max-width: 36rem;
   margin: 0 auto;
-  .entry-body p{
+  @include medium_down {
+    max-width: 90%;
+  }
+  .entry-body p {
     font-size: 1.3em;
     line-height: 1.5;
   }
