@@ -38,6 +38,11 @@
                     :explorer="explorer"
                     :day="elapsedDays"> </explorer>
         </ul>
+        <div class="mobile-explorer-dashboard">
+            <li class="nav-item explorer-item --rounded">
+
+            </li>
+        </div>
     </ul>
 </template>
 
@@ -140,6 +145,13 @@ export default {
         left: -130px;
         height: 32px;
         width: 130px;
+        @include medium_down {
+            left: 0;
+            height: 100px;
+            width: 32px;
+            flex-flow: column;
+            top: -100px;
+        }
     }
     .fp-winds-on,
     .fp-winds-en,

@@ -29,6 +29,11 @@ body {
       background: black;
     }
   }
+  &.flight-simulator .site-header {
+    @include medium_down {
+      background: transparent;
+    }
+  }
   .cover {
     position: absolute;
     background: transparent;
@@ -183,6 +188,9 @@ body.modal-open {
 .modal-lg {
   .modal-body {
     padding: $marginBase;
+    @include medium_down {
+      padding:$marginItem;
+    }
   }
 }
 

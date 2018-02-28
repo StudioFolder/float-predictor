@@ -25,9 +25,9 @@ body.flight-simulator .onboard-tools {
     bottom: $marginItem*2;
     left: 0;
     flex-flow: row;
-    width: 50vw;
+    width: calc(50vw - #{$itemWidth/2});
     justify-content: flex-end;
-    padding-right: calc(#{$itemWidth/2} + #{$marginItem*2});
+    padding-right: $marginItem*2;
     .nav-item {
       margin-left: $marginItem*2;
     }
@@ -52,8 +52,13 @@ body.flight-simulator .onboard-tools {
     left: 50%;
     margin-left: -$itemWidth/2;
     flex-flow: row;
-    .play-animation {
+    > div {
       width: $itemWidth;
+      margin-right: $marginItem*2;
+      display: flex;
+      align-items: flex-end;
+    }
+    .play-animation {
       order: 1;
       .elapsed-days {
         left: -$itemWidth;
@@ -62,15 +67,11 @@ body.flight-simulator .onboard-tools {
         text-align: center;
       }
     }
-    .toggle-winds {//mobile
-      width: $itemWidth;
+    .toggle-winds { //mobile
       order: 2;
-      display: flex;
-      align-items: flex-end;
-      margin-left: $marginItem*2;
-      .nav-item {
-        //margin-bottom: 5px;
-      }
+    }
+    .mobile-explorer-dashboard {
+      order: 3;
     }
     .explorers-dashboard {
       display: none;

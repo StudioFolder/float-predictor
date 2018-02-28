@@ -433,9 +433,13 @@ export default {
 <style lang="scss">
 @import "~@/assets/css/_variables_and_mixins.scss";
 $lateralSpace: 7rem;
+$lateralSpaceMobile: .5rem;
 .instruction-modal {
     .modal-dialog {
         max-width: 1024px;
+        @include medium_down {
+            margin: 0;
+        }
         // margin-bottom: 0;
         // display: flex;
         // align-items: flex-end;
@@ -458,6 +462,11 @@ $lateralSpace: 7rem;
     padding-left: $lateralSpace;
     padding-right: $lateralSpace;
     margin-top: -$marginBase/2;
+    @include medium_down {
+        padding-left: $lateralSpaceMobile;
+        padding-right: $lateralSpaceMobile;
+        margin-top: 0;
+    }
     .main-pagination-wrapper {
         font-size: .8em;
         padding-top: 5px;
@@ -481,6 +490,10 @@ $lateralSpace: 7rem;
     justify-content: space-evenly;
     padding-left: $lateralSpace;
     padding-right: $lateralSpace;
+    @include medium_down {
+        padding-left: $lateralSpaceMobile;
+        padding-right: $lateralSpaceMobile;
+    }
     .title {
         flex: 0 0 auto;
         margin: $marginItem 0;
@@ -558,6 +571,9 @@ $lateralSpace: 7rem;
     flex-flow: column;
     justify-content: center;
     z-index:10;
+    @include medium_down {
+        display: none;
+    }
     .swiper-pagination-bullet {
         background-color: #fff;
         opacity: .4;
