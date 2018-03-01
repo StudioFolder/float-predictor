@@ -74,7 +74,7 @@ export default {
         bottom: $marginBase;
         left: $marginBase;
         width: 190px;
-        z-index: 9;
+        z-index: 20;
         .close {
             opacity: 1;
             background-color: $lightBlack;
@@ -107,6 +107,9 @@ export default {
             color: $bodyColor;
             padding: 1em 0;
             text-align: center;
+            i {
+                display: none;
+            }
         }
         .title {
             margin: 0;

@@ -91,10 +91,10 @@ export default {
         right: calc(#{$marginBase} + #{$itemWidth} + #{$marginItem});
         width: 13.5rem;
         font-size: .9em;
+        z-index: 20;
         @include medium_down {
             display: flex;
             flex-flow: column;
-            z-index: 20;
             top: 0;
             left: 0;
             width: 100%;

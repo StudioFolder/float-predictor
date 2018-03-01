@@ -24,18 +24,6 @@ body {
       }
     }
   }
-  .site-header {
-    position: absolute;
-    z-index: 20;
-    background: transparent;
-    @include medium_down {
-      position: fixed;
-      top: 0;
-      height: 80px;
-      width: 100%;
-      background: black;
-    }
-  }
   &.flight-simulator .site-header {
     @include medium_down {
       background: transparent;

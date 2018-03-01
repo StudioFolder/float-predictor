@@ -79,9 +79,6 @@ export default {
       get() {
         return (this.animationEnd && this.modalShow);
       },
-      set(val) {
-        this.modalShow = val;
-      },
     },
   },
   methods: {
@@ -95,6 +92,7 @@ export default {
 @import "~css/_variables_and_mixins.scss";
 @import "~css/_typography.scss";
 .winner-explorer-modal {
+    z-index: 19;
     font-size: 1rem;
     .modal-title {
         @extend .h4;

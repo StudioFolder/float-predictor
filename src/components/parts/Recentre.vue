@@ -39,6 +39,10 @@ export default {
     cursor: pointer;
     display: flex;
     align-items: center;
+    z-index: 19;
+    @include medium_down {
+        display: none;
+    }
     .recentre-inner {
         width: $itemWidth;
         height: $itemWidth;

@@ -2,7 +2,7 @@
   position: fixed;
   top: 0;
   right: 0;
-  padding: $marginBase;
+  padding: $marginBase $marginBase 0 0;
   z-index: 20;
   @include medium_down {
     padding: $marginMobile;
@@ -51,6 +51,15 @@ body.upper-content {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
+  position: fixed;
+  top: 240px;
+  right: $marginBase;
+  z-index: 19; // as the main-menu
+  @include medium_up {
+    .mobile-explorer-dashboard {
+      display: none;
+    }
+  }
   /**
    * MOBILE
    */
@@ -58,8 +67,8 @@ body.upper-content {
     &.is-onboard {
       display: none;
     }
-    position: fixed;
-    z-index: 19; // as the main-menu
+    top: unset;
+    right: unset;
     bottom: $marginItem*2;
     left: 50%;
     margin-left: -$itemWidth/2;
@@ -169,15 +178,19 @@ body.upper-content {
   flex-flow: column;
   z-index: 50;
   @include medium_down {
-    padding: $marginMobile;
+    padding: $marginMobile $marginMobile $marginMobile/2 $marginMobile;
     width: 100%;
     overflow: scroll;
+    max-width: 100%;
   }
   .header {
     flex: 0 0 auto;
     .nav {
       align-items: flex-end;
       margin-bottom: .5rem;
+      @include medium_down {
+        margin-bottom: 0;
+      }
     }
     .menu-items {
       text-align: center;
@@ -212,6 +225,7 @@ body.upper-content {
     justify-content: space-between;
     @include medium_down {
       align-items: center;
+      justify-content: space-around;
     }
     .macro-section.--bottom .menu-section{
       padding-bottom: 0;
@@ -223,6 +237,9 @@ body.upper-content {
       padding: .75rem 0;
       @media screen and (min-height: 991px) {
         padding: 1.8rem 0 .75rem;
+      }
+      @media screen and (max-height: 600px) {
+        padding: 0 0 .75rem;
       }
     }
     .menu-item.--nav,
@@ -278,6 +295,9 @@ body.upper-content {
   }
   &.--correction {
     margin-top: -$marginItem;
+    @media screen and (max-height: 600px) {
+      margin-bottom: 0;
+    }
   }
   &.--play {
     margin-top: $marginItem + .5rem;

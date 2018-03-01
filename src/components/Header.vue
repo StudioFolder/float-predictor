@@ -22,9 +22,15 @@ export default {
 @import "~css/_variables_and_mixins.scss";
 @import"~css/_typography.scss";
 .site-header {
-    position: fixed;
+    position: relative;
+    z-index: 20;
+    background: transparent;
     @include medium_down {
-        position: absolute;
+        position: fixed;
+        top: 0;
+        height: 80px;
+        width: 100%;
+        background: black;
         &.is-onboard {
             display: none;
         }
