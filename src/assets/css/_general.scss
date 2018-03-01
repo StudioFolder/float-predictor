@@ -3,6 +3,11 @@ body {
   color: $textColor;
   top: 0;
   position: relative;
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  //box-sizing: border-box;
 
   &.no-scroll {
     overflow: hidden;
@@ -24,6 +29,8 @@ body {
     z-index: 20;
     background: transparent;
     @include medium_down {
+      position: fixed;
+      top: 0;
       height: 80px;
       width: 100%;
       background: black;
@@ -39,7 +46,7 @@ body {
     background: transparent;
     height: 100%;
     width: 100%;
-    z-index: 10; // 10 meno dei comandi
+    z-index: 10;
     &.hidden {
       display: none;
     }
@@ -55,6 +62,13 @@ body {
     }
   }
 }
+
+body.flight-simulator .main-application:not(.choosing-destination){
+  .cover {display: none}
+}
+
+
+
 
 // buttons
 .btn {
@@ -85,12 +99,19 @@ body {
     text-align: center;
   }
 }
+body.upper-content {
+  .router-view {
+    margin-top: calc(80px + #{$marginMobile}); // header height + margin
+  }
+}
 article {
   padding: $marginBase*3 0 $marginBase;
   max-width: 36rem;
   margin: 0 auto;
   @include medium_down {
     max-width: 90%;
+    padding-top: 0;
+    // margin-top: calc(80px + #{$marginMobile}); // header height + margin
   }
   .entry-body p {
     font-size: 1.3em;
@@ -156,6 +177,8 @@ body.modal-open {
   display: flex;
   align-items: center;
   padding: 2rem $marginBase;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
   .modal-title {
     @extend .h2;
     @extend %colfax_bold;
@@ -168,6 +191,13 @@ body.modal-open {
 }
 .modal-content {
   display: block;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.modal-dialog {
+  @include medium_down {
+    margin: 0;
+  }
 }
 .modal-body {
   background-color: $lightBlack;
@@ -202,8 +232,6 @@ body.modal-open {
       position: absolute;
       background-color: $lightBlack;
       border-radius: 50%;
-      right: $marginBase/2;
-      top: -12px;
       width: 25px;
       height: 25px;
       opacity: 1;
@@ -212,6 +240,13 @@ body.modal-open {
         height: 25px;
         line-height: 25px;
         background-size: 50%;
+      }
+      @include medium_up {
+        right: $marginBase/2;
+        top: -12px;
+      }
+      @include medium_down {
+        position: relative;
       }
     }
   }

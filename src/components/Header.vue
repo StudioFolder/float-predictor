@@ -1,6 +1,6 @@
 <template>
-    <div class="site-header">
-        <main-menu :is-choosing="isChoosing" />
+    <div class="site-header" :class="{'is-onboard': isOnboard}">
+        <main-menu :is-choosing="isChoosing"  />
         <nav-brand :is-choosing="isChoosing" />
     </div>
 </template>
@@ -13,9 +13,8 @@ export default {
     mainMenu, navBrand,
   },
   computed: {
-    isChoosing() {
-      return this.$store.state.general.isChoosingDestination;
-    },
+    isOnboard() { return this.$store.state.flightSimulator.focusedExplorer > 0; },
+    isChoosing() { return this.$store.state.general.isChoosingDestination; },
   },
 };
 </script>
@@ -24,6 +23,12 @@ export default {
 @import"~css/_typography.scss";
 .site-header {
     position: fixed;
+    @include medium_down {
+        position: absolute;
+        &.is-onboard {
+            display: none;
+        }
+    }
     .nav-brand {
         color: #fff;
         display: block;

@@ -3,7 +3,7 @@
   width: 1em;
   height: 1em;
   background-repeat: no-repeat;
-  background-position: center;
+  background-position: center center;
   background-size: auto;
   vertical-align: middle;
   min-width: 15px;
@@ -75,6 +75,10 @@
 }
 .fp-google {
   background-image: url("assets/icons/google+.svg");
+}
+.fp-explorer {
+  width: 1.5em;
+  background-image: url("assets/icons/ico-explorer.svg");
 }
 .fp-recenter {
   background-image: url("assets/icons/recentre.svg");

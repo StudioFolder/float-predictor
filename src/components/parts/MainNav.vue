@@ -5,16 +5,14 @@
                 <b-nav-item @click="closeAction" class="--close --correction">
                     <i class="fp fp-close-w"></i></b-nav-item>
             </b-nav>
-            <div class="menu-section">
-                <ul class="list-group menu-items">
-                    <router-link to="/flight-simulator">
-                        <li class="menu-item --logo">
-                            <img src="~img/globe_gif.gif" @click="startNew"></li>
-                        <li class="menu-item --nav">
-                            <div @click="startNew">start a new<br>aerosolar journey</div></li>
-                    </router-link>
-                </ul>
-            </div>
+            <ul class="list-group menu-items brand-items">
+                <router-link to="/flight-simulator">
+                    <li class="menu-item --logo">
+                        <img src="~img/globe_gif.gif" @click="startNew"></li>
+                    <li class="menu-item --nav">
+                        <div @click="startNew">start a new<br>aerosolar journey</div></li>
+                </router-link>
+            </ul>
         </div>
         <div class="body">
             <div class="macro-section --main">

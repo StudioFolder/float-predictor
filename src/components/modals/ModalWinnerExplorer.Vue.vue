@@ -17,10 +17,8 @@
         </div>
         <b-form @submit="onSubmit">
             <div class="name-selector-group">
-                <label for="name" class="small">Name</label>
                 <b-form-input id="name" type="text" placeholder="Enter your name here">
                 </b-form-input>
-                <label for="email" class="small">Email</label>
                 <b-form-input id="email" type="email" placeholder="example@mail.com">
                 </b-form-input>
                 <p class="input-label">

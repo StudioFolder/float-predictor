@@ -121,6 +121,10 @@ export default {
   .container {
     padding-left: 9rem;
     padding-right: 9rem;
+    @include medium_down {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
   }
   .main-content {
     padding-top: 9.375rem;

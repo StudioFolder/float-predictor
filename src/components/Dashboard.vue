@@ -5,7 +5,10 @@
         <transition name="fade">
             <info-box v-show="isInfoboxOpen" is-animation-active="isAnimationActive"/>
         </transition>
-        <flight-dashboard v-show="isAnimationActive" :is-infobox-open="isInfoboxOpen"/>
+        <flight-dashboard
+                v-show="isAnimationActive"
+                :is-onboard="isOnboard"
+                :is-infobox-open="isInfoboxOpen"/>
     </div>
 </template>
 <script>
@@ -17,14 +20,11 @@ import flightDashboard from 'Parts/FlightDashboard';
 export default {
   components: { onBoardNavigation, infoBox, flightDashboard, recentre },
   computed: {
+    isOnboard() { return this.$store.state.flightSimulator.focusedExplorer > 0; },
     isInfoboxOpen() { return this.$store.state.general.isInfoBoxOpen; },
     isAnimationActive() { return this.$store.state.flightSimulator.isActive; },
   },
 };
 </script>
 <style lang="scss">
-@import "~@/assets/css/_variables_and_mixins.scss";
-.dashboard {
-    // position: fixed;
-}
 </style>

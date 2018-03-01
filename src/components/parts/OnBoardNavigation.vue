@@ -5,7 +5,11 @@
             <div class="label">Back to global view</div>
             <i class="fp fp-close-w" @click.prevent="onClick"></i>
         </a>
-        <div class="header"><div class="title h4">Explorer {{id}}</div></div>
+        <div class="header">
+            <i class="fp fp-caret-right prev" @click="goPrevious"></i>
+            <div class="title h4">Explorer {{id}}</div>
+            <i class="fp fp-caret-right next" @click="goNext"></i>
+        </div>
         <div class="body">
             <ul class="explorer-data">
                 <li class="explorer-datum">
@@ -51,6 +55,14 @@ export default {
     onClick() {
       this.$store.commit('flightSimulator/setFocusedExplorer', 0);
       this.$store.commit('flightSimulator/setPlaying', true);
+    },
+    goNext() {
+      const next = (this.id <= 7) ? this.id + 1 : 1;
+      this.$store.commit('flightSimulator/setFocusedExplorer', next);
+    },
+    goPrevious() {
+      const prev = (this.id > 1) ? this.id - 1 : 8;
+      this.$store.commit('flightSimulator/setFocusedExplorer', prev);
     },
   },
 };
@@ -115,6 +127,48 @@ export default {
             padding: $marginItem*2;
             font-size: .9rem;
             background-color: $lightBlack;
+        }
+        @include medium_down {
+            height: 100px;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            .header {
+                background-color: transparent;
+                color: #FFF;
+                display: flex;
+                flex-flow: row;
+                align-items: center;
+                padding: 0 $marginMobile;
+                i {
+                    flex: 0 0 auto;
+                    width: $itemWidth;
+                    height: $itemWidth;
+                    content: '';
+                    display: block;
+                    background-image: url("~Icons/ico-caret-right.svg");
+                    background-repeat: no-repeat;
+                    background-position: center right;
+                    background-size: 35%;
+                    &.prev {
+                        transform: rotate(180deg);
+                    }
+                }
+                .title {
+                    flex: 1 0 auto;
+                }
+            }
+            .close {
+                position: fixed;
+                top: $marginMobile;
+            }
+            .body {
+                background-color: transparent;
+            }
+            .explorer-data {
+                display: flex;
+                flex-flow: row;
+            }
         }
     }
 </style>

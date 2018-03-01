@@ -49,6 +49,3 @@ export default {
   },
 };
 </script>
-<style lang="scss">
-    @import "~css/_variables_and_mixins.scss";
-</style>

@@ -1,6 +1,5 @@
 <template>
-    <ul class="flight-dashboard">
-        <!--tools-->
+    <ul class="flight-dashboard" :class="{'is-onboard': isOnboard}">
         <div class="toggle-winds">
             <b-nav-item @click="toggleWindsPanel" class="--rounded wind-selector">
                 <i :class="windPanelClass" class="fp"></i>
@@ -39,8 +38,8 @@
                     :day="elapsedDays"> </explorer>
         </ul>
         <div class="mobile-explorer-dashboard">
-            <li class="nav-item explorer-item --rounded">
-
+            <li class="nav-item explorer-item --rounded" @click="goMobileOnBoard">
+                <i class="fp fp-explorer"></i>
             </li>
         </div>
     </ul>
@@ -51,7 +50,7 @@ import Explorer from './Explorer';
 
 export default {
   name: 'flight-dashboard',
-  props: ['isInfoboxOpen'],
+  props: ['isInfoboxOpen', 'isOnboard'],
   components: { Explorer },
   data() {
     return {
@@ -88,6 +87,9 @@ export default {
     },
     toggleAnimation() {
       this.$store.commit('flightSimulator/setPlaying', !this.isPlaying);
+    },
+    goMobileOnBoard() {
+      this.$store.commit('flightSimulator/setFocusedExplorer', 1);
     },
   },
 };

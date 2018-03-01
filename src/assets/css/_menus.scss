@@ -6,6 +6,7 @@
   z-index: 20;
   @include medium_down {
     padding: $marginMobile;
+    position: absolute;
   }
 }
 .menu-items a {
@@ -27,11 +28,19 @@ body.flight-simulator .onboard-tools {
     flex-flow: row;
     width: calc(50vw - #{$itemWidth/2});
     justify-content: flex-end;
-    padding-right: $marginItem*2;
+    padding-right: $marginItem*3;
     .nav-item {
-      margin-left: $marginItem*2;
+      margin-left: $marginItem*3;
     }
     .complete-instruction {
+      display: none;
+    }
+  }
+}
+body.upper-content {
+  @include medium_down {
+    .flight-dashboard,
+    .onboard-tools {
       display: none;
     }
   }
@@ -46,6 +55,9 @@ body.flight-simulator .onboard-tools {
    * MOBILE
    */
   @include medium_down {
+    &.is-onboard {
+      display: none;
+    }
     position: fixed;
     z-index: 19; // as the main-menu
     bottom: $marginItem*2;
@@ -54,7 +66,7 @@ body.flight-simulator .onboard-tools {
     flex-flow: row;
     > div {
       width: $itemWidth;
-      margin-right: $marginItem*2;
+      margin-right: $marginItem*3;
       display: flex;
       align-items: flex-end;
     }
@@ -72,6 +84,7 @@ body.flight-simulator .onboard-tools {
     }
     .mobile-explorer-dashboard {
       order: 3;
+      text-align: center;
     }
     .explorers-dashboard {
       display: none;
@@ -90,8 +103,10 @@ body.flight-simulator .onboard-tools {
       color: #FFF;
     }
   }
-  &.--logo img{
-    max-width: 120px;
+  &.--logo {
+    img {
+      max-width: 120px;
+    }
   }
   &.--nav {
     margin: $marginItem*1.2 0;
@@ -154,6 +169,7 @@ body.flight-simulator .onboard-tools {
   flex-flow: column;
   z-index: 50;
   @include medium_down {
+    padding: $marginMobile;
     width: 100%;
     overflow: scroll;
   }
@@ -173,12 +189,30 @@ body.flight-simulator .onboard-tools {
         color: #fff;
       }
     }
+    @include medium_down {
+      .brand-items a {
+        display: flex;
+        flex-flow: column;
+        align-items: center;
+        text-align: left;
+        position: relative;
+        img {
+          max-width: 140px;
+          position: absolute;
+          top: -55px;
+          left: -80px;
+        }
+      }
+    }
   }
   .body {
     flex: 1 0 auto;
     display: flex;
     flex-flow: column;
     justify-content: space-between;
+    @include medium_down {
+      align-items: center;
+    }
     .macro-section.--bottom .menu-section{
       padding-bottom: 0;
       &.--rights {

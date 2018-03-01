@@ -28,6 +28,14 @@ export default {
     bottom: $marginBase;
     left: $marginBase;
     max-width: 150px;
+    @include medium_down {
+        bottom: 0;
+        left: 50%;
+        transform: translate(-50%, 180%);
+        z-index: 9;
+        background-color: $lightGray;
+        padding: $marginItem;
+    }
     a {
         text-decoration: none;
         display: flex;
@@ -37,10 +45,18 @@ export default {
     img {
         max-width: 100%;
         padding: 0 40px 10px;
+        @include medium_down {
+            display: none;
+        }
     }
     div {
         text-align: center;
         font-size: .9em;
+    }
+    i {
+        @include medium_down {
+            display: none;
+        }
     }
 }
 .fade-middle-to-top-enter-active,
@@ -52,6 +68,11 @@ export default {
 body.gallery .back-to-viz {
     top: calc(#{$marginBase} + 50vh);
     bottom: unset;
+    @include medium_down {
+        top: 0;
+        transform: translateY(-100%);
+        z-index: 9;
+    }
     i {
         order: 1;
         transform: rotate(180deg);

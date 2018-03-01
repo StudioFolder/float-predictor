@@ -184,13 +184,13 @@ export default {
         width: auto;
         padding: $marginMobile*2/3;
         height: calc(100vh - 80px - #{$marginMobile});
-        margin: 80px $marginMobile;
+        margin: 80px $marginMobile $marginMobile;
         background: $lightBlack;
         form {
             height: 100%;
             display: flex;
             flex-flow: column;
-            justify-content: space-between;
+            justify-content: space-around;
         }
     }
 }

@@ -1,43 +1,42 @@
 <template>
     <div class="info-box">
         <div class="header">
-            <div class="list-item">
-                Info & Legend
-            </div>
+            Info & Legend
+            <div class="close" @click="closeBox"></div>
         </div>
         <div class="body">
             <ul class="dashboard-legend" v-if="isAnimationActive">
-                <li class="list-item">
+                <li class="list-item --instruction">
                     <div class="title">
                         Complete Instructions
                     </div>
-                    <i class="fp fp-caret-right"></i>
+                    <i class="fp"></i>
                 </li>
-                <li class="list-item">
+                <li class="list-item --screenshot">
                     <div class="title">
                         Take a Screenshot
                     </div>
-                    <i class="fp fp-caret-right"></i>
+                    <i class="fp"></i>
                 </li>
-                <li class="list-item">
+                <li class="list-item --winds">
                     <div class="title">
                         Turn winds on/off
                     </div>
-                    <i class="fp fp-caret-right"></i>
+                    <i class="fp"></i>
                 </li>
-                <li class="list-item elapsed-days">
+                <li class="list-item --elapsed-days">
                     <div class="title">
                         Total elapsed day
                         <div class="description">Click to pause and play</div>
                     </div>
-                    <i class="fp fp-caret-right"></i>
+                    <i class="fp"><svg><circle class="fake-progress"></circle></svg></i>
                 </li>
-                <li class="list-item">
+                <li class="list-item --explorers">
                     <div class="title">
                         Aerocene explorers
                         <div class="description">Click the icon to go on board.</div>
                     </div>
-                    <i class="fp fp-caret-right"></i>
+                    <i class="fp"></i>
                 </li>
             </ul>
             <div class="info-group locations">
@@ -64,7 +63,7 @@
                 <ul class="list-group horiziontal">
                     <li>0</li>
                     <li>50</li>
-                    <li>>100</li>
+                    <li>>200</li>
                 </ul>
             </div>
         </div>
@@ -75,6 +74,11 @@
 export default {
   name: 'info-box',
   props: ['isAnimationActive'],
+  methods: {
+    closeBox() {
+      this.$store.commit('general/closeInfoBox', false);
+    },
+  },
 };
 </script>
 
@@ -87,35 +91,169 @@ export default {
         right: calc(#{$marginBase} + #{$itemWidth} + #{$marginItem});
         width: 13.5rem;
         font-size: .9em;
-
+        @include medium_down {
+            display: flex;
+            flex-flow: column;
+            z-index: 20;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+        }
         .dashboard-legend {
             margin-bottom: $marginBase;
+            @include medium_down {
+                margin-bottom: 0;
+                display: flex;
+                flex-flow: column;
+            }
         }
         .list-item {
             height: calc(#{$itemWidth} + #{$marginItem*2});
             padding-top: 1rem;
-            &.elapsed-days {
+            &.--elapsed-days {
                 margin-top: 0.6rem;
                 margin-bottom: 0.3rem;
+            }
+            @include medium_down {
+                padding-top: unset;
+                padding: $marginItem 0;
             }
         }
         .header {
             background-color: #fff;
             color: #000;
-            .list-item {
-                text-align: center;
+            text-align: center;
+            height: calc(#{$itemWidth} + #{$marginItem*2});
+            padding-top: 1rem;
+            @include medium_down {
+                flex: 0 0 auto;
+                height: auto;
+                font-size: 1.444rem; // 20.00
+                padding: 1.444rem;
+            }
+            .close {
+                width: 2rem;
+                height: 2rem;
+                background-color: $lightBlack;
+                border-radius: 50%;
+                position: absolute;
+                right: $marginMobile;
+                top: 1.444rem;
+                background-image: url("~Icons/ico-close-w.svg");
+                background-position: center;
+                background-repeat: no-repeat;
+                opacity: 1;
+                @include medium_up {
+                    display: none;
+                }
             }
         }
-        .body .list-item {
-            display: flex;
-            justify-content: flex-end;
-            .title {
-                text-align: right;
-                margin-right: 1em;
+        .body {
+            @include medium_down {
+                flex: 1 0 auto;
+                padding: $marginItem;
+                display: flex;
+                flex-flow: column;
+                justify-content: space-between;
             }
-            i {margin-right: $marginItem;}
-            .description {
-                color: $gray;
+            .list-item {
+                display: flex;
+                justify-content: flex-end;
+                @include medium_down {
+                    flex-flow: row-reverse;
+                }
+                .title {
+                    text-align: right;
+                    margin-right: 1em;
+                    @include medium_down {
+                        display: flex;
+                        align-items: center;
+                    }
+                }
+                i {
+                    background-image: url("~Icons/ico-caret-right.svg");
+                    margin-right: $marginItem;
+                    @include medium_down {
+                        width: $itemWidth;
+                        height: $itemWidth;
+                        background-color: $gray;
+                        border-radius: 50%;
+                        margin-left: $marginItem*(4/3);
+                        margin-right: $marginItem*2;
+                    }
+                }
+                .description {
+                    color: $gray;
+                }
+                &.--instruction {
+                    @include medium_down {
+                        display: none;
+                    }
+                }
+                &.--screenshot {
+                    @include medium_down {
+                        order: 2;
+                        i {
+                            background-image: url("~Icons/ico-camera.svg");
+                        }
+                    }
+                }
+                &.--winds {
+                    @include medium_down {
+                        order: 3;
+                        i {
+                            background-image: url("~Icons/winds.svg");
+                        }
+                    }
+                }
+                &.--elapsed-days {
+                    svg {
+                        width: 100%;
+                        height: 100%;
+                        position: relative;
+                        overflow: visible;
+                        transform: rotate(-90deg);
+                    }
+                    circle {
+                        cx: 50%;
+                        cy: 50%;
+                        fill: transparent;
+                        r: $itemWidth/2 + 2;
+                        stroke-width: 5;
+                        stroke: $textColor;
+                        stroke-dasharray: 80px 100px;
+                        @include medium_up {
+                            display: none;
+                        }
+                    }
+                    @include medium_down {
+                        order: 1;
+                        i {
+                            background-color: transparent;
+                            background-image: url("~Icons/pause.svg");
+                            border: 1px solid $lightGray;
+                        }
+                        .title {
+                            display: flex;
+                            flex-flow: column;
+                            align-items: flex-start;
+                        }
+                    }
+                }
+                &.--explorers {
+                    @include medium_down {
+                        order:4;
+                        i {
+                            background-image: url("~Icons/ico-camera.svg");
+                        }
+                        .title {
+                            display: flex;
+                            flex-flow: column;
+                            align-items: flex-start;
+                        }
+                    }
+                }
             }
         }
         .info-group {
