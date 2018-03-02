@@ -1,9 +1,7 @@
 <template>
     <ul class="flight-dashboard" :class="{'is-onboard': isOnboard}">
-        <div class="toggle-winds"
-             @mouseenter="toggleWindsPanel"
-             @mouseleave="toggleWindsPanel">
-            <b-nav-item class="--rounded wind-selector">
+        <div class="toggle-winds">
+            <b-nav-item @click="toggleWindsPanel" class="--rounded wind-selector">
                 <i :class="windPanelClass" class="fp"></i>
             </b-nav-item>
             <transition name="fade">
