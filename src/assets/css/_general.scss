@@ -62,9 +62,9 @@ body.flight-simulator .main-application:not(.choosing-destination){
 .btn {
   @extend %colfax_base;
   font-size: 0.9em;
-  padding: 0.3em 1.6em;
+  padding: 6px 30px 5px;
   text-transform: uppercase;
-  margin-top: 1em;
+  margin-top: 1.5em;
   @include medium_down {
     padding: .5em 1.6em;
   }
@@ -89,17 +89,19 @@ body.flight-simulator .main-application:not(.choosing-destination){
 }
 body.upper-content {
   .router-view {
-    margin-top: calc(80px + #{$marginMobile}); // header height + margin
+    @include medium_down {
+      margin-top: calc(80px + #{$marginMobile}); // header height + margin
+    }
   }
 }
 article {
+  position: relative;
   padding: $marginBase*3 0 $marginBase;
   max-width: 36rem;
   margin: 0 auto;
   @include medium_down {
     max-width: 90%;
     padding-top: 0;
-    // margin-top: calc(80px + #{$marginMobile}); // header height + margin
   }
   .entry-body p {
     font-size: 1.3em;
@@ -107,17 +109,21 @@ article {
   }
   .entry-subtitle {
     margin-bottom: 5rem;
+    @include medium_up {
+      margin-left: -$marginBase;
+      margin-right: -$marginBase;
+    }
   }
 }
 
 form {
-  ::placeholder {
-    color: $lightGray;
-  }
   .form-control {
     margin-bottom: 1rem;
     border-radius: 0;
     border-color: $gray;
+    &::placeholder {
+      color: $lightGray !important;
+    }
   }
 }
 
@@ -238,4 +244,8 @@ body.modal-open {
       }
     }
   }
+}
+
+.shadowed {
+  box-shadow: 0 0 30px 1px rgba(0,0,0,.5);
 }

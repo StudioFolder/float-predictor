@@ -60,6 +60,13 @@ body.upper-content {
       display: none;
     }
   }
+  .hover-text {
+    text-align: right;
+    position: absolute;
+    width: 80px;
+    right: 32px + 15px;
+    font-size: .85em;
+  }
   /**
    * MOBILE
    */
@@ -164,6 +171,9 @@ body.upper-content {
     justify-content: space-between;
   }
 }
+/**
+ * MAin Navigation
+ */
 .main-nav {
   background-color: $lightBlack;
   padding: $marginBase;
@@ -195,12 +205,9 @@ body.upper-content {
     .menu-items {
       text-align: center;
     }
-    .menu-item.--nav{
+    .menu-item.--nav{ // start a new aerosolar journey
       margin-top: 0px;
-      transition: color .3s ease;
-      &:hover {
-        color: #fff;
-      }
+      color: #fff;
     }
     @include medium_down {
       .brand-items a {
@@ -230,6 +237,13 @@ body.upper-content {
     .macro-section.--bottom .menu-section{
       padding-bottom: 0;
       &.--rights {
+        color: $gray;
+        a {
+          text-transform: unset;
+          color: rgba(255,255,255,.7);
+          &:hover {color: #FFF;}
+        }
+        font-size: .9rem;
         padding-top: 1.25rem;
       }
     }

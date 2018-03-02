@@ -1,5 +1,5 @@
 <template>
-    <div class="info-box">
+    <div class="info-box shadowed">
         <div class="header">
             Info & Legend
             <div class="close" @click="closeBox"></div>

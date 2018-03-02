@@ -98,7 +98,7 @@ export default {
         .intro-description {
             @extend .h4;
             @include medium_up {
-                max-width: 400px;
+                max-width: 440px;
             }
             @include medium_down {
                 text-align: left;

@@ -1,7 +1,7 @@
 <template>
     <div class="main-content over">
         <div class="call-to-action" @click="startAction">
-          <router-link to="/flight-simulator">
+          <router-link to="/flight-simulator" class="shadowed">
               Start a new<br>aerosolar journey
           </router-link>
         </div>
@@ -36,7 +36,7 @@ export default {
         background-color: #1E1E1E;
         padding: .7em 1.5em;
         text-decoration: none;
-        transition: background-color .2s ease;
+        transition: background-color .4s ease, color .4s ease;
         &:hover {
             background-color: #2E2E2E;
         }

@@ -13,14 +13,14 @@
           <p>Aeroglyphs saved</p>
         </div>
         <div class="travelled">
-          <div class="h2">1,342,453</div>
+          <div class="h2">{{parseInt(totalDistance).toLocaleString('en')}}</div>
           <p>Kilometers travelled</p>
         </div>
       </div>
       <div class="path-wrapper">
         <div class="gallery-item" v-for="item in data" :key="item.id">
           <div class="gallery-item-inside">
-            <img v-bind:src="getSVGPath(item)"/>
+            <img :src="getSVGPath(item)"/>
             <div class="info">
               <div class="aer-code">
                 AER {{parseInt(item.id).toLocaleString('en')}}
@@ -57,6 +57,8 @@ export default {
   data() {
     return {
       data: [],
+      totalDistance: 0,
+      count: 0,
       busy: false,
       done: false,
       page: 1,
@@ -77,7 +79,6 @@ export default {
     },
     loadMore() {
       if (!this.done) {
-        // console.log('Load more ');
         this.busy = true;
         this.page += 1;
         setTimeout(() => {
@@ -88,23 +89,29 @@ export default {
     clear() {
       this.done = false;
       this.data = [];
+      this.totalDistance = 0;
+      this.count = 0;
       this.busy = true;
     },
     addPage(i) {
       // console.log('Add page ' + i)
-      fetch(`http://54.190.63.219/api.php?page=${String(i)}`, {
+      fetch(`http://54.190.63.219/db/api.php?page=${String(i)}`, {
         method: 'get',
       }).then(
         response => response.json(),
       ).then((data) => {
         if (data.flights) {
-          // console.log('Page ' + i + ' -->' + data.flights.length)
           this.data = this.data.concat(data.flights);
-          this.busy = false;
+          this.done = true;
         } else {
           this.done = true;
         }
-        // console.log('done')
+        if (data.total_distance) {
+          this.totalDistance = data.total_distance;
+        }
+        if (data.count) {
+          this.count = data.count;
+        }
       });
     },
     getDate(dt) {

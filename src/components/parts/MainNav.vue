@@ -1,5 +1,5 @@
 <template>
-    <div class="main-nav">
+    <div class="main-nav shadowed">
         <div class="header">
             <b-nav vertical>
                 <b-nav-item @click="closeAction" class="--close --correction">
@@ -43,13 +43,13 @@
                 <div class="menu-section">
                     <ul class="list-group link-items">
                         <li class="menu-item --link">
-                            <a href="#" @click.prevent>
-                                <span class="lowercase">aerocene.org</span>
+                            <a href="http://aerocene.org/">
+                                <span class="lowercase">Aerocene Project</span>
                             </a>
                         </li>
                         <li class="menu-item --link">
-                            <a href="#" @click.prevent>
-                                <span class="lowercase">forum</span>
+                            <a href="https://forum.aerocene.org/">
+                                <span class="lowercase">Aerocene Forum</span>
                             </a>
                         </li>
                     </ul>
@@ -66,8 +66,8 @@
                 </div>
                 <div class="menu-section --rights">
                     <div class="font-small">
-                        &copy; {{currentYear}} <a href="http://tomassaraceno.com/">Studio Tomás Saraceno</a><br>
-                        Design and Development <a href="http://www.studiofolder.it/">Studio Folder</a>
+                        Aerocene is an open artistic project by <a href="http://tomassaraceno.com/">Studio Tomás Saraceno</a>.
+                        Design and code by <a href="http://www.studiofolder.it/">Studio Folder</a> and Angelo Semeraro
                     </div>
                 </div>
             </div>

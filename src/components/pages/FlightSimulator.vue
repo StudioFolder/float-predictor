@@ -1,7 +1,7 @@
 <template>
   <div class="main-content over" :style="{ height: upperHeight }">
       <!--just the animation here-->
-      <div v-if="isChoosing" ref="content" class="flight-form container">
+      <div v-if="isChoosing" class="flight-form container" ref="content">
           <b-form @submit="onSubmit">
               <div class="type-selector-group">
                   <b-form-checkbox id="FlightTypeSelector"
@@ -11,12 +11,21 @@
                                    class="type-selector"
                                    :class="flightType">
                       <div class="type-selector">
-                          <span :class="{'--isActive': isPlanned}">Planned Flight</span>
+                          <span :class="{'--isActive': isPlanned}">Planned Float</span>
                           <span class="slider round"></span>
-                          <span :class="{'--isActive': isFree}">Free Flight</span>
+                          <span :class="{'--isActive': isFree}">Free Float</span>
                       </div>
                   </b-form-checkbox>
-                  <p class="description">{{label}}</p>
+                  <transition name="switch-text">
+                      <p v-if="isPlanned" class="description" key="planned">
+                          Planned floats try to reach a specific destination
+                          starting from a selected departure point.
+                      </p>
+                      <p v-else class="description" key="free">
+                          Free floats start from a selected departure point to
+                          fly along following the wind.
+                      </p>
+                  </transition>
               </div>
               <div class="coordinates-selector-group">
                   <label class="small">From</label>
@@ -27,15 +36,18 @@
                           types="(cities)"
                           rtypes="geocode">
                   </vue-google-autocomplete>
-                  <label v-if="(flightType === 'planned')" class="small">To</label>
-                  <vue-google-autocomplete
-                          v-if="(flightType === 'planned')"
+                  <transition name="fade-height">
+                      <div class="optional-destination" v-if="(flightType === 'planned')">
+                        <label  class="small">To</label>
+                        <vue-google-autocomplete
                           id="map2" classname="form-control"
                           :placeholder="placeholder.destination"
                           @placechanged="setDestination"
                           types="(cities)"
                           rtypes="geocode">
-                  </vue-google-autocomplete>
+                        </vue-google-autocomplete>
+                      </div>
+                  </transition>
                   <p class="input-label">
                       Aerocene sculptures always leave at noon with sun light.
                   </p>
@@ -111,11 +123,6 @@ export default {
     isChoosing() { return (this.$route.name === 'flight-simulator' && this.$store.state.general.isChoosingDestination); },
     isFree() { return (this.$store.getters['flightSimulator/isFreeFlight']); },
     isPlanned() { return (this.$store.getters['flightSimulator/isPlannedFlight']); },
-    label() {
-      return (this.isPlanned)
-        ? 'Planned Flights try to reach a specific destination starting from a selected departure point.'
-        : 'Free Flights are different';
-    },
   },
   methods: {
     onSubmit(e) {
@@ -165,7 +172,7 @@ export default {
     },
   },
   mounted() {
-    this.upperHeight = (this.$refs.content) ? `${this.$refs.content.clientHeight}px` : 0;
+    this.upperHeight = (this.$refs.content) ? `${this.$refs.content.clientHeight + 100}px` : 0;
   },
 };
 </script>
@@ -177,7 +184,7 @@ export default {
     width: 450px;
     margin: 0 auto;
     background: linear-gradient(180deg, $lightBlack, black);
-    padding: $marginBase 1rem;
+    padding: $marginBase $marginBase*4/5;
     color: $gray;
     text-align: center;
     @include medium_down {
@@ -192,6 +199,9 @@ export default {
             flex-flow: column;
             justify-content: space-around;
         }
+    }
+    p {
+        font-size: .85em;
     }
 }
 .type-selector-group{
@@ -219,6 +229,7 @@ export default {
         align-items: center;
         span {
             color: $gray;
+            transition: color .4s ease;
             &.--isActive {
                 color: #fff;
             }
@@ -259,15 +270,32 @@ export default {
     }
     .form-control {
         font-size: 1em;
-        padding: 0.6em 0 0.3em 0;
-        margin-bottom: 1em;
+        padding: 0.1em 0 0.3em 0;
+        margin-bottom: 1.4em;
     }
     .input-label {
         color: #FFF;
         text-align: center;
+        padding-top: .1em;
     }
     .small {
         font-size: .6em;
     }
+}
+
+.switch-text-enter-active {
+    animation: flip-up-from-bottom .4s ease;
+}
+.switch-text-leave-active {
+    position: absolute;
+    animation: flip-up-to-top .4s ease;
+}
+.fade-height-leave-active {
+    animation: fadeHeight .4s ease;
+    overflow: hidden;
+}
+.fade-height-enter-active {
+    animation: fadeHeight .4s ease-in-out reverse;
+    overflow: hidden;
 }
 </style>

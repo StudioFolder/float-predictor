@@ -15,6 +15,11 @@
             <circle class="baseline"></circle>
             <!--<circle class="handicap" :style="{ strokeDasharray: dashArray }"></circle>-->
         </svg>
+        <transition name="fade">
+            <div v-if="hover" class="hover-text">
+                Go Onboard
+            </div>
+        </transition>
     </li>
 </template>
 

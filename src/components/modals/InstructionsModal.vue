@@ -10,7 +10,6 @@
             </div>
         </div>
         <swiper :options="mainSliderOptions" ref="mainSlider">
-            <!-- slides -->
             <swiper-slide>
                 <swiper :options="journeysSliderOptions"
                         ref="journeysSlider"
@@ -19,7 +18,7 @@
                         <h3 class="title">Aerocene Sculptures</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_1-1.gif">
+                                 src="~img/instructions/Instructions_1-1.gif">
                         </div>
                         <div class="description">
                             The Aerocene Foundation has created several
@@ -43,7 +42,7 @@
                         </div>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_1-2.gif">
+                                 src="~img/instructions/Instructions_1-2.gif">
                         </div>
                         <div class="description">
                             This principle was formulated by Archimedes
@@ -60,7 +59,7 @@
                         <h3 class="title">Float Predictor</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_1-3.gif">
+                                 src="~img/instructions/Instructions_1-3.gif">
                         </div>
                         <div class="description">
                             The Float Predictor is the tool we use to foresee
@@ -82,7 +81,7 @@
                         <h3 class="title">Planned float or Free float</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_2-1a.gif">
+                                 src="~img/instructions/Instructions_2-1a.gif">
                         </div>
                         <div class="description">
                             Selecting a specific departing as well as a destination point,
@@ -92,7 +91,7 @@
                         </div>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_2-1b.gif">
+                                 src="~img/instructions/Instructions_2-1b.gif">
                         </div>
                         <div class="description">
                             A ‘Free Float’ is guided by the wind and propelled
@@ -106,7 +105,7 @@
                         <h3 class="title">Departure and Destination</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_2-2.gif">
+                                 src="~img/instructions/Instructions_2-2.gif">
                         </div>
                         <div class="description">
                             You can choose departure and destination points
@@ -128,14 +127,14 @@
                         </div>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_2-3_02.gif">
+                                 src="~img/instructions/Instructions_2-3_02.gif">
                         </div>
                     </swiper-slide>
                     <swiper-slide>
                         <h3 class="title">Controlling the Globe</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_2-4.gif">
+                                 src="~img/instructions/Instructions_2-4.gif">
                         </div>
                         <div class="description">
                             You can also interact with the globe.
@@ -150,7 +149,7 @@
                         <h3 class="title">Go on Board</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_2-5.gif">
+                                 src="~img/instructions/Instructions_2-5.gif">
                         </div>
                         <div class="description">
                             During your journey, you can go on board the
@@ -168,7 +167,7 @@
                         <h3 class="title">Understanding Winds</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_2-6.gif">
+                                 src="~img/instructions/Instructions_2-6.gif">
                         </div>
                         <div class="description">
                             Lorem ipsum dolor sit amet,
@@ -189,7 +188,7 @@
                         <div class="animation-wrapper">
                             <div class="animation-wrapper">
                                 <img class="animation"
-                                     src="~img/instructions/instructions_3-1_02.gif">
+                                     src="~img/instructions/Instructions_3-1_02.gif">
                             </div>
                         </div>
                         <div class="description">
@@ -207,7 +206,7 @@
                         <h3 class="title">Aeroglyphs</h3>
                         <div class="animation-wrapper">
                             <img class="animation --big"
-                                 src="~img/instructions/instructions_3-2.gif">
+                                 src="~img/instructions/Instructions_3-2.gif">
                         </div>
                         <div class="description">
                             Aeroglyphs are graphical depiction of how Aerocene
@@ -223,7 +222,7 @@
                         <h3 class="title">E-mail and Share</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_3-3_02.gif">
+                                 src="~img/instructions/Instructions_3-3_02.gif">
                         </div>
                         <div class="description">
                             If you would like to share an Aeroglyph,
@@ -237,7 +236,7 @@
                         <h3 class="title">Download and API</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
-                                 src="~img/instructions/instructions_3-4.gif">
+                                 src="~img/instructions/Instructions_3-4.gif">
                         </div>
                         <div class="description">
                             How to download data and usage of the API.
@@ -254,7 +253,7 @@
                         <h3 class="title">The Gallery</h3>
                         <div class="animation-wrapper">
                             <img class="animation --big"
-                                 src="~img/instructions/instructions_4-1.gif">
+                                 src="~img/instructions/Instructions_4-1.gif">
                         </div>
                         <div class="description">
                             Each imaginary Aerocene journey is an

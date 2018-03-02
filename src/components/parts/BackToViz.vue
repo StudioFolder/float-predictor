@@ -21,14 +21,16 @@ export default {
 </script>
 <style lang="scss">
 @import "~css/_variables_and_mixins.scss";
+$borderWidth: calc((100vw - 36rem)/2); // 36rem is the article max width
 .back-to-viz {
     transition: opacity .4s ease;
     position: absolute;
     top: unset;
     bottom: $marginBase;
-    left: $marginBase;
-    max-width: 150px;
+    left: calc(#{$borderWidth}*-0.5 - 120px/2); // to center the object on various screen
+    width: 120px;
     @include medium_down {
+        box-shadow: 0 0 30px 1px rgba(0,0,0,.5);
         bottom: 0;
         left: 50%;
         transform: translate(-50%, 180%);
@@ -44,7 +46,7 @@ export default {
     }
     img {
         max-width: 100%;
-        padding: 0 40px 10px;
+        padding: 0 25px 10px;
         @include medium_down {
             display: none;
         }

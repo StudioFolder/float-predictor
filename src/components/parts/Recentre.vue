@@ -17,6 +17,7 @@ export default {
       return (
         this.$route.name === 'flight-simulator'
         && !this.$store.state.general.isChoosingDestination
+        && !this.$store.state.flightSimulator.autoMode
         && this.isAnimationActive);
     },
   },

@@ -172,3 +172,36 @@ $duration: .9s;
     padding-top: 50vh;
   }
 }
+@keyframes fadeHeight {
+  0% {
+    max-height: 80px;
+    opacity: 1;
+  }
+  100% {
+    max-height: 0px;
+    opacity: 0;
+  }
+}
+@keyframes flip-up-to-top {
+  0% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+}
+@keyframes flip-up-from-bottom {
+  0% {
+    transform: translateY(50%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+}

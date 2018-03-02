@@ -1,7 +1,9 @@
 <template>
     <ul class="flight-dashboard" :class="{'is-onboard': isOnboard}">
-        <div class="toggle-winds">
-            <b-nav-item @click="toggleWindsPanel" class="--rounded wind-selector">
+        <div class="toggle-winds"
+             @mouseenter="toggleWindsPanel"
+             @mouseleave="toggleWindsPanel">
+            <b-nav-item class="--rounded wind-selector">
                 <i :class="windPanelClass" class="fp"></i>
             </b-nav-item>
             <transition name="fade">
@@ -17,9 +19,9 @@
                     </b-nav-item>
                 </span>
             </transition>
-        </div>
+        </div>-
         <div class="play-animation">
-            <div v-if="!isInfoboxOpen" class="elapsed-days">Day {{elapsedDays}}/16</div>
+            <div v-if="!isInfoboxOpen" class="hover-text elapsed-days">Day {{elapsedDays}}/16</div>
             <b-nav-item @click="toggleAnimation" class="--rounded --play">
                 <svg>
                     <circle class="progress" :style="{ strokeDasharray: dashArray }"></circle>
@@ -133,6 +135,14 @@ export default {
         }
         &:hover {
             background-color: transparent;
+            i {
+                &.fp-pause {
+                    background-image: url("~Icons/ico-pause-w.svg");
+                }
+                &.fp-play {
+                    background-image: url("~Icons/play-w.svg");
+                }
+            }
         }
     }
     .nav-item.wind-selector .inactive {
@@ -163,12 +173,11 @@ export default {
     .play-animation {
         position: relative;
         .elapsed-days {
-            position: absolute;
+            display: block;
             margin: 1.15rem 0 0.65rem;
             line-height: 32px;
-            width: auto;
             height: 32px;
-            left: -80px;
+            font-size: 1em;
         }
     }
     .explorers-dashboard {

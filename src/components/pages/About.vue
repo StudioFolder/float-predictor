@@ -25,8 +25,8 @@
                     of and with the air, declaring independence from fossil fuels.
                 </p>
             </div>
+            <back-to-viz />
         </article>
-        <back-to-viz />
     </div>
 </template>
 

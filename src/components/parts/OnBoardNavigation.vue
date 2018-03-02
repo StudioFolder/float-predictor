@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-    <div class="onboard-nav" v-show="id > 0">
+    <div class="onboard-nav shadowed" v-show="id > 0">
         <a class="close" href="#">
             <div class="label">Back to global view</div>
             <i class="fp fp-close-w" @click.prevent="onClick"></i>
@@ -20,7 +20,7 @@
                     <div class="subtitle">Distance travelled</div>
                     {{distance}} km
                 </li>
-                <li class="explorer-datum">
+                <li class="explorer-datum --altitude">
                     <div class="subtitle">Altitude</div>
                     {{altitude}} km
                 </li>
@@ -46,7 +46,9 @@ export default {
     distance() {
       return parseInt(this.$store.state.flightSimulator.focusedExplorerDistance, 10).toLocaleString('en');
     },
-    altitude() { return 0; },
+    altitude() {
+      return parseInt(this.$store.state.flightSimulator.focusedExplorerAltitude, 10).toLocaleString('en');
+    },
     speed() {
       return parseInt(this.$store.state.flightSimulator.focusedExplorerSpeed, 10).toLocaleString('en');
     },
@@ -136,13 +138,18 @@ export default {
             width: 100%;
             bottom: 0;
             left: 0;
+            box-shadow: none;
             .header {
-                background-color: transparent;
+                background: linear-gradient(to top,
+                        rgba(0,0,0,.98) 0%,
+                        rgba(0,0,0,.58) 38%,
+                        rgba(0,0,0,.1) 80%,
+                        rgba(0,0,0,.0)) 100%;
                 color: #FFF;
                 display: flex;
                 flex-flow: row;
                 align-items: center;
-                padding: 0 $marginMobile;
+                padding: $marginItem $marginMobile;
                 i {
                     flex: 0 0 auto;
                     width: $itemWidth;
@@ -166,11 +173,18 @@ export default {
                 top: $marginMobile;
             }
             .body {
-                background-color: transparent;
+                background-color: black;
+                padding-top: 0;
             }
             .explorer-data {
                 display: flex;
                 flex-flow: row;
+                .--altitude {
+                    display: none;
+                }
+            }
+            .explorer-datum {
+                flex: 1 0 auto;
             }
         }
     }
