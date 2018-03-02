@@ -24,6 +24,7 @@ class Label {
     this.setVisible(true);
     this.label.innerHTML = text;
     this.anchorObject.position.set(position.x, position.y, position.z);
+    this.updatePosition();
   }
 
   setVisible(v, hideObject = true) {

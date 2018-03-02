@@ -12,11 +12,15 @@ export default {
     focusedExplorer: 0, // this is for onBoardExperience, if 0 none is focused
     focusedExplorerSpeed: 0, // onBoard data
     focusedExplorerDistance: 0, // onBoard data
+    focusedExplorerAltitude: 0, // onBoard data
     elapsedDays: 0,
     coordinatesValid: false,
     visualizationState: 0,
+    autoMode: false,
     departure: {},
     destination: {},
+    altitude: 10, // General altitude
+
     // used for the final recap: e.g.
     // The Aerocene Explorer that left from Milan...arrived within *km in *hours
     winningExplorerData: {
@@ -60,10 +64,14 @@ export default {
     setFocusedExplorerDistance(state, explorerDistance) {
       state.focusedExplorerDistance = explorerDistance;
     },
+    setFocusedExplorerAltitude(state, explorerAltitude) {
+      state.focusedExplorerAltitude = explorerAltitude;
+    },
     setElapsedDays(state, days) {
-      // eslint-disable-next-line
-      console.log('elapsed')
       state.elapsedDays = days;
+    },
+    setAltitude(state, altitude) {
+      state.altitude = altitude;
     },
     setLoading(state, isLoading) {
       state.loading = isLoading;
@@ -79,6 +87,9 @@ export default {
     },
     setVisualizationState(state, s) {
       state.visualizationState = s;
+    },
+    setAutoMode(state, s) {
+      state.autoMode = s;
     },
   },
   actions: {

@@ -21,6 +21,7 @@ class Explorer {
     this.shift = shift;
     this.speed = [];
     this.distance = [];
+    this.altitude = [];
     this.avgSpeed = 0;
     this.totalDistance = 0;
     const c = 0xffffff;
@@ -33,13 +34,11 @@ class Explorer {
     this.spheres = [];
     const lineIndexes = [];
     const segmentIndexes = [];
-    // console.log(MAX_POINTS);
     for (let i = 0; i < MAX_POINTS; i += 1) {
       this.distance.push(0);
       this.speed.push(0);
-      // lineIndexes.push((i-1)*2);
+      this.altitude.push(0);
       lineIndexes.push(((i) * 2) + 1);
-      // lineIndexes.push((i+1)*2+1);
       this.coordinates.push({ lat: 0, lng: 0 });
       segmentIndexes.push((i) * 2);
       segmentIndexes.push(((i) * 2) + 1);
@@ -85,6 +84,7 @@ class Explorer {
         animate(this, countdown, v);
       } else {
         this.opacity = opacity;
+        if (callback) callback();
       }
     };
     this.reset();
@@ -133,6 +133,7 @@ class Explorer {
 
   reset = function reset(departure) {
     this.length = 0;
+    this.alpha = 0;
     this.lineMaterial.opacity = 1;// setOpacity(1,0);
     this.animatingSphereMaterial.opacity = 1;
     if (departure) {
@@ -151,15 +152,6 @@ class Explorer {
   getPosition = function getPosition(alpha) {
     const t = alpha * (MAX_POINTS - 1.0);
     const i = Math.floor(t);
-    /*
-    const ipo = Math.min(i + 1, MAX_POINTS - 1.0);
-    const a = t - i;
-    const oma = 1.0 - a;
-    return new THREE.Vector3(
-      this.array[i * 3 * 2 + 3] * oma + this.array[ipo * 3 * 2 + 3] * a,
-      this.array[i * 3 * 2 + 4] * oma + this.array[ipo * 3 * 2 + 4] * a,
-      this.array[i * 3 * 2 + 5] * oma + this.array[ipo * 3 * 2 + 5] * a,
-    ); */
     return new THREE.Vector3(
       this.array[i * 3 * 2 + 3],
       this.array[i * 3 * 2 + 4],
@@ -167,8 +159,13 @@ class Explorer {
     );
   };
 
+  getAlpha = function getAlpha() {
+    return this.alpha;
+  };
+
   setAlpha = function setAlpha(alpha) {
-    const t = Math.max(0, alpha * (MAX_POINTS - 1.0));
+    this.alpha = Math.min(1, Math.max(0, alpha));
+    const t = Math.max(0, this.alpha * (MAX_POINTS - 1.0));
     this.index = Math.floor(t);
     const ipo = Math.min(this.index + 1, MAX_POINTS - 1.0);
     const a = t - this.index;
@@ -195,12 +192,19 @@ class Explorer {
     }
     return false;
   };
+
   getSpeed = function getSpeed() {
     return this.speed[this.index];
   };
+
+  getAltitude = function getAltitude() {
+    return this.altitude[this.index];
+  };
+
   getDistance = function getDistance() {
     return this.distance[this.index];
   };
+
   addDataSample = function addDataSample(position, coordinates, h) {
     let s = 0;
     const pIndex = this.length - this.shift;
@@ -218,15 +222,7 @@ class Explorer {
 
     const heightShift = 1.0 + h * s;
 
-    if (this.length === MAX_POINTS - 1) {
-      this.destination = { lat: coordinates.lat, lng: coordinates.lng };
-      this.avgSpeed = 0;
-      for (let i = 0; i < this.speed.length; i += 1) {
-        this.avgSpeed += this.speed[i];
-      }
-      this.avgSpeed = this.avgSpeed / this.speed.length;
-      this.totalDistance = this.distance[this.distance.length - 1];
-    }
+
     if (this.length < MAX_POINTS) {
       this.array[2 * this.length * 3] = position.x;
       this.array[2 * this.length * 3 + 1] = position.y;
@@ -235,13 +231,23 @@ class Explorer {
       this.array[(1 + 2 * this.length) * 3] = position.x * heightShift;
       this.array[(1 + 2 * this.length) * 3 + 1] = position.y * heightShift;
       this.array[(1 + 2 * this.length) * 3 + 2] = position.z * heightShift;
+      if (this.length > 0) {
+        const d = position.distanceTo(this.lastPosition) * SCENE_SCALE;
+        this.distance[this.length] = this.distance[this.length - 1] + d;
+        this.speed[this.length] = d;
+        this.altitude[this.length] = heightShift;
+      }
     } else {
       console.log('this is strange...got more points than expected - Explorer');
     }
-    if (this.length > 0) {
-      const d = position.distanceTo(this.lastPosition) * SCENE_SCALE;
-      this.distance[this.length] = this.distance[this.length - 1] + d;
-      this.speed[this.length] = d;
+    if (this.length === MAX_POINTS - 1) {
+      this.destination = { lat: coordinates.lat, lng: coordinates.lng };
+      this.avgSpeed = 0;
+      for (let i = 0; i < this.speed.length; i += 1) {
+        this.avgSpeed += this.speed[i];
+      }
+      this.avgSpeed = this.avgSpeed / this.speed.length;
+      this.totalDistance = this.distance[this.distance.length - 1];
     }
     this.lastPosition.set(position.x, position.y, position.z);
     this.coordinates[this.length] = { lat: coordinates.lat, lng: coordinates.lng };

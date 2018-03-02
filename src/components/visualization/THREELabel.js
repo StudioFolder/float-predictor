@@ -126,7 +126,7 @@ class THREELabel {
   updatePosition(camera) {
     if (this.visible) {
       const angle = camera.position.angleTo(this.anchorObject.position);
-      if (Math.abs(angle) < 1) {
+      if (Math.abs(angle) < 1.2) {
         this.sprite.visible = true;
       } else {
         this.sprite.visible = false;
@@ -135,12 +135,12 @@ class THREELabel {
   }
 
   setScale() {
-    const f = 0.5 / (this.scene.scale.x * 2);
+    const f = 0.05 / this.scene.scale.x;
     if (this.anchorObject) {
-      this.anchorObject.scale.set(f, f, f);
+      this.anchorObject.scale.set(f * 20, f * 20, f * 20);
     }
-    this.sprite.scale.set(this.canvas.width * 0.16 * f,
-      this.canvas.height * 0.16 * f, 1);
+    this.sprite.scale.set(this.canvas.width * f,
+      this.canvas.height * f, 1);
   }
 
   setPosition(position) {

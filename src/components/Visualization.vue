@@ -215,6 +215,14 @@ export default {
         this.$store.commit('flightSimulator/setFocusedExplorerDistance', d);
       },
     },
+    focusedExplorerAltitude: {
+      get() {
+        return this.$store.state.flightSimulator.focusedExplorerAltitude;
+      },
+      set(d) {
+        this.$store.commit('flightSimulator/setFocusedExplorerAltitude', d);
+      },
+    },
     visualizationState: {
       get() {
         return this.$store.state.flightSimulator.visualizationState;
@@ -229,6 +237,14 @@ export default {
       },
       set(v) {
         this.$store.commit('flightSimulator/setWinds', v);
+      },
+    },
+    autoMode: {
+      get() {
+        return this.$store.state.flightSimulator.autoMode;
+      },
+      set(v) {
+        this.$store.commit('flightSimulator/setAutoMode', v);
       },
     },
   },
@@ -366,7 +382,7 @@ export default {
     initVis() {
       if (process.env.NODE_ENV === 'development') {
         pars.speed_d_x_sec = 0.9;
-        pars.skip_frame = 4;
+        pars.skip_frame = 10;
         pars.use_bump = false;
         pars.antialias = false;
       }
@@ -412,6 +428,9 @@ export default {
       camera.updateMatrixWorld();
       raycaster.setFromCamera(mouse, camera);
       // calculate objects intersecting the picking ray
+      if (selectLabel.anchorObject.visible && raycaster.intersectObject(selectLabel.anchorObject).length > 0) {
+        return;
+      }
       let selected = -1;
       _.each(explorers, (e, index) => {
         if (raycaster.intersectObject(e.animatingSphere).length > 0) {
@@ -423,6 +442,7 @@ export default {
         if (selected < 0) {
           selectLabel.setVisible(false);
           if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
+            this.hideExplorerDates();
             _.each(explorers, (e) => {
               e.setStyle(Explorer.MOVING);
             });
@@ -433,13 +453,15 @@ export default {
               } else {
                 e.setStyle(Explorer.UNSELECTED);
               }
+              this.showExplorerDates(this.minTrack);
             });
           }
         } else {
+          this.showExplorerDates(selected);
           _.each(explorers, (e, index) => {
             if (index === selected) {
               e.setStyle(Explorer.SELECTED);
-              selectLabel.set(`Explorer ${index + 1}>`, e.animatingSphere.position);
+              selectLabel.set(`Explorer ${index + 1} > `, e.animatingSphere.position);
             } else {
               e.setStyle(Explorer.UNSELECTED);
             }
@@ -520,6 +542,8 @@ export default {
             if (pars.onboard) {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
+              this.focusedExplorerAltitude = explorers[this.onboardIndex].getAltitude().toFixed(0);
+
               const coord = Util.XYZ2LatLon(explorers[this.onboardIndex].animatingSphere.position);
               const cities = Cities.get(coord);
               for (let i = 0; i < cityLabels.length; i += 1) {
@@ -550,7 +574,7 @@ export default {
         rendererNAA.domElement.style.display = 'block';
         rendererAA.domElement.style.display = 'none';
       }
-      controls = new OrbitControls(camera, renderer.domElement);
+      renderer.setPixelRatio(pars.pixel_ratio);
     },
     initNightMap() {
       NightMap.init(radius, scene, nightMapTexture);
@@ -564,18 +588,16 @@ export default {
       const departureSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
       departureLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', departureSphere);
       departureLabel.setIcon(document.getElementById('up'));
-      departureLabel.set(departure.city, departureSphere.position);
       scene.add(departureSphere);
 
-      selectLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', departureSphere);
-      selectLabel.margin = 10;
-      selectLabel.set('Explorer >', departureSphere.position);
-      scene.add(departureSphere);
+      const selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.024, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.002, transparent: true }));
+      selectLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', selectSphere);
+      selectLabel.margin = 2;
+      scene.add(selectSphere);
 
       const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
       destinationLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
       destinationLabel.setIcon(document.getElementById('down'));
-      destinationLabel.set(destination.city, destinationSphere.position);
       scene.add(destinationSphere);
 
       cityLabels = [];
@@ -604,17 +626,6 @@ export default {
         scene.add(sphere);
         const label = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
         daysLabels.push(label);
-        /*
-        const el = document.createElement('div');
-        el.classList.add('label');
-        el.classList.add('days-label');
-        document.getElementById('labels').appendChild(el);
-        const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.002, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-        sphere.visible = false;
-        scene.add(sphere);
-        // class="label"
-        daysLabels.push(new Label(scene, camera, sphere, el, false));
-        */
       }
     },
 
@@ -703,24 +714,27 @@ export default {
       container.appendChild(rendererNAA.domElement);
       rendererNAA.setSize(window.innerWidth, window.innerHeight);
       rendererNAA.setClearColor(0x000000);
-
+      scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(40, rendererAA.getSize().width / rendererAA.getSize().height, 0.1, 10000);
       camera.position.set(0, radius * 0.25, radius * 1.7);
-
-      this.setAntialias(pars.antialias);
-      pars.pixel_ratio = window.devicePixelRatio;
-      // scene
-      scene = new THREE.Scene();
-      // scene.fog = new THREE.Fog( 0x333333, 0.0001 );
-      // camera
-      // (camera) controls
-      // controls.autoRotate=pars.auto_rotate;
+      controls = new OrbitControls(camera, document.getElementById('visualization'));
+      controls.addEventListener('change', this.updateLabels);
+      controls.addEventListener('start', () => { this.interacting = true; this.autoMode = false; }, false);
+      controls.addEventListener('end', () => { this.interacting = false; }, false);
+      controls.addEventListener('scale', () => { this.setScale(scene.scale.x); }, false);
       controls.dampingFactor = 0.017;
       controls.autoRotateSpeed = 1;
       controls.enablePan = false;
       controls.zoomSpeed = 0.1;
       controls.enableZoom = pars.zoom_enabled;
       controls.constraint.scene = scene;
+      pars.pixel_ratio = window.devicePixelRatio;
+      this.setAntialias(pars.antialias);
+      // scene.fog = new THREE.Fog( 0x333333, 0.0001 );
+      // camera
+      // (camera) controls
+      // controls.autoRotate=pars.auto_rotate;
+
 
       // light
       pointLight = new THREE.PointLight(pars.sun_light_color);
@@ -926,6 +940,26 @@ export default {
       this.initGUI();
     },
 
+    hideExplorerDates() {
+      _.each(daysLabels, (l) => { l.setVisible(false); });
+    },
+
+    showExplorerDates(explorerIndex) {
+      _.each(daysLabels, (l) => { l.setVisible(false); });
+      for (let j = explorerIndex + 1; j <= daysLabels.length; j += 1) {
+        const dt = new Date();// this.valueOf()
+        dt.setDate(dt.getDate() + j);
+        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const text = `${dt.getDate()} ${monthNames[dt.getMonth()]}`;
+        const alpha = j / 16.0;
+        if (alpha < explorers[explorerIndex].getAlpha()) {
+          daysLabels[j - 1].set(text, explorers[explorerIndex].getPosition(alpha));
+        } else {
+          break;
+        }
+      }
+    },
+
     setState(state) {
       console.log(`Setting state: ${state}`);
       switch (state) {
@@ -936,9 +970,9 @@ export default {
         }
         case STATE_MOVING_TO_DEPARTURE: { // MOVING TO DEPARTURE POINT
           this.clear();
-          departureLabel.setVisible(true);
+          departureLabel.set(departure.city, departureLabel.anchorObject.position);
           if (this.flightType === 'planned') {
-            destinationLabel.setVisible(true);
+            destinationLabel.set(destination.city, destinationLabel.anchorObject.position);
           }
           pars.auto_rotate = false;
           this.downloadMulti();
@@ -967,15 +1001,7 @@ export default {
           // GO TO DESTINATION POINT
           const d = Util.XYZ2LatLon(explorers[this.minTrack].animatingSphere.position);// explorers[this.minTrack].destination;
           this.resetTo({ lat: d.lat, lng: d.lng, time: 1.0, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_END; } });
-
-          for (let j = this.minTrack + 1; j <= daysLabels.length; j += 1) {
-            const dt = new Date();// this.valueOf()
-            dt.setDate(dt.getDate() + j);
-            const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-            const text = `${dt.getDate()} ${monthNames[dt.getMonth()]}`;
-            daysLabels[j - 1].set(text, explorers[this.minTrack].getPosition(j / 16.0));
-            daysLabels[j - 1].updatePosition(camera);
-          }
+          this.showExplorerDates(this.minTrack);
           break;
         }
         case STATE_ANIMATION_END: {
@@ -1234,6 +1260,7 @@ export default {
       // destinationSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
       departureLabel.setScale();
       destinationLabel.setScale();
+      selectLabel.setScale();
       _.each(daysLabels, (l) => { l.setScale(); });
       _.each(cityLabels, (l) => { l.setScale(); });
 
@@ -1384,8 +1411,8 @@ export default {
     clear() {
       console.log('reset');
       pars.elapsed_days = 0;
+      this.hideExplorerDates();
       _.each(explorers, (e) => { e.reset(new THREE.Vector3(0, 0, 0)); });
-      _.each(daysLabels, (l) => { l.setVisible(false); });
       _.each(cityLabels, (l) => { l.setVisible(false); });
       departureLabel.setVisible(false);
       destinationLabel.setVisible(false);
@@ -1459,6 +1486,8 @@ export default {
               data.push(this.api_data[i][j][3]);
             }
           }
+          const departureDate = new Date(this.startingDate);// this.valueOf()
+          departureDate.setDate(departureDate.getDate() + this.minTrack);
           const s = JSON.stringify({
             departure: {
               city: departure.city,
@@ -1478,19 +1507,24 @@ export default {
             },
             min_dist: this.minDist,
             min_time: this.minTime,
-            timestamp: this.timestamp,
+            departure_date: departureDate.toISOString(),
             speed: explorers[this.minTrack].avgSpeed,
-            distanceTraveled: explorers[this.minTrack].totalDistance,
+            altitude: 10,
+            distance: explorers[this.minTrack].totalDistance * 0.001,
             path: data,
             svg: this.svg,
+            color: webColors[this.minTrack],
           });
           // for (var z = 0; z < 300; z += 1) {
           // setTimeout(() =>
-          fetch('http://54.190.63.219/insert.php', {
+          fetch('http://54.190.63.219/db/insert.php', {
             method: 'post',
             body: s,
           }).then(
-            response => response.json(),
+            (response) => {
+              console.log(response);
+              return response.text();
+            },
           ).then((jsonData) => {
             console.log('***********************');
             console.log(jsonData);
@@ -1533,11 +1567,6 @@ export default {
   width: 100%;
   height:100%;
 }
-
-.dg.ac{
-  z-index: 16!important;
-}
-
 
 .label{
   position:absolute;
