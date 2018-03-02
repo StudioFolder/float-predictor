@@ -475,7 +475,9 @@ export default {
       if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
         this.onMouseMove(event);
         console.log(this.selected);
-        this.focusedExplorer = this.selected + 1;
+        if (this.selected > 0) {
+          this.focusedExplorer = this.selected + 1;
+        }
         this.playing = true;
         selectLabel.setVisible(false);
       }
@@ -954,6 +956,7 @@ export default {
         const alpha = j / 16.0;
         if (alpha < explorers[explorerIndex].getAlpha()) {
           daysLabels[j - 1].set(text, explorers[explorerIndex].getPosition(alpha));
+          daysLabels[j - 1].updatePosition(camera);
         } else {
           break;
         }
