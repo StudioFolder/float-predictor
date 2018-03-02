@@ -247,6 +247,14 @@ export default {
         this.$store.commit('flightSimulator/setAutoMode', v);
       },
     },
+    altitude: {
+      get() {
+        return this.$store.state.flightSimulator.altitude;
+      },
+      set(a) {
+        this.$store.commit('flightSimulator/setAltitude', a);
+      },
+    },
   },
   watch: {
     active(isActive) {
@@ -258,6 +266,10 @@ export default {
         });
       }
     },
+    altitude(altitude) {
+      console.log(altitude);
+    },
+
     focusedExplorer(explorerId) {
       if (explorerId === 0) {
         this.setOnboard(false);
@@ -461,7 +473,7 @@ export default {
           _.each(explorers, (e, index) => {
             if (index === selected) {
               e.setStyle(Explorer.SELECTED);
-              selectLabel.set(`Explorer ${index + 1} > `, e.animatingSphere.position);
+              selectLabel.set('', e.animatingSphere.position);// `Explorer ${index + 1} > `, e.animatingSphere.position);
             } else {
               e.setStyle(Explorer.UNSELECTED);
             }
@@ -544,8 +556,8 @@ export default {
             if (pars.onboard) {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
-              this.focusedExplorerAltitude = explorers[this.onboardIndex].getAltitude().toFixed(0);
-
+              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitude() * this.altitude).toFixed(2);
+              console.log(`Altitude: ${this.focusedExplorerAltitude}`);
               const coord = Util.XYZ2LatLon(explorers[this.onboardIndex].animatingSphere.position);
               const cities = Cities.get(coord);
               for (let i = 0; i < cityLabels.length; i += 1) {
@@ -588,17 +600,17 @@ export default {
 
     initLabels() {
       const departureSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      departureLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', departureSphere);
+      departureLabel = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', departureSphere);
       departureLabel.setIcon(document.getElementById('up'));
       scene.add(departureSphere);
 
-      const selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.024, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.002, transparent: true }));
-      selectLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', selectSphere);
+      const selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
+      selectLabel = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', selectSphere);
       selectLabel.margin = 2;
       scene.add(selectSphere);
 
       const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      destinationLabel = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
+      destinationLabel = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
       destinationLabel.setIcon(document.getElementById('down'));
       scene.add(destinationSphere);
 
@@ -618,7 +630,7 @@ export default {
 
         const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
         scene.add(sphere);
-        const label = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
+        const label = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
         cityLabels.push(label);
       }
 
@@ -626,7 +638,7 @@ export default {
       for (let i = 0; i < 16; i += 1) {
         const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
         scene.add(sphere);
-        const label = new THREELabel(scene, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
+        const label = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
         daysLabels.push(label);
       }
     },
