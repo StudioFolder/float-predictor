@@ -19,8 +19,8 @@ export default {
     autoMode: false,
     departure: {},
     destination: {},
-    altitude: 10, // General altitude
-
+    altitudeLevel: 3, // General altitude
+    trajectoryId: -1,
     // used for the final recap: e.g.
     // The Aerocene Explorer that left from Milan...arrived within *km in *hours
     winningExplorerData: {
@@ -70,8 +70,8 @@ export default {
     setElapsedDays(state, days) {
       state.elapsedDays = days;
     },
-    setAltitude(state, altitude) {
-      state.altitude = altitude;
+    setAltitudeLevel(state, altitudeLevel) {
+      state.altitudeLevel = altitudeLevel;
     },
     setLoading(state, isLoading) {
       state.loading = isLoading;
@@ -87,6 +87,9 @@ export default {
     },
     setVisualizationState(state, s) {
       state.visualizationState = s;
+    },
+    setTrajectoryId(state, i) {
+      state.trajectoryId = i;
     },
     setAutoMode(state, s) {
       state.autoMode = s;

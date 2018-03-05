@@ -8,7 +8,8 @@ const vshader =
 'uniform float magnitude;' +
 'uniform float opacity;' +
 'uniform float minOpacity;' +
-
+'uniform float elapsedTime;' +
+'uniform float animating;' +
 'uniform vec3  startColor;' +
 'uniform vec3  endColor;' +
 'uniform float startHue;' +
@@ -21,10 +22,14 @@ const vshader =
 'attribute vec3 start;' +
 'attribute vec3 end;' +
 'attribute float isEnd;' +
+'attribute float vertexIndex;' +
 'vec3 hsv2rgb(vec3 c) {' +
 '  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);' +
 '  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);' +
 '  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);' +
+'}' +
+'float modf(float x, float y) {' +
+'  return x - y * floor(x/y);' +
 '}' +
 'void main(){' +
 // '  vColor = startColor;' +
@@ -44,13 +49,18 @@ const vshader =
 '      else if(mapping == 0.0){                                    ' +
 '          vColor = endColor;                                      ' +
 '      }                                                           ' +
+'      float mag = magnitude;                                      ' +
+'      if(animating > 0.0){                                        ' +
+'          float m = mod(elapsedTime + vertexIndex, 1.0);          ' +
+'          mag = magnitude * m;                                    ' +
+'          vOpacity = opacity * (1.0 - abs(0.5 - m) / 0.5);        ' +
+'      }                                                           ' +
+'      gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x+blend.x*mag, position.y+blend.y*mag, position.z+blend.z*mag,1.0);' +
 '  }  else {                                                       ' +
 '      vColor =  startColor;                                       ' +
 '      if(opacityMapping > 0.0) vOpacity = 0.0;                    ' +
+'      gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x+blend.x, position.y+blend.y, position.z+blend.z,1.0);' +
 '  }                                                               ' +
-'  gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x+blend.x*magnitude, position.y+blend.y*magnitude, position.z+blend.z*magnitude,1.0);' +
-// '  gl_Position = projectionMatrix * modelViewMatrix * vec4(position.x+blend.x*magnitude,
-// position.y+blend.y*magnitude, position.z+blend.z*magnitude,1.0);' +
 '}';
 
 const fshader =
@@ -62,23 +72,31 @@ const fshader =
 '}';
 
 class WindVisualization {
-  init(radius) {
+  constructor(pressure, scene, radius) {
+    this.pressure = pressure;
+    this.scene = scene;
+    this.radius = radius;
+  }
+  init() {
+    this.initialized = true;
     this.array = [];
     this.precision = 3;
-    this.active = true;
-    this.radius = radius;
+    this.animationSpeed = 1.0;
     this.magnitude = 0.2;
     this.windData = [];
     this.isEnd = [];
+    this.vertexIndex = [];
     this.progress = -1;
     const detail = 6;
-    let geometry = new THREE.IcosahedronGeometry(radius, detail);
+    let geometry = new THREE.IcosahedronGeometry(this.radius, detail);
     this.colors = [];
     for (let i = 0; i < geometry.vertices.length; i += 1) {
       this.array.push(geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z);
       this.array.push(geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z);
       this.isEnd.push(0);
       this.isEnd.push(1);
+      this.vertexIndex.push(Math.random());
+      this.vertexIndex.push(Math.random());
       this.colors.push(1, 1, 1);
       this.colors.push(0, 0, 0);
     }
@@ -87,6 +105,7 @@ class WindVisualization {
     geometry.addAttribute('position', new THREE.BufferAttribute(new Float32Array(this.array), 3));
     geometry.addAttribute('color', new THREE.BufferAttribute(new Float32Array(this.colors), 3));
     geometry.addAttribute('isEnd', new THREE.BufferAttribute(new Float32Array(this.isEnd), 1));
+    geometry.addAttribute('vertexIndex', new THREE.BufferAttribute(new Float32Array(this.vertexIndex), 1));
     for (let k = 0; k < 16; k += 1) {
       this.windData[k] = new Float32Array(this.array.length);
     }
@@ -94,8 +113,40 @@ class WindVisualization {
     geometry.addAttribute('end', new THREE.BufferAttribute(this.windData[1], 3));
     // geometry.addAttribute('end', new THREE.BufferAttribute(this.windData[1], 3));
     this.lines = new THREE.LineSegments(geometry, this.lineMaterial);
+    this.scene.add(this.lines);
+    const urls = [];
+    for (let i = 0; i < 16; i += 1) {
+      urls.push(`static/data/gfs/data/${this.pressure}/${i * 24}.json`);
+      console.log(urls[urls.length - 1]);
+    }
+    this.downloadData(urls, 0,
+      (v) => { console.log(`Wind data download: ${1 + v}/16`); },
+      () => { console.log('Wind data download: finished'); },
+    );
   }
 
+  setStyle(config) {
+    this.lines.visible = config.visible;
+    this.lines.material.color = new THREE.Color(config.color);
+    this.setOpacity(config.opacity);
+    this.setMagnitude(config.magnitude);
+    this.setMapping(config.mapping);
+    this.setOpacityMapping(config.opacity_mapping);
+    this.setThreshold(config.threshold);
+    this.setAnimating(config.animating);
+    this.setAnimationSpeed(config.animationSpeed);
+    this.setColor(new THREE.Color(config.start_color), new THREE.Color(config.end_color));
+    this.precision = config.precision;
+  }
+
+  setActive() {
+    if (!this.initialized) {
+      this.init();
+    }
+  }
+  hide() {
+    this.lines.visible = false;
+  }
   setOpacity(f) {
     this.lines.material.uniforms.opacity.value = f;
     this.lines.material.needsUpdate = true;
@@ -106,12 +157,11 @@ class WindVisualization {
     this.lines.material.needsUpdate = true;
   }
 
-  setData(paths, d = 0, onProgress, onEnd, errorCount = 0) {
+  downloadData(paths, d, onProgress, onEnd, errorCount = 0) {
     if (d < paths.length) {
       fetch(paths[d])
         .then(r => r.json())
         .then((json) => {
-        // this.windData[d/24]=[];
           for (let i = 0; i < json.data.length; i += 3) {
             this.windData[d][i * 2] = json.data[i];
             this.windData[d][i * 2 + 1] = json.data[i + 1];
@@ -119,14 +169,13 @@ class WindVisualization {
           }
           this.progress = d;
           if (onProgress) onProgress(d);
-          this.setData(paths, d + 1, onProgress, onEnd);
+          this.downloadData(paths, d + 1, onProgress, onEnd);
           errorCount = 0;
-        })
-        .catch((r) => {
+        }).catch((r) => {
           errorCount += 1;
           console.log(r);
           console.log(`Wind data error - reconnect attempt n.${errorCount}`);
-          setInterval(() => this.setData(paths, d, onProgress, onEnd), 300);
+          setInterval(() => this.downloadData(paths, d, onProgress, onEnd), 1000);
         });
     } else if (onEnd) {
       onEnd();
@@ -150,6 +199,18 @@ class WindVisualization {
     this.lines.material.uniforms.threshold.value = t;
   }
 
+  setAnimating(t) {
+    if (t) {
+      this.lines.material.uniforms.animating.value = 1.0;
+    } else {
+      this.lines.material.uniforms.animating.value = 0.0;
+    }
+  }
+
+  setAnimationSpeed(t) {
+    this.animationSpeed = t;
+  }
+
   setMinOpacity(mo) {
     this.lines.material.uniforms.minOpacity.value = mo;
   }
@@ -167,6 +228,8 @@ class WindVisualization {
       endColor: { type: 'c', value: new THREE.Color(1, 1, 1) },
       startHue: { type: 'f', value: 0.0 },
       endHue: { type: 'f', value: 0.1 },
+      elapsedTime: { type: 'f', value: 0.0 },
+      animating: { type: 'f', value: 0.0 },
     };
     const material = new THREE.ShaderMaterial({
       vertexColors: THREE.VertexColors,
@@ -199,11 +262,11 @@ class WindVisualization {
 
   update(elapsedTimef) {
     const elapsedTime = elapsedTimef.toFixed(this.precision);
+    this.lines.material.uniforms.elapsedTime.value += (1.0 / 60.0) * this.animationSpeed;
     if (this.lastUpdateTime !== elapsedTime && this.lines.visible) {
       let i = Math.floor(elapsedTime);
       const alpha = elapsedTime - i;
       this.lines.material.uniforms.alpha.value = alpha;
-
       if (Math.floor(this.lastUpdateTime) !== i) {
         // REPLACE ARRAYS
         i = Math.min(i, 15);
@@ -221,31 +284,6 @@ class WindVisualization {
     }
     return true;
   }
-
-  stop() {
-    this.active = false;
-  }
-/*
-  latLon2XYZ(lat, lng, radius) {
-    const phi = (90 - lat) * (Math.PI / 180);
-    const theta = (lng + 180) * (Math.PI / 180);
-    // console.log(phi+" "+theta);
-    const x = -((radius) * Math.sin(phi) * Math.cos(theta));
-    const z = ((radius) * Math.sin(phi) * Math.sin(theta));
-    const y = ((radius) * Math.cos(phi));
-    return new THREE.Vector3(x, y, z);
-  }
-
-  XYZ2LatLon(coord, length) {
-    const RAD2DEG = 180 / Math.PI;
-    // var DEG2RAD = Math.PI / 180
-    let lng = 90 - Math.atan2(coord.x, -coord.z) * RAD2DEG;
-    const l = Math.sqrt(coord.x * coord.x + coord.z * coord.z);
-    const lat = Math.atan2(coord.y, l) * RAD2DEG;
-    lng = (360 + lng) % 360;
-    return { lat, lng };
-  }
-  */
 }
 
-export default new WindVisualization();
+export default WindVisualization;

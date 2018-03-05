@@ -138,6 +138,10 @@ export default {
       city: 'Berlin',
       country: 'Germany',
     };
+    const elements = document.getElementsByClassName('cover');
+    while (elements.length > 0) {
+      elements[0].parentNode.removeChild(elements[0]);
+    }
   },
   methods: {
     setDeparture(e) {
@@ -153,7 +157,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style >
+<style scoped>
 input{
   background: black;
   color:white;
@@ -205,6 +209,7 @@ li:hover{
   z-index:2;
   width: 300px;
 }
+/*
 .cover{
   display: none !important;
 }
@@ -214,5 +219,5 @@ li:hover{
 }
 .dg.ac{
   z-index: 16!important;
-}
+}*/
 </style>

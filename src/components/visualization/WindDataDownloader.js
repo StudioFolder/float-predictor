@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 class WindDataDownloader {
-  downloadMulti(departure, destination,
+  downloadMulti(departure, destination, pressure,
     onUpdateCallback, onEndCallback, onErrorCallback) {
+    console.log(`Pressure level: ${pressure}`);
     this.onUpdateCallback = onUpdateCallback;
     this.onEndCallback = onEndCallback;
     this.onErrorCallback = onErrorCallback;
@@ -10,12 +11,12 @@ class WindDataDownloader {
     for (let i = 0; i < 8; i += 1) {
       url += `${departure.lat},${departure.lng},`;
     }
-    this.downloadMultiS(0, url, departure, destination);
+    this.downloadMultiS(0, url, departure, destination, pressure);
   }
 
-  downloadMultiS(day, urls, departure, destination) {
-    let url = `http://float.aerocene.org/traj4multi2d.php?${day},250,${destination.lat},${destination.lng} ${urls}`;
-    console.log(`${departure.lat} ${departure.lng}`);
+  downloadMultiS(day, urls, departure, destination, pressure) {
+    let url = `http://float.aerocene.org/traj4multi2d.php?${day},${pressure},${destination.lat},${destination.lng} ${urls}`;
+    console.log(`${url}`);
     if (departure.lat === 52.520645 && departure.lng === 13.409779 &&
       destination.lat === 35.652832 && destination.lng === 139.839478) {
       url = `static/data/gfs/test/${day}.json`;
@@ -30,7 +31,7 @@ class WindDataDownloader {
           url += `${json.d[index][2]},${json.d[index][3]},`;
         }
         if (day < 15) {
-          this.downloadMultiS(day + 1, url, departure, destination);
+          this.downloadMultiS(day + 1, url, departure, destination, pressure);
         } else {
           // eslint-disable-next-line no-console
           console.log('Done!');

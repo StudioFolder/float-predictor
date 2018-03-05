@@ -40,7 +40,8 @@ const STATE_UNFOCUSED = 5;
 const STATE_UNFOCUSED_PAGES = 6;
 const STATE_UNFOCUSED_GALLERY = 7;
 const STATE_INITIAL = 8;
-
+const pressureLevels = [1000, 850, 500, 250, 100, 30, 10];
+const altitudeLevels = [0.0, 1.467, 5.574, 10.363, 15.790, 70.962, 84.998];
 const THREE = require('three');
 const OrbitControls = require('../../custom_modules/three-orbit-controls')(THREE);
 
@@ -54,13 +55,14 @@ const colors = [0x003769, 0x2e6a9c, 0x0095d7, 0x587a98, 0x7eafd4, 0xb9e5fb, 0x65
 const webColors = ['#003769', '#2e6a9c', '#0095d7', '#587a98', '#7eafd4', '#b9e5fb', '#656868', '#ffffff'];
 
 // eslint-disable-next-line
-let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectLabel, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination;
+let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectLabel, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations;
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 // GUI PARAMETERS
 const pars = {
   // GENERAL
+  altitudeLevel: 3,
   active: false,
   winds: 0,
   fps: 0,
@@ -98,6 +100,8 @@ const pars = {
   explorer_height_shift: 0.025,
   layers: {
     wind: {
+      animating: false,
+      animationSpeed: 1,
       visible: false,
       mapping: 0.0,
       opacity_mapping: false,
@@ -247,12 +251,20 @@ export default {
         this.$store.commit('flightSimulator/setAutoMode', v);
       },
     },
-    altitude: {
+    altitudeLevel: {
       get() {
-        return this.$store.state.flightSimulator.altitude;
+        return this.$store.state.flightSimulator.altitudeLevel;
       },
       set(a) {
-        this.$store.commit('flightSimulator/setAltitude', a);
+        this.$store.commit('flightSimulator/setAltitudeLevel', a);
+      },
+    },
+    trajectoryId: {
+      get() {
+        return this.$store.state.flightSimulator.trajectoryId;
+      },
+      set(a) {
+        this.$store.commit('flightSimulator/setTrajectoryId', a);
       },
     },
   },
@@ -266,8 +278,12 @@ export default {
         });
       }
     },
-    altitude(altitude) {
+
+    altitudeLevel(altitude) {
+      console.log('Setting altitude value');
       console.log(altitude);
+      pars.altitudeLevel = altitude;
+      this.setWindVisualization(altitude);
     },
 
     focusedExplorer(explorerId) {
@@ -325,30 +341,49 @@ export default {
       this.setState(s);
     },
     winds(w) {
+      /*
+      wind: {
+        animating: false,
+        animationSpeed: 1,
+        visible: false,
+        mapping: 0.0,
+        opacity_mapping: false,
+        threshold: 44.0,
+        start_color: '#000000',
+        end_color: '#ffffff',
+        opacity: 0.7,
+        minOpacity: 0.5,
+        magnitude: 0.25,
+        step: 1,
+        precision: 2,
+      },
+      */
       switch (w) {
         case 0: // NONE
-          WindVisualization.lines.visible = false;
+          pars.layers.wind.visible = false;
           break;
         case 1: // B/W
-          WindVisualization.setColor(new THREE.Color('#000000'), new THREE.Color('#ffffff'));
-          WindVisualization.setMapping(1);
-          WindVisualization.setOpacityMapping(true);
-          WindVisualization.lines.visible = true;
+          pars.layers.wind.start_color = '#000000';
+          pars.layers.wind.end_color = '#ffffff';
+          pars.layers.wind.mapping = 1.0;
+          pars.layers.wind.opacity_mapping = false;
+          pars.layers.wind.visible = true;
           break;
         case 2: // COLOR
-          WindVisualization.setColor(new THREE.Color('#073a9e'), new THREE.Color('#f80000'));
-          WindVisualization.setMapping(2);
-          WindVisualization.setOpacityMapping(false);
-          WindVisualization.lines.visible = true;
+          pars.layers.wind.start_color = '#073a9e';
+          pars.layers.wind.end_color = '#f80000';
+          pars.layers.wind.mapping = 2.0;
+          pars.layers.wind.opacity_mapping = false;
+          pars.layers.wind.visible = true;
           break;
         default:
           break;
       }
+      windVisualization.setStyle(pars.layers.wind);
     },
   },
   data() {
     return {
-      pathId: 0,
       alive: true,
       speed: 0,
       minDist: 0,
@@ -393,10 +428,13 @@ export default {
 
     initVis() {
       if (process.env.NODE_ENV === 'development') {
-        pars.speed_d_x_sec = 0.9;
-        pars.skip_frame = 10;
+        pars.speed_d_x_sec = 0.1;
+        pars.skip_frame = 1;
         pars.use_bump = false;
         pars.antialias = false;
+        pars.winds = 2;
+        pars.layers.wind.opacity = 1.0;
+        pars.layers.wind.magnitude = 0.7;
       }
       departure = {
         lat: 52.520645,
@@ -487,7 +525,7 @@ export default {
       if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
         this.onMouseMove(event);
         console.log(this.selected);
-        if (this.selected > 0) {
+        if (this.selected >= 0) {
           this.focusedExplorer = this.selected + 1;
         }
         this.playing = true;
@@ -556,7 +594,7 @@ export default {
             if (pars.onboard) {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
-              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitude() * this.altitude).toFixed(2);
+              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitude() * 100.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
               console.log(`Altitude: ${this.focusedExplorerAltitude}`);
               const coord = Util.XYZ2LatLon(explorers[this.onboardIndex].animatingSphere.position);
               const cities = Cities.get(coord);
@@ -644,25 +682,21 @@ export default {
     },
 
     initWindVisualization() {
-      WindVisualization.init(radius * 1.02);
-      const urls = [];
-      for (let i = 0; i < 16; i += 1) {
-        urls.push(`static/data/gfs/windjson/${i * 24}.json`);
-      }
-      WindVisualization.setData(urls, 0,
-        (v) => { console.log(`Wind data download: ${1 + v}/16`); },
-        () => { console.log('Wind data download: finished'); },
-      );
-      WindVisualization.lines.visible = pars.layers.wind.visible;
-      WindVisualization.lines.material.color = new THREE.Color(pars.layers.wind.color);
-      WindVisualization.setOpacity(pars.layers.wind.opacity);
-      WindVisualization.setMagnitude(pars.layers.wind.magnitude);
-      WindVisualization.setMapping(pars.layers.wind.mapping);
-      WindVisualization.setOpacityMapping(pars.layers.wind.opacity_mapping);
-      WindVisualization.setThreshold(pars.layers.wind.threshold);
+      windVisualizations = [];
+      _.each(pressureLevels, (l) => {
+        windVisualizations.push(new WindVisualization(l, scene, radius * 1.02));
+      });
+      this.setWindVisualization(this.altitudeLevel);
+      this.winds = pars.winds;
+    },
 
-      WindVisualization.precision = pars.layers.wind.precision;
-      scene.add(WindVisualization.lines);
+    setWindVisualization(i) {
+      if (windVisualization) {
+        windVisualization.hide();
+      }
+      windVisualization = windVisualizations[i];
+      windVisualization.setActive();
+      windVisualization.setStyle(pars.layers.wind);
     },
 
     initStarfield() {
@@ -848,6 +882,7 @@ export default {
       });
       general.add(pars, 'state', 0, 10).step(1).listen().onChange((value) => { this.visualizationState = value; });
       general.add(pars, 'elapsed_days', 0.0, 16.0).listen();
+      general.add(pars, 'altitudeLevel', 0.0, altitudeLevels.length - 1).step(1).onChange((value) => { this.altitudeLevel = value; });
       general.add(pars, 'auto_rotate');// .onChange(function(value) {controls.autoRotate=value;});
       general.add(pars, 'antialias').listen().onChange((value) => { this.setAntialias(value); });
 
@@ -933,17 +968,19 @@ export default {
 
       const layers = gui.addFolder('layers');
       const wind = layers.addFolder('wind');
-      wind.add(pars.layers.wind, 'visible').onChange((value) => { WindVisualization.lines.visible = value; });
-      wind.addColor(pars.layers.wind, 'start_color').onChange(() => { WindVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
-      wind.addColor(pars.layers.wind, 'end_color').onChange(() => { WindVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
+      wind.add(pars.layers.wind, 'visible').onChange((value) => { windVisualization.lines.visible = value; });
+      wind.addColor(pars.layers.wind, 'start_color').onChange(() => { windVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
+      wind.addColor(pars.layers.wind, 'end_color').onChange(() => { windVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
 
-      wind.add(pars.layers.wind, 'mapping', { 'NO MAPPING': 0.0, 'RGB MAPPING': 1.0, 'HUE MAPPING': 2.0 }).onChange((v) => { WindVisualization.setMapping(v); });
-      wind.add(pars.layers.wind, 'opacity_mapping').onChange((value) => { WindVisualization.setOpacityMapping(value); });
-      wind.add(pars.layers.wind, 'threshold', 0, 200).onChange((value) => { WindVisualization.setThreshold(value); });
-      wind.add(pars.layers.wind, 'opacity', 0, 1).onChange((value) => { WindVisualization.setOpacity(value); });
-      wind.add(pars.layers.wind, 'minOpacity', 0, 1).onChange((value) => { WindVisualization.setMinOpacity(value); });
-      wind.add(pars.layers.wind, 'magnitude', 0, 3).onChange(() => { WindVisualization.setMagnitude(pars.layers.wind.magnitude); });
-      wind.add(pars.layers.wind, 'precision', 0, 5).step(1).onChange((value) => { WindVisualization.precision = value; });
+      wind.add(pars.layers.wind, 'mapping', { 'NO MAPPING': 0.0, 'RGB MAPPING': 1.0, 'HUE MAPPING': 2.0 }).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+      wind.add(pars.layers.wind, 'opacity_mapping').listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+      wind.add(pars.layers.wind, 'threshold', 0, 200).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+      wind.add(pars.layers.wind, 'opacity', 0, 1).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+      wind.add(pars.layers.wind, 'minOpacity', 0, 1).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+      wind.add(pars.layers.wind, 'magnitude', 0, 3).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+      wind.add(pars.layers.wind, 'precision', 0, 5).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+      wind.add(pars.layers.wind, 'animating').listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+      wind.add(pars.layers.wind, 'animationSpeed', 0, 3).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
       gui.close();
     },
 
@@ -1307,7 +1344,14 @@ export default {
     animate() {
       fps += 1;
       if (this.loading >= 1 && this.playing) {
-        WindVisualization.update(pars.elapsed_days);
+        /*
+        const s = (pars.elapsed_days * 5.0) % 1.0;
+        const mag = pars.layers.wind.magnitude * 0.2 + pars.layers.wind.magnitude * 0.8 * s;
+        windVisualization.setMagnitude(mag);
+        // windVisualization.setOpacity(0.001 * pars.layers.wind.opacity + 0.999 * pars.layers.wind.opacity * (1.0 - Math.abs(0.5 - (1.0 - s)) / 0.5));
+        windVisualization.setOpacity(pars.layers.wind.opacity * (1.0 - s));
+        */
+        windVisualization.update(pars.elapsed_days);
         animator.update(pars.speed_d_x_sec / 60.0);
         if (pars.auto_rotate) {
           controls.setAzimuthalAngle(controls.getAzimuthalAngle() + 0.002);
@@ -1446,7 +1490,7 @@ export default {
     },
 
     downloadMulti() {
-      downloader.downloadMulti(departure, destination,
+      downloader.downloadMulti(departure, destination, pressureLevels[this.altitudeLevel],
         (data) => { // ON UPDATE
           if (data.mindist < this.minDist) {
             this.minDist = Math.round(data.mindist);
@@ -1538,12 +1582,12 @@ export default {
           }).then(
             (response) => {
               console.log(response);
-              return response.text();
+              return response.json();
             },
           ).then((jsonData) => {
             console.log('***********************');
             console.log(jsonData);
-            this.pathId = jsonData.id;
+            this.trajectoryId = jsonData.id;
           });
         // , z * 500)
         //  }

@@ -1,6 +1,6 @@
 rm gfs*
 rm json/*
 rm filter*
-python grib2parser.py
+python wind_data_download.py
 rm gfs*
 rm filter*
