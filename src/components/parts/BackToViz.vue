@@ -3,7 +3,7 @@
     <div class="back-to-viz" v-show="isVisible">
         <router-link to="/flight-simulator">
             <img src="~img/globe_illustration.svg">
-            <div>Go back to visualization</div>
+            <div>Go back to <span>visualization</span></div>
             <i class="fp fp-caret-down"></i>
         </router-link>
     </div>
@@ -29,14 +29,15 @@ $borderWidth: calc((100vw - 36rem)/2); // 36rem is the article max width
     bottom: $marginBase;
     left: calc(#{$borderWidth}*-0.5 - 120px/2); // to center the object on various screen
     width: 120px;
-    @include medium_down {
+    @include large_down {
         box-shadow: 0 0 30px 1px rgba(0,0,0,.5);
         bottom: 0;
         left: 50%;
-        transform: translate(-50%, 180%);
+        transform: translate(-50%, 200%);
         z-index: 9;
         background-color: $lightGray;
-        padding: $marginItem;
+        width: 150px;
+        padding: $marginItem $marginItem*2;
     }
     a {
         text-decoration: none;
@@ -47,7 +48,7 @@ $borderWidth: calc((100vw - 36rem)/2); // 36rem is the article max width
     img {
         max-width: 100%;
         padding: 0 25px 10px;
-        @include medium_down {
+        @include large_down {
             display: none;
         }
     }
@@ -56,7 +57,7 @@ $borderWidth: calc((100vw - 36rem)/2); // 36rem is the article max width
         font-size: .9em;
     }
     i {
-        @include medium_down {
+        @include large_down {
             display: none;
         }
     }

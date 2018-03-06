@@ -25,7 +25,7 @@ export default {
     position: relative;
     z-index: 20;
     background: transparent;
-    @include medium_down {
+    @include large_down {
         position: fixed;
         top: 0;
         height: 80px;
@@ -44,7 +44,7 @@ export default {
         left: 0;
         padding: $marginBase;
         transition: opacity .2s ease;
-        @include medium_down {
+        @include large_down {
             padding: 1rem $marginMobile $marginMobile;
         }
     }
@@ -53,13 +53,16 @@ export default {
         text-transform: uppercase;
         text-decoration: none;
         font-size: 1.5rem; // 24px
+        .title {
+            color: #FFF;
+        }
         .subtitle {
-            @include medium-up{
+            @include large-up{
                 margin-bottom: 2.625rem; // 42px
             }
             color: $gray;
         }
-        @include medium_down {
+        @include large_down {
             position: fixed;
             top: $marginMobile;
             left: $marginMobile;
@@ -76,13 +79,16 @@ export default {
         opacity: 1;
         .intro-description {
             max-width: 230px;
-            @include medium_down {
+            @include down($xlarge) {
+                font-size: .85em;
+            }
+            @include large_down {
                 display: none;
             }
         }
         .read-more {
             display: block;
-            @include medium_down {
+            @include large_down {
                 display: none;
             }
         }
@@ -91,16 +97,16 @@ export default {
         opacity: 1;
         text-align: center;
         top: 10%;
-        @include medium_up {
+        @include large_up {
             left: 50%;
             transform: translateX(-50%);
         }
         .intro-description {
             @extend .h4;
-            @include medium_up {
-                max-width: 440px;
+            @include large_up {
+                max-width: 450px;
             }
-            @include medium_down {
+            @include large_down {
                 text-align: left;
                 font-size: 1em;
                 line-height: 1.45;

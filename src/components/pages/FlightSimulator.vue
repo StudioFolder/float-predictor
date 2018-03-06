@@ -1,7 +1,7 @@
 <template>
   <div class="main-content over" :style="{ height: upperHeight }">
       <!--just the animation here-->
-      <div v-if="isChoosing" class="flight-form container" ref="content">
+      <div v-if="isChoosing" class="flight-form wrapper" ref="content">
           <b-form @submit="onSubmit">
               <div class="type-selector-group">
                   <b-form-checkbox id="FlightTypeSelector"
@@ -178,7 +178,7 @@ export default {
 </script>
 <style lang="scss">
 @import "~@/assets/css/_variables_and_mixins.scss";
-.flight-form.container {
+.flight-form.wrapper {
     position: relative;
     top: 0;
     width: 450px;

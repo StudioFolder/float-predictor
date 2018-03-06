@@ -128,6 +128,10 @@ export default {
   .container {
     padding-left: 9rem;
     padding-right: 9rem;
+    @include down($large) {
+      padding-left: 4rem;
+      padding-right: 4rem;
+    }
     @include medium_down {
       padding-left: 1rem;
       padding-right: 1rem;

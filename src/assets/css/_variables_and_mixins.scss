@@ -1,11 +1,9 @@
 /* BreakPoints */
-
 $xlarge: 1200px;
-$large: 991px;
+$large: 992px;
 $medium: 768px;
-$small: 480px;
+$small: 576px;
 $xsmall: 320px;
-
 
 /* colors */
 $primary: #4A90E2;
@@ -15,18 +13,15 @@ $gray: rgba(255, 255, 255, 0.5);
 $lightGray: rgba(255, 255, 255, 0.2);
 $lightBlack: #1E1E1E;
 
-
 $marginBase: 3.125rem; // 50px
 $marginMobile: 2.144rem; // 30px in mobile when include medium down
 $itemWidth: 32px;
 $marginItem: .65rem;
 $correction: -.75rem;
 
-
 /* static assets paths */
 $asset-base-path: '../../../static/' !default;
 $img-base-path: '../../../static/img/' !default;
-
 
 /// Asset URL builder
 /// @access private
@@ -37,7 +32,6 @@ $img-base-path: '../../../static/img/' !default;
   @return url($asset-base-path + '/' + $type + '/' + $file);
 }
 
-
 /// Image asset helper
 /// @access public
 /// @param {String} $file - Asset file name, including extension
@@ -46,8 +40,6 @@ $img-base-path: '../../../static/img/' !default;
 @function image($file) {
   @return asset('img', $file);
 }
-
-
 
 // fonts mixins
 %colfax_base {
@@ -61,16 +53,14 @@ $img-base-path: '../../../static/img/' !default;
   font-style: normal ;
 }
 
-
 /* Media Query Mixins */
-
 @mixin up($breakpoint) {
-  @media screen and (min-width: $breakpoint + 1) {
+  @media screen and (min-width: $breakpoint) {
     @content;
   }
 }
 @mixin down($breakpoint) {
-  @media screen and (max-width: $breakpoint) {
+  @media screen and (max-width: $breakpoint - 1) {
     @content;
   }
 }
@@ -90,15 +80,33 @@ $img-base-path: '../../../static/img/' !default;
     }
   }
 }
-
+@mixin large_up() {
+  @include up($large) {
+    @content;
+  }
+}
+@mixin large_down() {
+  @include down($large) {
+    @content;
+  }
+}
 @mixin medium_up() {
   @include up($medium) {
     @content;
   }
 }
-
 @mixin medium_down() {
   @include down($medium) {
+    @content;
+  }
+}
+@mixin small_up() {
+  @include up($small) {
+    @content;
+  }
+}
+@mixin small_down() {
+  @include down($small) {
     @content;
   }
 }

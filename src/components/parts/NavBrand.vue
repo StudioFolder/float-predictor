@@ -1,8 +1,10 @@
 <template>
     <nav class="nav-brand">
-        <div class="logo">
-            <div class="title">Aerocene</div><div class="subtitle">Float Predictor</div>
-        </div>
+        <router-link to="/flight-simulator">
+            <div class="logo">
+                <div class="title">Aerocene</div><div class="subtitle">Float Predictor</div>
+            </div>
+        </router-link>
         <transition name="fade">
         <p class="intro-description"
            v-if="isDescriptionActive">
