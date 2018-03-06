@@ -17,7 +17,7 @@
                     </b-nav-item>
                 </span>
             </transition>
-        </div>-
+        </div>
         <div class="play-animation">
             <div v-if="!isInfoboxOpen" class="hover-text elapsed-days">Day {{elapsedDays}}/16</div>
             <b-nav-item @click="toggleAnimation" class="--rounded --play">

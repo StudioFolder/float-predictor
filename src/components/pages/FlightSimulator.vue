@@ -187,6 +187,12 @@ export default {
     padding: $marginBase $marginBase*4/5;
     color: $gray;
     text-align: center;
+    @include between($medium, $large) {
+        position: absolute;
+        top: 300px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
     @include medium_down {
         width: auto;
         padding: $marginMobile*2/3;

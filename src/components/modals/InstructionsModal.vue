@@ -289,12 +289,11 @@ export default {
       floatSliderEnd: false,
       afterJourneySliderEnd: false,
       archiveSliderEnd: false,
-      mainSliderOptions: {
+      mainSliderBaseOptions: {
         direction: 'vertical',
         releaseOnEdges: true,
         slidesPerView: 1,
         autoHeight: true,
-        height: 639,
         allowTouchMove: false,
         mousewheel: false,
         pagination: {
@@ -306,7 +305,6 @@ export default {
       },
       internalSliderOptions: {
         direction: 'vertical',
-        height: 594,
         releaseOnEdges: true,
         mousewheel: true,
         slidesPerView: 1,
@@ -330,12 +328,36 @@ export default {
       }
       return '';
     },
+    slideHeight() {
+      let slideHeight = 639;
+      if (window.matchMedia('(max-height: 568px)').matches) {
+        slideHeight = 420;
+      } else {
+        /* the viewport is less than 400 pixels wide */
+      }
+      return slideHeight;
+    },
+    internalSlideHeight() {
+      let internalSlideHeight = 594;
+      if (window.matchMedia('(max-height: 568px)').matches) {
+        internalSlideHeight = this.slideHeight - 15;
+      } else {
+        /* the viewport is less than 400 pixels wide */
+      }
+      return internalSlideHeight;
+    },
+    mainSliderOptions() {
+      return {
+        ...this.mainSliderBaseOptions, height: this.slideHeight,
+      };
+    },
     journeysSliderOptions() {
       return {
         ...this.internalSliderOptions,
         pagination: {
           el: '.internal-pagination-0',
         },
+        height: this.internalSlideHeight,
       };
     },
     floatSliderOptions() {
@@ -344,6 +366,7 @@ export default {
         pagination: {
           el: '.internal-pagination-1',
         },
+        height: this.internalSlideHeight,
       };
     },
     afterJourneySliderOptions() {
@@ -352,6 +375,7 @@ export default {
         pagination: {
           el: '.internal-pagination-2',
         },
+        height: this.internalSlideHeight,
       };
     },
     archiveSliderOptions() {
@@ -360,6 +384,7 @@ export default {
         pagination: {
           el: '.internal-pagination-3',
         },
+        height: this.internalSlideHeight,
       };
     },
     sectionTitle() {
@@ -439,11 +464,6 @@ $lateralSpaceMobile: .5rem;
         @include medium_down {
             margin: 0;
         }
-        // margin-bottom: 0;
-        // display: flex;
-        // align-items: flex-end;
-        // min-height: 0;
-        // height: calc(100vh - 1.75rem);
     }
     .carousel-indicators {
         bottom: -25px;
@@ -472,6 +492,9 @@ $lateralSpaceMobile: .5rem;
     }
     .sections {
         color: $gray;
+        @include small_down {
+            display: none;
+        }
     }
     .section-title {
         width: 50%;
@@ -496,6 +519,9 @@ $lateralSpaceMobile: .5rem;
     .title {
         flex: 0 0 auto;
         margin: $marginItem 0;
+        @include small_down {
+            margin: $marginItem*3 0 $marginItem;
+        }
     }
     .animation-wrapper {
         text-align: center;
@@ -521,6 +547,10 @@ $lateralSpaceMobile: .5rem;
         padding: .5em 0;
         overflow: hidden;
         max-width: 35em;
+        @include small_down {
+            max-width: unset;
+            font-size: .9em;
+        }
         &.--upper {
             margin-top: 1em;
         }
@@ -545,6 +575,9 @@ $lateralSpaceMobile: .5rem;
     color: $gray;
     &.--down {
         cursor: pointer;
+    }
+    @include small_down {
+        bottom: 15px;
     }
 }
 .scroll-icon {

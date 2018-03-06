@@ -21,6 +21,11 @@ export default {
 <style lang="scss">
 @import "~css/_variables_and_mixins.scss";
 @import"~css/_typography.scss";
+@include between($medium, $large) {
+    body.flight-simulator .main-application.choosing-destination .site-header {
+        // z-index: 14;
+    }
+}
 .site-header {
     position: relative;
     z-index: 20;
@@ -53,47 +58,56 @@ export default {
         text-transform: uppercase;
         text-decoration: none;
         font-size: 1.5rem; // 24px
+
         .title {
             color: #FFF;
         }
         .subtitle {
-            @include large-up{
+            @include medium_up{
                 margin-bottom: 2.625rem; // 42px
             }
             color: $gray;
         }
-        @include large_down {
+        @include down($xlarge) {
+            font-size: 1.2rem;
+        }
+        @include medium_down {
             position: fixed;
             top: $marginMobile;
             left: $marginMobile;
             text-align: left;
-            transform: translateY(-25%);
             font-size: 1rem;
+        }
+        @include medium_down {
+            transform: translateY(-25%);
         }
     }
     .read-more {
         margin-top: 1.5rem;
         display: none;
+        @include down($xlarge) {
+            font-size: .85em;
+        }
     }
-    &.--pages .nav-brand{
+    &.--pages .nav-brand {
         opacity: 1;
         .intro-description {
             max-width: 230px;
             @include down($xlarge) {
                 font-size: .85em;
             }
-            @include large_down {
+            @include medium_down {
                 display: none;
             }
         }
         .read-more {
             display: block;
-            @include large_down {
+            @include medium_down {
                 display: none;
             }
         }
     }
-    &.--home .nav-brand{
+    &.--home .nav-brand {
         opacity: 1;
         text-align: center;
         top: 10%;

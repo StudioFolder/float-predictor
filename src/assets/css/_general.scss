@@ -110,8 +110,8 @@ article {
   .entry-subtitle {
     margin-bottom: 5rem;
     @include medium_up {
-      margin-left: -$marginBase;
-      margin-right: -$marginBase;
+      margin-left: -$marginBase*2;
+      margin-right: -$marginBase*2;
     }
   }
 }
@@ -168,6 +168,7 @@ body.modal-open {
 }
 .modal-header {
   color: #000;
+  background-color: #FFF;
   display: flex;
   align-items: center;
   padding: 2rem $marginBase;
@@ -210,10 +211,27 @@ body.modal-open {
 
 // modal large
 .modal-lg {
+  @include down($xlarge) {
+    margin: 0 auto;
+    height: 100%;
+    .modal-content {
+      height: 100%;
+      background-color: $lightBlack;
+      display: flex;
+    }
+    .modal-body {
+      flex: 2 1 auto;
+    }
+  }
   .modal-body {
     padding: $marginBase;
     @include medium_down {
       padding:$marginItem;
+    }
+  }
+  .modal-header {
+    @include medium_down {
+      padding: .8rem $marginMobile;
     }
   }
 }
