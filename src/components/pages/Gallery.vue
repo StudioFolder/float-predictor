@@ -66,7 +66,6 @@ export default {
   },
   mounted() {
     this.init();
-    this.$store.commit('flightSimulator/setVisualizationState', 7);
   },
   components: {
     BackToViz,
@@ -118,7 +117,7 @@ export default {
       return moment(dt).format('MMM Do, YYYY');
     },
     getSVGPath(item) {
-      return `http://54.190.63.219/svg/${String(item.id)}.svg`;
+      return `http://54.190.63.219/db/svg/${String(item.id)}.svg`;
     },
   },
 };
