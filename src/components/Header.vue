@@ -111,16 +111,16 @@ export default {
         opacity: 1;
         text-align: center;
         top: 10%;
-        @include large_up {
+        @include medium_up {
             left: 50%;
             transform: translateX(-50%);
         }
         .intro-description {
             @extend .h4;
-            @include large_up {
+            @include medium_up {
                 max-width: 450px;
             }
-            @include large_down {
+            @include medium_down {
                 text-align: left;
                 font-size: 1em;
                 line-height: 1.45;
