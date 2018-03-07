@@ -330,10 +330,8 @@ export default {
     },
     slideHeight() {
       let slideHeight = 639;
-      if (window.matchMedia('(max-height: 568px)').matches) {
-        slideHeight = 420;
-      } else {
-        /* the viewport is less than 400 pixels wide */
+      if (window.matchMedia('(max-width: 1200px)').matches) {
+        slideHeight = window.innerHeight - 148;
       }
       return slideHeight;
     },
@@ -341,8 +339,8 @@ export default {
       let internalSlideHeight = 594;
       if (window.matchMedia('(max-height: 568px)').matches) {
         internalSlideHeight = this.slideHeight - 15;
-      } else {
-        /* the viewport is less than 400 pixels wide */
+      } else if (window.matchMedia('(max-height: 667px)').matches) {
+        internalSlideHeight = this.slideHeight - 15;
       }
       return internalSlideHeight;
     },
@@ -520,7 +518,7 @@ $lateralSpaceMobile: .5rem;
         flex: 0 0 auto;
         margin: $marginItem 0;
         @include small_down {
-            margin: $marginItem*3 0 $marginItem;
+            margin: $marginItem*2 0 $marginItem;
         }
     }
     .animation-wrapper {
