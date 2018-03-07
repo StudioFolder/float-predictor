@@ -21,24 +21,37 @@ export default {
 <style lang="scss">
 @import "~css/_variables_and_mixins.scss";
 @import"~css/_typography.scss";
-@include between($medium, $large) {
-    body.flight-simulator .main-application.choosing-destination .site-header {
-        // z-index: 14;
-    }
-}
 .site-header {
     position: relative;
     z-index: 20;
-    background: transparent;
+    background-color: transparent;
     @include large_down {
         position: fixed;
         top: 0;
         height: 80px;
         width: 100%;
-        background: black;
         &.is-onboard {
             display: none;
         }
+    }
+    &:before {
+        content: '';
+        display: block;
+        height: 100%;
+        position: absolute;
+        top: 0; left: 0;
+        opacity: 0;
+        width: 100%;
+        z-index: -100;
+        transition: opacity 0.4s;
+        background: linear-gradient( to bottom,
+                rgba(0,0,0,1) 0%,
+                rgba(0,0,0,1) 40%,
+                rgba(0,0,0,.9) 90%,
+                rgba(0,0,0,0) 100%);
+    }
+    &.--scroll:before {
+        opacity: 1;
     }
     .nav-brand {
         color: #fff;

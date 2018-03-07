@@ -49,7 +49,7 @@ export default {
   name: 'App',
   data() {
     return {
-      offsetHeight: 0,
+      contentOffset: 0,
       transitionEnter: false,
       transitionLeave: false,
       isBottom: false,
@@ -86,11 +86,13 @@ export default {
       } else {
         this.$store.commit('general/setAnimationHeight', 'normal');
       }
-      // for the case in which this pages are landing pages
+      // for the cases in which this pages are landing pages
       if (this.$route.name === 'about' || this.$route.name === 'aerocene-explorer') {
         this.$store.commit('general/setAnimationHeight', 'small');
+        this.$store.commit('flightSimulator/setVisualizationState', 6);
+      } else if (this.$route.name === 'gallery') {
+        this.$store.commit('flightSimulator/setVisualizationState', 7);
       }
-
       // animate nav brand
       if (this.$route.name === 'home-page') {
         this.$refs.siteHeader.$el.classList.remove('--pages');
@@ -99,10 +101,12 @@ export default {
         this.$refs.siteHeader.$el.classList.remove('--home');
         this.$refs.siteHeader.$el.classList.add('--pages');
       }
-
       // set bottom class
       this.isBottom = (this.$route.name === 'gallery');
       this.transitionEnter = false;
+
+      // set new content offset
+      this.setContentOffset();
     },
     beforeLeave() {
       this.transitionLeave = true;
@@ -116,6 +120,41 @@ export default {
         this.isBottom = (this.$route.name === 'gallery');
       }
     },
+    async setContentOffset() {
+      const title = await this.getTitleElement();
+      let contentOffset = 0;
+      if (title) {
+        contentOffset = title.offsetTop - title.offsetHeight;
+      }
+      this.contentOffset = contentOffset;
+      if (window.pageYOffset > contentOffset) {
+        this.$refs.siteHeader.$el.classList.add('--scroll');
+      } else {
+        this.$refs.siteHeader.$el.classList.remove('--scroll');
+      }
+    },
+    getTitleElement() {
+      return new Promise((resolve) => {
+        resolve(document.querySelector('.entry-title'));
+      });
+    },
+    handleScroll() {
+      if (window.pageYOffset > this.contentOffset) {
+        this.$refs.siteHeader.$el.classList.add('--scroll');
+      } else {
+        this.$refs.siteHeader.$el.classList.remove('--scroll');
+      }
+    },
+  },
+  created() {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      window.addEventListener('scroll', this.handleScroll);
+    }
+  },
+  destroyed() {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      window.removeEventListener('scroll', this.handleScroll);
+    }
   },
 };
 </script>
