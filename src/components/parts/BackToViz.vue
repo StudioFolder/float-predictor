@@ -68,12 +68,24 @@ $borderWidth: calc((100vw - 36rem)/2); // 36rem is the article max width
         opacity: 0;
     }
 }
+
 body.gallery .back-to-viz {
+    position: fixed;
     top: calc(#{$marginBase} + 50vh);
+    left: calc(12rem*0.5 - 120px/2); // to center the object on various screen
     bottom: unset;
-    @include medium_down {
+    @include up(1440px) {
+        left: calc(calc((100vw - 1100px)/2)*0.5 - 120px/2);;
+    }
+    @include down($large) {
+        // left: calc(6rem*0.5 - 120px/2); // to center the object on various screen
+    }
+    @include down($large) {
+        position: absolute;
+        background-color: $lightBlack;
         top: 0;
-        transform: translateY(-100%);
+        left: 50%;
+        transform: translate(-50%, 200%);
         z-index: 9;
     }
     i {

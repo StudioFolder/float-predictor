@@ -1,7 +1,6 @@
 <template>
   <div id="gallery" class="main-content gallery" v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-    <b-container >
       <h1 class="entry-title">The Aeroglyphs Archive</h1>
       <h3 class="entry-subtitle">
         Each imaginary Aerocene journey is an air signature
@@ -42,8 +41,7 @@
       <div v-if="!done" class='small-loader'>
         <Loading></Loading>
       </div>
-    </b-container>
-    <back-to-viz />
+        <back-to-viz />
   </div>
 </template>
 
@@ -124,21 +122,25 @@ export default {
 </script>
 <style scoped lang="scss">
   @import '~css/_variables_and_mixins.scss';
-  .container {
-    padding-left: 9rem;
-    padding-right: 9rem;
-    @include down($large) {
-      padding-left: 4rem;
-      padding-right: 4rem;
-    }
-    @include medium_down {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-  }
   .main-content {
     padding-top: 9.375rem;
+      padding-left: 12rem;
+      padding-right: 12rem;
+      @include up(1440px) {
+          padding-left: 0;
+          padding-right: 0;
+          max-width: 1100px;
+      }
+      @include down($large) {
+          padding-left: 6rem;
+          padding-right: 6rem;
+      }
+      @include medium_down {
+          padding-left: 1rem;
+          padding-right: 1rem;
+      }
     text-align: center;
+    margin: 0 auto;
   }
   .path-wrapper {
     display: flex;
