@@ -77,28 +77,33 @@ router.beforeEach((to, from, next) => {
 
   let transitionName = 'fade';
   let transitionMode = '';
-  // from middle to top -> slide
-  if (fromMiddle && toTop) {
-    transitionName = 'fade-middle-to-top';
+
+  if (fromMiddle) { // From Middle
+    if (toBottom) {
+      store.commit('flightSimulator/setVisualizationState', 7); // start to move the earth
+      transitionName = 'middle-to-bottom';
+      transitionMode = 'out-in';
+    } else if (toTop) {
+      transitionName = 'fade-middle-to-top';
+    }
     store.commit('flightSimulator/setFocusedExplorer', 0);
-  } else if (fromTop && toMiddle) {
-    transitionName = 'top-to-middle';
-    // transitionMode = 'out-in';
-  } else if (fromMiddle && toBottom) {
-    store.commit('flightSimulator/setVisualizationState', 7); // start to move the earth
-    transitionName = 'middle-to-bottom';
-    transitionMode = 'out-in';
-  } else if (fromTop && toTop) {
-    transitionMode = 'in-out';
-  } else if (fromBottom && toMiddle) {
-    transitionName = 'bottom-to-middle';
-  } else if (fromBottom && toTop) {
-    transitionName = 'bottom-to-top';
-    transitionMode = 'out-in';
-    store.commit('flightSimulator/setVisualizationState', 6);
-  } else if (fromTop && toBottom) {
-    transitionName = 'top-to-bottom';
-    store.commit('flightSimulator/setVisualizationState', 7);
+  } else if (fromTop) { // From Top
+    if (toMiddle) {
+      transitionName = 'top-to-middle';
+    } else if (toBottom) {
+      transitionName = 'top-to-bottom';
+      store.commit('flightSimulator/setVisualizationState', 7);
+    } else {
+      transitionMode = 'in-out';
+    }
+  } else if (fromBottom) { // From Bottom
+    if (toTop) {
+      transitionName = 'bottom-to-top';
+      transitionMode = 'out-in';
+      store.commit('flightSimulator/setVisualizationState', 6);
+    } else if (fromBottom && toMiddle) {
+      transitionName = 'bottom-to-middle';
+    }
   }
   // if to middle we need some logic to change the viz state
   if (toMiddle) {

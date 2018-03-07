@@ -2,7 +2,7 @@
     <div id="app"
          class="main-application" :class="classObject">
         <site-header ref="siteHeader" />
-        <dashboard />
+        <dashboard v-show="flightToolsActive"/>
         <div class="site-content" :class="{'--bottom': isBottom}">
             <div class="router-view" ref="content">
                 <transition
@@ -56,6 +56,9 @@ export default {
     };
   },
   computed: {
+    flightToolsActive() {
+      return this.$route.name === 'flight-simulator';
+    },
     transitionName() { return this.$store.state.general.transitionName; },
     transitionMode() { return this.$store.state.general.transitionMode; },
     isSmall() { return this.$store.state.general.animationHeight === 'small'; },
