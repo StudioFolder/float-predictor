@@ -44,9 +44,7 @@
       <div v-if="!done" class='small-loader'>
         <Loading></Loading>
       </div>
-      <transition name="fade">
         <back-to-viz />
-      </transition>
   </div>
 </template>
 

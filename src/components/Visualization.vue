@@ -1092,7 +1092,7 @@ export default {
         case STATE_UNFOCUSED_PAGES: {
           pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [60, 0.7, Math.PI * 0.5];
+          const ev = [60, 0.65, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
@@ -1111,10 +1111,10 @@ export default {
           break;
         }
         case STATE_UNFOCUSED_GALLERY: {
-          const timeInt = (this.$store.state.general.transitionName === 'middle-to-bottom') ? 0.1 : 0.2;
+          const timeInt = (this.$store.state.general.transitionName === 'middle-to-bottom') ? 0.1 : 0.4;
           pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [-70, 0.7, Math.PI * 0.5];
+          const ev = [-60, 0.65, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,

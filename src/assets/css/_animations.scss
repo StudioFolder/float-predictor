@@ -33,17 +33,25 @@ $duration: 1s;
 }
 
 // fade middle to bottom
+.middle-to-bottom-leave-active {
+  opacity: 0;
+  transition: opacity $duration*2/3 ease;
+}
 .main-application.middle-to-bottom-entering{
   .main-visualization-wrapper {
     animation: partial-translate-up $duration*2 ease-out;
   }
 }
 .middle-to-bottom-enter {
-  min-height: 100vh; // the glyphs are still loading
+  //min-height: 100vh; // the glyphs are still loading
 }
 .middle-to-bottom-enter-active {
   animation: translate-up-from-bottom $duration*2 ease-out;
   min-height: 100vh; // the glyphs are still loading
+  .back-to-viz {
+    opacity: 0;
+    transition: opacity $duration ease;
+  }
 }
 
 
@@ -112,8 +120,9 @@ $duration: 1s;
   }
 }
 .top-to-bottom-leave-active {
+  opacity: 0;
   height: 0 !important;
-  transition: height $duration*0.75 linear;
+  transition: height $duration*3/2 linear, opacity $duration*3/2 ease;
   // animation: translate-up $duration*0.75 linear;
 }
 .top-to-bottom-enter-active {

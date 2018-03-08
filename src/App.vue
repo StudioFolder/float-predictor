@@ -135,6 +135,8 @@ export default {
         TweenLite.to('.top-to-bottom-leave-active',
           this.duration * 2,
           { y: height * -1 });
+      } else if (this.transitionName === 'bottom-to-middle') {
+        TweenLite.to(window, this.duration, { scrollTo: 0 });
       }
     },
     afterLeave(el) {
