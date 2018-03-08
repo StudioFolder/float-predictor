@@ -1343,7 +1343,7 @@ export default {
 
     animate() {
       fps += 1;
-      if (this.loading >= 1 && this.playing) {
+      if (this.loading >= 1 && this.playing && this.selected < 0) {
         /*
         const s = (pars.elapsed_days * 5.0) % 1.0;
         const mag = pars.layers.wind.magnitude * 0.2 + pars.layers.wind.magnitude * 0.8 * s;
