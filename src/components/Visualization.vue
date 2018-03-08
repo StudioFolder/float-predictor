@@ -432,7 +432,7 @@ export default {
         pars.skip_frame = 1;
         pars.use_bump = false;
         pars.antialias = false;
-        pars.winds = 2;
+        // pars.winds = 2;
         pars.layers.wind.opacity = 1.0;
         pars.layers.wind.magnitude = 0.7;
       }
@@ -488,7 +488,6 @@ export default {
         }
       });
       if (this.selected !== selected) {
-        this.playing = selected < 0;
         if (selected < 0) {
           selectLabel.setVisible(false);
           if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
@@ -527,8 +526,8 @@ export default {
         console.log(this.selected);
         if (this.selected >= 0) {
           this.focusedExplorer = this.selected + 1;
+          this.selected = -1;
         }
-        this.playing = true;
         selectLabel.setVisible(false);
       }
     },
@@ -1343,7 +1342,7 @@ export default {
 
     animate() {
       fps += 1;
-      if (this.loading >= 1 && this.playing) {
+      if (this.loading >= 1 && this.playing && this.selected < 0) {
         /*
         const s = (pars.elapsed_days * 5.0) % 1.0;
         const mag = pars.layers.wind.magnitude * 0.2 + pars.layers.wind.magnitude * 0.8 * s;
@@ -1572,7 +1571,7 @@ export default {
             distance: explorers[this.minTrack].totalDistance * 0.001,
             path: data,
             svg: this.svg,
-            color: webColors[this.minTrack],
+            explorerIndex: this.minTrack,
           });
           // for (var z = 0; z < 300; z += 1) {
           // setTimeout(() =>
@@ -1580,10 +1579,7 @@ export default {
             method: 'post',
             body: s,
           }).then(
-            (response) => {
-              console.log(response);
-              return response.json();
-            },
+            response => response.json(),
           ).then((jsonData) => {
             console.log('***********************');
             console.log(jsonData);
