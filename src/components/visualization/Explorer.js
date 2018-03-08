@@ -12,7 +12,7 @@ class Explorer {
   constructor(scene, shift = 0, nPoints = 1) {
     this.nPoints = nPoints;
     MAX_POINTS = 128 * this.nPoints;
-    console.log(MAX_POINTS);
+    // console.log(MAX_POINTS);
     this.scene = scene;
     this.coordinates = [];
     this.index = 0;

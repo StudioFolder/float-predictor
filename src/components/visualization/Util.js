@@ -15,7 +15,7 @@ export default {
 
   getEarthPolarRotation(dt) {
     const d = this.dayOfYear(dt);
-    console.log(d);
+    // console.log(d);
     const interval = 183.0;
     const june22 = 173;
     const december22 = 356;

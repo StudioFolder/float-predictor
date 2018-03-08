@@ -206,6 +206,24 @@ body.modal-open {
   .modal-body {
     padding: $marginBase/2;
   }
+  @include medium_down{
+      height: 100%;
+    .modal-content {
+      height: 100%;
+      border: none;
+      display: flex;
+      flex-flow: column;
+      .modal-body {
+        flex: 1 0 auto;
+        display: flex;
+        flex-flow: column;
+        justify-content: space-evenly;
+      }
+      .modal-header {
+        flex: 0 0 auto;
+      }
+    }
+  }
 }
 // modal medium
 

@@ -117,11 +117,11 @@ class WindVisualization {
     const urls = [];
     for (let i = 0; i < 16; i += 1) {
       urls.push(`static/data/gfs/data/${this.pressure}/${i * 24}.json`);
-      console.log(urls[urls.length - 1]);
+      // console.log(urls[urls.length - 1]);
     }
     this.downloadData(urls, 0,
-      (v) => { console.log(`Wind data download: ${1 + v}/16`); },
-      () => { console.log('Wind data download: finished'); },
+      /* (v) => { console.log(`Wind data download: ${1 + v}/16`);}, */
+      /* () => { console.log('Wind data download: finished'); }, */
     );
   }
 

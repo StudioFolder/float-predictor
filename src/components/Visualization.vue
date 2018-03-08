@@ -49,7 +49,7 @@ const CATMULL_NUM_POINTS = 3;
 const radius = 200;
 // const EARTH_RADIUS = 6378.137
 // const SCENE_SCALE = EARTH_RADIUS / radius
-const INITIAL_ZOOM = 0.5;
+const INITIAL_ZOOM = (window.matchMedia('(orientation: portrait)').matches) ? 0.4 : 0.5;
 const axesRotation = Util.getEarthPolarRotation(new Date());
 const colors = [0x003769, 0x2e6a9c, 0x0095d7, 0x587a98, 0x7eafd4, 0xb9e5fb, 0x656868, 0xffffff];
 const webColors = ['#003769', '#2e6a9c', '#0095d7', '#587a98', '#7eafd4', '#b9e5fb', '#656868', '#ffffff'];
@@ -280,8 +280,8 @@ export default {
     },
 
     altitudeLevel(altitude) {
-      console.log('Setting altitude value');
-      console.log(altitude);
+      // console.log('Setting altitude value');
+      // console.log(altitude);
       pars.altitudeLevel = altitude;
       this.setWindVisualization(altitude);
     },
@@ -306,11 +306,11 @@ export default {
       }
     },
     departure(d) {
-      console.log('Setting departure...');
+      // console.log('Setting departure...');
       if (d !== undefined && d.city && d.lat && d.lng && d.country) {
-        console.log(d);
+        // console.log(d);
         departure = { lat: d.lat, lng: d.lng, country: d.country, city: d.city };
-        console.log(`Departure: ${d.lat} ${d.lng} ${d.city} `);
+        // console.log(`Departure: ${d.lat} ${d.lng} ${d.city} `);
         const t = Util.latLon2XYZPosition(d.lat, d.lng, radius);
         departureLabel.set(d.city, t);
         const azimuth = ((d.lng + 90) / 360.0) * 2 * Math.PI;
@@ -320,17 +320,17 @@ export default {
         const sunP = new THREE.Vector3(Math.sin(-r) * radius, Math.sin(axesRotation) * radius, Math.cos(-r) * radius);
         const angle = departureLabel.getPosition().angleTo(sunP);
         this.coordinatesValid = angle < 1.5;
-        console.log(`Angle: ${angle} <= 1.5 ?`);
+        // console.log(`Angle: ${angle} <= 1.5 ?`);
       } else {
         console.log('Invalid departure');
       }
     },
     destination(d) {
-      console.log('Setting destination');
-      console.log(d);
+      // console.log('Setting destination');
+      // console.log(d);
       if (d !== undefined && d.city && d.lat && d.lng && d.country) {
         destination = { lat: d.lat, lng: d.lng, country: d.country, city: d.city };
-        console.log(`Destination: ${d.lat} ${d.lng} ${d.city} `);
+        // console.log(`Destination: ${d.lat} ${d.lng} ${d.city} `);
         const t = Util.latLon2XYZPosition(destination.lat, d.lng, radius);
         destinationLabel.set(d.city, t);
       } else {
@@ -416,7 +416,7 @@ export default {
   },
 
   beforeDestroy() {
-    console.log('unmounted');
+    // console.log('unmounted');
     this.alive = false;
     if (gui) gui.destroy();
   },
@@ -523,7 +523,7 @@ export default {
     onMouseClick(event) {
       if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
         this.onMouseMove(event);
-        console.log(this.selected);
+        // console.log(this.selected);
         if (this.selected >= 0) {
           this.focusedExplorer = this.selected + 1;
           this.selected = -1;
@@ -550,7 +550,7 @@ export default {
                 if (this.lowFPS <= 0) {
                   if (pars.skip_frame < 3) {
                     pars.skip_frame += 1;
-                    console.log(`-------------------------- Setting skip to ${pars.skip_frame}`);
+                    // console.log(`-------------------------- Setting skip to ${pars.skip_frame}`);
                   } else if (renderer === rendererAA) {
                     this.setAntialias(false);
                   } else {
@@ -562,7 +562,7 @@ export default {
                     }
                     if (pars.pixel_ratio !== lpr) {
                       renderer.setPixelRatio(pars.pixel_ratio);
-                      console.log(`--------------------------------- Setting PixelRatio to ${pars.pixel_ratio}`);
+                      // console.log(`--------------------------------- Setting PixelRatio to ${pars.pixel_ratio}`);
                     }
                   }
                   this.lowFPS = COUNTDOWN;
@@ -594,7 +594,7 @@ export default {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
               this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitude() * 100.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
-              console.log(`Altitude: ${this.focusedExplorerAltitude}`);
+              // console.log(`Altitude: ${this.focusedExplorerAltitude}`);
               const coord = Util.XYZ2LatLon(explorers[this.onboardIndex].animatingSphere.position);
               const cities = Cities.get(coord);
               for (let i = 0; i < cityLabels.length; i += 1) {
@@ -822,7 +822,7 @@ export default {
       scene.add(emisphereSphere);
       emisphereSphere.visible = false;
       emisphereSprite.visible = false;
-      console.log(`${earthSphere.castShadow},${renderer.castShadow} ${pointLight.castShadow} ${ambientLight.castShadow}`);
+      // console.log(`${earthSphere.castShadow},${renderer.castShadow} ${pointLight.castShadow} ${ambientLight.castShadow}`);
       if (pars.use_bump) { earthSphere.material.bumpMap = bumpTexture; } else { earthSphere.material.bumpMap = undefined; }
       earthSphere.material.bumpScale = pars.bump_scale;
 
@@ -845,14 +845,14 @@ export default {
 
     loadTextures() {
       // textures
-      console.log('loading textures');
+      // console.log('loading textures');
       const afterLoad = () => {
         this.loading += 0.34;
-        console.log(`loading: ${this.loading}`);
+        // console.log(`loading: ${this.loading}`);
       };
-      bumpTexture = new THREE.TextureLoader().load(bumpMap, () => { console.log('bumb loaded'); afterLoad(); });
-      colorTexture = new THREE.TextureLoader().load(colorMap, () => { console.log('color loaded'); afterLoad(); });
-      nightMapTexture = new THREE.TextureLoader().load(nightModeMap, () => { console.log('alpha loaded'); afterLoad(); });
+      bumpTexture = new THREE.TextureLoader().load(bumpMap, () => { /* console.log('bumb loaded'); */ afterLoad(); });
+      colorTexture = new THREE.TextureLoader().load(colorMap, () => { /* console.log('color loaded'); */ afterLoad(); });
+      nightMapTexture = new THREE.TextureLoader().load(nightModeMap, () => { /* console.log('alpha loaded'); */ afterLoad(); });
     },
 
     updateLabels() {
@@ -1012,7 +1012,7 @@ export default {
     },
 
     setState(state) {
-      console.log(`Setting state: ${state}`);
+      // console.log(`Setting state: ${state}`);
       switch (state) {
         case STATE_IDLE: {
           pars.auto_rotate = false;
@@ -1216,7 +1216,7 @@ export default {
       const iv = [controls.getAzimuthalAngle(), controls.getPolarAngle()];
       const ev = [azimuth, polar];
       if (config.zoom) {
-        console.log(`Zooming from ${this.getScale()} to ${config.zoom}`);
+        // console.log(`Zooming from ${this.getScale()} to ${config.zoom}`);
         iv.push(this.getScale());
         ev.push(config.zoom);
       }
@@ -1270,15 +1270,15 @@ export default {
       // controls.update();
       const iv = [controls.getAzimuthalAngle(), controls.getPolarAngle()];
       const ev = [azimuth, polar];
-      console.log(`Zooming from ${this.getScale()} to ${config.zoom}`);
+      // console.log(`Zooming from ${this.getScale()} to ${config.zoom}`);
       iv.push(this.getScale());
       ev.push(INITIAL_ZOOM);
       iv.push(controls.target.x, controls.target.y, controls.target.z);
       ev.push(0, 0, 0);
       iv.push(camera.position.length());
       ev.push(radius * 1.72);
-      console.log(camera.position);
-      console.log(`${camera.position.length()} * ${radius * 1.72}`);
+      // console.log(camera.position);
+      // console.log(`${camera.position.length()} * ${radius * 1.72}`);
       animator.start({
         init_values: iv,
         end_values: ev,
@@ -1342,7 +1342,7 @@ export default {
 
     animate() {
       fps += 1;
-      if (this.loading >= 1 && this.playing && this.selected < 0) {
+      if (this.loading >= 1 && this.playing) {
         /*
         const s = (pars.elapsed_days * 5.0) % 1.0;
         const mag = pars.layers.wind.magnitude * 0.2 + pars.layers.wind.magnitude * 0.8 * s;
@@ -1467,7 +1467,7 @@ export default {
     },
 
     clear() {
-      console.log('reset');
+      // console.log('reset');
       pars.elapsed_days = 0;
       this.hideExplorerDates();
       _.each(explorers, (e) => { e.reset(new THREE.Vector3(0, 0, 0)); });
@@ -1581,8 +1581,8 @@ export default {
           }).then(
             response => response.json(),
           ).then((jsonData) => {
-            console.log('***********************');
-            console.log(jsonData);
+            // console.log('***********************');
+            // console.log(jsonData);
             this.trajectoryId = jsonData.id;
           });
         // , z * 500)

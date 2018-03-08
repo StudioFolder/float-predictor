@@ -155,7 +155,7 @@ export default {
                 padding: $marginItem;
                 display: flex;
                 flex-flow: column;
-                justify-content: space-between;
+                justify-content: space-around;
             }
             .list-item {
                 display: flex;

@@ -56,7 +56,7 @@ class WindVisualization {
   }
 
   setColor(b, a) {
-    console.log(this.lines.geometry.attributes.color);
+    // console.log(this.lines.geometry.attributes.color);
     const colors = this.lines.geometry.attributes.color.array;
     for (let i = 0; i < this.colors.length; i += 6) {
       colors[i] = a.r;

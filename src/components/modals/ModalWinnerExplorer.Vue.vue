@@ -11,9 +11,10 @@
         <div class="aeroglyph" v-html="winningExplorerData.svg"></div>
         <div class="message">
             The Aerocene Sculpture that left from <b>{{departure.city}}</b>
-            on <b>{{depDate}}</b>
-            arrived within <b>{{winningExplorerData.minDist}}km</b>
-            from <b>{{destination.city}}</b> in <b>{{winningExplorerData.minTime}} days.</b>
+            on <strong>{{depDate}}</strong>
+            arrived within <strong>{{winningExplorerData.minDist}}km</strong>
+            from <strong>{{destination.city}}</strong> in
+            <strong>{{winningExplorerData.minTime}} days.</strong>
         </div>
         <b-form @submit="onSubmit">
             <div class="name-selector-group">
@@ -112,6 +113,10 @@ export default {
         font-size: 1rem;
         text-align: center;
         margin-bottom: 1rem;
+        color: rgba(255,255,255,.8);
+        strong {
+            color: #FFF;
+        }
     }
     .input-label {
         margin-top: 20px;
@@ -153,6 +158,18 @@ export default {
             height: 24px;
             background-color: $lightGray;
             margin-bottom: 5px;
+        }
+    }
+    @media screen and (max-height: 800px) {
+        .modal-header {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+        .modal-body {
+            padding-top: .1rem;
+        }
+        .bottom-links {
+            margin-top: 1.5rem;
         }
     }
 }
