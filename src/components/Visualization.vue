@@ -448,6 +448,7 @@ export default {
         city: 'Tokio',
         country: 'Japan',
       };
+      this.selected = -1;
       this.initTHREE();
       this.initStarfield();
       this.setupExplorers();
