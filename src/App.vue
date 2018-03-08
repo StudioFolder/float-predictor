@@ -33,7 +33,9 @@
 </template>
 
 <script>
-
+import { TweenLite } from 'gsap';
+// eslint-disable-next-line
+import ScrollToPlugin from 'gsap/ScrollToPlugin';
 import visualization from './components/Visualization';
 import siteHeader from './components/Header';
 import dashboard from './components/Dashboard';
@@ -53,6 +55,7 @@ export default {
       transitionEnter: false,
       transitionLeave: false,
       isBottom: false,
+      duration: 0.9,
     };
   },
   computed: {
@@ -78,6 +81,10 @@ export default {
       this.transitionEnter = true;
     },
     onEnter() {
+      if (this.transitionName === 'bottom-to-top') {
+        const height = document.querySelector('.bottom-to-top-enter-active article').offsetHeight;
+        TweenLite.fromTo(window, this.duration * 2, { scrollTo: height }, { scrollTo: 0 });
+      }
     },
     afterEnter() {
       // after enter of new element
@@ -112,6 +119,18 @@ export default {
       this.transitionLeave = true;
     },
     onLeave() {
+      if (this.transitionName === 'fade-middle-to-top') {
+        const height = document.querySelector('.fade-middle-to-top-enter-active article').offsetHeight;
+        TweenLite.to('.fade-middle-to-top-leave-active',
+          this.duration,
+          { y: height });
+        TweenLite.from('.fade-middle-to-top-enter-active',
+          this.duration,
+          { y: height * -1 });
+      } else if (this.transitionName === 'top-to-middle') {
+        const height = document.querySelector('.top-to-middle-leave-active article').offsetHeight;
+        TweenLite.to(window, this.duration, { scrollTo: height });
+      }
     },
     afterLeave(el) {
       this.transitionLeave = false;

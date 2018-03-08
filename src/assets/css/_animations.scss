@@ -1,4 +1,4 @@
-$duration: .9s;
+$duration: 1s;
 // fade
 .fade-enter-active, .fade-leave-active {
   transition: opacity .4s ease;
@@ -30,7 +30,6 @@ $duration: .9s;
 }
 .fade-middle-to-top-enter-active{
   transition: height $duration ease;
-  animation: translate-down-from-top $duration ease; // transition isn't working
 }
 
 // fade middle to bottom
@@ -60,17 +59,16 @@ $duration: .9s;
 }
 
 
+
 // top to middle
-.main-application.top-to-middle-leaving {
+.main-application.top-to-middle-entering {
   .main-visualization-wrapper {
     height: 100vh;
-    transition: height $duration ease;
   }
 }
 .top-to-middle-leave-active {
-  height: 0 !important;
-  transition: height $duration ease;
-  animation: translate-up $duration ease;
+  opacity: 0;
+  transition: opacity $duration ease;
 }
 .top-to-middle-enter {
   opacity: 0;
@@ -84,16 +82,18 @@ $duration: .9s;
 // Bottom to top
 .main-application.bottom-to-top-leaving{
   .main-visualization-wrapper {
-    animation: partial-translate-down $duration*1.2 ease-in;
+    animation: partial-translate-down $duration ease-in;
   }
 }
 .bottom-to-top-leave-active {
   width: 100%;
-  animation: translate-down-to-bottom $duration*1.2 ease-in;
+  animation: translate-down-to-bottom $duration ease-in;
+}
+.bottom-to-top-enter {
+  opacity: 0;
 }
 .bottom-to-top-enter-active {
-  transition: height $duration*2 linear;
-  animation: translate-down-from-top $duration*2 linear;
+  transition: opacity $duration ease;
 }
 
 
@@ -135,7 +135,7 @@ $duration: .9s;
     padding-top: 50vh;
   }
   100% {
-    padding-top: 180vh;
+    padding-top: 120vh;
   }
 }
 @keyframes translate-up {

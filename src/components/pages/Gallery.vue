@@ -8,7 +8,7 @@
       </h3>
       <div class="stats">
         <div class="saved">
-          <div class="h2">{{parseInt(data[0].id).toLocaleString('en')}}</div>
+          <div class="h2"></div>
           <p>Aeroglyphs saved</p>
         </div>
         <div class="travelled">
@@ -44,7 +44,9 @@
       <div v-if="!done" class='small-loader'>
         <Loading></Loading>
       </div>
+      <transition name="fade">
         <back-to-viz />
+      </transition>
   </div>
 </template>
 

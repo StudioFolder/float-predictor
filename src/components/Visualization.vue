@@ -50,6 +50,8 @@ const radius = 200;
 // const EARTH_RADIUS = 6378.137
 // const SCENE_SCALE = EARTH_RADIUS / radius
 const INITIAL_ZOOM = (window.matchMedia('(orientation: portrait)').matches) ? 0.4 : 0.5;
+const responsiveZoom = (window.matchMedia('(orientation: portrait)').matches) ? 0.5 : 0.8;
+const responsiveY = (window.matchMedia('(orientation: portrait)').matches) ? 45 : 150;
 const axesRotation = Util.getEarthPolarRotation(new Date());
 const colors = [0x003769, 0x2e6a9c, 0x0095d7, 0x587a98, 0x7eafd4, 0xb9e5fb, 0x656868, 0xffffff];
 const webColors = ['#003769', '#2e6a9c', '#0095d7', '#587a98', '#7eafd4', '#b9e5fb', '#656868', '#ffffff'];
@@ -428,7 +430,7 @@ export default {
 
     initVis() {
       if (process.env.NODE_ENV === 'development') {
-        pars.speed_d_x_sec = 0.1;
+        pars.speed_d_x_sec = 0.09;
         pars.skip_frame = 1;
         pars.use_bump = false;
         pars.antialias = false;
@@ -1069,7 +1071,7 @@ export default {
         case STATE_UNFOCUSED: {
           pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [150, 0.8, Math.PI * 0.5];
+          const ev = [responsiveY, responsiveZoom, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
@@ -1095,7 +1097,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.3,
+            time_interval: 0.15,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1116,7 +1118,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.18,
+            time_interval: 0.1,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },
@@ -1133,7 +1135,7 @@ export default {
           pars.auto_rotate = true;
           this.clear();
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [150, 0.8, Math.PI * 0.5];
+          const ev = [responsiveY, responsiveZoom, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,
@@ -1603,7 +1605,7 @@ export default {
 
 .main-visualization {
   width: 100vw;
-  height: 200vh;
+  height: 100vh;
   position: relative;
   z-index: 0;
 }
