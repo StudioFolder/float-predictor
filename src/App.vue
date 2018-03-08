@@ -55,7 +55,7 @@ export default {
       transitionEnter: false,
       transitionLeave: false,
       isBottom: false,
-      duration: 0.9,
+      duration: 1,
     };
   },
   computed: {
@@ -88,7 +88,7 @@ export default {
     },
     afterEnter() {
       // after enter of new element
-      if (this.transitionName === 'fade-middle-to-top'/* || this.transitionName === 'to-bottom' */) {
+      if (this.transitionName === 'fade-middle-to-top') {
         this.$store.commit('general/setAnimationHeight', 'small');
       } else {
         this.$store.commit('general/setAnimationHeight', 'normal');
@@ -122,14 +122,19 @@ export default {
       if (this.transitionName === 'fade-middle-to-top') {
         const height = document.querySelector('.fade-middle-to-top-enter-active article').offsetHeight;
         TweenLite.to('.fade-middle-to-top-leave-active',
-          this.duration,
+          this.duration * 2,
           { y: height });
         TweenLite.from('.fade-middle-to-top-enter-active',
-          this.duration,
+          this.duration * 2,
           { y: height * -1 });
       } else if (this.transitionName === 'top-to-middle') {
         const height = document.querySelector('.top-to-middle-leave-active article').offsetHeight;
         TweenLite.to(window, this.duration, { scrollTo: height });
+      } else if (this.transitionName === 'top-to-bottom') {
+        const height = document.querySelector('.top-to-bottom-leave-active article').offsetHeight;
+        TweenLite.to('.top-to-bottom-leave-active',
+          this.duration * 2,
+          { y: height * -1 });
       }
     },
     afterLeave(el) {

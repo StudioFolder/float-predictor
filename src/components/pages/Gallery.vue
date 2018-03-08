@@ -8,7 +8,7 @@
       </h3>
       <div class="stats">
         <div class="saved">
-          <div class="h2"></div>
+          <div class="h2">{{count}}</div>
           <p>Aeroglyphs saved</p>
         </div>
         <div class="travelled">

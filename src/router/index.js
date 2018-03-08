@@ -92,6 +92,7 @@ router.beforeEach((to, from, next) => {
       transitionName = 'top-to-middle';
     } else if (toBottom) {
       transitionName = 'top-to-bottom';
+      transitionMode = 'out-in';
       store.commit('flightSimulator/setVisualizationState', 7);
     } else {
       transitionMode = 'in-out';

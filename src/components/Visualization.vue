@@ -1111,6 +1111,7 @@ export default {
           break;
         }
         case STATE_UNFOCUSED_GALLERY: {
+          const timeInt = (this.$store.state.general.transitionName === 'middle-to-bottom') ? 0.1 : 0.2;
           pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
           const ev = [-70, 0.7, Math.PI * 0.5];
@@ -1118,7 +1119,7 @@ export default {
             init_values: iv,
             end_values: ev,
             time_start: 0,
-            time_interval: 0.1,
+            time_interval: timeInt,
             sine_interpolation: true,
             onAnimationEnd: () => {
             },

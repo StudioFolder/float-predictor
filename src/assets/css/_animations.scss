@@ -102,22 +102,22 @@ $duration: 1s;
 .main-application.top-to-bottom-leaving{
   .main-visualization-wrapper {
     height: 100vh !important;
-    transition: height $duration linear;
+    //transition: height $duration*2 linear;
   }
 }
 .main-application.top-to-bottom-entering{
   .main-visualization-wrapper {
     height: 100vh !important;
-    animation: partial-translate-up $duration ease-out;
+    animation: partial-translate-up $duration ease;
   }
 }
 .top-to-bottom-leave-active {
   height: 0 !important;
   transition: height $duration*0.75 linear;
-  animation: translate-up $duration*0.75 linear;
+  // animation: translate-up $duration*0.75 linear;
 }
 .top-to-bottom-enter-active {
-  animation: translate-up-from-bottom $duration ease-out;
+  animation: translate-up-from-bottom $duration ease;
   min-height: 100vh; // the glyphs are still loading
 }
 
