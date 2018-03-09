@@ -9,7 +9,7 @@
                         <i :class="[isInfoBoxOpen ? 'fp-close' : 'fp-info', 'fp']"></i></b-nav-item>
                     <b-nav-item v-show="!isChoosing" class="--rounded complete-instruction">
                         <a href="#" @click.prevent v-b-modal.instruction-modal>
-                            <i class="fp fp-info"></i></a></b-nav-item>
+                            <i class="fp fp-instructions"></i></a></b-nav-item>
                     <b-nav-item v-show="!isChoosing" @click="saveScreenshot" class="--rounded">
                         <i class="fp fp-camera"></i></b-nav-item>
                 </div>

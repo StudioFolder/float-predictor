@@ -11,9 +11,12 @@
             <div v-else>{{explorer}}</div>
         </div>
         <svg>
-            <circle class="progress" :style="{ strokeDasharray: dashArray }"></circle>
+            <circle
+                    :data-explorer="id"
+                    class="progress"
+                    :style="{ strokeDasharray: dashArray, stroke: color }">
+            </circle>
             <circle class="baseline"></circle>
-            <!--<circle class="handicap" :style="{ strokeDasharray: dashArray }"></circle>-->
         </svg>
         <transition name="fade">
             <div v-if="hover" class="hover-text">
@@ -44,6 +47,9 @@ export default {
         return `${this.circumference * ((this.day) / 16)}, 10000`;
       }
       return `0, ${this.circumference * ((this.id) / 16)}, ${this.circumference * ((this.day - this.id) / 16)}, 10000`;
+    },
+    color() {
+      return (this.$store.state.general.webColors[this.id]);
     },
   },
   methods: {

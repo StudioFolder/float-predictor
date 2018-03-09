@@ -191,8 +191,31 @@ export default {
             &:hover, &.--focused {
                 background-color: transparent;
                 circle.progress {
-                    stroke: $primary;
                     stroke-width: 4px;
+                    &[data-explorer="0"] {
+                        stroke: #003769;
+                    }
+                    &[data-explorer="1"] {
+                        stroke: #2e6a9c;
+                    }
+                    &[data-explorer="2"] {
+                        stroke: #0095d7;
+                    }
+                    &[data-explorer="3"] {
+                        stroke: #587a98;
+                    }
+                    &[data-explorer="4"] {
+                        stroke: #7eafd4;
+                    }
+                    &[data-explorer="5"] {
+                        stroke: #b9e5fb;
+                    }
+                    &[data-explorer="6"] {
+                        stroke: #656868;
+                    }
+                    &[data-explorer="7"] {
+                        stroke: #ffffff;
+                    }
                 }
             }
             &:first-child {

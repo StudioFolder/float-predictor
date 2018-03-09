@@ -6,6 +6,16 @@ export default {
     transitionMode: '',
     animationHeight: 'normal',
     isChoosingDestination: true,
+    webColors: [
+      '#003769',
+      '#2e6a9c',
+      '#0095d7',
+      '#587a98',
+      '#7eafd4',
+      '#b9e5fb',
+      '#656868',
+      '#ffffff',
+    ],
     isMenuOpen: false,
     isInfoBoxOpen: false,
     deviceName: '', // (small, medium, big) or (phone, tablet, desktop) ???
