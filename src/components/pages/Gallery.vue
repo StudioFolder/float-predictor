@@ -33,11 +33,10 @@
                 from <strong>{{item.destination.city}}</strong>
                     in <strong>{{item.min_time}} days</strong></p>
                 <p>Travelled a total of
-                    <strong>{{parseInt(item.distance).toLocaleString('en')}} km</strong>
+                    <strong>{{parseInt(item.distance * 1000).toLocaleString('en')}} km</strong>
                 </p>
               </div>
             </div>
-            <div></div>
           </div>
         </div>
       </div>
