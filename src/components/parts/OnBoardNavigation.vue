@@ -22,7 +22,7 @@
                 </li>
                 <li class="explorer-datum --altitude">
                     <div class="subtitle">Altitude</div>
-                    {{altitude}} km
+                    {{altitude}} mt
                 </li>
                 <li class="explorer-datum">
                     <div class="subtitle">Speed</div>

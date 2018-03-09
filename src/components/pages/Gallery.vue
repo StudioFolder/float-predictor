@@ -12,7 +12,7 @@
           <p>Aeroglyphs saved</p>
         </div>
         <div class="travelled">
-          <div class="h2">{{parseInt(totalDistance).toLocaleString('en')}}</div>
+          <div class="h2">{{parseInt(totalDistance * 1000).toLocaleString('en')}}</div>
           <p>Kilometers travelled</p>
         </div>
       </div>
