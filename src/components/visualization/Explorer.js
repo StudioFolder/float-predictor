@@ -9,19 +9,19 @@ const EARTH_RADIUS = 6378.137;
 const SCENE_SCALE = EARTH_RADIUS / 200.0;
 
 class Explorer {
-  constructor(scene, shift = 0, nPoints = 1) {
+  constructor(scene, radius, shift = 0, nPoints = 1) {
     this.nPoints = nPoints;
     MAX_POINTS = 128 * this.nPoints;
     // console.log(MAX_POINTS);
     this.scene = scene;
-    this.coordinates = [];
+    this.radius = radius;
     this.index = 0;
     this.destination = { lat: 0, lng: 0 };
     this.array = new Float32Array(MAX_POINTS * 3 * 2);
     this.shift = shift;
     this.speed = [];
     this.distance = [];
-    this.altitude = [];
+    this.altitudeRatio = [];
     this.avgSpeed = 0;
     this.totalDistance = 0;
     const c = 0xffffff;
@@ -37,9 +37,8 @@ class Explorer {
     for (let i = 0; i < MAX_POINTS; i += 1) {
       this.distance.push(0);
       this.speed.push(0);
-      this.altitude.push(0);
+      this.altitudeRatio.push(0);
       lineIndexes.push(((i) * 2) + 1);
-      this.coordinates.push({ lat: 0, lng: 0 });
       segmentIndexes.push((i) * 2);
       segmentIndexes.push(((i) * 2) + 1);
     }
@@ -123,15 +122,11 @@ class Explorer {
     }
   }
 
-  getCoordinates = function getCoordinates() {
-    return this.coordinates[this.index];
-  };
-
   getLength = function getLength() {
     return this.length;
   };
 
-  reset = function reset(departure) {
+  reset = function reset(departure = new THREE.Vector3(0, 0, 0)) {
     this.length = 0;
     this.alpha = 0;
     this.lineMaterial.opacity = 1;// setOpacity(1,0);
@@ -197,15 +192,19 @@ class Explorer {
     return this.speed[this.index];
   };
 
-  getAltitude = function getAltitude() {
-    return this.altitude[this.index];
+  getAltitudeRatio = function getAltitudeRatio() {
+    return this.altitudeRatio[this.index];
   };
 
   getDistance = function getDistance() {
     return this.distance[this.index];
   };
 
-  addDataSample = function addDataSample(position, coordinates, h) {
+  getTotalDistance = function getTotalDistance() {
+    return this.totalDistance;
+  };
+
+  addDataSample = function addDataSample(position, h, hs) {
     let s = 0;
     const pIndex = this.length - this.shift;
     if (pIndex >= 0) {
@@ -220,7 +219,7 @@ class Explorer {
       }
     }
 
-    const heightShift = 1.0 + h * s;
+    const heightShift = 1.0 + (h + hs) * s;
 
 
     if (this.length < MAX_POINTS) {
@@ -235,13 +234,12 @@ class Explorer {
         const d = position.distanceTo(this.lastPosition) * SCENE_SCALE;
         this.distance[this.length] = this.distance[this.length - 1] + d;
         this.speed[this.length] = d;
-        this.altitude[this.length] = heightShift;
+        this.altitudeRatio[this.length] = (heightShift - 1.0) / h;
       }
     } else {
       console.log('this is strange...got more points than expected - Explorer');
     }
     if (this.length === MAX_POINTS - 1) {
-      this.destination = { lat: coordinates.lat, lng: coordinates.lng };
       this.avgSpeed = 0;
       for (let i = 0; i < this.speed.length; i += 1) {
         this.avgSpeed += this.speed[i];
@@ -250,7 +248,6 @@ class Explorer {
       this.totalDistance = this.distance[this.distance.length - 1];
     }
     this.lastPosition.set(position.x, position.y, position.z);
-    this.coordinates[this.length] = { lat: coordinates.lat, lng: coordinates.lng };
     this.length += 1;
   }
 }

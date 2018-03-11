@@ -1,0 +1,17 @@
+{
+  "name": "aerocene_exhibition_server",
+  "version": "1.0.0",
+  "description": "Websocket server for communicating between interface and screen",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.2",
+    "http": "0.0.0",
+    "websocket": "^1.0.25",
+    "ws": "^5.0.0"
+  }
+}

@@ -25,7 +25,7 @@
                     <router-link to="/flight-simulator" class="link-to-flight-sim">
                     </router-link>
                 </div>
-                <visualization />
+                <visualization v-if="isExhibitionClient" />
             </div>
         </div>
         <site-footer />
@@ -61,6 +61,9 @@ export default {
   computed: {
     flightToolsActive() {
       return this.$route.name === 'flight-simulator';
+    },
+    isExhibitionClient() {
+      return this.$route.name !== 'VisualizationClient';
     },
     transitionName() { return this.$store.state.general.transitionName; },
     transitionMode() { return this.$store.state.general.transitionMode; },

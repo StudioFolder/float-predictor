@@ -2,6 +2,7 @@
 class WindDataDownloader {
   downloadMulti(departure, destination, pressure,
     onUpdateCallback, onEndCallback, onErrorCallback) {
+    this.active = true;
     // console.log(`Pressure level: ${pressure}`);
     this.onUpdateCallback = onUpdateCallback;
     this.onEndCallback = onEndCallback;
@@ -24,26 +25,40 @@ class WindDataDownloader {
     fetch(url)
       .then(r => r.json())
       .then((json) => {
-        this.onUpdateCallback(json);
-        url = '';
-        for (let i = 0; i < 8; i += 1) {
-          const index = (json.d.length - 8) + i;
-          url += `${json.d[index][2]},${json.d[index][3]},`;
+        if (this.active) {
+          if (this.onUpdateCallback) {
+            this.onUpdateCallback(json);
+          }
+          url = '';
+          for (let i = 0; i < 8; i += 1) {
+            const index = (json.d.length - 8) + i;
+            url += `${json.d[index][2]},${json.d[index][3]},`;
+          }
+          if (day < 15) {
+            this.downloadMultiS(day + 1, url, departure, destination, pressure);
+          } else {
+            console.log('Done!');
+            if (this.onEndCallback) {
+              this.onEndCallback();
+            }
+          }
         }
-        if (day < 15) {
-          this.downloadMultiS(day + 1, url, departure, destination, pressure);
-        } else {
-          // eslint-disable-next-line no-console
-          console.log('Done!');
-          this.onEndCallback();
+      }).catch((r) => {
+        if (this.active) {
+          if (this.onErrorCallback) {
+            this.onErrorCallback();
+          }
         }
-      })
-      .catch((r) => {
         console.log('Downloader error');
         console.log(r);
-        this.onErrorCallback();
       });
+  }
+  destroy() {
+    this.active = false;
+    this.onErrorCallback = undefined;
+    this.onEndCallback = undefined;
+    this.onUpdateCallback = undefined;
   }
 }
 
-export default new WindDataDownloader();
+export default WindDataDownloader;

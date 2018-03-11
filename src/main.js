@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
+// import VueNativeSock from 'vue-native-websocket';
 import BootstrapCSS from 'bootstrap/dist/css/bootstrap.min.css';
 import InfiniteScroll from 'vue-infinite-scroll';
 import vbclass from 'vue-body-class';
@@ -9,6 +10,9 @@ import VueAnalytics from 'vue-analytics';
 import App from './App';
 import router from './router';
 import store from './store';
+
+// Vue.use(VueNativeSock, 'ws://localhost:1337', { reconnection: true, format: 'json' });
+
 
 Vue.config.productionTip = false;
 

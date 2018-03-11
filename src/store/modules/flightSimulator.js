@@ -73,8 +73,8 @@ export default {
     setAltitudeLevel(state, altitudeLevel) {
       state.altitudeLevel = altitudeLevel;
     },
-    setLoading(state, isLoading) {
-      state.loading = isLoading;
+    setLoading(state, loading) {
+      state.loading = loading;
     },
     setSaving(state, isSaving) {
       state.isSaving = isSaving;

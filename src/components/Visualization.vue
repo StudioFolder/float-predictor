@@ -1,8 +1,8 @@
 
 <template>
   <div id ="visualization" class="main-visualization">
-    <img id="down" src="../assets/icons/destination_arrow_down.svg"/>
-    <img id="up" src="../assets/icons/departure_arrow_up.svg"/>
+    <img id="down" style="display:none;" src="../assets/icons/destination_arrow_down.svg"/>
+    <img id="up" style="display:none;" src="../assets/icons/departure_arrow_up.svg"/>
     <div id="labels"></div>
     <Loading v-if="(loading < 1.0 || saving)"></Loading>
   </div>
@@ -19,7 +19,7 @@ import NightMap from './visualization/NightMap';
 import animator from './visualization/Animator';
 import Explorer from './visualization/Explorer';
 import WindVisualization from './visualization/WindVisualization';
-import downloader from './visualization/WindDataDownloader';
+import WindDataDownloader from './visualization/WindDataDownloader';
 import Cities from './visualization/Cities';
 import colorMap from '../assets/img/colormap/4096.jpg';
 import colorMapA from '../assets/img/colormap/4096A.jpg';
@@ -27,7 +27,6 @@ import colorMapB from '../assets/img/colormap/4096B.jpg';
 import colorMapC from '../assets/img/colormap/4096C.jpg';
 import colorMapD from '../assets/img/colormap/4096D.jpg';
 import spriteURL from '../assets/img/sprite.png';
-
 import nightModeMap from '../assets/img/nightModeMap/4096.jpg';
 import bumpMap from '../assets/img/bumpmap/8192.jpg';
 
@@ -57,7 +56,7 @@ const colors = [0x003769, 0x2e6a9c, 0x0095d7, 0x587a98, 0x7eafd4, 0xb9e5fb, 0x65
 const webColors = ['#003769', '#2e6a9c', '#0095d7', '#587a98', '#7eafd4', '#b9e5fb', '#656868', '#ffffff'];
 
 // eslint-disable-next-line
-let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectLabel, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations;
+let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectLabel, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations, downloader;
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
@@ -66,7 +65,7 @@ const pars = {
   // GENERAL
   altitudeLevel: 3,
   active: false,
-  winds: 0,
+  winds: 1,
   fps: 0,
   antialias: true,
   state: 0,
@@ -102,15 +101,15 @@ const pars = {
   explorer_height_shift: 0.025,
   layers: {
     wind: {
-      animating: false,
+      animating: true,
       animationSpeed: 1,
       visible: false,
       mapping: 0.0,
-      opacity_mapping: false,
+      opacity_mapping: true,
       threshold: 44.0,
       start_color: '#000000',
       end_color: '#ffffff',
-      opacity: 0.7,
+      opacity: 1,
       minOpacity: 0.5,
       magnitude: 0.25,
       step: 1,
@@ -273,11 +272,10 @@ export default {
   watch: {
     active(isActive) {
       if (isActive) {
-        this.start();
-        _.each(explorers, () => {
-          // todo: start explorers and communicate to the dashboard
-
-        });
+        this.visualizationState = STATE_INITIAL;
+        this.visualizationState = STATE_MOVING_TO_DEPARTURE;
+      } else {
+        this.visualizationState = STATE_INITIAL;
       }
     },
 
@@ -296,19 +294,9 @@ export default {
         this.setOnboard(true);
       }
     },
-    flightType(ft) {
-      explorers = [];
-      if (ft === 'planned') {
-        _.each(allExplorers, (e) => {
-          explorers.push(e);
-        });
-      } else {
-        this.minTrack = 0;
-        explorers.push(allExplorers[0]);
-      }
-    },
     departure(d) {
       // console.log('Setting departure...');
+      this.visualizationState = STATE_INITIAL;
       if (d !== undefined && d.city && d.lat && d.lng && d.country) {
         // console.log(d);
         departure = { lat: d.lat, lng: d.lng, country: d.country, city: d.city };
@@ -330,6 +318,7 @@ export default {
     destination(d) {
       // console.log('Setting destination');
       // console.log(d);
+      this.visualizationState = STATE_INITIAL;
       if (d !== undefined && d.city && d.lat && d.lng && d.country) {
         destination = { lat: d.lat, lng: d.lng, country: d.country, city: d.city };
         // console.log(`Destination: ${d.lat} ${d.lng} ${d.city} `);
@@ -343,23 +332,6 @@ export default {
       this.setState(s);
     },
     winds(w) {
-      /*
-      wind: {
-        animating: false,
-        animationSpeed: 1,
-        visible: false,
-        mapping: 0.0,
-        opacity_mapping: false,
-        threshold: 44.0,
-        start_color: '#000000',
-        end_color: '#ffffff',
-        opacity: 0.7,
-        minOpacity: 0.5,
-        magnitude: 0.25,
-        step: 1,
-        precision: 2,
-      },
-      */
       switch (w) {
         case 0: // NONE
           pars.layers.wind.visible = false;
@@ -424,10 +396,6 @@ export default {
   },
 
   methods: {
-    restart() {
-      this.start();
-    },
-
     initVis() {
       if (process.env.NODE_ENV === 'development') {
         pars.speed_d_x_sec = 0.09;
@@ -435,8 +403,6 @@ export default {
         pars.use_bump = false;
         pars.antialias = false;
         // pars.winds = 2;
-        pars.layers.wind.opacity = 1.0;
-        pars.layers.wind.magnitude = 0.7;
       }
       departure = {
         lat: 52.520645,
@@ -596,7 +562,7 @@ export default {
             if (pars.onboard) {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
-              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitude() * 100.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
+              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
               // console.log(`Altitude: ${this.focusedExplorerAltitude}`);
               const coord = Util.XYZ2LatLon(explorers[this.onboardIndex].animatingSphere.position);
               const cities = Cities.get(coord);
@@ -733,7 +699,7 @@ export default {
 
     setupExplorers() {
       for (let i = 0; i < 8; i += 1) {
-        const explorer = new Explorer(scene, i * 8 * CATMULL_NUM_POINTS, CATMULL_NUM_POINTS);
+        const explorer = new Explorer(scene, radius, i * 8 * CATMULL_NUM_POINTS, CATMULL_NUM_POINTS);
         explorer.line.material.color = new THREE.Color(colors[i]);
         explorer.animatingSphere.material.color = new THREE.Color(colors[i]);
         allExplorers.push(explorer);
@@ -850,7 +816,7 @@ export default {
       // textures
       // console.log('loading textures');
       const afterLoad = () => {
-        this.loading += 0.34;
+        this.loading = Math.min(1, this.loading + 0.34);
         // console.log(`loading: ${this.loading}`);
       };
       bumpTexture = new THREE.TextureLoader().load(bumpMap, () => { /* console.log('bumb loaded'); */ afterLoad(); });
@@ -872,16 +838,9 @@ export default {
       departureLabel.updatePosition(camera);
     },
 
-    start() {
-      this.visualizationState = STATE_IDLE;
-      this.visualizationState = STATE_MOVING_TO_DEPARTURE;
-    },
-
     initGUI() {
       const general = gui.addFolder('general');
-      general.add(pars, 'active').onChange(() => {
-        this.start();
-      });
+      general.add(pars, 'active').onChange((v) => { this.isActive = v; });
       general.add(pars, 'state', 0, 10).step(1).listen().onChange((value) => { this.visualizationState = value; });
       general.add(pars, 'elapsed_days', 0.0, 16.0).listen();
       general.add(pars, 'altitudeLevel', 0.0, altitudeLevels.length - 1).step(1).onChange((value) => { this.altitudeLevel = value; });
@@ -1134,6 +1093,7 @@ export default {
         }
         case STATE_INITIAL: {
           pars.auto_rotate = true;
+          this.active = false;
           this.clear();
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
           const ev = [responsiveY, responsiveZoom, Math.PI * 0.5];
@@ -1472,9 +1432,13 @@ export default {
 
     clear() {
       // console.log('reset');
+      if (downloader) {
+        downloader.destroy();
+      }
+      downloader = new WindDataDownloader();
       pars.elapsed_days = 0;
       this.hideExplorerDates();
-      _.each(explorers, (e) => { e.reset(new THREE.Vector3(0, 0, 0)); });
+      _.each(explorers, (e) => { e.reset(); });
       _.each(cityLabels, (l) => { l.setVisible(false); });
       departureLabel.setVisible(false);
       destinationLabel.setVisible(false);
@@ -1489,6 +1453,7 @@ export default {
 
     error() {
       console.log('ERROR ROUTINES');
+      this.visualizationState = STATE_INITIAL;
       animator.stop();
     },
 
@@ -1520,19 +1485,26 @@ export default {
               const s = (Math.PI * 0.5 - g) / (Math.PI * 0.5);
 
               if (g < Math.PI * 0.45) {
-                explorerHS[j] += s * 0.02;
-              } else { explorerHS[j] -= 0.002; }
+                explorerHS[j] += s * 0.005;
+              } else { explorerHS[j] -= 0.0015; }
               //
               explorerHS[j] = Math.min(pars.explorer_height_shift, Math.max(explorerHS[j], 0));
-              explorers[j].addDataSample(points[k], { lat: 0, lng: 0 }, explorerH + explorerHS[j]);// , data.d[i]
-              // console.log(24/(pts.length-1));
+              explorers[j].addDataSample(points[k], explorerH, explorerHS[j]);
               Util.addHours(cdate, 24.0 / (points.length - 1));
             }
           }
         },
         () => { // ON END
           if (this.flightType !== 'planned') {
-            this.minTrack = 0;
+            let maxDistance = -1;
+            let winningIndex = 0;
+            _.each(explorers, (e, index) => {
+              if (e.getTotalDistance() > maxDistance) {
+                maxDistance = e.getTotalDistance();
+                winningIndex = index;
+              }
+            });
+            this.minTrack = winningIndex;
           }
           // TODO: actual startingDate! Add minTrack days
           this.winningExplorerData = {
@@ -1571,8 +1543,8 @@ export default {
             min_time: this.minTime,
             departure_date: departureDate.toISOString(),
             speed: explorers[this.minTrack].avgSpeed,
-            altitude: 10,
-            distance: explorers[this.minTrack].totalDistance * 0.001,
+            altitude: altitudeLevels[this.altitudeLevel],
+            distance: explorers[this.minTrack].getTotalDistance() * 0.001,
             path: data,
             svg: this.svg,
             explorerIndex: this.minTrack,
@@ -1588,9 +1560,10 @@ export default {
             // console.log('***********************');
             // console.log(jsonData);
             this.trajectoryId = jsonData.id;
+          }).catch((r) => {
+            console.log('Downloader error');
+            console.log(r);
           });
-        // , z * 500)
-        //  }
         },
         () => { // ON ERROR
           this.error();

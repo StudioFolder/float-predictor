@@ -17,6 +17,7 @@
     "gsap": "^1.20.4",
     "moment": "^2.20.1",
     "next-power-of-two": "^1.0.0",
+    "reconnecting-websocket": "^3.2.2",
     "swiper": "^4.1.6",
     "three": "^0.88.0",
     "vue": "^2.5.2",
