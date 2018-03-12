@@ -11,13 +11,7 @@
             </h2>
             <div class="entry-body">
                 <p>
-                    The Aerocene Float Predictor is a global
-                    forecasting system that utilises open meteorological
-                    data to predict the flight paths of aerosolar powered
-                    sculptures circling around the globe without CO2-emissions.
-                    Incorporating real-time information from 16-day forecasts
-                    of wind speeds at different altitudes, the Float Predictor
-                    is a navigational tool used to plan journeys in the Aerocene epoch.
+                    The Aerocene Float Predictor simulates the floating trajectories of solar balloons based on real-time forecasts of global wind patterns. Atmospheric data are queried from NOAA’s Global Forecast System (<a href="https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs">GFS</a>), a global numerical weather prediction system containing a global computer model and variational analysis run by the US National Weather Service (NWS). 
                 </p>
                 <p>
                     Beginning in 2012, the Float Predictor started as a
