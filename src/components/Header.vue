@@ -1,6 +1,5 @@
 <template>
     <div class="site-header" :class="{'is-onboard': isOnboard}">
-        <main-menu :is-choosing="isChoosing"  />
         <nav-brand :is-choosing="isChoosing" />
     </div>
 </template>
@@ -80,9 +79,6 @@ export default {
                 margin-bottom: 2.625rem; // 42px
             }
             color: $gray;
-        }
-        @include down($xlarge) {
-            font-size: 1.2rem;
         }
         @include medium_down {
             position: fixed;

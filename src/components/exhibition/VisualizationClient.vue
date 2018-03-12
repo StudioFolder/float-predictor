@@ -1,159 +1,147 @@
 <template>
   <div id="visualization-server">
     <StateRemoteSync/>
-    <div class="bottom-left-panel">
-      <h4>GENERAL</h4>
-      <span class="subtext">From</span>
-      <vue-google-autocomplete id="map" classname="form-control" placeholder="Departure point"
-          v-on:placechanged="setDeparture"
-          types="(cities)"
-          rtypes="geocode"></vue-google-autocomplete>
-      <span class="subtext">To</span>
-      <vue-google-autocomplete id="map2" classname="form-control" placeholder="Destination point"
-          v-on:placechanged="setDestination"
-          types="(cities)" rtypes="geocode"></vue-google-autocomplete>
-      <ul>
-        <li  v-if ="!isActive" v-on:click="isActive = true;">
-          <a>START ></a>
-        </li>
-        <li  v-if ="isActive" v-on:click="isActive = false;">
-          <a>STOP ></a>
-        </li>
-        <li class='explorer-selection' v-on:click="saving = true;">
-          <a>SAVE ></a>
-        </li>
-        <li class='explorer-selection' v-on:click="isPlaying = !isPlaying;">
-          <a v-if="isPlaying">PAUSE ||</a>
-          <a v-if="!isPlaying">PLAY ></a>
-        </li>
-        <li class='explorer-selection' v-on:click="focusedExplorer = 0;">
-          <router-link to="/gallery">GO TO GALLERY ></router-link>
-        </li>
-        <li>DAY {{elapsedDays}}/16</li>
-      </ul>
-      <h4>EXPLORERS</h4>
-      <ul>
-        <li class='explorer-selection' v-for="(c, index) in colors"
-          v-bind:key="index" v-if="elapsedDays > 0 && index < elapsedDays">
-          <a v-bind:style="{color: c}"
-            v-on:click="focusedExplorer = index+1;">
-            # {{index+1}}
-          </a>
-        </li>
-        <li style='color:white;' class='explorer-selection' v-on:click="focusedExplorer = 0;">
-          <a>#all</a>
-        </li>
-      </ul>
-    </div>
-    <div v-if="focusedExplorer!=0" class="bottom-right-panel">
-      <ul>
-        <li>EXPLORER DATA</li>
-        <li>Speed: {{focusedExplorerSpeed}}</li>
-        <li>Distance: {{focusedExplorerDistance}}</li>
-      </ul>
+    <dashboard v-if="!isChoosing" />
+    <div v-if="isChoosing" class="flight-form wrapper" ref="content">
+      <b-form @submit="onSubmit">
+        <div class="type-selector-group">
+          <b-form-checkbox id="FlightTypeSelector"
+                           v-model="flightType"
+                           value="free"
+                           unchecked-value="planned"
+                           class="type-selector"
+                           :class="flightType">
+            <div class="type-selector">
+              <span :class="{'--isActive': isPlanned}">Planned Float</span>
+              <span class="slider round"></span>
+              <span :class="{'--isActive': isFree}">Free Float</span>
+            </div>
+          </b-form-checkbox>
+          <transition name="switch-text">
+            <p v-if="isPlanned" class="description" key="planned">
+              Planned floats try to reach a specific destination
+              starting from a selected departure point.
+            </p>
+            <p v-else class="description" key="free">
+              Free floats start from a selected departure point to
+              fly along following the wind.
+            </p>
+          </transition>
+        </div>
+        <div class="coordinates-selector-group">
+          <label class="small">From</label>
+          <vue-google-autocomplete
+                  id="map" classname="form-control"
+                  :placeholder="placeholder.departure"
+                  @placechanged="setDeparture"
+                  types="(cities)"
+                  rtypes="geocode">
+          </vue-google-autocomplete>
+          <transition name="fade-height">
+            <div class="optional-destination" v-if="(flightType === 'planned')">
+              <label  class="small">To</label>
+              <vue-google-autocomplete
+                      id="map2" classname="form-control"
+                      :placeholder="placeholder.destination"
+                      @placechanged="setDestination"
+                      types="(cities)"
+                      rtypes="geocode">
+              </vue-google-autocomplete>
+            </div>
+          </transition>
+          <p class="input-label">
+            Aerocene sculptures always leave at noon with sun light.
+          </p>
+        </div>
+        <b-button type="submit" variant="primary">Launch</b-button>
+      </b-form>
     </div>
   </div>
 </template>
-
 <script>
+import _ from 'lodash';
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
+import dashboard from 'Components/Dashboard';
 import StateRemoteSync from './StateRemoteSync';
 
 export default {
-  name: 'TestInterface',
+  name: 'VisualizationClient',
   data() {
     return {
       colors: ['#003769', '#2e6a9c', '#0095d7', '#587a98', '#7eafd4', '#b9e5fb', '#656868', '#ffffff'],
+      form: {
+        errors: {
+        },
+      },
     };
   },
   components: {
-    VueGoogleAutocomplete, StateRemoteSync,
+    dashboard, StateRemoteSync, VueGoogleAutocomplete,
   },
   computed: {
-    flightType: {
-      get() { return this.$store.state.flightSimulator.flightType; },
-      set(value) { this.$store.commit('flightSimulator/changeFlightType', value); },
+    hasErrors() {
+      return (this.form.errors.departure || this.form.errors.destination);
     },
-    isActive: {
-      get() { return this.$store.state.flightSimulator.isActive; },
-      set(value) { this.$store.commit('flightSimulator/setActive', value); },
-    },
-    isPlaying: {
-      get() { return this.$store.state.flightSimulator.isPlaying; },
-      set(value) { this.$store.commit('flightSimulator/setPlaying', value); },
-    },
-    isSaving: {
-      get() { return this.$store.state.flightSimulator.isSaving; },
-      set(value) { this.$store.commit('flightSimulator/setSaving', value); },
-    },
-    loading: {
-      get() { return this.$store.state.flightSimulator.loading; },
-      set(value) { this.$store.commit('flightSimulator/setLoading', value); },
-    },
-    winds: {
-      get() { return this.$store.state.flightSimulator.winds; },
-      set(value) { this.$store.commit('flightSimulator/setWinds', value); },
-    },
-    focusedExplorer: {
-      get() { return this.$store.state.flightSimulator.focusedExplorer; },
-      set(value) { this.$store.commit('flightSimulator/setFocusedExplorer', value); },
-    },
-    focusedExplorerSpeed: {
-      get() { return this.$store.state.flightSimulator.focusedExplorerSpeed; },
-      set(s) { this.$store.commit('flightSimulator/setFocusedExplorerSpeed', s); },
-    },
-    focusedExplorerDistance: {
-      get() { return this.$store.state.flightSimulator.focusedExplorerDistance; },
-      set(d) { this.$store.commit('flightSimulator/setFocusedExplorerDistance', d); },
-    },
-    focusedExplorerAltitude: {
-      get() { return this.$store.state.flightSimulator.focusedExplorerAltitude; },
-      set(d) { this.$store.commit('flightSimulator/setFocusedExplorerAltitude', d); },
-    },
-    elapsedDays: {
-      get() { return this.$store.state.flightSimulator.elapsedDays; },
-      set(value) { this.$store.commit('flightSimulator/setElapsedDays', value); },
-    },
-    coordinatesValid: {
-      get() { return this.$store.state.flightSimulator.coordinatesValid; },
-      set(value) { this.$store.commit('flightSimulator/setCoordinatesValid', value); },
-    },
-    visualizationState: {
-      get() { return this.$store.state.flightSimulator.visualizationState; },
-      set(v) { this.$store.commit('flightSimulator/setVisualizationState', v); },
-    },
-    autoMode: {
-      get() { return this.$store.state.flightSimulator.autoMode; },
-      set(value) { this.$store.commit('flightSimulator/setAutoMode', value); },
+    placeholder() {
+      let departureStr = 'Departure';
+      let destinationStr = 'Destination';
+      if (this.form.errors.departure) {
+        departureStr = this.form.errors.departure;
+      } else if (!_.isEmpty(this.departure)) {
+        departureStr = `${this.departure.city}, ${this.departure.country}`;
+      }
+      if (this.form.errors.destination) {
+        destinationStr = this.form.errors.destination;
+      } else if (!_.isEmpty(this.destination)) {
+        destinationStr = `${this.destination.city}, ${this.destination.country}`;
+      }
+      return {
+        departure: departureStr,
+        destination: destinationStr,
+      };
     },
     departure: {
-      get() { return this.$store.state.flightSimulator.departure; },
-      set(departure) { this.$store.commit('flightSimulator/setDeparture', departure); },
+      get() {
+        return this.$store.state.flightSimulator.departure;
+      },
+      set(value) {
+        this.$store.commit('flightSimulator/setDeparture', value);
+      },
     },
     destination: {
-      get() { return this.$store.state.flightSimulator.destination; },
-      set(destination) { this.$store.commit('flightSimulator/setDestination', destination); },
+      get() {
+        return this.$store.state.flightSimulator.destination;
+      },
+      set(value) {
+        this.$store.commit('flightSimulator/setDestination', value);
+      },
     },
-    altitudeLevel: {
-      get() { return this.$store.state.flightSimulator.altitudeLevel; },
-      set(a) { this.$store.commit('flightSimulator/setAltitudeLevel', a); },
+    flightType: { // free or planned
+      get() {
+        return this.$store.state.flightSimulator.flightType;
+      },
+      set(value) {
+        this.$store.commit('flightSimulator/changeFlightType', value);
+      },
     },
-    trajectoryId: {
-      get() { return this.$store.state.flightSimulator.trajectoryId; },
-      set(a) { this.$store.commit('flightSimulator/setTrajectoryId', a); },
-    },
-    winningExplorerData: {
-      get() { return this.$store.state.flightSimulator.winningExplorerData; },
-      set(value) { this.$store.commit('flightSimulator/setWinningExplorerData', value); },
-    },
-  },
-  mounted() {
-    const elements = document.getElementsByClassName('cover');
-    while (elements.length > 0) {
-      elements[0].parentNode.removeChild(elements[0]);
-    }
+    isChoosing() { return (this.$store.state.general.isChoosingDestination); },
+    isFree() { return (this.$store.getters['flightSimulator/isFreeFlight']); },
+    isPlanned() { return (this.$store.getters['flightSimulator/isPlannedFlight']); },
   },
   methods: {
+    onSubmit(e) {
+      e.preventDefault();
+      // this.upperHeight = 0;
+      this.validateForm()
+        .then(() => {
+          this.form.errors = {}; // reset previous errors
+          // reset elapsed days from previous simulation if necessary
+          this.$store.commit('flightSimulator/setElapsedDays', 0);
+          this.startAnimation();
+        }).catch((errors) => {
+          this.form.errors = errors;
+        });
+    },
     setDeparture(e) {
       this.departure =
         { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
@@ -162,26 +150,143 @@ export default {
       this.destination =
         { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
     },
+    validateForm() {
+      const errors = {};
+      let hasErrors = false;
+      return new Promise((resolve, reject) => {
+        if (_.isEmpty(this.departure)) { // departure always filled
+          errors.departure = 'Please choose a departure location';
+          hasErrors = true;
+        }
+        if (_.isEmpty(this.destination) && this.flightType === 'planned') {
+          errors.destination = 'Please choose a destination for a planned flight';
+          hasErrors = true;
+        }
+        if (hasErrors) {
+          reject(errors);
+        } else {
+          resolve();
+        }
+      });
+    },
+    startAnimation() {
+      this.$store.commit('flightSimulator/startAnimation');
+      this.$store.commit('general/setFormStatus', false);
+      this.$store.commit('general/setAnimationHeight', 'normal');
+    },
+  },
+  mounted() {
+    this.upperHeight = (this.$refs.content) ? `${this.$refs.content.clientHeight + 100}px` : 0;
   },
 };
 </script>
+<style lang="scss">
+  @import "~@/assets/css/_variables_and_mixins.scss";
+  .flight-form.wrapper {
+    position: relative;
+    top: 0;
+    width: 450px;
+    margin: 0 auto;
+    background: linear-gradient(180deg, $lightBlack, black);
+    padding: $marginBase $marginBase*4/5;
+    color: $gray;
+    text-align: center;
+    p {
+      font-size: .85em;
+    }
+  }
+  .type-selector-group{
+    position: relative;
+    display: block;
+    text-align: center;
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-.bottom-left-panel{
-  position: fixed;
-  left: 0px;
-  padding: 5%;
-  bottom: 0px;
-  z-index: 100;
-}
-.bottom-right-panel{
-  position: fixed;
-  right: 0px;
-  padding: 5%;
-  bottom: 0px;
-  z-index: 100;
-}
-li { cursor: pointer; line-height: 1.4;}
+    input {
+      display:none;
+    }
+    label[for="FlightTypeSelector"] {
+      &:after, &:before {
+        display: none;
+      }
+    }
+    .description {
+      margin: 1em auto .5em;
+      min-height: 48px;
+    }
 
+    .type-selector {
+      display: flex;
+      //width: 100%;
+      justify-content: center;
+      align-items: center;
+      span {
+        color: $gray;
+        transition: color .4s ease;
+        &.--isActive {
+          color: #fff;
+        }
+      }
+      .slider {
+        display: inline-block;
+        width: 44px;
+        height: 25px;
+        position: relative;
+        cursor: pointer;
+        background-color: rgba(255, 255, 255, .2);
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 34px;
+        margin: 0 10px;
+      }
+      .slider:before {
+        position: absolute;
+        content: "";
+        height: 25px;
+        width: 25px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+        border-radius: 50%;
+      }
+      &.planned {
+        .slider:before {
+          transform: translateX(-22px);
+        }
+      }
+    }
+  }
+  .coordinates-selector-group {
+    text-align: left;
+    .form-group {
+      margin-top: 1em;
+    }
+    .form-control {
+      font-size: 1em;
+      padding: 0.1em 0 0.3em 0;
+      margin-bottom: 1.4em;
+    }
+    .input-label {
+      color: #FFF;
+      text-align: center;
+      padding-top: .1em;
+    }
+    .small {
+      font-size: .6em;
+    }
+  }
+
+  .switch-text-enter-active {
+    animation: flip-up-from-bottom .4s ease;
+  }
+  .switch-text-leave-active {
+    position: absolute;
+    animation: flip-up-to-top .4s ease;
+  }
+  .fade-height-leave-active {
+    animation: fadeHeight .4s ease;
+    overflow: hidden;
+  }
+  .fade-height-enter-active {
+    animation: fadeHeight .4s ease-in-out reverse;
+    overflow: hidden;
+  }
 </style>

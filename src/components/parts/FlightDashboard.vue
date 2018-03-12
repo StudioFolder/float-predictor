@@ -1,23 +1,5 @@
 <template>
-    <ul class="flight-dashboard" :class="{'is-onboard': isOnboard}">
-        <div class="toggle-winds">
-            <b-nav-item @click="toggleWindsPanel" class="--rounded wind-selector">
-                <i :class="windPanelClass" class="fp"></i>
-            </b-nav-item>
-            <transition name="fade">
-                <span class="winds-panel" v-if="isWindsPanelOpen">
-                    <b-nav-item @click="toggleWinds(2)" class="--rounded" v-if="winds!==2">
-                        <i class="fp fp-winds-en"></i>
-                    </b-nav-item>
-                    <b-nav-item @click="toggleWinds(1)" class="--rounded" v-if="winds!==1">
-                        <i class="fp fp-winds-on"></i>
-                    </b-nav-item>
-                    <b-nav-item @click="toggleWinds(0)" class="--rounded" v-if="winds!==0">
-                        <i class="fp fp-no-winds"></i>
-                    </b-nav-item>
-                </span>
-            </transition>
-        </div>
+    <div class="flight-dashboard" :class="{'is-onboard': isOnboard}">
         <div class="play-animation">
             <div v-if="!isInfoboxOpen" class="hover-text elapsed-days">Day {{elapsedDays}}/16</div>
             <b-nav-item @click="toggleAnimation" class="--rounded --play">
@@ -26,6 +8,17 @@
                     <circle class="baseline"></circle>
                 </svg>
                 <i :class="[isPlaying ? 'fp-pause' : 'fp-play', 'fp']"></i>
+            </b-nav-item>
+        </div>
+        <div class="winds-panel">
+            <b-nav-item @click="toggleWinds(2)" class="--rounded">
+                <i class="fp fp-winds-en"></i>
+            </b-nav-item>
+            <b-nav-item @click="toggleWinds(1)" class="--rounded">
+                <i class="fp fp-winds-on"></i>
+            </b-nav-item>
+            <b-nav-item @click="toggleWinds(0)" class="--rounded">
+                <i class="fp fp-no-winds"></i>
             </b-nav-item>
         </div>
         <!--explorers-->
@@ -37,12 +30,7 @@
                     :explorer="explorer"
                     :day="elapsedDays"> </explorer>
         </ul>
-        <div class="mobile-explorer-dashboard">
-            <li class="nav-item explorer-item --rounded" @click="goMobileOnBoard">
-                <i class="fp fp-explorer"></i>
-            </li>
-        </div>
-    </ul>
+    </div>
 </template>
 
 <script>
@@ -55,7 +43,7 @@ export default {
   data() {
     return {
       activeExplorers: [1, 2, 3, 4, 5, 6, 7, 8],
-      isWindsPanelOpen: false,
+      isWindsPanelOpen: true,
     };
   },
   computed: {
@@ -71,7 +59,7 @@ export default {
     elapsedDays() { return this.$store.state.flightSimulator.elapsedDays; },
     circumference() { return 35.8 * Math.PI; },
     dashArray() {
-      return `${this.circumference * ((this.elapsedDays) / 16)}, 10000`;
+      return `${this.circumference * ((this.elapsedDays) / 32)}, 10000`;
     },
   },
   methods: {
@@ -97,7 +85,7 @@ export default {
 <style lang="scss">
     @import "~@/assets/css/_variables_and_mixins.scss";
     $speed: 10s; // depends on speed
-    $r: 15px;
+    $r: 30px;
     $pi: 3.14159;
 
     .toggle-winds {
@@ -108,20 +96,20 @@ export default {
             position: relative;
         }
         svg {
-            height: 46px;
-            width: 46px;
+            height: 100px;
+            width: 100px;
             position: absolute;
             transform: rotate(-86deg);
-            top: -6px;
-            left: -7px;
+            top: -16px;
+            left: -19px;
             circle {
                 cx: 50%;
                 cy: 50%;
-                r: 16px;
+                r: 32px;
                 fill: transparent;
                 &.progress {
                     stroke-width: 5;
-                    r: 18px;
+                    r: 36px;
                     stroke: $textColor;
                     transition: stroke-dasharray $speed;
                 }
@@ -145,23 +133,6 @@ export default {
     }
     .nav-item.wind-selector .inactive {
         opacity: .25;
-    }
-    .winds-panel {
-        display: flex;
-        justify-content: space-evenly;
-        flex-flow: row;
-        position: absolute;
-        top: 0;
-        left: -130px;
-        height: 32px;
-        width: 130px;
-        @include medium_down {
-            left: 0;
-            height: 100px;
-            width: 32px;
-            flex-flow: column;
-            top: -100px;
-        }
     }
     .fp-winds-on,
     .fp-winds-en,
@@ -217,9 +188,6 @@ export default {
                         stroke: #ffffff;
                     }
                 }
-            }
-            &:first-child {
-                margin-top: 1rem;
             }
             .explorer-id {
                 position: absolute;

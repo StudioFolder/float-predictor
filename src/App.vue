@@ -2,7 +2,6 @@
     <div id="app"
          class="main-application" :class="classObject">
         <site-header ref="siteHeader" />
-        <dashboard v-show="flightToolsActive"/>
         <div class="site-content" :class="{'--bottom': isBottom}">
             <div class="router-view" ref="content">
                 <transition
@@ -18,15 +17,6 @@
                     <router-view/>
                 </transition>
             </div>
-            <div class="main-visualization-wrapper"
-                 ref="simulator"
-                 :class="{'--small': isSmall, '--bottom': isBottom}">
-                <div class="cover">
-                    <router-link to="/flight-simulator" class="link-to-flight-sim">
-                    </router-link>
-                </div>
-                <visualization v-if="isExhibitionClient" />
-            </div>
         </div>
         <site-footer />
     </div>
@@ -36,16 +26,12 @@
 import { TweenLite } from 'gsap';
 // eslint-disable-next-line
 import ScrollToPlugin from 'gsap/ScrollToPlugin';
-import visualization from './components/Visualization';
 import siteHeader from './components/Header';
-import dashboard from './components/Dashboard';
 import siteFooter from './components/Footer';
 
 export default {
   components: {
-    visualization,
     siteHeader,
-    dashboard,
     siteFooter,
   },
   name: 'App',
@@ -62,12 +48,8 @@ export default {
     flightToolsActive() {
       return this.$route.name === 'flight-simulator';
     },
-    isExhibitionClient() {
-      return this.$route.name !== 'VisualizationClient';
-    },
     transitionName() { return this.$store.state.general.transitionName; },
     transitionMode() { return this.$store.state.general.transitionMode; },
-    isSmall() { return this.$store.state.general.animationHeight === 'small'; },
     classObject() { // to synchronize other transitions i put some classes in main app too
       const obj = {
         'choosing-destination': this.$store.state.general.isChoosingDestination,

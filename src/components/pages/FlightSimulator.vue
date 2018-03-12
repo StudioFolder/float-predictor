@@ -1,6 +1,5 @@
 <template>
   <div class="main-content over" :style="{ height: upperHeight }">
-      <!--just the animation here-->
       <div v-if="isChoosing" class="flight-form wrapper" ref="content">
           <b-form @submit="onSubmit">
               <div class="type-selector-group">

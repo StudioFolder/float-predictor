@@ -1,6 +1,5 @@
 <template>
     <div class="dashboard">
-        <on-board-navigation />
         <recentre is-animation-active="isAnimationActive"/>
         <transition name="fade">
             <info-box v-show="isInfoboxOpen" is-animation-active="isAnimationActive"/>
@@ -12,13 +11,12 @@
     </div>
 </template>
 <script>
-import onBoardNavigation from 'Parts/OnBoardNavigation';
 import recentre from 'Parts/Recentre';
 import infoBox from 'Parts/InfoBox';
 import flightDashboard from 'Parts/FlightDashboard';
 
 export default {
-  components: { onBoardNavigation, infoBox, flightDashboard, recentre },
+  components: { infoBox, flightDashboard, recentre },
   computed: {
     isOnboard() { return this.$store.state.flightSimulator.focusedExplorer > 0; },
     isInfoboxOpen() { return this.$store.state.general.isInfoBoxOpen; },
@@ -27,4 +25,33 @@ export default {
 };
 </script>
 <style lang="scss">
+@import "~@/assets/css/_variables_and_mixins.scss";
+.flight-dashboard {
+    display: flex;
+    flex-flow: column;
+    width: 100%;
+    list-style: none;
+    z-index: 19; // as the main-menu
+    padding: 0 $marginBase;
+    >* {
+        position: relative;
+        text-align: center;
+        flex: 1 1 auto;
+        margin-top: $marginBase;
+    }
+    .play-animation {
+        .--play {
+            margin: 0 auto;
+        }
+    }
+    .winds-panel {
+        display: flex;
+        justify-content: space-evenly;
+        flex-flow: row;
+    }
+    .explorers-dashboard {
+        display: flex;
+        justify-content: space-between;
+    }
+}
 </style>

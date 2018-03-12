@@ -977,7 +977,7 @@ export default {
       // console.log(`Setting state: ${state}`);
       switch (state) {
         case STATE_IDLE: {
-          pars.auto_rotate = false;
+          pars.auto_rotate = true;
           this.clear();
           break;
         }
@@ -1096,7 +1096,7 @@ export default {
           this.active = false;
           this.clear();
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
-          const ev = [responsiveY, responsiveZoom, Math.PI * 0.5];
+          const ev = [0, 0.5, Math.PI * 0.5];
           animator.start({
             init_values: iv,
             end_values: ev,

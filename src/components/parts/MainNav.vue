@@ -58,6 +58,7 @@
             <div class="macro-section --bottom">
                 <div class="menu-section">
                     <ul class="list-group horiziontal share-items">
+                        <vue-social-sharing></vue-social-sharing>
                         <li class="menu-item --socialShare"><i class="fp fp-facebook"></i></li>
                         <li class="menu-item --socialShare"><i class="fp fp-twitter"></i></li>
                         <li class="menu-item --socialShare"><i class="fp fp-mail"></i></li>
@@ -76,6 +77,8 @@
 </template>
 
 <script>
+import socialSharing from 'vue-social-sharing';
+
 export default {
   name: 'main-nav',
   data() {
@@ -83,6 +86,7 @@ export default {
       currentYear: new Date().getFullYear(),
     };
   },
+  components: { socialSharing },
   methods: {
     closeAction() { this.$store.commit('general/toggleMenu'); },
     startNew() {

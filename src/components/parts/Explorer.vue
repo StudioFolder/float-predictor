@@ -2,8 +2,7 @@
     <li class="nav-item explorer-item --rounded"
         :class="{'--focused': highlighted}"
         :style="{opacity: opacity}"
-        @click="onClick"
-        @mouseenter="mouseEnter" @mouseleave="mouseLeave">
+        @click="onClick">
         <div class="explorer-id">
             <div v-if="(hover || highlighted)" class="explorer-gif">
                 <img src="~img/explorer_anim_03.gif">
@@ -18,11 +17,6 @@
             </circle>
             <circle class="baseline"></circle>
         </svg>
-        <transition name="fade">
-            <div v-if="hover" class="hover-text">
-                Go Onboard
-            </div>
-        </transition>
     </li>
 </template>
 
@@ -56,12 +50,6 @@ export default {
     onClick() {
       this.$store.commit('flightSimulator/setFocusedExplorer', this.explorer);
       this.$store.commit('flightSimulator/setPlaying', true);
-    },
-    mouseEnter() {
-      this.hover = true;
-    },
-    mouseLeave() {
-      this.hover = false;
     },
   },
   watch: {
