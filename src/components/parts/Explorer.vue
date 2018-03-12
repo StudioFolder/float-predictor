@@ -26,7 +26,7 @@ export default {
   props: ['id', 'explorer', 'day'],
   data() {
     return {
-      r: 15, // synchronize with css for animation
+      r: 30, // synchronize with css for animation
       opacity: 0,
       hover: false,
     };

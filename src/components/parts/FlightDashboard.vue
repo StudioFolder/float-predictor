@@ -162,7 +162,7 @@ export default {
             &:hover, &.--focused {
                 background-color: transparent;
                 circle.progress {
-                    stroke-width: 4px;
+                    stroke-width: 8px;
                     &[data-explorer="0"] {
                         stroke: #003769;
                     }
@@ -215,7 +215,7 @@ export default {
                 r: ($r - 2);
                 fill: transparent;
                 &.progress {
-                    stroke-width: 2;
+                    stroke-width: 4;
                     r: $r;
                     stroke: $gray;
                     transition: stroke-dasharray $speed;
