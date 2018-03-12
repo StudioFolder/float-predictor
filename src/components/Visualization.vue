@@ -1,8 +1,8 @@
 
 <template>
   <div id ="visualization" class="main-visualization">
-    <img id="down" style="display:none;" src="../assets/icons/destination_arrow_down.svg"/>
-    <img id="up" style="display:none;" src="../assets/icons/departure_arrow_up.svg"/>
+    <img id="down" src="../assets/icons/destination_arrow_down.svg"/>
+    <img id="up" src="../assets/icons/departure_arrow_up.svg"/>
     <div id="labels"></div>
     <Loading v-if="(loading < 1.0 || saving)"></Loading>
   </div>
@@ -332,6 +332,7 @@ export default {
       this.setState(s);
     },
     winds(w) {
+      pars.winds = w;
       switch (w) {
         case 0: // NONE
           pars.layers.wind.visible = false;
@@ -1019,7 +1020,6 @@ export default {
         }
         case STATE_ANIMATION_END: {
           pars.auto_rotate = false;
-          this.active = false;
           const dt = new Date(this.startingDate);// this.valueOf()
           dt.setDate(dt.getDate() + this.minTrack);
           const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
