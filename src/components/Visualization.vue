@@ -125,148 +125,80 @@ export default {
     activeExplorers() { return this.$store.state.flightSimulator.activeExplorers; },
     flightType() { return this.$store.state.flightSimulator.flightType; },
     focusedExplorer: {
-      get() {
-        return this.$store.state.flightSimulator.focusedExplorer;
-      },
-      set(fe) {
-        this.$store.commit('flightSimulator/setFocusedExplorer', fe);
-      },
+      get() { return this.$store.state.flightSimulator.focusedExplorer; },
+      set(fe) { this.$store.commit('flightSimulator/setFocusedExplorer', fe); },
+    },
+    selectedExplorer: {
+      get() { return this.$store.state.flightSimulator.selectedExplorer; },
+      set(se) { this.$store.commit('flightSimulator/setSelectedExplorer', se); },
     },
     active: {
-      get() {
-        return this.$store.state.flightSimulator.isActive;
-      },
-      set(active) {
-        this.$store.commit('flightSimulator/setActive', active);
-      },
+      get() { return this.$store.state.flightSimulator.isActive; },
+      set(active) { this.$store.commit('flightSimulator/setActive', active); },
     },
     departure: {
-      get() {
-        return this.$store.state.flightSimulator.departure;
-      },
-      set(d) {
-        this.$store.commit('flightSimulator/setDeparture', d);
-      },
+      get() { return this.$store.state.flightSimulator.departure; },
+      set(d) { this.$store.commit('flightSimulator/setDeparture', d); },
     },
     destination: {
-      get() {
-        return this.$store.state.flightSimulator.destination;
-      },
-      set(d) {
-        this.$store.commit('flightSimulator/setDestination', d);
-      },
+      get() { return this.$store.state.flightSimulator.destination; },
+      set(d) { this.$store.commit('flightSimulator/setDestination', d); },
     },
     coordinatesValid: {
-      get() {
-        return this.$store.state.flightSimulator.coordinatesValid;
-      },
-      set(v) {
-        this.$store.commit('flightSimulator/setCoordinatesValid', v);
-      },
+      get() { return this.$store.state.flightSimulator.coordinatesValid; },
+      set(v) { this.$store.commit('flightSimulator/setCoordinatesValid', v); },
     },
     elapsedDays: {
-      get() {
-        return this.$store.state.flightSimulator.elapsedDays;
-      },
-      set(value) {
-        this.$store.commit('flightSimulator/setElapsedDays', value);
-      },
+      get() { return this.$store.state.flightSimulator.elapsedDays; },
+      set(value) { this.$store.commit('flightSimulator/setElapsedDays', value); },
     },
     playing: {
-      get() {
-        return this.$store.state.flightSimulator.isPlaying;
-      },
-      set(value) {
-        this.$store.commit('flightSimulator/setPlaying', value);
-      },
+      get() { return this.$store.state.flightSimulator.isPlaying; },
+      set(value) { this.$store.commit('flightSimulator/setPlaying', value); },
     },
     saving: {
-      get() {
-        return this.$store.state.flightSimulator.isSaving;
-      },
-      set(value) {
-        this.$store.commit('flightSimulator/setSaving', value);
-      },
+      get() { return this.$store.state.flightSimulator.isSaving; },
+      set(value) { this.$store.commit('flightSimulator/setSaving', value); },
     },
     loading: {
-      get() {
-        return this.$store.state.flightSimulator.loading;
-      },
-      set(value) {
-        this.$store.commit('flightSimulator/setLoading', value);
-      },
+      get() { return this.$store.state.flightSimulator.loading; },
+      set(value) { this.$store.commit('flightSimulator/setLoading', value); },
     },
     winningExplorerData: {
-      get() {
-        return this.$store.state.flightSimulator.winningExplorerData;
-      },
-      set(value) {
-        this.$store.commit('flightSimulator/setWinningExplorerData', value);
-      },
+      get() { return this.$store.state.flightSimulator.winningExplorerData; },
+      set(value) { this.$store.commit('flightSimulator/setWinningExplorerData', value); },
     },
     focusedExplorerSpeed: {
-      get() {
-        return this.$store.state.flightSimulator.focusedExplorerSpeed;
-      },
-      set(s) {
-        this.$store.commit('flightSimulator/setFocusedExplorerSpeed', s);
-      },
+      get() { return this.$store.state.flightSimulator.focusedExplorerSpeed; },
+      set(s) { this.$store.commit('flightSimulator/setFocusedExplorerSpeed', s); },
     },
     focusedExplorerDistance: {
-      get() {
-        return this.$store.state.flightSimulator.focusedExplorerDistance;
-      },
-      set(d) {
-        this.$store.commit('flightSimulator/setFocusedExplorerDistance', d);
-      },
+      get() { return this.$store.state.flightSimulator.focusedExplorerDistance; },
+      set(d) { this.$store.commit('flightSimulator/setFocusedExplorerDistance', d); },
     },
     focusedExplorerAltitude: {
-      get() {
-        return this.$store.state.flightSimulator.focusedExplorerAltitude;
-      },
-      set(d) {
-        this.$store.commit('flightSimulator/setFocusedExplorerAltitude', d);
-      },
+      get() { return this.$store.state.flightSimulator.focusedExplorerAltitude; },
+      set(d) { this.$store.commit('flightSimulator/setFocusedExplorerAltitude', d); },
     },
     visualizationState: {
-      get() {
-        return this.$store.state.flightSimulator.visualizationState;
-      },
-      set(v) {
-        this.$store.commit('flightSimulator/setVisualizationState', v);
-      },
+      get() { return this.$store.state.flightSimulator.visualizationState; },
+      set(v) { this.$store.commit('flightSimulator/setVisualizationState', v); },
     },
     winds: {
-      get() {
-        return this.$store.state.flightSimulator.winds;
-      },
-      set(v) {
-        this.$store.commit('flightSimulator/setWinds', v);
-      },
+      get() { return this.$store.state.flightSimulator.winds; },
+      set(v) { this.$store.commit('flightSimulator/setWinds', v); },
     },
     autoMode: {
-      get() {
-        return this.$store.state.flightSimulator.autoMode;
-      },
-      set(v) {
-        this.$store.commit('flightSimulator/setAutoMode', v);
-      },
+      get() { return this.$store.state.flightSimulator.autoMode; },
+      set(v) { this.$store.commit('flightSimulator/setAutoMode', v); },
     },
     altitudeLevel: {
-      get() {
-        return this.$store.state.flightSimulator.altitudeLevel;
-      },
-      set(a) {
-        this.$store.commit('flightSimulator/setAltitudeLevel', a);
-      },
+      get() { return this.$store.state.flightSimulator.altitudeLevel; },
+      set(a) { this.$store.commit('flightSimulator/setAltitudeLevel', a); },
     },
     trajectoryId: {
-      get() {
-        return this.$store.state.flightSimulator.trajectoryId;
-      },
-      set(a) {
-        this.$store.commit('flightSimulator/setTrajectoryId', a);
-      },
+      get() { return this.$store.state.flightSimulator.trajectoryId; },
+      set(a) { this.$store.commit('flightSimulator/setTrajectoryId', a); },
     },
   },
   watch: {
@@ -417,7 +349,7 @@ export default {
         city: 'Tokio',
         country: 'Japan',
       };
-      this.selected = -1;
+      this.selected = 0;
       this.initTHREE();
       this.initStarfield();
       this.setupExplorers();
@@ -457,7 +389,7 @@ export default {
           selected = index;
         }
       });
-      if (this.selected !== selected) {
+      if (this.selected - 1 !== selected) {
         if (selected < 0) {
           selectLabel.setVisible(false);
           if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
@@ -487,16 +419,15 @@ export default {
           });
         }
       }
-      this.selected = selected;
+      this.selected = selected + 1;
     },
 
     onMouseClick(event) {
       if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
         this.onMouseMove(event);
-        // console.log(this.selected);
-        if (this.selected >= 0) {
-          this.focusedExplorer = this.selected + 1;
-          this.selected = -1;
+        if (this.selected > 0) {
+          this.focusedExplorer = this.selected;
+          this.selected = 0;
         }
         selectLabel.setVisible(false);
       }
@@ -1306,7 +1237,7 @@ export default {
 
     animate() {
       fps += 1;
-      if (this.loading >= 1 && this.playing && this.selected < 0) {
+      if (this.loading >= 1 && this.playing && this.selected === 0) {
         /*
         const s = (pars.elapsed_days * 5.0) % 1.0;
         const mag = pars.layers.wind.magnitude * 0.2 + pars.layers.wind.magnitude * 0.8 * s;
