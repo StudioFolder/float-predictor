@@ -9,6 +9,7 @@ export default {
     isSaving: false, // saving true sve image then sets to false
     loading: 0, // percentage of loading assets. Value in range [0-1].
     winds: 0, // 0 = none, 1 = B/W, 2 = Color
+    selectedExplorer: 0,
     focusedExplorer: 0, // this is for onBoardExperience, if 0 none is focused
     focusedExplorerSpeed: 0, // onBoard data
     focusedExplorerDistance: 0, // onBoard data
@@ -54,6 +55,9 @@ export default {
     },
     setDeparture(state, departure) { // FORMAT: { lat, lng, city, country };
       state.departure = departure;
+    },
+    setSelectedExplorer(state, explorerId) {
+      state.selectedExplorer = explorerId;
     },
     setFocusedExplorer(state, explorerId) {
       state.focusedExplorer = explorerId;
