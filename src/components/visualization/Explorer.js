@@ -25,7 +25,7 @@ class Explorer {
     this.avgSpeed = 0;
     this.totalDistance = 0;
     const c = 0xffffff;
-    this.lineMaterial = new THREE.LineBasicMaterial({ transparent: true, color: c, linewidth: 3.0 });
+    this.lineMaterial = new THREE.LineBasicMaterial({ transparent: true, color: c, linewidth: 2.0 });
     this.sphereMaterial = new THREE.MeshBasicMaterial({ transparent: true, color: c, opacity: 0.0 });
     this.animatingSphereMaterial = new THREE.MeshBasicMaterial({ transparent: true, color: c, opacity: 1.0 });
     this.facesMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.0, side: THREE.DoubleSide });

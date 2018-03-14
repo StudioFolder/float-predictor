@@ -124,6 +124,11 @@ export default {
   computed: {
     activeExplorers() { return this.$store.state.flightSimulator.activeExplorers; },
     flightType() { return this.$store.state.flightSimulator.flightType; },
+    animating() {
+      return this.playing &&
+        this.loading >= 1 && (this.selectedExplorer === 0 ||
+          this.visualizationState !== STATE_ANIMATION_ACTIVE);
+    },
     focusedExplorer: {
       get() { return this.$store.state.flightSimulator.focusedExplorer; },
       set(fe) { this.$store.commit('flightSimulator/setFocusedExplorer', fe); },
@@ -226,6 +231,32 @@ export default {
         this.setOnboard(true);
       }
     },
+
+    selectedExplorer(s) {
+      let selected = s;
+      if (selected <= 0 && (this.visualizationState === STATE_MOVING_TO_DESTINATION ||
+        this.visualizationState === STATE_ANIMATION_END)) {
+        selected = this.minTrack + 1;
+      }
+      if (selected <= 0) {
+        selectLabel.setVisible(false);
+        this.hideExplorerDates();
+        _.each(explorers, (e) => {
+          e.setStyle(Explorer.MOVING);
+        });
+      } else {
+        this.showExplorerDates(selected - 1);
+        _.each(explorers, (e, index) => {
+          if (index === selected - 1) {
+            e.setStyle(Explorer.SELECTED);
+            selectLabel.set('', e.animatingSphere.position);// `Explorer ${index + 1} > `, e.animatingSphere.position);
+          } else {
+            e.setStyle(Explorer.UNSELECTED);
+          }
+        });
+      }
+    },
+
     departure(d) {
       // console.log('Setting departure...');
       this.visualizationState = STATE_INITIAL;
@@ -247,6 +278,7 @@ export default {
         console.log('Invalid departure');
       }
     },
+
     destination(d) {
       // console.log('Setting destination');
       // console.log(d);
@@ -260,9 +292,11 @@ export default {
         console.log('Invalid destination');
       }
     },
+
     visualizationState(s) {
       this.setState(s);
     },
+
     winds(w) {
       pars.winds = w;
       switch (w) {
@@ -349,7 +383,7 @@ export default {
         city: 'Tokio',
         country: 'Japan',
       };
-      this.selected = 0;
+      this.selectedExplorer = 0;
       this.initTHREE();
       this.initStarfield();
       this.setupExplorers();
@@ -368,7 +402,6 @@ export default {
       rendererAA.domElement.addEventListener('click', this.onMouseClick, false);
       rendererNAA.domElement.addEventListener('mousemove', this.onMouseMove, false);
       rendererNAA.domElement.addEventListener('click', this.onMouseClick, false);
-
       this.animate();
     },
 
@@ -389,45 +422,15 @@ export default {
           selected = index;
         }
       });
-      if (this.selected - 1 !== selected) {
-        if (selected < 0) {
-          selectLabel.setVisible(false);
-          if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
-            this.hideExplorerDates();
-            _.each(explorers, (e) => {
-              e.setStyle(Explorer.MOVING);
-            });
-          } else {
-            _.each(explorers, (e, index) => {
-              if (index === this.minTrack) {
-                e.setStyle(Explorer.SELECTED);
-              } else {
-                e.setStyle(Explorer.UNSELECTED);
-              }
-              this.showExplorerDates(this.minTrack);
-            });
-          }
-        } else {
-          this.showExplorerDates(selected);
-          _.each(explorers, (e, index) => {
-            if (index === selected) {
-              e.setStyle(Explorer.SELECTED);
-              selectLabel.set('', e.animatingSphere.position);// `Explorer ${index + 1} > `, e.animatingSphere.position);
-            } else {
-              e.setStyle(Explorer.UNSELECTED);
-            }
-          });
-        }
-      }
-      this.selected = selected + 1;
+      this.selectedExplorer = selected + 1;
     },
 
     onMouseClick(event) {
       if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
         this.onMouseMove(event);
-        if (this.selected > 0) {
-          this.focusedExplorer = this.selected;
-          this.selected = 0;
+        if (this.selectedExplorer > 0) {
+          this.focusedExplorer = this.selectedExplorer;
+          this.selectedExplorer = 0;
         }
         selectLabel.setVisible(false);
       }
@@ -932,13 +935,7 @@ export default {
         case STATE_MOVING_TO_DESTINATION: {
           pars.auto_rotate = false;
           // FADE IN ONLY THE MIN TRACK
-          for (let i = 0; i < explorers.length; i += 1) {
-            if (i !== this.minTrack) {
-              explorers[i].setStyle(Explorer.UNSELECTED);
-            } else {
-              explorers[i].setStyle(Explorer.SELECTED);
-            }
-          }
+          this.selectedExplorer = this.minTrack + 1;
 
           for (let j = 0; j < cityLabels.length; j += 1) {
             cityLabels[j].setVisible(false);
@@ -1237,14 +1234,7 @@ export default {
 
     animate() {
       fps += 1;
-      if (this.loading >= 1 && this.playing && this.selected === 0) {
-        /*
-        const s = (pars.elapsed_days * 5.0) % 1.0;
-        const mag = pars.layers.wind.magnitude * 0.2 + pars.layers.wind.magnitude * 0.8 * s;
-        windVisualization.setMagnitude(mag);
-        // windVisualization.setOpacity(0.001 * pars.layers.wind.opacity + 0.999 * pars.layers.wind.opacity * (1.0 - Math.abs(0.5 - (1.0 - s)) / 0.5));
-        windVisualization.setOpacity(pars.layers.wind.opacity * (1.0 - s));
-        */
+      if (this.animating) {
         windVisualization.update(pars.elapsed_days);
         animator.update(pars.speed_d_x_sec / 60.0);
         if (pars.auto_rotate) {
