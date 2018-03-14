@@ -4,10 +4,12 @@
         :style="{opacity: opacity}"
         @click="onClick">
         <div class="explorer-id">
-            <div v-if="(hover || highlighted)" class="explorer-gif">
-                <img src="~img/explorer_anim_03.gif">
-            </div>
-            <div v-else>{{explorer}}</div>
+            <transition name="fade" mode="out-in">
+                <div v-if="(highlighted)" class="exit-from-onboard" key="close">
+                    <i class="fp fp-close"></i>
+                </div>
+                <div v-else key="explorer-id">{{explorer}}</div>
+            </transition>
         </div>
         <svg>
             <circle
@@ -48,8 +50,13 @@ export default {
   },
   methods: {
     onClick() {
-      this.$store.commit('flightSimulator/setFocusedExplorer', this.explorer);
-      this.$store.commit('flightSimulator/setPlaying', true);
+      if (this.highlighted) {
+        this.$store.commit('flightSimulator/setFocusedExplorer', 0);
+        this.$store.commit('flightSimulator/setPlaying', true);
+      } else {
+        this.$store.commit('flightSimulator/setFocusedExplorer', this.explorer);
+        this.$store.commit('flightSimulator/setPlaying', true);
+      }
     },
   },
   watch: {

@@ -158,11 +158,11 @@ export default {
             justify-content: center;
             transition: opacity .3s;
             cursor: pointer;
-            background-color: rgba(255, 255, 255, 0);
-            &:hover, &.--focused {
+            background-color: transparent;
+            &.--focused {
                 background-color: transparent;
                 circle.progress {
-                    stroke-width: 8px;
+                    stroke-width: 5;
                     &[data-explorer="0"] {
                         stroke: #003769;
                     }
@@ -188,12 +188,16 @@ export default {
                         stroke: #ffffff;
                     }
                 }
+                circle.baseline {
+                    fill: #FFF;
+                }
             }
             .explorer-id {
                 position: absolute;
                 margin-top: 1px;
                 color: $gray;
                 font-size: .9rem;
+                z-index: 9;
             }
             .explorer-gif {
                 width: 15px;
@@ -201,6 +205,11 @@ export default {
                 margin-left: 1px;
                 img {
                     max-width: 100%;
+                }
+            }
+            .exit-from-onboard {
+                i {
+                    z-index: 99;
                 }
             }
             svg {
@@ -214,8 +223,9 @@ export default {
                 cy: 50%;
                 r: ($r - 2);
                 fill: transparent;
+                transition: all .4s ease .4s;
                 &.progress {
-                    stroke-width: 4;
+                    stroke-width: 5;
                     r: $r;
                     stroke: $gray;
                     transition: stroke-dasharray $speed;

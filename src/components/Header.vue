@@ -1,19 +1,30 @@
 <template>
-    <div class="site-header" :class="{'is-onboard': isOnboard}">
-        <nav-brand :is-choosing="isChoosing" />
+    <div class="site-header" v-if="isClient">
+        <div class="logo">
+            <div class="title">Aerocene</div>
+            <div class="subtitle">Float Predictor</div>
+        </div>
+        <b-nav>
+            <b-nav-item @click="toggleInfoBox" class="--rounded">
+                <i :class="[isInfoBoxOpen ? 'fp-close-w' : 'fp-info', 'fp']"></i>
+            </b-nav-item>
+        </b-nav>
     </div>
 </template>
 <script>
-import mainMenu from 'Parts/MainMenu';
-import navBrand from 'Parts/NavBrand';
 
 export default {
-  components: {
-    mainMenu, navBrand,
-  },
   computed: {
-    isOnboard() { return this.$store.state.flightSimulator.focusedExplorer > 0; },
+    isClient() { return this.$route.name !== 'visualization-server'; },
     isChoosing() { return this.$store.state.general.isChoosingDestination; },
+    isInfoBoxOpen() {
+      return this.$store.state.general.isInfoBoxOpen;
+    },
+  },
+  methods: {
+    toggleInfoBox() {
+      this.$store.commit('general/toggleInfoBox');
+    },
   },
 };
 </script>
@@ -23,118 +34,25 @@ export default {
 .site-header {
     position: relative;
     z-index: 20;
-    background-color: transparent;
-    @include large_down {
-        position: fixed;
-        top: 0;
-        height: 80px;
-        width: 100%;
-        &.is-onboard {
-            display: none;
-        }
-    }
-    &:before {
-        content: '';
-        display: block;
-        height: 100%;
-        position: absolute;
-        top: 0; left: 0;
-        opacity: 0;
-        width: 100%;
-        z-index: -100;
-        transition: opacity 0.4s;
-        background: linear-gradient( to bottom,
-                rgba(0,0,0,1) 0%,
-                rgba(0,0,0,1) 40%,
-                rgba(0,0,0,.9) 90%,
-                rgba(0,0,0,0) 100%);
-    }
-    &.--scroll:before {
-        opacity: 1;
-    }
-    .nav-brand {
-        color: #fff;
-        display: block;
-        opacity: 0;
-        position: fixed;
-        top: 0;
-        left: 0;
-        padding: $marginBase;
-        transition: opacity .2s ease;
-        @include large_down {
-            padding: 1rem $marginMobile $marginMobile;
-        }
-    }
+    background-color: $lightBlack;
+    padding: $marginMobile;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
     .logo {
         @extend %colfax_bold;
+        flex: 1 0 auto;
         text-transform: uppercase;
         text-decoration: none;
         font-size: 1.5rem; // 24px
-
-        .title {
-            color: #FFF;
-        }
+        line-height: 1.1;
+        color: #FFF;
         .subtitle {
-            @include medium_up{
-                margin-bottom: 2.625rem; // 42px
-            }
             color: $gray;
         }
-        @include medium_down {
-            position: fixed;
-            top: $marginMobile;
-            left: $marginMobile;
-            text-align: left;
-            font-size: 1rem;
-        }
-        @include medium_down {
-            transform: translateY(-25%);
-        }
     }
-    .read-more {
-        margin-top: 1.5rem;
-        display: none;
-        @include down($xlarge) {
-            font-size: .85em;
-        }
-    }
-    &.--pages .nav-brand {
-        opacity: 1;
-        .intro-description {
-            max-width: 230px;
-            @include down($xlarge) {
-                font-size: .85em;
-            }
-            @include medium_down {
-                display: none;
-            }
-        }
-        .read-more {
-            display: block;
-            @include medium_down {
-                display: none;
-            }
-        }
-    }
-    &.--home .nav-brand {
-        opacity: 1;
-        text-align: center;
-        top: 10%;
-        @include medium_up {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-        .intro-description {
-            @extend .h4;
-            @include medium_up {
-                max-width: 450px;
-            }
-            @include medium_down {
-                text-align: left;
-                font-size: 1em;
-                line-height: 1.45;
-            }
-        }
+    .nav {
+        flex: 0 0 auto;
     }
 }
 </style>

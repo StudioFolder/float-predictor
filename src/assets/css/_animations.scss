@@ -191,26 +191,3 @@ $duration: 1s;
     opacity: 0;
   }
 }
-@keyframes flip-up-to-top {
-  0% {
-    transform: translateY(0%);
-    opacity: 1;
-  }
-  80% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-30%);
-  }
-}
-@keyframes flip-up-from-bottom {
-  0% {
-    transform: translateY(50%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0%);
-    opacity: 1;
-  }
-}

@@ -1,10 +1,6 @@
 <template>
     <transition name="fade">
     <div class="onboard-nav shadowed" v-show="id > 0">
-        <a class="close" href="#">
-            <div class="label">Back to global view</div>
-            <i class="fp fp-close-w" @click.prevent="onClick"></i>
-        </a>
         <div class="header">
             <i class="fp fp-caret-right prev" @click="goPrevious"></i>
             <div class="title h4">Explorer {{id}}</div>
@@ -75,8 +71,9 @@ export default {
         position: fixed;
         bottom: $marginBase;
         left: $marginBase;
-        width: 190px;
+        width: 360px;
         z-index: 20;
+        font-size: 2rem;
         .close {
             opacity: 1;
             background-color: $lightBlack;
@@ -96,7 +93,7 @@ export default {
             text-align: center;
             width: 80px;
             color: #fff;
-            font-size: .8rem;
+            font-size: .8em;
             text-transform: initial;
             transform: translateY(-100%);
             padding-bottom: 5px;
@@ -120,72 +117,19 @@ export default {
         .subtitle {
             color: $gray;
             text-transform: uppercase;
-            font-size: .7rem;
+            font-size: .6em;
         }
         .explorer-datum {
             margin-bottom: $marginItem;
+            font-size: 1em;
             &:last-child {
                 margin-bottom: 0;
             }
         }
         .body {
             padding: $marginItem*2;
-            font-size: .9rem;
+            font-size: .9em;
             background-color: $lightBlack;
-        }
-        @include medium_down {
-            height: 100px;
-            width: 100%;
-            bottom: 0;
-            left: 0;
-            box-shadow: none;
-            .header {
-                background: linear-gradient(to top,
-                        rgba(0,0,0,.98) 0%,
-                        rgba(0,0,0,.58) 38%,
-                        rgba(0,0,0,.1) 80%,
-                        rgba(0,0,0,.0)) 100%;
-                color: #FFF;
-                display: flex;
-                flex-flow: row;
-                align-items: center;
-                padding: $marginItem $marginMobile;
-                i {
-                    flex: 0 0 auto;
-                    width: $itemWidth;
-                    height: $itemWidth;
-                    content: '';
-                    display: block;
-                    background-image: url("~Icons/ico-caret-right.svg");
-                    background-repeat: no-repeat;
-                    background-position: center right;
-                    background-size: 35%;
-                    &.prev {
-                        transform: rotate(180deg);
-                    }
-                }
-                .title {
-                    flex: 1 0 auto;
-                }
-            }
-            .close {
-                position: fixed;
-                top: $marginMobile;
-            }
-            .body {
-                background-color: black;
-                padding-top: 0;
-            }
-            .explorer-data {
-                display: flex;
-                flex-flow: row;
-                .--altitude {
-                    display: none;
-                }
-            }
-            .explorer-datum {
-                flex: 1 0 auto;
-            }
         }
     }
 </style>

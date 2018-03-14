@@ -2,25 +2,25 @@
   <div id="visualization-server">
     <StateRemoteSync/>
     <div class="main-visualization-wrapper">
-      <on-board-navigation />
       <visualization />
+      <on-board-navigation />
     </div>
   </div>
 </template>
 
 <script>
 import onBoardNavigation from 'Parts/OnBoardNavigation';
-import Visualization from '../Visualization';
-import StateRemoteSync from './StateRemoteSync';
+import visualization from 'Components/Visualization';
+import StateRemoteSync from 'Components/StateRemoteSync';
 
 export default {
-  name: 'VisualizationServer',
+  name: 'visualization-server',
   data() {
     return {
     };
   },
   components: {
-    Visualization, StateRemoteSync, onBoardNavigation,
+    visualization, StateRemoteSync, onBoardNavigation,
   },
   computed: {
   },
@@ -33,5 +33,5 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style>
 </style>

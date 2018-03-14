@@ -1,44 +1,56 @@
 <template>
-    <div class="main-content over">
-        <div class="call-to-action" @click="startAction">
-          <router-link to="/flight-simulator" class="shadowed">
-              Start a new<br>aerosolar journey
-          </router-link>
+    <div class="visualization-client">
+        <StateRemoteSync/>
+        <div class="home-content">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                At blanditiis culpa ducimus enim id laudantium natus,
+                numquam officia possimus quis repudiandae suscipit
+                veritatis vero. Aliquid ipsa itaque nostrum quos rerum.
+            </p>
+            <div class="call-to-action">
+                <router-link to="/client/flight-simulator" class="button --opaque">
+                    Start a new<br>aerosolar journey
+                </router-link>
+            </div>
+            <div class="globe-gif">
+                <img src="~img/globe_gif.gif">
+            </div>
         </div>
     </div>
 </template>
-
 <script>
+import StateRemoteSync from 'Components/StateRemoteSync';
+
 export default {
-  name: 'HomePage',
-  data() {
-    return {
-      upperHeight: 0,
-    };
+  name: 'VisualizationClient',
+  components: {
+    StateRemoteSync,
   },
-  methods: {
-    startAction() {
-      this.$store.commit('general/closeMenu');
-      this.$store.commit('general/setFormStatus', true);
-    },
+  computed: {
+    isChoosing() { return (this.$store.state.general.isChoosingDestination); },
   },
 };
 </script>
 <style lang="scss">
-
-.call-to-action {
-    margin: 60vh auto 0;
-    color: #fff;
-    width: auto;
+@import "~css/_variables_and_mixins.scss";
+.home-content {
+    display: flex;
+    justify-content: space-around;
     text-align: center;
-    a {
-        display: inline-block;
-        background-color: #1E1E1E;
-        padding: .7em 1.5em;
-        text-decoration: none;
-        transition: background-color .4s ease, color .4s ease;
-        &:hover {
-            background-color: #2E2E2E;
+    padding: 0 $marginMobile;
+    p {
+        max-width: 35em;
+        margin: 0 auto;
+    }
+    .call-to-action {
+        flex: 0 0 100%;
+        .button {
+            display: inline-block;
+            background-color: $lightBlack;
+            padding: $marginItem $marginItem+2;
+            text-transform: uppercase;
+            color: #FFF;
         }
     }
 }
