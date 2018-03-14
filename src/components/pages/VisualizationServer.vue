@@ -14,7 +14,7 @@ import visualization from 'Components/Visualization';
 import StateRemoteSync from 'Components/StateRemoteSync';
 
 export default {
-  name: 'visualization-server',
+  name: 'visualizationServer',
   data() {
     return {
     };
@@ -25,7 +25,7 @@ export default {
   computed: {
   },
   mounted() {
-    // this.$store.commit('flightSimulator/setVisualizationState', 9);
+    this.$store.commit('flightSimulator/setVisualizationState', 9);
   },
   methods: {
   },

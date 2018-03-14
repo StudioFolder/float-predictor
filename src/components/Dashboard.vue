@@ -1,9 +1,5 @@
 <template>
     <div class="dashboard">
-        <recentre is-animation-active="isAnimationActive"/>
-        <transition name="fade">
-            <info-box v-show="isInfoboxOpen" is-animation-active="isAnimationActive"/>
-        </transition>
         <flight-dashboard
                 v-show="isAnimationActive"
                 :is-onboard="isOnboard"
@@ -11,12 +7,10 @@
     </div>
 </template>
 <script>
-import recentre from 'Parts/Recentre';
-import infoBox from 'Parts/InfoBox';
 import flightDashboard from 'Parts/FlightDashboard';
 
 export default {
-  components: { infoBox, flightDashboard, recentre },
+  components: { flightDashboard },
   computed: {
     isOnboard() { return this.$store.state.flightSimulator.focusedExplorer > 0; },
     isInfoboxOpen() { return this.$store.state.general.isInfoBoxOpen; },
@@ -33,7 +27,7 @@ export default {
     list-style: none;
     z-index: 19; // as the main-menu
     padding: 0 $marginBase;
-    >* {
+    > * {
         position: relative;
         text-align: center;
         flex: 1 1 auto;
