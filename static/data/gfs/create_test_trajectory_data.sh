@@ -1,3 +1,4 @@
+cd ~/public_html/met/folder/tmp/dist/static/data/gfs/
 cd script
 rm -rf test
 mkdir test
@@ -11,4 +12,3 @@ mkdir test/1000
 python create_test_data.py
 rm -rf ../test
 mv test ../
-

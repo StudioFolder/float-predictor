@@ -1,3 +1,4 @@
+cd ~/public_html/met/folder/tmp/dist/static/data/gfs/
 cd script
 rm -rf data
 mkdir data
