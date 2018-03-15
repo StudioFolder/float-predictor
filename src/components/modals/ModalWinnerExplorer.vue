@@ -1,66 +1,31 @@
 <template>
-    <!-- Modal Component -->
-    <b-modal v-model="modalVisible"
-             id="dialog-label"
-             size="sm"
-             hide-footer
-             centered
-             class="winner-explorer-modal --box"
-             title="Your Aerosolar Journey">
-        <i slot="modal-header-close" class="fp fp-close-w"></i>
-        <div class="aeroglyph" v-html="winningExplorerData.svg"></div>
-        <div class="message">
-            The Aerocene Sculpture that left from <b>{{departure.city}}</b>
-            on <strong>{{depDate}}</strong>
-            arrived within <strong>{{winningExplorerData.minDist}}km</strong>
-            from <strong>{{destination.city}}</strong> in
-            <strong>{{winningExplorerData.minTime}} days.</strong>
-        </div>
-        <b-form @submit="onSubmit">
-            <div class="name-selector-group">
-                <b-form-input id="name" type="text" placeholder="Enter your name here">
-                </b-form-input>
-                <b-form-input id="email" type="email" placeholder="example@mail.com">
-                </b-form-input>
-                <p class="input-label">
-                    You can associate your name to the aeroglyph,
-                    and leave your e-mail to receive a
-                    postcard about your flight.
-                </p>
+    <transition name="fade">
+        <div class="onboard-nav shadowed winner-explorer-modal" v-show="isModalVisible">
+            <div class="header">
+                <div class="title h4">Your Aerosolar Journey</div>
             </div>
-            <b-button type="submit" variant="primary">Submit</b-button>
-        </b-form>
-        <ul class="bottom-links">
-            <li class="share">
-                <small>Share</small>
-                <ul class="list-group horiziontal share-items">
-                    <li class="menu-item --socialShare"><i class="fp fp-facebook"></i></li>
-                    <li class="menu-item --socialShare"><i class="fp fp-twitter"></i></li>
-                    <li class="menu-item --socialShare"><i class="fp fp-mail"></i></li>
-                    <li class="menu-item --socialShare"><i class="fp fp-google"></i></li>
-                </ul>
-            </li>
-            <li class="separator"></li>
-            <li class="download">
-                <small>Download</small>
-                <ul>
-                    <li class="menu-item --socialShare"><i class="fp fp-download"></i></li>
-                </ul>
-            </li>
-        </ul>
-    </b-modal>
+            <div class="body">
+                <div class="aeroglyph" v-html="winningExplorerData.svg"></div>
+                <div class="message">
+                    The Aerocene Sculpture that left from <b>{{departure.city}}</b>
+                    on <strong>{{depDate}}</strong>
+                    arrived within <strong>{{winningExplorerData.minDist}}km</strong>
+                    from <strong>{{destination.city}}</strong> in
+                    <strong>{{winningExplorerData.minTime}} days.</strong>
+                </div>
+            </div>
+        </div>
+    </transition>
 </template>
 <script>
 import moment from 'moment';
 
 export default {
   name: 'modal-winner-explorer',
-  data() {
-    return {
-      modalShow: true,
-    };
-  },
   computed: {
+    isModalVisible() {
+      return this.$store.state.flightSimulator.visualizationState === 4;
+    },
     winningExplorerData() {
       return this.$store.state.flightSimulator.winningExplorerData;
     },
@@ -73,22 +38,6 @@ export default {
     destination() {
       return this.$store.state.flightSimulator.destination;
     },
-    animationEnd() {
-      return this.$store.state.flightSimulator.visualizationState === 4;
-    },
-    modalVisible: {
-      set(val) {
-        this.modalShow = val;
-      },
-      get() {
-        return (this.animationEnd && this.modalShow);
-      },
-    },
-  },
-  methods: {
-    onSubmit() {
-      this.modalShow = false;
-    },
   },
 };
 </script>
@@ -97,11 +46,8 @@ export default {
 @import "~css/_typography.scss";
 .winner-explorer-modal {
     z-index: 19;
-    font-size: 1rem;
-    .modal-title {
-        @extend .h4;
-        margin: 0;
-    }
+    font-size: 2rem;
+    width: 500px;
     .modal{
         transform: none !important;
     }

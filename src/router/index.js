@@ -4,7 +4,7 @@ import Router from 'vue-router';
 
 import homePage from 'Pages/HomePage';
 import flightSimulator from 'Pages/FlightSimulator';
-import VisualizationServer from 'Pages/VisualizationServer';
+import visualizationServer from 'Pages/VisualizationServer';
 
 Vue.use(Router);
 
@@ -24,7 +24,7 @@ const router = new Router({
     {
       path: '/server',
       name: 'visualization-server',
-      component: VisualizationServer,
+      component: visualizationServer,
     },
   ],
 });

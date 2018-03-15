@@ -2,15 +2,19 @@
     <div class="visualization-client">
         <StateRemoteSync/>
         <div class="simulator-content">
-            <flight-form v-if="isChoosing" />
-            <dashboard v-else />
+            <transition name="fade" mode="out-in">
+                <flight-form v-if="isChoosing" key="flight-form"/>
+                <save-trip v-else-if="isEndAnimation" key="save-trip"/>
+                <dashboard v-else key="dashboard"/>
+            </transition>
         </div>
     </div>
 </template>
 <script>
 import dashboard from 'Parts/FlightDashboard';
-import flightForm from 'Components/FlightForm';
+import flightForm from 'Parts/FlightForm';
 import StateRemoteSync from 'Components/StateRemoteSync';
+import saveTrip from 'Parts/SaveTrip';
 
 export default {
   name: 'flight-simulator',
@@ -20,10 +24,11 @@ export default {
     };
   },
   components: {
-    flightForm, dashboard, StateRemoteSync,
+    flightForm, dashboard, StateRemoteSync, saveTrip,
   },
   computed: {
-    isChoosing() { return (this.$store.state.general.isChoosingDestination); },
+    isChoosing() { return this.$store.state.general.isChoosingDestination; },
+    isEndAnimation() { return this.$store.state.flightSimulator.visualizationState === 4; },
   },
 };
 </script>

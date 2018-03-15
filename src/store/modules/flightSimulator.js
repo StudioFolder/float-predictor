@@ -104,7 +104,6 @@ export default {
     resetVisualization({ commit }) {
       commit('setPlaying', true); // if was stopped
       commit('setFocusedExplorer', 0);
-      // commit('setElapsedDays', 0); // it is better to reset days before starting a new simulation
       commit('setActive', false);
     },
   },

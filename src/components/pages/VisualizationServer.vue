@@ -4,6 +4,7 @@
     <div class="main-visualization-wrapper">
       <visualization />
       <on-board-navigation />
+      <modal-winner />
     </div>
   </div>
 </template>
@@ -12,26 +13,15 @@
 import onBoardNavigation from 'Parts/OnBoardNavigation';
 import visualization from 'Components/Visualization';
 import StateRemoteSync from 'Components/StateRemoteSync';
+import modalWinner from 'Modals/ModalWinnerExplorer';
 
 export default {
   name: 'visualizationServer',
-  data() {
-    return {
-    };
-  },
   components: {
-    visualization, StateRemoteSync, onBoardNavigation,
-  },
-  computed: {
+    visualization, StateRemoteSync, onBoardNavigation, modalWinner,
   },
   mounted() {
     this.$store.commit('flightSimulator/setVisualizationState', 9);
   },
-  methods: {
-  },
 };
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style>
-</style>

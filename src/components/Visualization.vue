@@ -973,7 +973,15 @@ export default {
           }
           // GO TO DESTINATION POINT
           const d = Util.XYZ2LatLon(explorers[this.minTrack].animatingSphere.position);// explorers[this.minTrack].destination;
-          this.resetTo({ lat: d.lat, lng: d.lng, time: 1.0, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_END; } });
+          this.resetTo({
+            lat: d.lat,
+            lng: d.lng,
+            time: 1.0,
+            onAnimationEnd: () => {
+              this.visualizationState = STATE_ANIMATION_END;
+              this.focusedExplorer = 0;
+            },
+          });
           this.showExplorerDates(this.minTrack);
           break;
         }

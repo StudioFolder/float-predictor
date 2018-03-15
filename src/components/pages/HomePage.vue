@@ -14,7 +14,7 @@
                 </router-link>
             </div>
             <div class="globe-gif">
-                <img src="~img/globe_gif.gif">
+                <img src="~img/globe_gif_02.gif">
             </div>
         </div>
     </div>
@@ -36,9 +36,18 @@ export default {
 @import "~css/_variables_and_mixins.scss";
 .home-content {
     display: flex;
+    flex-flow: row wrap;
     justify-content: space-around;
     text-align: center;
     padding: 0 $marginMobile;
+    > * {
+        position: relative;
+        text-align: center;
+        flex: 1 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     p {
         max-width: 35em;
         margin: 0 auto;
@@ -52,6 +61,9 @@ export default {
             text-transform: uppercase;
             color: #FFF;
         }
+    }
+    .globe-gif img{
+        max-height: 160px;
     }
 }
 </style>

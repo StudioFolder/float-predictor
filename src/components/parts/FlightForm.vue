@@ -18,7 +18,7 @@
             </b-form-checkbox>
         </div>
         <transition name="fade" mode="out-in">
-            <div class="coordinates-selector-group" v-if="isPlanned" key="planned-flight">
+            <div class="selector-group" v-if="isPlanned" key="planned-flight">
                 <div class="departure">
                     <label class="small">From</label>
                     <vue-google-autocomplete
@@ -40,7 +40,7 @@
                     </vue-google-autocomplete>
                 </div>
             </div>
-            <div class="coordinates-selector-group" v-else key="free-flight">
+            <div class="selector-group" v-else key="free-flight">
                 <div class="departure">
                     <label class="small">From</label>
                     <vue-google-autocomplete
@@ -257,7 +257,7 @@ form.flight-form {
             }
         }
     }
-    .coordinates-selector-group {
+    .selector-group {
         text-align: left;
         padding: $marginMobile;
         display: flex;

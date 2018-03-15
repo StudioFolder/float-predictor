@@ -74,33 +74,6 @@ export default {
         width: 360px;
         z-index: 20;
         font-size: 2rem;
-        .close {
-            opacity: 1;
-            background-color: $lightBlack;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            position: absolute;
-            right: 0;
-            padding: 2px;
-            cursor: unset;
-            &:hover .label {
-                opacity: 1;
-            }
-        }
-        i { cursor: pointer }
-        .label {
-            position: absolute;
-            text-align: center;
-            width: 80px;
-            color: #fff;
-            font-size: .8em;
-            text-transform: initial;
-            transform: translateY(-100%);
-            padding-bottom: 5px;
-            margin-left: -25px;
-            opacity: 0;
-            -webkit-font-smoothing: antialiased;
-        }
         .header {
             background-color: #fff;
             color: $bodyColor;

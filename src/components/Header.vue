@@ -13,7 +13,11 @@
                 </a>
             </li>
             <b-nav-item @click="toggleInfoBox" class="--rounded">
-                <i :class="[isInfoBoxOpen ? 'fp-close-w' : 'fp-info', 'fp']"></i>
+                <transition name="fade-icon" mode="out-in">
+                    <i v-if="isInfoBoxOpen"
+                       class="fp-close-w fp" key="fp-close"></i>
+                    <i v-else class="fp-info fp" key="fp-info"></i>
+                </transition>
             </b-nav-item>
         </b-nav>
     </div>

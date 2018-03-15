@@ -269,7 +269,7 @@ export default {
                     stroke-width: 5;
                     r: $r;
                     stroke: $gray;
-                    transition: stroke-dasharray $speed;
+                    transition: stroke-dasharray $speed linear;
                 }
                 &.baseline {
                     stroke-width: 1;

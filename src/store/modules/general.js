@@ -6,6 +6,7 @@ export default {
     transitionMode: '',
     animationHeight: 'normal',
     isChoosingDestination: true,
+    modalShow: false,
     webColors: [
       '#003769',
       '#2e6a9c',
