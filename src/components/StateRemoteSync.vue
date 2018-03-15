@@ -7,14 +7,13 @@
 
 import _ from 'lodash';
 
-const ReconnectingWebSocket = require('reconnecting-websocket');
-
 export default {
   name: 'StateRemoteSync',
 
   data() {
     return {
       connected: false,
+      synced: false,
     };
   },
 
@@ -123,61 +122,69 @@ export default {
   },
   mounted() {
     this.loading = 1;
+    this.verbose = true;
     this.data = JSON.parse(JSON.stringify(this.$store.state.flightSimulator));
     const url = 'static/exhibition/websocket_config.json';
     fetch(url)
       .then(r => r.json())
       .then((json) => {
-        const ip = json.ip;
-        const port = json.port;
-        const address = `ws://${ip}:${port}`;
-        console.log(address);
-        this.ws = new ReconnectingWebSocket(address);
+        this.ip = json.ip;
+        this.port = json.port;
         this.setupWS();
       })
-      .catch((r) => { console.log(`Error: ${r}`); });
+      .catch((r) => { console.log(`Error in fetching ${url}: ${r}`); });
+  },
+  beforeDestroy() {
+    this.ws.close();
+    this.ws = undefined;
+    clearInterval(this.timeout);
   },
   methods: {
     setupWS() {
+      this.synced = false;
+      const address = `ws://${this.ip}:${this.port}`;
+      this.ws = new WebSocket(address);
       this.ws.onmessage = (data) => {
         this.statePushed(data);
       };
       this.ws.onopen = () => {
+        this.timeout = undefined;
         this.connected = true;
-        console.log('Open');
+        if (this.verbose) console.log('Open');
       };
       this.ws.onclose = () => {
         this.connected = false;
-        console.log('Close');
+        this.ws.close();
+        this.timeout = setTimeout(this.setupWS, 5000);
+        if (this.verbose) console.log('Close');
       };
       this.ws.onerror = () => {
         this.connected = false;
-        console.log('Error');
-        this.ws.close();
+        if (this.verbose) console.log('Error');
       };
     },
-
     pushState(value) {
-      if (this[value] !== this.data[value] && this.connected) {
-        console.log(`Push State: ${value} -> ${this[value]}`);
+      if (this.synced && this.connected && this[value] !== this.data[value]) {
+        if (this.verbose) console.log(`Push State: ${value} -> ${this[value]}`);
         const data2Push = {};
         data2Push[value] = this[value];
         try {
           this.ws.send(JSON.stringify(data2Push));
           this.data[value] = this[value];
         } catch (e) {
-          console.log(e.message);
+          if (this.verbose) console.log(`Error in pushState: ${e.message}`);
           this.connected = false;
         }
       }
     },
     statePushed(e) {
-      console.log('State pushed');
+      if (this.verbose) console.log('State pushed');
+      this.synced = true;
       this.data = JSON.parse(e.data);
       if (this.connected) {
         _.each(this.data, (value, key) => {
           if (!this.isEqual(this[key], value)) {
-            console.log(`${key} -> ${value} was ${this[key]}`);
+            if (this.verbose) console.log(`${key} -> ${value} was ${this[key]}`);
             this[key] = value;
           }
         });

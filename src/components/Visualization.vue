@@ -69,7 +69,7 @@ const pars = {
   fps: 0,
   antialias: true,
   state: 0,
-  speed_d_x_sec: 0.09,
+  speed_d_x_sec: 0.105,
   move_in_time: false,
   pan_x: 0,
   pan_y: 0,
@@ -77,7 +77,7 @@ const pars = {
   onboard: false,
   skip_frame: 1,
   camera_smooth: 0.993,
-  camera_distance: 1.5,
+  camera_distance: 1.3,
   camera_shift: 0.07,
   camera_zoom: 0.94,
   sun_visible: false,
@@ -90,7 +90,7 @@ const pars = {
   nightmap_color: '#ffffff',
   bump_scale: 0.5,
   // LIGHT
-  spot_light_intensity: 1,
+  spot_light_intensity: 0.8,
   sun_light_color: '#ffffff',
   ambient_light_intensity: 0.09,
   ambient_light_color: '#acdfef',
@@ -303,19 +303,50 @@ export default {
         case 0: // NONE
           pars.layers.wind.visible = false;
           break;
-        case 1: // B/W
-          pars.layers.wind.start_color = '#000000';
+        case 1: // B/W animated
+          pars.layers.wind.start_color = '##5b5b5b';
           pars.layers.wind.end_color = '#ffffff';
           pars.layers.wind.mapping = 1.0;
-          pars.layers.wind.opacity_mapping = false;
+          pars.layers.wind.opacity_mapping = true;
           pars.layers.wind.visible = true;
+          pars.layers.wind.threshold = 25;
+          pars.layers.wind.opacity = 0.9;
+          pars.layers.wind.magnitude = 0.4;
+          pars.layers.wind.animated = true;
           break;
-        case 2: // COLOR
+        case 2: // COLOR animated
           pars.layers.wind.start_color = '#073a9e';
           pars.layers.wind.end_color = '#f80000';
           pars.layers.wind.mapping = 2.0;
-          pars.layers.wind.opacity_mapping = false;
+          pars.layers.wind.opacity_mapping = true;
+          pars.layers.wind.magnitude = 0.5;
+          pars.layers.wind.threshold = 25;
+          pars.layers.wind.opacity = 0.9;
           pars.layers.wind.visible = true;
+          pars.layers.wind.animated = true;
+          break;
+        case 3: // B/W static
+          pars.layers.wind.start_color = '##5b5b5b';
+          pars.layers.wind.end_color = '#ffffff';
+          pars.layers.wind.mapping = 1.0;
+          pars.layers.wind.opacity_mapping = true;
+          pars.layers.wind.visible = true;
+          pars.layers.wind.threshold = 25;
+          pars.layers.wind.opacity = 0.4;
+          pars.layers.wind.magnitude = 0.25;
+          pars.layers.wind.animated = false;
+
+          break;
+        case 4: // COLOR static
+          pars.layers.wind.start_color = '#073a9e';
+          pars.layers.wind.end_color = '#f80000';
+          pars.layers.wind.mapping = 2.0;
+          pars.layers.wind.opacity_mapping = true;
+          pars.layers.wind.magnitude = 0.25;
+          pars.layers.wind.threshold = 30;
+          pars.layers.wind.opacity = 0.4;
+          pars.layers.wind.visible = true;
+          pars.layers.wind.animated = true;
           break;
         default:
           break;
