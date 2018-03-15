@@ -106,7 +106,6 @@ export default {
       commit('setFocusedExplorer', 0);
       // commit('setElapsedDays', 0); // it is better to reset days before starting a new simulation
       commit('setActive', false);
-      commit('setWinds', 0);
     },
   },
   getters: {
