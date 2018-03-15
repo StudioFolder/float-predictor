@@ -1,72 +1,70 @@
 <template>
-    <div class="flight-form wrapper">
-        <b-form @submit="onSubmit">
-            <div class="type-selector-group">
-                <b-form-checkbox id="FlightTypeSelector"
-                                 v-model="flightType"
-                                 value="free"
-                                 unchecked-value="planned"
-                                 class="type-selector"
-                                 :class="flightType">
-                    <div class="type-selector">
-                        <span @click="onSelect"
-                              :class="{'--isActive': isPlanned}"
-                              id="jsPlanned">Planned Float</span>
-                        <span @click="onSelect"
-                              :class="{'--isActive': isFree}"
-                              id="jsFree">Free Float</span>
-                    </div>
-                </b-form-checkbox>
+    <b-form @submit="onSubmit" class="flight-form">
+        <div class="type-selector-group">
+            <b-form-checkbox id="FlightTypeSelector"
+                             v-model="flightType"
+                             value="free"
+                             unchecked-value="planned"
+                             class="type-selector"
+                             :class="flightType">
+                <div class="type-selector">
+                    <span @click="onSelect"
+                          :class="{'--isActive': isPlanned}"
+                          id="jsPlanned">Planned Float</span>
+                    <span @click="onSelect"
+                          :class="{'--isActive': isFree}"
+                          id="jsFree">Free Float</span>
+                </div>
+            </b-form-checkbox>
+        </div>
+        <transition name="fade" mode="out-in">
+            <div class="coordinates-selector-group" v-if="isPlanned" key="planned-flight">
+                <div class="departure">
+                    <label class="small">From</label>
+                    <vue-google-autocomplete
+                            id="map" classname="form-control"
+                            :placeholder="placeholder.departure"
+                            @placechanged="setDeparture"
+                            types="(cities)"
+                            rtypes="geocode">
+                    </vue-google-autocomplete>
+                </div>
+                <div class="optional-destination">
+                    <label  class="small">To</label>
+                    <vue-google-autocomplete
+                            id="map2" classname="form-control"
+                            :placeholder="placeholder.destination"
+                            @placechanged="setDestination"
+                            types="(cities)"
+                            rtypes="geocode">
+                    </vue-google-autocomplete>
+                </div>
             </div>
-            <transition name="fade" mode="out-in">
-                <div class="coordinates-selector-group" v-if="isPlanned" key="planned-flight">
-                    <div class="departure">
-                        <label class="small">From</label>
-                        <vue-google-autocomplete
-                                id="map" classname="form-control"
-                                :placeholder="placeholder.departure"
-                                @placechanged="setDeparture"
-                                types="(cities)"
-                                rtypes="geocode">
-                        </vue-google-autocomplete>
-                    </div>
-                    <div class="optional-destination">
-                        <label  class="small">To</label>
-                        <vue-google-autocomplete
-                                id="map2" classname="form-control"
-                                :placeholder="placeholder.destination"
-                                @placechanged="setDestination"
-                                types="(cities)"
-                                rtypes="geocode">
-                        </vue-google-autocomplete>
-                    </div>
+            <div class="coordinates-selector-group" v-else key="free-flight">
+                <div class="departure">
+                    <label class="small">From</label>
+                    <vue-google-autocomplete
+                            id="map" classname="form-control"
+                            :placeholder="placeholder.departure"
+                            @placechanged="setDeparture"
+                            types="(cities)"
+                            rtypes="geocode">
+                    </vue-google-autocomplete>
                 </div>
-                <div class="coordinates-selector-group" v-else key="free-flight">
-                    <div class="departure">
-                        <label class="small">From</label>
-                        <vue-google-autocomplete
-                                id="map" classname="form-control"
-                                :placeholder="placeholder.departure"
-                                @placechanged="setDeparture"
-                                types="(cities)"
-                                rtypes="geocode">
-                        </vue-google-autocomplete>
-                    </div>
-                </div>
-            </transition>
-            <transition name="switch-text" mode="out-in">
-                <p v-if="isPlanned" class="description" key="planned">
-                    Planned floats try to reach a specific destination
-                    starting from a selected departure point.
-                </p>
-                <p v-else class="description" key="free">
-                    Free floats start from a selected departure point to
-                    fly along following the wind.
-                </p>
-            </transition>
-            <b-button type="submit" variant="primary">Launch</b-button>
-        </b-form>
-    </div>
+            </div>
+        </transition>
+        <transition name="switch-text" mode="out-in">
+            <p v-if="isPlanned" class="description" key="planned">
+                Planned floats try to reach a specific destination
+                starting from a selected departure point.
+            </p>
+            <p v-else class="description" key="free">
+                Free floats start from a selected departure point to
+                fly along following the wind.
+            </p>
+        </transition>
+        <b-button type="submit" variant="primary">Launch</b-button>
+    </b-form>
 </template>
 <script>
 import _ from 'lodash';
@@ -183,24 +181,22 @@ export default {
     startAnimation() {
       this.$store.commit('flightSimulator/startAnimation');
       this.$store.commit('general/setFormStatus', false);
-      this.$store.commit('general/setAnimationHeight', 'normal');
     },
   },
 };
 </script>
 <style lang="scss">
 @import "~@/assets/css/_variables_and_mixins.scss";
-.flight-form {
-    &.wrapper {
-        text-align: center;
-        p {
-            font-size: .85em;
-        }
-        .description {
-            margin: 1em auto .5em;
-            min-height: 48px;
-        }
+form.flight-form {
+    text-align: center;
+    p {
+        font-size: .85em;
     }
+    .description {
+        margin: 1em auto .5em;
+        min-height: 48px;
+    }
+
     .type-selector-group{
         position: relative;
         display: block;

@@ -35,9 +35,10 @@ html, body {
     flex-flow: column;
     height: 100%;
 }
-.visualization-client, .home-content, .simulator-content {
-    flex: 1 0 auto;
-    display: flex;
-    flex-flow: column;
+.visualization-client {
+    flex: 1 1 100%;
+}
+.home-content, .simulator-content {
+    height: 100%;
 }
 </style>

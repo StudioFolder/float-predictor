@@ -8,7 +8,7 @@
     </div>
 </template>
 <script>
-import dashboard from 'Components/Dashboard';
+import dashboard from 'Parts/FlightDashboard';
 import flightForm from 'Components/FlightForm';
 import StateRemoteSync from 'Components/StateRemoteSync';
 

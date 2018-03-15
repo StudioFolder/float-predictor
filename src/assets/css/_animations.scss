@@ -6,6 +6,13 @@ $duration: 1s;
 .fade-enter, .fade-leave-active {
   opacity: 0;
 }
+// fade
+.fade-icon-enter-active, .fade-icon-leave-active {
+  transition: opacity .2s linear;
+}
+.fade-icon-enter, .fade-icon-leave-active {
+  opacity: 0;
+}
 
 
 // fade-form-from-top

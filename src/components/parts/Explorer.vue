@@ -12,12 +12,12 @@
             </transition>
         </div>
         <svg>
+            <circle class="baseline"></circle>
             <circle
                     :data-explorer="id"
                     class="progress"
                     :style="{ strokeDasharray: dashArray, stroke: color }">
             </circle>
-            <circle class="baseline"></circle>
         </svg>
     </li>
 </template>
@@ -26,9 +26,10 @@
 export default {
   name: 'explorer',
   props: ['id', 'explorer', 'day'],
+
   data() {
     return {
-      r: 30, // synchronize with css for animation
+      r: 25, // synchronize with css for animation
       opacity: 0,
       hover: false,
     };

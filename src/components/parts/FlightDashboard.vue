@@ -1,25 +1,53 @@
 <template>
     <div class="flight-dashboard" :class="{'is-onboard': isOnboard}">
         <div class="play-animation">
-            <div v-if="!isInfoboxOpen" class="hover-text elapsed-days">Day {{elapsedDays}}/16</div>
-            <b-nav-item @click="toggleAnimation" class="--rounded --play">
-                <svg>
-                    <circle class="progress" :style="{ strokeDasharray: dashArray }"></circle>
-                    <circle class="baseline"></circle>
-                </svg>
-                <i :class="[isPlaying ? 'fp-pause' : 'fp-play', 'fp']"></i>
-            </b-nav-item>
+            <div class="hover-text elapsed-days">Day {{elapsedDays}}/16</div>
         </div>
         <div class="winds-panel">
-            <b-nav-item @click="toggleWinds(2)" class="--rounded">
-                <i class="fp fp-winds-en"></i>
-            </b-nav-item>
-            <b-nav-item @click="toggleWinds(1)" class="--rounded">
-                <i class="fp fp-winds-on"></i>
-            </b-nav-item>
-            <b-nav-item @click="toggleWinds(0)" class="--rounded">
-                <i class="fp fp-no-winds"></i>
-            </b-nav-item>
+            <div class="wind-labels">
+                <div class="hover-text">Basic Winds</div>
+                <div class="hover-text">Enhanced Winds</div>
+                <div class="hover-text">Winds Off</div>
+            </div>
+            <div class="wind-buttons">
+                <div>
+                    <div @click="toggleWinds(1)"
+                         class="nav-item --rounded"
+                         :class="{'isActive': winds===1}">
+                        <transition name="fade-icon" mode="out-in">
+                            <i v-if="winds===1" class="fp fp-winds-on" key="fp-winds-on"></i>
+                            <i v-else class="fp fp-winds-on-w" key="fp-winds-on-w"></i>
+                        </transition>
+                    </div>
+                </div>
+                <div>
+                    <div @click="toggleWinds(2)"
+                         class="nav-item --rounded"
+                         :class="{'isActive': winds===2}">
+                        <i class="fp fp-winds-en"></i>
+                    </div>
+                </div>
+                <div>
+                    <div @click="toggleWinds(0)"
+                         class="nav-item --rounded"
+                         :class="{'isActive': winds===0}">
+                        <transition name="fade-icon" mode="out-in">
+                            <i v-if="winds===0" class="fp fp-no-winds" key="fp-no-winds"></i>
+                            <i v-else class="fp fp-no-winds-w" key="fp-no-winds-w"></i>
+                        </transition>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="separator"></div>
+        <div class="explorer-description">
+            <p>Aerocene Sculptures</p>
+            <p class="desc">
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                Ab consectetur cumque eaque fuga molestiae temporibus. Amet,
+                consequuntur enim id illum natus nemo numquam
+                omnis quibusdam tempora ullam ut, vel vitae.
+            </p>
         </div>
         <!--explorers-->
         <ul class="explorers-dashboard">
@@ -43,17 +71,9 @@ export default {
   data() {
     return {
       activeExplorers: [1, 2, 3, 4, 5, 6, 7, 8],
-      isWindsPanelOpen: true,
     };
   },
   computed: {
-    windPanelClass() {
-      return {
-        'fp-no-winds': this.winds === 0,
-        'fp-winds-on': this.winds === 1,
-        'fp-winds-en': this.winds === 2,
-      };
-    },
     winds() { return this.$store.state.flightSimulator.winds; },
     isPlaying() { return this.$store.state.flightSimulator.isPlaying; },
     elapsedDays() { return this.$store.state.flightSimulator.elapsedDays; },
@@ -85,72 +105,93 @@ export default {
 <style lang="scss">
     @import "~@/assets/css/_variables_and_mixins.scss";
     $speed: 10s; // depends on speed
-    $r: 30px;
+    $r: 25px;
     $pi: 3.14159;
-
-    .toggle-winds {
-        position: relative;
-    }
-    .nav-item.--play {
-        .nav-link {
+    .flight-dashboard {
+        display: flex;
+        flex-flow: column;
+        width: 100%;
+        height: 100%;
+        list-style: none;
+        padding: $marginMobile $marginMobile*3;
+        > * {
             position: relative;
+            text-align: center;
+            flex: 1 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        svg {
-            height: 100px;
-            width: 100px;
-            position: absolute;
-            transform: rotate(-86deg);
-            top: -16px;
-            left: -19px;
-            circle {
-                cx: 50%;
-                cy: 50%;
-                r: 32px;
-                fill: transparent;
-                &.progress {
-                    stroke-width: 5;
-                    r: 36px;
-                    stroke: $textColor;
-                    transition: stroke-dasharray $speed;
-                }
-                &.baseline {
-                    stroke-width: 1;
-                    stroke: $lightGray;
+        .play-animation {
+            position: relative;
+            flex: 0 0 auto;
+        }
+        .winds-panel {
+            display: flex;
+            flex-flow: row wrap;
+            align-content: center;
+            > * {
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                width: 100%;
+            }
+            .wind-buttons > div,
+            .wind-labels .hover-text{
+                width: 150px;
+                text-align: center;
+                margin-bottom: 10px;
+            }
+        }
+        .separator {
+            flex: 0 1 auto;
+            height: 1px;
+            background-color: #FFF;
+        }
+        .explorer-description {
+            flex-flow: row wrap;
+            align-content: center;
+            p {
+                flex: 1 1 100%;
+                &.desc {
+                    color: $gray;
+                    max-width: 35em;
+                    margin-top: 10px;
                 }
             }
         }
-        &:hover {
-            background-color: transparent;
-            i {
-                &.fp-pause {
-                    background-image: url("~Icons/ico-pause-w.svg");
-                }
-                &.fp-play {
-                    background-image: url("~Icons/play-w.svg");
-                }
-            }
+        .explorers-dashboard {
+            display: flex;
+            justify-content: space-between;
         }
-    }
-    .nav-item.wind-selector .inactive {
-        opacity: .25;
     }
     .fp-winds-on,
     .fp-winds-en,
     .fp-no-winds {
-        width: 30px;
+        width: 35px;
     }
     .play-animation {
         position: relative;
         .elapsed-days {
             display: block;
-            margin: 1.15rem 0 0.65rem;
             line-height: 32px;
             height: 32px;
-            font-size: 1em;
+            font-size: 1.5em;
+        }
+    }
+    .winds-panel {
+        .nav-item {
+            position: relative;
+            transition: background-color .4s ease;
+            margin: 0 auto;
+            &.isActive {
+                background-color: #FFF;
+            }
         }
     }
     .explorers-dashboard {
         .explorer-item {
+            border: none;
             margin-bottom: 1.4rem;
             position: relative;
             display: flex;
@@ -162,7 +203,7 @@ export default {
             &.--focused {
                 background-color: transparent;
                 circle.progress {
-                    stroke-width: 5;
+                    stroke-width: 0;
                     &[data-explorer="0"] {
                         stroke: #003769;
                     }
@@ -221,7 +262,7 @@ export default {
             circle {
                 cx: 50%;
                 cy: 50%;
-                r: ($r - 2);
+                r: ($r - 1);
                 fill: transparent;
                 transition: all .4s ease .4s;
                 &.progress {
@@ -232,7 +273,7 @@ export default {
                 }
                 &.baseline {
                     stroke-width: 1;
-                    stroke: $lightGray;
+                    stroke: #FFF;
                 }
             }
         }

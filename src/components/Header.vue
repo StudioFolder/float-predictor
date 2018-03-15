@@ -5,6 +5,13 @@
             <div class="subtitle">Float Predictor</div>
         </div>
         <b-nav>
+            <li class="start-new-journey">
+                <a @click="startNew" href="#" target="_self">
+                    <span>Start a new aerosolar journey</span>
+                    <i class="fp fp-caret-right"></i>
+                    <img src="~img/globe_illustration.svg">
+                </a>
+            </li>
             <b-nav-item @click="toggleInfoBox" class="--rounded">
                 <i :class="[isInfoBoxOpen ? 'fp-close-w' : 'fp-info', 'fp']"></i>
             </b-nav-item>
@@ -25,6 +32,12 @@ export default {
     toggleInfoBox() {
       this.$store.commit('general/toggleInfoBox');
     },
+    startNew() {
+      this.$store.dispatch('flightSimulator/resetVisualization');
+      this.$store.commit('general/toggleMenu');
+      this.$store.commit('flightSimulator/setVisualizationState', 8);
+      this.$store.commit('general/setFormStatus', true);
+    },
   },
 };
 </script>
@@ -35,7 +48,7 @@ export default {
     position: relative;
     z-index: 20;
     background-color: $lightBlack;
-    padding: $marginMobile;
+    padding: $marginMobile*2/3 $marginMobile;
     flex: 0 0 auto;
     display: flex;
     align-items: center;
@@ -53,6 +66,24 @@ export default {
     }
     .nav {
         flex: 0 0 auto;
+        .start-new-journey a{
+            display: flex;
+            flex-flow: row;
+            align-items: center;
+            margin-right: 30px;
+            > * {
+                margin-left: 5px;
+            }
+            span {
+                max-width: 190px;
+                text-align: right;
+                color: #FFF;
+                line-height: 1.2;
+            }
+            img {
+                max-height: 50px;
+            }
+        }
     }
 }
 </style>
