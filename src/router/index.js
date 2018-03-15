@@ -12,6 +12,11 @@ const router = new Router({
   // mode: 'history',
   routes: [
     {
+      path: '/',
+      name: 'home',
+      component: homePage,
+    },
+    {
       path: '/client/home',
       name: 'home',
       component: homePage,

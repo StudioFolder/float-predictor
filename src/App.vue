@@ -7,6 +7,12 @@
         <transition appear name="fade" mode="out-in">
             <router-view/>
         </transition>
+        <footer>
+            <div class="font-small">
+                Aerocene is an open artistic project by <a href="http://tomassaraceno.com/">Studio Tomás Saraceno</a>.
+                Design and code by <a href="http://www.studiofolder.it/">Studio Folder</a> and Angelo Semeraro
+            </div>
+        </footer>
     </div>
 </template>
 
@@ -40,5 +46,9 @@ html, body {
 }
 .home-content, .simulator-content {
     height: 100%;
+}
+footer {
+    padding: 0 $marginMobile;
+    text-align: center;
 }
 </style>

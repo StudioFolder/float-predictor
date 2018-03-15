@@ -30,6 +30,13 @@ export default {
   computed: {
     isChoosing() { return (this.$store.state.general.isChoosingDestination); },
   },
+  created() {
+    // eslint-disable-next-line
+    setTimeout(()=>{
+      this.$store.commit('flightSimulator/setVisualizationState', 0);
+      this.$store.commit('general/setFormStatus', true);
+    }, 100);
+  },
 };
 </script>
 <style lang="scss">

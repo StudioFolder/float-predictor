@@ -262,11 +262,11 @@ export default {
             circle {
                 cx: 50%;
                 cy: 50%;
-                r: ($r - 1);
+                r: ($r - 2);
                 fill: transparent;
                 transition: all .4s ease .4s;
                 &.progress {
-                    stroke-width: 5;
+                    stroke-width: 7;
                     r: $r;
                     stroke: $gray;
                     transition: stroke-dasharray $speed linear;
