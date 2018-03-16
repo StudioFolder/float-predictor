@@ -8,6 +8,7 @@ import Gallery from 'Pages/Gallery';
 import FlightSimulator from 'Pages/FlightSimulator';
 import About from 'Pages/About';
 import AeroceneExplorer from 'Pages/AeroceneExplorer';
+import Resources from 'Pages/Resources';
 
 Vue.use(Router);
 
@@ -51,12 +52,21 @@ const router = new Router({
       },
     },
     {
-      path: '/gallery',
+      path: '/aeroglyphs-archive',
       name: 'gallery',
       component: Gallery,
       meta: {
         bodyClass: 'gallery',
         position: 'bottom',
+      },
+    },
+    {
+      path: '/resources-and-api',
+      name: 'resources-and-api',
+      component: Resources,
+      meta: {
+        bodyClass: 'resources-and-api upper-content',
+        position: 'top',
       },
     },
     {

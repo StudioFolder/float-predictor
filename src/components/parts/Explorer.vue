@@ -59,9 +59,11 @@ export default {
     },
     mouseEnter() {
       this.hover = true;
+      this.$store.commit('flightSimulator/setSelectedExplorer', this.explorer);
     },
     mouseLeave() {
       this.hover = false;
+      this.$store.commit('flightSimulator/setSelectedExplorer', 0);
     },
   },
   watch: {

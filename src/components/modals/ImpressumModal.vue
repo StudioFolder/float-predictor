@@ -1,22 +1,18 @@
 <template>
     <!-- Modal Component -->
-    <b-modal id="impressum-modal" centered hide-footer size="lg" title="Impressum">
+    <b-modal id="impressum-modal" class="page-modal" centered hide-footer size="lg"
+             title="Impressum">
         <i slot="modal-header-close" class="fp fp-close"></i>
         <p>
-            The Aerocene project is being developed by the Aerocene Foundation
-            and Studio Tomás Saraceno.
-        </p>
-        <h4>
-            Design and development
-        </h4>
-        <p>
-            Studio Folder
-        </p>
-        <h4>
-            Visualization and backend technologies
-        </h4>
-        <p>
-            Angelo Semeraro
+            This website has been established and developed by a dedicated and enthusiastic
+            team of community members including: Lodovica Illari, Glenn Flierl, Bill McKenna
+            (MIT Department of Earth, Atmospheric and Planetary Sciences), Marco Ferrari,
+            Elisa Pasqual, Luca Ferrario, Iacopo Leardini, Angelo Semeraro (Studio Folder),
+            Joaquin Ezcurra, Camilla Berggren Lundell, Alice Lamperti (Aerocene Foundation),
+            Erik Vogler, Saverio Cantoni, Rosalie Laurin, Yelta Köm, Connie Chester,
+            Roxanne Mackie, Sofia Lemos, Zaida Violan (Studio Tomás Saraceno), Nick Shapiro,
+            Liz Barry, (Public Lab), Imperial College London, Radio Amateurs DE & UK, and the
+            UK High Altitude Society.
         </p>
     </b-modal>
 </template>
@@ -29,4 +25,10 @@ export default {
 
 <style lang="scss">
 @import "~@/assets/css/_variables_and_mixins.scss";
+.page-modal {
+    font-size: 1rem;
+    .modal-body {
+        font-size: 1.2em;
+    }
+}
 </style>
