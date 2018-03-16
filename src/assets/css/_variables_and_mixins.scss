@@ -52,6 +52,11 @@ $img-base-path: '../../../static/img/' !default;
   font-weight: normal !important;
   font-style: normal ;
 }
+%colfax_bolder {
+  font-family: "Colfax-Medium", Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-weight: normal !important;
+  font-style: normal ;
+}
 
 /* Media Query Mixins */
 @mixin up($breakpoint) {

@@ -1100,7 +1100,7 @@ export default {
               initY = parseFloat(x2);
             }
           }
-          t += `" style="fill:none;stroke:${webColors[i]};stroke-width:1" />`;
+          t += `" style="fill:none;stroke:${webColors[i]};stroke-width:2"></polyline>`;
         // } else { t += '" style="fill:none;stroke:black;opacity:0.1;stroke-width:1" />' }
         }
       }

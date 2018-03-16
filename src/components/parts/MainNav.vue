@@ -22,33 +22,34 @@
                             <router-link to="/about">
                                 About</router-link></li>
                         <li class="menu-item --nav" @click="closeAction">
-                            <router-link to="/gallery">
+                            <router-link to="/aerocene-explorer">
+                                Aerocene Sculptures</router-link></li>
+                        <li class="menu-item --nav" @click="closeAction">
+                            <router-link to="/aeroglyphs-archive">
                                 Aeroglyphs archive</router-link></li>
                         <li class="menu-item --nav" @click="closeAction">
-                            <router-link to="/aerocene-explorer">
-                                Aerocene explorer</router-link></li>
-                        <li class="menu-item --nav" @click="closeAction">
-                            <a href="#" @click.prevent>
-                                Resources and API<span class="lowercase">s</span></a></li>
-                        <li class="menu-item --nav" @click="closeAction">
                             <a href="#" @click.prevent v-b-modal.instruction-modal>
-                                Instructions</a></li>
+                                How to Float</a></li>
+                        <li class="menu-item --nav" @click="closeAction">
+                            <router-link to="/resources-and-api">
+                                Resources and API</router-link></li>
                         <li class="menu-item --nav" >
-                            <a href="#" @click.prevent>
+                            <a href="#" @click.prevent v-b-modal.impressum-modal>
                                 Impressum</a></li>
                         <li class="menu-item --nav">
-                            <a href="#" @click.prevent>Disclaimer</a></li>
+                            <a href="#" @click.prevent v-b-modal.disclaimer-modal>
+                                Disclaimer</a></li>
                     </ul>
                 </div>
                 <div class="menu-section">
                     <ul class="list-group link-items">
                         <li class="menu-item --link">
-                            <a href="http://aerocene.org/">
+                             <a target="_blank" href="http://aerocene.org/">
                                 <span class="lowercase">Aerocene Project</span>
                             </a>
                         </li>
                         <li class="menu-item --link">
-                            <a href="https://forum.aerocene.org/">
+                             <a target="_blank" href="https://forum.aerocene.org/">
                                 <span class="lowercase">Aerocene Forum</span>
                             </a>
                         </li>
@@ -66,8 +67,8 @@
                 </div>
                 <div class="menu-section --rights">
                     <div class="font-small">
-                        Aerocene is an open artistic project by <a href="http://tomassaraceno.com/">Studio Tomás Saraceno</a>.
-                        Design and code by <a href="http://www.studiofolder.it/">Studio Folder</a> and Angelo Semeraro
+                        Aerocene is an open artistic project by  <a target="_blank" href="http://tomassaraceno.com/">Studio Tomás Saraceno</a>.
+                        Design and code by  <a target="_blank" href="http://www.studiofolder.it/">Studio Folder</a> and Angelo Semeraro
                     </div>
                 </div>
             </div>

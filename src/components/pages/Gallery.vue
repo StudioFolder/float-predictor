@@ -1,10 +1,10 @@
 <template>
   <div id="gallery" class="main-content gallery" v-infinite-scroll="loadMore"
     infinite-scroll-disabled="busy" infinite-scroll-distance="10">
-      <h1 class="entry-title">The Aeroglyphs Archive</h1>
+      <h1 class="entry-title">Aeroglyphs Archive</h1>
       <h3 class="entry-subtitle">
-        Each imaginary Aerocene journey is an air signature
-        that we can use to advocate the independence from fossil fuels.
+          Each imaginary Aerocene journey is an air signature we can use to
+          advocate independence from fossil fuels.
       </h3>
       <div class="stats">
         <div class="saved">
@@ -28,12 +28,12 @@
                 {{getDate(item.created)}}
               </div>
               <div class="additional-info">
-                <p>Departed from <strong>{{item.departure.city}}</strong></p>
-                <p>Arrived within <strong>{{item.min_dist}}</strong> kilometers
-                from <strong>{{item.destination.city}}</strong>
-                    in <strong>{{item.min_time}} days</strong></p>
+                <p>Departed from <strong>{{item.departure.city}}</strong>.</p>
+                <p>Arrived within <strong>{{item.min_dist.toLocaleString('en')}}</strong> km
+                of <strong>{{item.destination.city}}</strong>
+                    in <strong>{{item.min_time}} days</strong>.</p>
                 <p>Travelled a total of
-                    <strong>{{parseInt(item.distance * 1000).toLocaleString('en')}} km</strong>
+                    <strong>{{parseInt(item.distance * 1000).toLocaleString('en')}} km</strong>.
                 </p>
               </div>
             </div>
@@ -251,6 +251,10 @@ export default {
               }
               .additional-info {
                   opacity: 1;
+              }
+              img svg
+              {
+                  box-shadow: 0px 0px 5px #fff;
               }
           }
       }
