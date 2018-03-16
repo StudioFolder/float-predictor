@@ -1,7 +1,7 @@
 <template>
     <!-- Modal Component -->
     <b-modal id="instruction-modal" class="instruction-modal"
-             centered hide-footer size="lg" title="Instructions">
+             centered hide-footer size="lg" title="How To Float">
         <i slot="modal-header-close" class="fp fp-close"></i>
         <div class="instructions-sections">
             <div class="section-title">{{sectionTitle}}</div>
@@ -15,34 +15,62 @@
                         ref="journeysSlider"
                         class="internal-slider">
                     <swiper-slide>
-                        <h3 class="title">Aerocene Sculptures</h3>
+                        <h3 class="title">Aerocene</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
                                  src="~img/instructions/Instructions_1-1.gif">
                         </div>
                         <div class="description">
-                            The Aerocene Foundation has created several
-                            sculptures for solar-powered atmospheric
-                            exploration. By exploring different shapes
-                            and materials, the  sculptures float freely
-                            crossing political borders in different part
-                            of the world. Dissimilar to many other balloon
-                            flights, ,most of them have been successfully
-                            recovered after floating hundreds of kilometers.
+                            Aerocene is an open platform for the development of emissions-free
+                            Sculptures floating in the air. Aerosolar journeys are a new way of
+                            travelling in the Aerocene epoch, collaborating with the atmosphere
+                            instead of industrialising, restricting and capitalising off of it.
                         </div>
                     </swiper-slide>
-                    <swiper-slide class="how-aerocene-float">
-                        <h3 class="title">How Aerocene Sculptures Float</h3>
-                        <div class="description --subtitle --upper">
-                            Aerocene sculptures float in the atmosphere due
-                            to archimedean buoyancy:
-                            "Any body immersed in a fluid experiences
-                            a force opposed to its weight of magnitude
-                            equal to the weight of the fluid which it displaces".
-                        </div>
+                    <swiper-slide>
+                        <h3 class="title">Aerocene Sculptures</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
                                  src="~img/instructions/Instructions_1-2.gif">
+                        </div>
+                        <div class="description">
+                            Aerocene Sculptures are air-fuelled balloons for solar-powered
+                            atmospheric exploration. By becoming buoyant only with the heat of
+                            the Sun and infrared radiation from Earth’s surface, the Sculptures
+                            can float freely across political borders. Different shapes and
+                            materials have been tested, and several Sculptures have been
+                            successfully recovered after floating hundreds of kilometers.
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide>
+                        <h3 class="title">Aerocene Float Predictor</h3>
+                        <div class="animation-wrapper">
+                            <img class="animation"
+                                 src="~img/instructions/Instructions_1-3.gif">
+                        </div>
+                        <div class="description">
+                            The Float Predictor allows for endless virtual journeys around the globe
+                            without CO2-emissions. The system utilises open meteorological data to
+                            predict Aerosolar trajectories based on real-time weather forecasts.
+                        </div>
+                    </swiper-slide>
+                </swiper>
+                <div class="internal-pagination-0"></div>
+            </swiper-slide>
+            <swiper-slide>
+                <swiper :options="floatSliderOptions"
+                        ref="floatSlider"
+                        class="internal-slider">
+                    <swiper-slide class="how-aerocene-float">
+                        <h3 class="title">Aerocene Float Predictor</h3>
+                        <div class="description --subtitle --upper">
+                            By selecting a departure and a destination point, a ‘Planned Float’ uses
+                            8 different routes to determine when would be the best day to launch a
+                            Sculpture for going from A to B.
+                        </div>
+                        <div class="animation-wrapper">
+                            <img class="animation"
+                                 src="~img/instructions/Instructions_2-1a.gif">
                         </div>
                         <div class="description">
                             This principle was formulated by Archimedes
@@ -56,49 +84,24 @@
                         </div>
                     </swiper-slide>
                     <swiper-slide>
-                        <h3 class="title">Float Predictor</h3>
-                        <div class="animation-wrapper">
-                            <img class="animation"
-                                 src="~img/instructions/Instructions_1-3.gif">
-                        </div>
-                        <div class="description">
-                            The Float Predictor is the tool we use to foresee
-                            where Aerocene sculptures are going to float,
-                            depending on wind intensity and direction in
-                            location of departure. The Predictor launches
-                            8 Explorers, one each day, and follows their journeys
-                            through 16 days of travelling.
-                        </div>
-                    </swiper-slide>
-                </swiper>
-                <div class="internal-pagination-0"></div>
-            </swiper-slide>
-            <swiper-slide>
-                <swiper :options="floatSliderOptions"
-                        ref="floatSlider"
-                        class="internal-slider">
-                    <swiper-slide>
-                        <h3 class="title">Planned float or Free float</h3>
+                        <h3 class="title">Planned float vs. Free float</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
                                  src="~img/instructions/Instructions_2-1a.gif">
                         </div>
                         <div class="description">
-                            Selecting a specific departing as well as a destination point,
-                            a ‘Planned Float’ uses the 8 different routes to visualise
-                            the trajectories and determine which would be the optimal
-                            way of going from A to B.
+                            By selecting a departure and a destination point, a ‘Planned Float’
+                            uses 8 different routes to determine when would be the best day to
+                            launch a Sculpture for going from A to B.
                         </div>
                         <div class="animation-wrapper">
                             <img class="animation"
                                  src="~img/instructions/Instructions_2-1b.gif">
                         </div>
                         <div class="description">
-                            A ‘Free Float’ is guided by the wind and propelled
-                            by thermal air currents. These journeys can be seen
-                            as representing a new way of travelling in the Aerocene
-                            epoch, collaborating with the atmosphere instead
-                            of industrialising, capitalising and restricting it.
+                            A ‘Free Float’ just needs a departure point: winds and thermal air
+                            currents will do the rest, bringing 8 Sculptures around the globe
+                            on a collaborative journey with the atmosphere.
                         </div>
                     </swiper-slide>
                     <swiper-slide>
@@ -108,22 +111,17 @@
                                  src="~img/instructions/Instructions_2-2.gif">
                         </div>
                         <div class="description">
-                            You can choose departure and destination points
-                            (the latter only for Planned floats) of your float.
-                            Just click on an entry field in the form and
-                            begin typing any city in the world! Alternatively,
-                            you can click directly on the globe to choose
-                            departure and destination points.
+                            Departure and destination points can be selected by typing any city in
+                            the world into the entry field.
                         </div>
                     </swiper-slide>
                     <swiper-slide>
-                        <h3 class="title">Float Interface</h3>
+                        <h3 class="title">Float Controls</h3>
                         <div class="description --upper">
-                            When your journey has started, a float interface
-                            will appear allowing you to interact with the
-                            visualisation, with actions such as: Take a screenshot;
-                            Turn on/off winds; Play/Pause the flight;
-                            Go on board one Explorer.
+                            When a journey has started, a float control interface will allow
+                            you to interact with the visualisation. The simulation will run for 16
+                            days, and eight Aerocene Sculptures will be launched, one per day during
+                            the first week of float.
                         </div>
                         <div class="animation-wrapper">
                             <img class="animation"
@@ -131,36 +129,16 @@
                         </div>
                     </swiper-slide>
                     <swiper-slide>
-                        <h3 class="title">Controlling the Globe</h3>
-                        <div class="animation-wrapper">
-                            <img class="animation"
-                                 src="~img/instructions/Instructions_2-4.gif">
-                        </div>
-                        <div class="description">
-                            You can also interact with the globe.
-                            Click on it and drag it with the mouse
-                            (or tap with your finger) to tilt the view.
-                            Zoom in and out by rolling your mouse wheel
-                            (or pinching with your fingers) to get a more detailed view.
-                            To go back and follow the Explorers, click “Re-centre”.
-                        </div>
-                    </swiper-slide>
-                    <swiper-slide>
-                        <h3 class="title">Go on Board</h3>
+                        <h3 class="title">Go on Board a Sculpture</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
                                  src="~img/instructions/Instructions_2-5.gif">
                         </div>
                         <div class="description">
-                            During your journey, you can go on board the
-                            Aerocene sculpture, and see the earth pass below
-                            you from the sculpture's perspective. To do so,
-                            click on the Aerocene icons beneath the Play/pause button,
-                            or click on its path on the globe. When you are on board,
-                            you can monitor real time data of the flight of
-                            the selected Aerocene sculpture. You have access
-                            to its departure date, the overall distance
-                            it covered, and its current speed.
+                            You can jump on board an Aerocene Sculpture and see the Earth pass
+                            below you from a different perspective: just click on any sculpture’s
+                            icon on the right-hand side of the screen or within the visualisation
+                            itself. When on board, real-time float telemetry data will appear.
                         </div>
                     </swiper-slide>
                     <swiper-slide>
@@ -170,10 +148,23 @@
                                  src="~img/instructions/Instructions_2-6.gif">
                         </div>
                         <div class="description">
-                            Lorem ipsum dolor sit amet,
-                            consectetur adipiscing elit. Integer vulputate ex mauris,
-                            in egestas turpis condimentum eu.
-                            Proin rutrum massa sit amet semper viverra.
+                            The Float Predictor visualises global wind patterns for
+                            16 days in the future, at a default altitude of 10,000 m.
+                            When the simulation is paused, a slider will allow to
+                            visualise the winds at different heights.
+                        </div>
+                    </swiper-slide>
+                    <swiper-slide>
+                        <h3 class="title">Controlling the Globe</h3>
+                        <div class="animation-wrapper">
+                            <img class="animation"
+                                 src="~img/instructions/Instructions_2-4.gif">
+                        </div>
+                        <div class="description">
+                            Click (or tap) and drag the globe to tilt the view.
+                            Zoom in and out by scrolling (or pinching) on the globe.
+                            To go back and follow the paths of all of the Aerocene Sculptures,
+                            just click “Re-centre”.
                         </div>
                     </swiper-slide>
                 </swiper>
@@ -184,26 +175,22 @@
                         ref="afterJourneySlider"
                         class="internal-slider">
                     <swiper-slide>
-                        <h3 class="title">Selected float</h3>
+                        <h3 class="title">Aeroglyphs</h3>
                         <div class="animation-wrapper">
                             <div class="animation-wrapper">
                                 <img class="animation"
-                                     src="~img/instructions/Instructions_3-1_02.gif">
+                                     src="~img/instructions/Instructions_3-1.gif">
                             </div>
                         </div>
                         <div class="description">
-                            At the end of your journey, a single Explorer’s
-                            float will be selected and presented: this is
-                            the balloon that, during its float, came
-                            closer to the selected Destination point. From
-                            this final box, you can see the Aeroglyph of
-                            the float, you can register and receive a personal
-                            card of your journey, or you can share and
-                            download your experience with Float Predictor.
+                            Each Aerosolar journey produces an Aeroglyph: an air signature that
+                            represents the 16-day trajectory of an Aerocene Sculpture around
+                            the globe. Aeroglyphs are saved into an archive: a gallery of all
+                            the fossil-free journeys around the world.
                         </div>
                     </swiper-slide>
                     <swiper-slide>
-                        <h3 class="title">Aeroglyphs</h3>
+                        <h3 class="title">Save and Share</h3>
                         <div class="animation-wrapper">
                             <img class="animation --big"
                                  src="~img/instructions/Instructions_3-2.gif">
@@ -219,50 +206,20 @@
                         </div>
                     </swiper-slide>
                     <swiper-slide>
-                        <h3 class="title">E-mail and Share</h3>
-                        <div class="animation-wrapper">
-                            <img class="animation"
-                                 src="~img/instructions/Instructions_3-3_02.gif">
-                        </div>
-                        <div class="description">
-                            If you would like to share an Aeroglyph,
-                            just click on the sharing icon and select
-                            your social network. Alternatively, you can
-                            copy the link on the browser to paste on any
-                            of your social networks.
-                        </div>
-                    </swiper-slide>
-                    <swiper-slide>
-                        <h3 class="title">Download and API</h3>
+                        <h3 class="title">Download and APIs</h3>
                         <div class="animation-wrapper">
                             <img class="animation"
                                  src="~img/instructions/Instructions_3-4.gif">
                         </div>
                         <div class="description">
-                            How to download data and usage of the API.
+                            Besides being saved in our online archive,
+                            each Aeroglyph can be downloaded as a JSON file.
+                            The entire database of Aerosolar journeys can
+                            be accessed via the Aerocene Float Predictor’s APIs.
                         </div>
                     </swiper-slide>
                 </swiper>
                 <div class="internal-pagination-2"></div>
-            </swiper-slide>
-            <swiper-slide>
-                <swiper :options="archiveSliderOptions"
-                        ref="archiveSlider"
-                        class="internal-slider">
-                    <swiper-slide>
-                        <h3 class="title">The Gallery</h3>
-                        <div class="animation-wrapper">
-                            <img class="animation --big"
-                                 src="~img/instructions/Instructions_4-1.gif">
-                        </div>
-                        <div class="description">
-                            Each imaginary Aerocene journey is an
-                            "air signature" that we can use to advocate
-                            the independence from fossil fuels.
-                        </div>
-                    </swiper-slide>
-                </swiper>
-                <div class="internal-pagination-3"></div>
             </swiper-slide>
         </swiper>
         <div v-show="navIcon === 'scroll'" class="nav-icon --scroll">
