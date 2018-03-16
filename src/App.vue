@@ -9,8 +9,8 @@
         </transition>
         <footer>
             <div class="font-small">
-                Aerocene is an open artistic project by <a href="http://tomassaraceno.com/">Studio Tomás Saraceno</a>.
-                Design and code by <a href="http://www.studiofolder.it/">Studio Folder</a> and Angelo Semeraro
+                Aerocene is an open artistic project by Studio Tomás Saraceno.
+                Design and code by Studio Folder and Angelo Semeraro.
             </div>
         </footer>
     </div>
@@ -49,6 +49,5 @@ html, body {
 }
 footer {
     padding: 0 $marginMobile;
-    text-align: center;
 }
 </style>

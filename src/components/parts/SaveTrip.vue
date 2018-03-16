@@ -43,9 +43,8 @@
                            value="">
                 </div>
                 <p class="input-label">
-                    You can associate your name to the aeroglyph,
-                    and leave your e-mail to receive a
-                    postcard about your flight.
+                    Enter your name and email to receive a postcard about your journey
+                    and get updates on Aerocene.
                 </p>
                 <b-button type="submit"
                           variant="primary"

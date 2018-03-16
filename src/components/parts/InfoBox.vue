@@ -5,16 +5,25 @@
         </div>
         <div class="column-text">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Aperiam delectus fugiat fugit ipsum libero molestiae nemo nobis,
-                nulla officiis optio perferendis quam ratione totam!
-                Esse molestias odio porro qui ut!
+                Aerocene Sculptures are air-fuelled balloons for
+                solar-powered atmospheric exploration.
+                By becoming buoyant only with the heat
+                of the Sun and infrared radiation from
+                Earth’s surface, the Sculptures can float
+                freely across political borders. Different shapes
+                and materials have been tested, and several
+                Sculptures have been successfully recovered
+                after floating hundreds of kilometers.
             </p>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Aperiam delectus fugiat fugit ipsum libero molestiae nemo nobis,
-                nulla officiis optio perferendis quam ratione totam!
-                Esse molestias odio porro qui ut!
+                The Aerocene Float Predictor allows for endless virtual
+                journeys around the globe without CO2-emissions.
+                The system computes and visualises the trajectories
+                of floating solar balloons based on real-time forecasts
+                of global wind patterns. Aerosolar journeys are a new
+                way of travelling in the Aerocene epoch, collaborating
+                with the atmosphere instead of industrialising,
+                capitalising and restricting it.
             </p>
         </div>
     </div>
@@ -33,7 +42,7 @@ export default {
         z-index: 18; // header 20
         height: 100vh;
         width: 100%;
-        padding: 134px $marginMobile $marginMobile;
+        padding: 100px $marginMobile $marginMobile;
         background-color: $bodyColor;
         overflow: hidden;
         display: flex;

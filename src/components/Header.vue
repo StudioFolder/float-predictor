@@ -6,7 +6,7 @@
         </div>
         <b-nav>
             <li class="start-new-journey">
-                <a @click="startNew" href="#" target="_self">
+                <a @click.prevent="startNew" href="#" target="_self">
                     <span>Start a new aerosolar journey</span>
                     <i class="fp fp-caret-right"></i>
                     <img src="~img/globe_illustration.svg">
@@ -38,9 +38,10 @@ export default {
     },
     startNew() {
       this.$store.dispatch('flightSimulator/resetVisualization');
-      this.$store.commit('general/toggleMenu');
+      this.$store.commit('general/closeInfoBox');
       this.$store.commit('flightSimulator/setVisualizationState', 8);
       this.$store.commit('general/setFormStatus', true);
+      this.$router.push('flight-simulator');
     },
   },
 };

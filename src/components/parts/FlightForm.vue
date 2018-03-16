@@ -55,12 +55,13 @@
         </transition>
         <transition name="switch-text" mode="out-in">
             <p v-if="isPlanned" class="description" key="planned">
-                Planned floats try to reach a specific destination
-                starting from a selected departure point.
+                A ‘Planned Float’ tries to reach a specific
+                destination starting from a selected departure point.
+                Enter both locations to start your journey.
             </p>
             <p v-else class="description" key="free">
-                Free floats start from a selected departure point to
-                fly along following the wind.
+                A ‘Free Float’ needs just a departure point:
+                winds and thermal air currents will do the rest.
             </p>
         </transition>
         <b-button type="submit" variant="primary">Launch</b-button>

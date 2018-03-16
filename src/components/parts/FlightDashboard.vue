@@ -43,10 +43,10 @@
         <div class="explorer-description">
             <p>Aerocene Sculptures</p>
             <p class="desc">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                Ab consectetur cumque eaque fuga molestiae temporibus. Amet,
-                consequuntur enim id illum natus nemo numquam
-                omnis quibusdam tempora ullam ut, vel vitae.
+                The Float Predictor launches one Aerocene
+                Sculpture every day during the first week
+                of floating, predicting their trajectories
+                around the globe on a 16-day simulation.
             </p>
         </div>
         <!--explorers-->
@@ -83,21 +83,9 @@ export default {
     },
   },
   methods: {
-    toggleWindsPanel() {
-      this.isWindsPanelOpen = !this.isWindsPanelOpen;
-    },
-    closeWindsPanel() {
-      this.isWindsPanelOpen = false;
-    },
     toggleWinds(v) {
       this.$store.commit('flightSimulator/setWinds', v);
       this.closeWindsPanel();
-    },
-    toggleAnimation() {
-      this.$store.commit('flightSimulator/setPlaying', !this.isPlaying);
-    },
-    goMobileOnBoard() {
-      this.$store.commit('flightSimulator/setFocusedExplorer', 1);
     },
   },
 };

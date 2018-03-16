@@ -3,10 +3,11 @@
         <StateRemoteSync/>
         <div class="home-content">
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                At blanditiis culpa ducimus enim id laudantium natus,
-                numquam officia possimus quis repudiandae suscipit
-                veritatis vero. Aliquid ipsa itaque nostrum quos rerum.
+                The Aerocene Float Predictor is a global
+                forecasting system that uses open meteorological
+                data to predict Aerosolar trajectories around the globe.
+                Travel across borders lifted only by the sun,
+                carried only by the wind, towards a clean and sustainable future.
             </p>
             <div class="call-to-action">
                 <router-link to="/client/flight-simulator" class="button --opaque">
