@@ -268,12 +268,13 @@ export default {
         departureLabel.set(d.city, t);
         const azimuth = ((d.lng + 90) / 360.0) * 2 * Math.PI;
         const ts = (-earthRotation - azimuth) / (Math.PI * 2) % 1;
-        this.startingDate.setTime(this.startingDate.getTime() + (ts * 24.0 * 60 * 60 * 1000));
+        this.targetDate.setTime(this.startingDate.getTime() + (ts * 24.0 * 60 * 60 * 1000));
+        this.targetDate.setMonth(new Date().getMonth());
+        this.targetDate.setDate(new Date().getDate());
         const r = Util.getEarthAzimuthRotation(this.startingDate);
         const sunP = new THREE.Vector3(Math.sin(-r) * radius, Math.sin(axesRotation) * radius, Math.cos(-r) * radius);
         const angle = departureLabel.getPosition().angleTo(sunP);
         this.coordinatesValid = angle < 1.5;
-        // console.log(`Angle: ${angle} <= 1.5 ?`);
       } else {
         console.log('Invalid departure');
       }
@@ -304,7 +305,7 @@ export default {
           pars.layers.wind.visible = false;
           break;
         case 1: // B/W animated
-          pars.layers.wind.start_color = '##5b5b5b';
+          pars.layers.wind.start_color = '#5b5b5b';
           pars.layers.wind.end_color = '#ffffff';
           pars.layers.wind.mapping = 1.0;
           pars.layers.wind.opacity_mapping = true;
@@ -367,6 +368,7 @@ export default {
       distance2Target: 0,
       distanceTraveled: 0,
       startingDate: new Date(),
+      targetDate: new Date(),
     };
   },
 
@@ -956,7 +958,7 @@ export default {
           pars.auto_rotate = false;
           this.downloadMulti();
           // this.rotateTo({ lat: departure.lat, lng: departure.lng, time: 0.5, target: new THREE.Vector3(0, 0, 0), zoom: INITIAL_ZOOM, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_ACTIVE; } });
-          this.resetTo({ lat: departure.lat, lng: departure.lng, time: 0.5, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_ACTIVE; } });
+          this.resetTo({ lat: departure.lat, lng: departure.lng, time: 0.5, date: this.targetDate, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_ACTIVE; } });
           break;
         }
         case STATE_ANIMATION_ACTIVE: {
@@ -1208,6 +1210,10 @@ export default {
       ev.push(0, 0, 0);
       iv.push(camera.position.length());
       ev.push(radius * 1.72);
+      if (config.date) {
+        iv.push(this.startingDate.getTime());
+        ev.push(config.date.getTime());
+      }
       // console.log(camera.position);
       // console.log(`${camera.position.length()} * ${radius * 1.72}`);
       animator.start({
@@ -1228,6 +1234,9 @@ export default {
           // console.log(v[2])
           controls.target.set(v[i], v[i + 1], v[i + 2]);
           camera.position.setLength(v[i + 3]);
+          if (config.date) {
+            this.startingDate.setTime(v[i + 4]);
+          }
           controls.update();
         },
       });
@@ -1396,6 +1405,8 @@ export default {
         downloader.destroy();
       }
       downloader = new WindDataDownloader();
+      this.startingDate.setMonth(new Date().getMonth());
+      this.startingDate.setDate(new Date().getDate());
       pars.elapsed_days = 0;
       this.hideExplorerDates();
       _.each(explorers, (e) => { e.reset(); });
