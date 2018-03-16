@@ -2,8 +2,6 @@ import Vue from 'vue';
 import store from '@/store/index';
 import Router from 'vue-router';
 import HomePage from 'Pages/HomePage';
-import VisualizationClient from 'Components/exhibition/VisualizationClient';
-import VisualizationServer from 'Components/exhibition/VisualizationServer';
 import TestInterface from 'Components/visualization/TestInterface';
 
 import Gallery from 'Pages/Gallery';
@@ -65,16 +63,6 @@ const router = new Router({
       path: '/test',
       name: 'TestInterface',
       component: TestInterface,
-    },
-    {
-      path: '/exhibition/client',
-      name: 'VisualizationClient',
-      component: VisualizationClient,
-    },
-    {
-      path: '/exhibition/server',
-      name: 'VisualizationServer',
-      component: VisualizationServer,
     },
   ],
 });
