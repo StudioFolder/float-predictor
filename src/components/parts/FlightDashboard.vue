@@ -1,11 +1,14 @@
 <template>
-    <ul class="flight-dashboard" :class="{'is-onboard': isOnboard}">
+    <ul class="flight-dashboard" :class="{'is-onboard': isOnboard, 'flight-over': isFlightOver}">
         <div class="toggle-winds">
-            <b-nav-item @click="toggleWindsPanel" class="--rounded wind-selector">
-                <i :class="windPanelClass" class="fp"></i>
-            </b-nav-item>
+            <li class="nav-item --rounded wind-selector" @click="toggleWindsPanel">
+                <div class="hover-text">Toggle wind panel</div>
+                <a href="#" target="_self" class="nav-link">
+                    <i :class="windPanelClass" class="fp"></i>
+                </a>
+            </li>
             <transition name="fade">
-                <span class="winds-panel" v-if="isWindsPanelOpen">
+                <span class="winds-panel" v-if="(isWindsPanelOpen && !isFlightOver)">
                     <b-nav-item @click="toggleWinds(2)" class="--rounded" v-if="winds!==2">
                         <i class="fp fp-winds-en"></i>
                     </b-nav-item>
@@ -18,8 +21,19 @@
                 </span>
             </transition>
         </div>
-        <div class="play-animation">
-            <div v-if="!isInfoboxOpen" class="hover-text elapsed-days">Day {{elapsedDays}}/16</div>
+        <div class="play-animation" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
+            <transition name="fade">
+                <div v-if="(!isInfoboxOpen && !hoverOnPlay)"
+                     key="elapsed"
+                     class="hover-text elapsed-days">
+                    Day {{elapsedDays}}/16
+                </div>
+                <div v-else-if="(!isInfoboxOpen && hoverOnPlay)"
+                     key="playpause"
+                     class="hover-text">
+                    play/pause animation
+                </div>
+            </transition>
             <b-nav-item @click="toggleAnimation" class="--rounded --play">
                 <svg>
                     <circle class="progress" :style="{ strokeDasharray: dashArray }"></circle>
@@ -56,6 +70,7 @@ export default {
     return {
       activeExplorers: [1, 2, 3, 4, 5, 6, 7, 8],
       isWindsPanelOpen: false,
+      hoverOnPlay: false,
     };
   },
   computed: {
@@ -72,6 +87,9 @@ export default {
     circumference() { return 35.8 * Math.PI; },
     dashArray() {
       return `${this.circumference * ((this.elapsedDays) / 16)}, 10000`;
+    },
+    isFlightOver() {
+      return (this.$store.state.flightSimulator.visualizationState === 4);
     },
   },
   methods: {
@@ -90,6 +108,12 @@ export default {
     },
     goMobileOnBoard() {
       this.$store.commit('flightSimulator/setFocusedExplorer', 1);
+    },
+    mouseEnter() {
+      this.hoverOnPlay = true;
+    },
+    mouseLeave() {
+      this.hoverOnPlay = false;
     },
   },
 };
@@ -170,12 +194,16 @@ export default {
     }
     .play-animation {
         position: relative;
-        .elapsed-days {
+        .hover-text {
             display: block;
-            margin: 1.15rem 0 0.65rem;
+            margin-top: 1.15rem;
+            margin-bottom: 0.65rem;
             line-height: 32px;
             height: 32px;
-            font-size: 1em;
+            &.elapsed-days {
+                font-size: 1em;
+                width: 80px;
+            }
         }
     }
     .explorers-dashboard {

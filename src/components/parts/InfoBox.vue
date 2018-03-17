@@ -6,12 +6,12 @@
         </div>
         <div class="body">
             <ul class="dashboard-legend" v-if="isAnimationActive">
-                <li class="list-item --instruction">
-                    <div class="title">
-                        Complete Instructions
-                    </div>
-                    <i class="fp"></i>
-                </li>
+                <!--<li class="list-item &#45;&#45;instruction">-->
+                    <!--<div class="title">-->
+                        <!--Complete Instructions-->
+                    <!--</div>-->
+                    <!--<i class="fp"></i>-->
+                <!--</li>-->
                 <li class="list-item --screenshot">
                     <div class="title">
                         Take a Screenshot

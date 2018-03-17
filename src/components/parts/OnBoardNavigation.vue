@@ -7,7 +7,7 @@
         </a>
         <div class="header">
             <i class="fp fp-caret-right prev" @click="goPrevious"></i>
-            <div class="title h4">Explorer {{id}}</div>
+            <div class="title h4">Sculpture {{id}}</div>
             <i class="fp fp-caret-right next" @click="goNext"></i>
         </div>
         <div class="body">
@@ -20,11 +20,11 @@
                     <div class="subtitle">Distance travelled</div>
                     {{distance}} km
                 </li>
-                <li class="explorer-datum --altitude">
+                <li class="explorer-datum --altitude" v-if="(!isFlightOver)">
                     <div class="subtitle">Altitude</div>
                     {{altitude}} m
                 </li>
-                <li class="explorer-datum">
+                <li class="explorer-datum" v-if="(!isFlightOver)">
                     <div class="subtitle">Speed</div>
                     {{speed}} km/h
                 </li>
@@ -51,6 +51,9 @@ export default {
     },
     speed() {
       return parseInt(this.$store.state.flightSimulator.focusedExplorerSpeed, 10).toLocaleString('en');
+    },
+    isFlightOver() {
+      return (this.$store.state.flightSimulator.visualizationState === 4);
     },
   },
   methods: {

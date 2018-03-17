@@ -19,8 +19,11 @@
             <circle class="baseline"></circle>
         </svg>
         <transition name="fade">
-            <div v-if="hover" class="hover-text">
-                Go Onboard
+            <div v-if="(hover && !isFlightOver)" class="hover-text" key="onboard">
+                Go Onboard Sculpture {{explorer}}
+            </div>
+            <div v-else-if="(hover && isFlightOver)" class="hover-text" key="sculpture">
+                Sculpture {{explorer}}
             </div>
         </transition>
     </li>
@@ -51,11 +54,17 @@ export default {
     color() {
       return (this.$store.state.general.webColors[this.id]);
     },
+    isFlightOver() {
+      return (this.$store.state.flightSimulator.visualizationState === 4);
+    },
   },
   methods: {
     onClick() {
       this.$store.commit('flightSimulator/setFocusedExplorer', this.explorer);
       this.$store.commit('flightSimulator/setPlaying', true);
+      if (this.isFlightOver) {
+        this.$store.commit('flightSimulator/setSelectedExplorer', this.explorer);
+      }
     },
     mouseEnter() {
       this.hover = true;

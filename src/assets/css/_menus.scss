@@ -45,6 +45,31 @@ body.upper-content {
     }
   }
 }
+.hover-text {
+  position: absolute;
+  width: 250px;
+  font-size: .85em;
+  color: #FFF;
+  margin-right: 15px;
+  text-align: right;
+  text-transform: none;
+  line-height: $itemWidth;
+}
+.nav-item{
+  .hover-text {
+    right: calc(#{$marginBase} + #{$itemWidth});
+    opacity: 0;
+    transition: opacity .4s ease;
+    visibility: hidden;
+  }
+  &:hover {
+    .hover-text {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
 .flight-dashboard {
   display: flex;
   flex-flow: column wrap;
@@ -52,7 +77,7 @@ body.upper-content {
   margin-bottom: 0;
   list-style: none;
   position: fixed;
-  top: 240px;
+  top: 188px;
   right: $marginBase;
   z-index: 19; // as the main-menu
   @include medium_up {
@@ -63,9 +88,15 @@ body.upper-content {
   .hover-text {
     text-align: right;
     position: absolute;
-    width: 80px;
-    right: 32px + 15px;
+    right: 32px;
     font-size: .85em;
+  }
+  &.flight-over {
+    .play-animation {
+      .progress {
+        stroke: $gray;
+      }
+    }
   }
   /**
    * MOBILE
