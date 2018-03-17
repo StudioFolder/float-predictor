@@ -1,5 +1,5 @@
 <template>
-    <div class="f-slide">
+    <div :id="slideId" class="f-slide">
         <slot>
         </slot>
     </div>
@@ -9,5 +9,10 @@
 export default {
   name: 'f-slide',
   props: ['id'],
+  computed: {
+    slideId() {
+      return `slide${this.id}`;
+    },
+  },
 };
 </script>
