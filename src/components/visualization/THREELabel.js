@@ -7,8 +7,9 @@ const THREE = require('three');
 const antialias = 5;
 
 class THREELabel {
-  constructor(scene, fontFace = 'Bold Arial', fontSize = 12, bgColor = 'rgba(0,0,0,0)', textColor = 'rgba(255,255,255,1)', obj = undefined) {
+  constructor(scene, camera, fontFace = 'Bold Arial', fontSize = 12, bgColor = 'rgba(0,0,0,0)', textColor = 'rgba(255,255,255,1)', obj = undefined) {
     this.scene = scene;
+    this.camera = camera;
     this.anchorObject = obj;
     this.fontFace = fontFace;
     this.fontSize = fontSize;
@@ -123,10 +124,10 @@ class THREELabel {
     return this.position;
   }
 
-  updatePosition(camera) {
+  updatePosition() {
     if (this.visible) {
-      const angle = camera.position.angleTo(this.anchorObject.position);
-      if (Math.abs(angle) < 1.2) {
+      const angle = this.camera.position.angleTo(this.anchorObject.position);
+      if (Math.abs(angle) < 1.1) {
         this.sprite.visible = true;
       } else {
         this.sprite.visible = false;
@@ -135,7 +136,8 @@ class THREELabel {
   }
 
   setScale() {
-    const f = 0.05 / this.scene.scale.x;
+    const f = 0.05 / ((this.scene.scale.x) ** 1.5);
+    this.camera.position.distanceTo(this.sprite.position);
     if (this.anchorObject) {
       this.anchorObject.scale.set(f * 20, f * 20, f * 20);
     }
