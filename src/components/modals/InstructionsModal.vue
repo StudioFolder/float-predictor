@@ -49,6 +49,13 @@ $lateralSpaceMobile: .5rem;
         @include medium_down {
             margin: 0;
         }
+        .modal-content {
+            height: calc(100vh - 2*#{$marginBase});
+        }
+        .modal-body {
+            // 100% modal height - header padding - line height
+            height: calc(100% - (2*2rem) - (2.369rem*2.1))
+        }
     }
     .carousel-indicators {
         bottom: -25px;
@@ -59,8 +66,58 @@ $lateralSpaceMobile: .5rem;
             margin: 0 10px;
         }
     }
+    .f-slide {
+        display: flex;
+        flex-flow: column;
+        justify-content: space-evenly;
+        padding-left: $lateralSpace;
+        padding-right: $lateralSpace;
+        @include medium_down {
+            padding-left: $lateralSpaceMobile;
+            padding-right: $lateralSpaceMobile;
+        }
+        .title {
+            flex: 0 0 auto;
+            margin: $marginItem 0;
+            @include small_down {
+                margin: $marginItem*2 0 $marginItem;
+            }
+        }
+        .animation-wrapper {
+            text-align: center;
+            flex: 1 1 auto;
+            height: 40%;
+            display: flex;
+            flex-flow: column;
+            justify-content: center;
+            .animation {
+                max-height: 100%;
+                max-width: 100%;
+                text-align: center;
+                &.--big {
+                    max-width: 130%;
+                    width: 130%;
+                    height: auto;
+                    margin-left: -15%;
+                }
+            }
+        }
+        .description {
+            flex: 0 0 auto;
+            padding: .5em 0;
+            overflow: hidden;
+            max-width: 35em;
+            @include small_down {
+                max-width: unset;
+                font-size: .9em;
+            }
+            &.--upper {
+                margin-top: 1em;
+            }
+        }
+    }
 }
-.instructions-sections {
+/*.instructions-sections {
     display: flex;
     justify-content: space-between;
     padding-left: $lateralSpace;
@@ -91,56 +148,7 @@ $lateralSpaceMobile: .5rem;
         text-align: right;
     }
 }
-.internal-slider .swiper-slide {
-    display: flex;
-    flex-flow: column;
-    justify-content: space-evenly;
-    padding-left: $lateralSpace;
-    padding-right: $lateralSpace;
-    @include medium_down {
-        padding-left: $lateralSpaceMobile;
-        padding-right: $lateralSpaceMobile;
-    }
-    .title {
-        flex: 0 0 auto;
-        margin: $marginItem 0;
-        @include small_down {
-            margin: $marginItem*2 0 $marginItem;
-        }
-    }
-    .animation-wrapper {
-        text-align: center;
-        flex: 1 1 auto;
-        height: 40%;
-        display: flex;
-        flex-flow: column;
-        justify-content: center;
-        .animation {
-            max-height: 100%;
-            max-width: 100%;
-            text-align: center;
-            &.--big {
-                max-width: 130%;
-                width: 130%;
-                height: auto;
-                margin-left: -15%;
-            }
-        }
-    }
-    .description {
-        flex: 0 0 auto;
-        padding: .5em 0;
-        overflow: hidden;
-        max-width: 35em;
-        @include small_down {
-            max-width: unset;
-            font-size: .9em;
-        }
-        &.--upper {
-            margin-top: 1em;
-        }
-    }
-}
+
 .how-aerocene-float {
     .animation-wrapper {
         margin-right: -90px;
@@ -199,5 +207,5 @@ $lateralSpaceMobile: .5rem;
     .swiper-pagination-bullet-active {
         opacity: 1;
     }
-}
+}*/
 </style>

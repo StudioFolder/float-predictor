@@ -1,7 +1,7 @@
 <template>
-    <div class="f-slider-wrapper">
+    <div class="f-slider-wrapper" @wheel.stop.prevent="onScroll">
         <div class="f-slider-inner">
-            <f-slide>
+            <f-slide id="101">
                 <h3 class="title">Aerocene</h3>
                 <div class="animation-wrapper">
                     <img class="animation"
@@ -14,7 +14,7 @@
                     instead of industrialising, restricting and capitalising off of it.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="102">
                 <h3 class="title">Aerocene Sculptures</h3>
                 <div class="animation-wrapper">
                     <img class="animation"
@@ -29,7 +29,7 @@
                     successfully recovered after floating hundreds of kilometers.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="103">
                 <h3 class="title">Aerocene Float Predictor</h3>
                 <div class="animation-wrapper">
                     <img class="animation"
@@ -41,7 +41,7 @@
                     predict Aerosolar trajectories based on real-time weather forecasts.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="201">
                 <h3 class="title">Planned Float vs. Free Float</h3>
                 <div class="animation-wrapper">
                     <img class="animation"
@@ -62,7 +62,7 @@
                     on a collaborative journey with the atmosphere.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="202">
                 <h3 class="title">Departure and Destination</h3>
                 <div class="animation-wrapper">
                     <img class="animation"
@@ -73,7 +73,7 @@
                     the world into the entry field.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="203">
                 <h3 class="title">Float Controls</h3>
                 <div class="description --upper">
                     When a journey has started, a float control interface will allow
@@ -86,7 +86,7 @@
                          src="~img/instructions/Instructions_2-3_02.gif">
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="204">
                 <h3 class="title">Go on Board a Sculpture</h3>
                 <div class="animation-wrapper">
                     <img class="animation"
@@ -99,7 +99,7 @@
                     itself. When on board, real-time float telemetry data will appear.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="205">
                 <h3 class="title">Understanding Winds</h3>
                 <div class="animation-wrapper">
                     <img class="animation"
@@ -112,7 +112,7 @@
                     visualise the winds at different heights.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="206">
                 <h3 class="title">Controlling the Globe</h3>
                 <div class="animation-wrapper">
                     <img class="animation"
@@ -125,7 +125,7 @@
                     just click “Re-centre”.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="301">
                 <h3 class="title">Aeroglyphs</h3>
                 <div class="animation-wrapper">
                     <div class="animation-wrapper">
@@ -140,7 +140,7 @@
                     the fossil-free journeys around the world.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="302">
                 <h3 class="title">Save and Share</h3>
                 <div class="animation-wrapper">
                     <img class="animation --big"
@@ -156,7 +156,7 @@
                     around the world.
                 </div>
             </f-slide>
-            <f-slide>
+            <f-slide id="303">
                 <h3 class="title">Download and APIs</h3>
                 <div class="animation-wrapper">
                     <img class="animation"
@@ -178,10 +178,17 @@ import fSlide from './FSlide';
 export default {
   name: 'f-slides-wrapper',
   components: { fSlide },
+  props: ['currentIndex', 'height'],
+  methods: {
+    onScroll(e) {
+      if (e.deltaY > 10) {
+        this.$emit('scrollDown', parseInt(this.id, 10) + 1);
+      } else if (e.deltaY < -10) {
+        this.$emit('scrollUp', parseInt(this.id, 10) - 1);
+      }
+    },
+  },
 };
 </script>
 <style lang="scss">
-.f-slider-wrapper {
-    overflow: hidden;
-}
 </style>
