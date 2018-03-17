@@ -394,12 +394,6 @@ export default {
         this.afterJourneySliderEnd = newStatus;
       },
     );
-    this.$watch(
-      () => this.$refs.archiveSlider.swiper.isEnd,
-      (newStatus) => {
-        this.afterJourneySliderEnd = newStatus;
-      },
-    );
   },
   methods: {
     goToNextSection() {

@@ -23,12 +23,12 @@
         </div>
         <div class="play-animation" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
             <transition name="fade">
-                <div v-if="(!isInfoboxOpen && !hoverOnPlay)"
+                <div v-if="(!isInfoboxOpen && !hoverOnPlay && !isFlightOver)"
                      key="elapsed"
                      class="hover-text elapsed-days">
                     Day {{elapsedDays}}/16
                 </div>
-                <div v-else-if="(!isInfoboxOpen && hoverOnPlay)"
+                <div v-else-if="(!isInfoboxOpen && hoverOnPlay && !isFlightOver)"
                      key="playpause"
                      class="hover-text">
                     play/pause animation

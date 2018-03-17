@@ -1,7 +1,7 @@
 <template>
     <li class="nav-item explorer-item --rounded"
         :class="{'--focused': highlighted}"
-        :style="{opacity: opacity}"
+        :style="{'opacity': opacity, 'visibility': visibility}"
         @click="onClick"
         @mouseenter="mouseEnter" @mouseleave="mouseLeave">
         <div class="explorer-id">
@@ -37,6 +37,7 @@ export default {
     return {
       r: 15, // synchronize with css for animation
       opacity: 0,
+      visibility: 'hidden',
       hover: false,
     };
   },
@@ -72,12 +73,15 @@ export default {
     },
     mouseLeave() {
       this.hover = false;
-      this.$store.commit('flightSimulator/setSelectedExplorer', 0);
+      if (!this.isFlightOver) {
+        this.$store.commit('flightSimulator/setSelectedExplorer', 0);
+      }
     },
   },
   watch: {
     day(day) {
       this.opacity = (day >= this.explorer) ? 1 : 0;
+      this.visibility = (day >= this.explorer) ? 'visible' : 'hidden';
     },
   },
 };

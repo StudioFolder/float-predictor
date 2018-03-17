@@ -20,7 +20,7 @@
                 </li>
                 <li class="list-item --winds">
                     <div class="title">
-                        Turn winds on/off
+                        Toggle winds panel
                     </div>
                     <i class="fp"></i>
                 </li>
