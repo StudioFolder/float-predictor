@@ -21,7 +21,7 @@
                     magnitude equal to the weight of the fluid which it displaces.&rdquo;
                 </p>
                 <p>
-                    According to the archimedean model, buoyancy is achieved when the density of a
+                    According to the Archimedean model, buoyancy is achieved when the density of a
                     body is lower than the density of the surrounding fluid. Tapping into an
                     unlimited source of energy (the Sun), an Aerosolar Sculpture is designed to
                     absorb and preserve as much infrared radiation as possible. When the warm air
@@ -45,14 +45,15 @@
                     </div>
                     <figcaption> <a target="_blank" href="http://aerocene.org/aug-27-schoenfelde-germany">Aerocene
                         Gemini Free Float</a>, August 27th, 2016. Two Aerocene Sculptures (a Gemini
-                        and a Tetrahedron Transparent), launched from Schönfelde, Germany travels
+                        and a Tetrahedron Transparent), launched from Schönfelde, Germany, travelled
                         for 605 kilometres over 12 hours, reaching a maximum altitude of 16,283m.
                     </figcaption>
                 </figure>
                 <p>
                     On a sunny day, due to the partially reflective material of the Aerocene
-                    Sculpture, the air inside an will slowly heat up until the inner air density
-                    is low enough to provide sufficient lift to overcome gravity and make the
+                    Sculpture, the air inside an envelope will slowly heat up until the inner
+                    air density is low enough to provide sufficient
+                    lift to overcome gravity and make the
                     envelope rise. Once in the air, an untethered Sculpture can easily rise up
                     to the stratosphere in a couple of hours. Depending on colour, volume of air
                     and geometry, it can reach a variety of altitude levels—from 10 to 30 km above
