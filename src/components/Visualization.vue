@@ -44,6 +44,7 @@ const altitudeLevels = [0.0, 1.467, 5.574, 10.363, 15.790, 70.962, 84.998];
 const THREE = require('three');
 const OrbitControls = require('../../custom_modules/three-orbit-controls')(THREE);
 
+
 const CATMULL_NUM_POINTS = 3;
 const radius = 200;
 // const EARTH_RADIUS = 6378.137
@@ -57,67 +58,9 @@ const webColors = ['#003769', '#2e6a9c', '#0095d7', '#587a98', '#7eafd4', '#b9e5
 
 // eslint-disable-next-line
 let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectLabel, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations, downloader;
+let pars = {};
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-
-// GUI PARAMETERS
-const pars = {
-  // GENERAL
-  altitudeLevel: 3,
-  active: false,
-  winds: 1,
-  fps: 0,
-  antialias: true,
-  state: 0,
-  speed_d_x_sec: 0.105,
-  move_in_time: false,
-  pan_x: 0,
-  pan_y: 0,
-  zoom: INITIAL_ZOOM,
-  onboard: false,
-  skip_frame: 1,
-  camera_smooth: 0.993,
-  camera_distance: 1.3,
-  camera_shift: 0.07,
-  camera_zoom: 0.94,
-  sun_visible: false,
-  zoom_enabled: true,
-  // MATERIAL
-  use_bump: true,
-  use_nightmap: true,
-  nightmap_intensity: 0.9,
-  nightmap_threshold: 0.7,
-  nightmap_color: '#ffffff',
-  bump_scale: 0.5,
-  // LIGHT
-  spot_light_intensity: 0.8,
-  sun_light_color: '#ffffff',
-  ambient_light_intensity: 0.09,
-  ambient_light_color: '#acdfef',
-  auto_rotate: false,
-  // EXPLORER
-  elapsed_days: 0.001,
-  explorer_height_base: 0.025,
-  explorer_height_shift: 0.025,
-  layers: {
-    wind: {
-      animating: true,
-      animationSpeed: 1,
-      visible: false,
-      mapping: 0.0,
-      opacity_mapping: true,
-      threshold: 44.0,
-      start_color: '#000000',
-      end_color: '#ffffff',
-      opacity: 1,
-      minOpacity: 0.5,
-      magnitude: 0.25,
-      step: 1,
-      precision: 2,
-    },
-  },
-  colorMap: 'MAP A',
-};
 
 export default {
   name: 'visualization',
@@ -126,8 +69,11 @@ export default {
     flightType() { return this.$store.state.flightSimulator.flightType; },
     animating() {
       return this.playing &&
-        this.loading >= 1 && (this.selectedExplorer === 0 ||
-          this.visualizationState !== STATE_ANIMATION_ACTIVE);
+        this.loading >= 1 && (!this.selecting);
+      /*
+        (!(this.isMouseSelected &&
+          this.visualizationState === STATE_ANIMATION_ACTIVE))
+        */
     },
     focusedExplorer: {
       get() { return this.$store.state.flightSimulator.focusedExplorer; },
@@ -240,6 +186,7 @@ export default {
       }
       if (selected <= 0) {
         selectLabel.setVisible(false);
+        this.selecting = false;
         this.hideExplorerDates();
         _.each(explorers, (e) => {
           e.setStyle(Explorer.MOVING);
@@ -358,6 +305,7 @@ export default {
   data() {
     return {
       alive: true,
+      selecting: false,
       speed: 0,
       minDist: 0,
       minTime: 0,
@@ -378,15 +326,24 @@ export default {
 
   mounted() {
     /* INIT VARIABLES */
-    earthRotation = 0;
-    loaded = 0;
-    timer = 0;
-    fps = 0;
-    explorers = [];
-    allExplorers = [];
-    explorerHS = [0, 0, 0, 0, 0, 0, 0, 0];
-    this.initVis();
-    this.addDebugTools();
+    fetch('static/config/general.json')
+      .then(r => r.json())
+      .then((json) => {
+        pars = json;
+        pars.zoom = (window.matchMedia('(orientation: portrait)').matches) ? 0.4 : 0.5;
+        console.log(pars);
+        earthRotation = 0;
+        loaded = 0;
+        timer = 0;
+        fps = 0;
+        explorers = [];
+        allExplorers = [];
+        explorerHS = [0, 0, 0, 0, 0, 0, 0, 0];
+        this.initVis();
+        this.addDebugTools();
+      }).catch((r) => {
+        console.log(`static/config/general.json not found: ${r.message}`);
+      });
   },
 
   beforeDestroy() {
@@ -453,9 +410,12 @@ export default {
       _.each(explorers, (e, index) => {
         if (raycaster.intersectObject(e.animatingSphere).length > 0) {
           selected = index;
+          this.selecting = true;
         }
       });
-      this.selectedExplorer = selected + 1;
+      if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
+        this.selectedExplorer = selected + 1;
+      }
     },
 
     onMouseClick(event) {
@@ -574,17 +534,17 @@ export default {
 
     initLabels() {
       const departureSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      departureLabel = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', departureSphere);
+      departureLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', departureSphere);
       departureLabel.setIcon(document.getElementById('up'));
       scene.add(departureSphere);
 
       const selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
-      selectLabel = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', selectSphere);
+      selectLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', selectSphere);
       selectLabel.margin = 2;
       scene.add(selectSphere);
 
       const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      destinationLabel = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
+      destinationLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
       destinationLabel.setIcon(document.getElementById('down'));
       scene.add(destinationSphere);
 
@@ -604,7 +564,7 @@ export default {
 
         const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
         scene.add(sphere);
-        const label = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
+        const label = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
         cityLabels.push(label);
       }
 
@@ -612,7 +572,7 @@ export default {
       for (let i = 0; i < 16; i += 1) {
         const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
         scene.add(sphere);
-        const label = new THREELabel(scene, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
+        const label = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
         daysLabels.push(label);
       }
     },
@@ -795,15 +755,15 @@ export default {
     updateLabels() {
       if (pars.onboard) {
         for (let i = 0; i < cityLabels.length; i += 1) {
-          cityLabels[i].updatePosition(camera);
+          cityLabels[i].updatePosition();
         }
       }
 
       for (let i = 0; i < daysLabels.length; i += 1) {
-        daysLabels[i].updatePosition(camera);
+        daysLabels[i].updatePosition();
       }
-      destinationLabel.updatePosition(camera);
-      departureLabel.updatePosition(camera);
+      destinationLabel.updatePosition();
+      departureLabel.updatePosition();
     },
 
     initGUI() {
@@ -904,7 +864,7 @@ export default {
       wind.add(pars.layers.wind, 'mapping', { 'NO MAPPING': 0.0, 'RGB MAPPING': 1.0, 'HUE MAPPING': 2.0 }).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
       wind.add(pars.layers.wind, 'opacity_mapping').listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
       wind.add(pars.layers.wind, 'threshold', 0, 200).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      wind.add(pars.layers.wind, 'opacity', 0, 1).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+      wind.add(pars.layers.wind, 'opacity', 0, 5).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
       wind.add(pars.layers.wind, 'minOpacity', 0, 1).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
       wind.add(pars.layers.wind, 'magnitude', 0, 3).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
       wind.add(pars.layers.wind, 'precision', 0, 5).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
@@ -934,7 +894,7 @@ export default {
         const alpha = j / 16.0;
         if (alpha < explorers[explorerIndex].getAlpha()) {
           daysLabels[j - 1].set(text, explorers[explorerIndex].getPosition(alpha));
-          daysLabels[j - 1].updatePosition(camera);
+          daysLabels[j - 1].updatePosition();
         } else {
           break;
         }
@@ -1110,7 +1070,7 @@ export default {
               initY = parseFloat(x2);
             }
           }
-          t += `" style="fill:none;stroke:${webColors[i]};stroke-width:1" />`;
+          t += `" style="fill:none;stroke:${webColors[i]};stroke-width:2" />`;
         // } else { t += '" style="fill:none;stroke:black;opacity:0.1;stroke-width:1" />' }
         }
       }
