@@ -1579,4 +1579,7 @@ export default {
 .dg .c input[type=text]{
   height: 100%;
 }
+.dg.main .close-button.close-bottom {
+  color: black;
+}
 </style>
