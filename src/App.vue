@@ -7,7 +7,7 @@
         <transition appear name="fade" mode="out-in">
             <router-view/>
         </transition>
-        <footer>
+        <footer v-if="!isServer">
             <div class="font-small">
                 Aerocene is an open artistic project by Studio Tomás Saraceno.
                 Design and code by Studio Folder and Angelo Semeraro.
@@ -26,6 +26,9 @@ export default {
   computed: {
     isInfoBoxOpen() {
       return this.$store.state.general.isInfoBoxOpen;
+    },
+    isServer() {
+      return (this.$route.name === 'visualization-server');
     },
   },
 };
