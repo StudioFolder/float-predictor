@@ -23,7 +23,7 @@
         </div>
         <div class="play-animation" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
             <transition name="fade">
-                <div v-if="(!isInfoboxOpen && !hoverOnPlay && !isFlightOver)"
+                <div v-if="(!isInfoboxOpen && !hoverOnPlay)"
                      key="elapsed"
                      class="hover-text elapsed-days">
                     Day {{elapsedDays}}/16
@@ -33,13 +33,27 @@
                      class="hover-text">
                     play/pause animation
                 </div>
+                <div v-else-if="(!isInfoboxOpen && hoverOnPlay && isFlightOver)"
+                     key="restart"
+                     class="hover-text">
+                    restart
+                </div>
             </transition>
             <b-nav-item @click="toggleAnimation" class="--rounded --play">
                 <svg>
                     <circle class="progress" :style="{ strokeDasharray: dashArray }"></circle>
                     <circle class="baseline"></circle>
                 </svg>
-                <i :class="[isPlaying ? 'fp-pause' : 'fp-play', 'fp']"></i>
+                <transition name="fade-icon" mode="out-in">
+                    <i key="play" v-if="!isFlightOver"
+                       :class="[isPlaying ? 'fp-pause' : 'fp-play', 'fp']"></i>
+                    <i key="restart"
+                       v-else-if="(isFlightOver && !hoverOnPlay)"
+                       class="fp-restart fp"></i>
+                    <i key="restartover"
+                       v-else-if="(isFlightOver && hoverOnPlay)"
+                       class="fp-restart-w fp"></i>
+                </transition>
             </b-nav-item>
         </div>
         <!--explorers-->
@@ -104,7 +118,13 @@ export default {
       this.closeWindsPanel();
     },
     toggleAnimation() {
-      this.$store.commit('flightSimulator/setPlaying', !this.isPlaying);
+      if (this.isFlightOver) {
+        this.$store.dispatch('flightSimulator/resetVisualization');
+        this.$store.commit('flightSimulator/setVisualizationState', 8);
+        this.$store.commit('general/setFormStatus', true);
+      } else {
+        this.$store.commit('flightSimulator/setPlaying', !this.isPlaying);
+      }
     },
     goMobileOnBoard() {
       this.$store.commit('flightSimulator/setFocusedExplorer', 1);

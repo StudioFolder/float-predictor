@@ -94,7 +94,10 @@ body.upper-content {
   &.flight-over {
     .play-animation {
       .progress {
-        stroke: $gray;
+        stroke-width: 0;
+      }
+      .baseline {
+        stroke-width: 0;
       }
     }
   }

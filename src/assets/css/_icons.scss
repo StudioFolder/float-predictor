@@ -51,6 +51,16 @@
 .fp-play {
   background-image: url("assets/icons/play.svg");
 }
+.fp-restart {
+  background-image: url("assets/icons/ico-replay.svg");
+  background-size: 34px;
+  width: 32px;
+}
+.fp-restart-w {
+  background-image: url("assets/icons/ico-replay-w.svg");
+  background-size: 34px;
+  width: 32px;
+}
 .fp-up {
   background-image: url("assets/icons/ico-triangle.svg");
   transform: rotate(180deg);

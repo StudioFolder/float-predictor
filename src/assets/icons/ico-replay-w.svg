@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs></defs>
+    <g id="Symbols-" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round">
+        <g id="Icons-/-Replay" transform="translate(-18.000000, -18.000000)" fill="#FFFFFF" fill-rule="nonzero" stroke="#FFFFFF">
+            <g id="Replay" transform="translate(14.000000, 14.000000)">
+                <g id="Replay-icon" transform="translate(5.000000, 5.000000)">
+                    <path d="M11,0 C4.93777778,0 0,4.93777778 0,11 C0,14.1044444 1.32,17.0377778 3.56888889,19.0911111 L1.85777778,20.8022222 L7.48,21.7555556 L6.52666667,16.1333333 L4.59555556,18.0644444 C2.64,16.28 1.46666667,13.7133333 1.46666667,11 C1.46666667,5.74444444 5.74444444,1.46666667 11,1.46666667 C16.2555556,1.46666667 20.5333333,5.74444444 20.5333333,11 C20.5333333,16.2555556 16.2555556,20.5333333 11,20.5333333 L11,22 C17.0622222,22 22,17.0622222 22,11 C22,4.93777778 17.0622222,0 11,0 Z" id="Shape"></path>
+                    <polygon id="Shape" points="9 7 9 15 16 11.0117994"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
