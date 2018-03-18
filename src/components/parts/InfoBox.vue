@@ -76,7 +76,7 @@ export default {
   props: ['isAnimationActive'],
   methods: {
     closeBox() {
-      this.$store.commit('general/closeInfoBox', false);
+      this.$store.commit('general/closeInfoBox');
     },
   },
 };

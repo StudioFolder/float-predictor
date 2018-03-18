@@ -18,6 +18,7 @@ export default {
     ],
     isMenuOpen: false,
     isInfoBoxOpen: false,
+    isWindPanelOpen: false,
     deviceName: '', // (small, medium, big) or (phone, tablet, desktop) ???
   },
   mutations: {
@@ -39,11 +40,17 @@ export default {
     toggleInfoBox(state) {
       state.isInfoBoxOpen = !state.isInfoBoxOpen;
     },
+    toggleWindPanel(state) {
+      state.isWindPanelOpen = !state.isWindPanelOpen;
+    },
     closeMenu(state) {
       state.isMenuOpen = false;
     },
     closeInfoBox(state) {
       state.isInfoBoxOpen = false;
+    },
+    closeWindPanel(state) {
+      state.isWindPanelOpen = false;
     },
     setFormStatus(state, value) {
       state.isChoosingDestination = value;

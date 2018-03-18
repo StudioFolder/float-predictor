@@ -4,21 +4,11 @@
             <li class="nav-item --rounded wind-selector" @click="toggleWindsPanel">
                 <div class="hover-text">Toggle wind panel</div>
                 <a href="#" target="_self" class="nav-link">
-                    <i :class="windPanelClass" class="fp"></i>
+                    <i :class="[isWindsPanelOpen ? 'fp-close' : windPanelClass, 'fp']"></i>
                 </a>
             </li>
             <transition name="fade">
-                <span class="winds-panel" v-if="(isWindsPanelOpen && !isFlightOver)">
-                    <b-nav-item @click="toggleWinds(2)" class="--rounded" v-if="winds!==2">
-                        <i class="fp fp-winds-en"></i>
-                    </b-nav-item>
-                    <b-nav-item @click="toggleWinds(1)" class="--rounded" v-if="winds!==1">
-                        <i class="fp fp-winds-on"></i>
-                    </b-nav-item>
-                    <b-nav-item @click="toggleWinds(0)" class="--rounded" v-if="winds!==0">
-                        <i class="fp fp-no-winds"></i>
-                    </b-nav-item>
-                </span>
+                <winds-panel v-if="(isWindsPanelOpen)" />
             </transition>
         </div>
         <div class="play-animation" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
@@ -74,16 +64,16 @@
 </template>
 
 <script>
-import Explorer from './Explorer';
+import explorer from 'Parts/Explorer';
+import windsPanel from 'Parts/WindsPanel';
 
 export default {
   name: 'flight-dashboard',
   props: ['isInfoboxOpen', 'isOnboard'],
-  components: { Explorer },
+  components: { explorer, windsPanel },
   data() {
     return {
       activeExplorers: [1, 2, 3, 4, 5, 6, 7, 8],
-      isWindsPanelOpen: false,
       hoverOnPlay: false,
     };
   },
@@ -96,6 +86,7 @@ export default {
       };
     },
     winds() { return this.$store.state.flightSimulator.winds; },
+    isWindsPanelOpen() { return this.$store.state.general.isWindPanelOpen; },
     isPlaying() { return this.$store.state.flightSimulator.isPlaying; },
     elapsedDays() { return this.$store.state.flightSimulator.elapsedDays; },
     circumference() { return 35.8 * Math.PI; },
@@ -108,14 +99,10 @@ export default {
   },
   methods: {
     toggleWindsPanel() {
-      this.isWindsPanelOpen = !this.isWindsPanelOpen;
+      this.$store.commit('general/toggleWindPanel');
     },
     closeWindsPanel() {
-      this.isWindsPanelOpen = false;
-    },
-    toggleWinds(v) {
-      this.$store.commit('flightSimulator/setWinds', v);
-      this.closeWindsPanel();
+      this.$store.commit('general/closeWindPanel');
     },
     toggleAnimation() {
       if (this.isFlightOver) {
@@ -189,28 +176,6 @@ export default {
     }
     .nav-item.wind-selector .inactive {
         opacity: .25;
-    }
-    .winds-panel {
-        display: flex;
-        justify-content: space-evenly;
-        flex-flow: row;
-        position: absolute;
-        top: 0;
-        left: -130px;
-        height: 32px;
-        width: 130px;
-        @include medium_down {
-            left: 0;
-            height: 100px;
-            width: 32px;
-            flex-flow: column;
-            top: -100px;
-        }
-    }
-    .fp-winds-on,
-    .fp-winds-en,
-    .fp-no-winds {
-        width: 30px;
     }
     .play-animation {
         position: relative;
