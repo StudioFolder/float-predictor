@@ -1437,6 +1437,7 @@ export default {
             });
             this.minDist = maxDistance;
             this.minTrack = winningIndex;
+            this.minTime = 16 - this.minTrack;
           }
           // TODO: actual startingDate! Add minTrack days
           this.winningExplorerData = {

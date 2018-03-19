@@ -6,7 +6,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs');
 const copydir = require('copy-dir');
-const mv = require('mv');
+// const mv = require('mv');
 
 const mbs = [10, 30, 100, 250, 500, 850, 1000];
 const urls = [];
@@ -72,12 +72,13 @@ function download(i, cb) {
 }
 
 function onDownload() {
-  // copydir.sync('../static/data/gfs/tmp/', '../static/data/gfs/data/');
-  mv('../static/data/gfs/tmp/', '../static/data/gfs/data/', (err) => {
+  copydir.sync('../static/data/gfs/tmp/', '../static/data/gfs/data/');
+  /* mv('../static/data/gfs/tmp/', '../static/data/gfs/data/', (err) => {
     if (err) {
       console.log(`Unable to mv tmp to data error: ${err.message}`);
     }
   });
+  */
   console.log('Done');
 }
 
