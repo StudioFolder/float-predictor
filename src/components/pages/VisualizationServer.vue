@@ -25,3 +25,10 @@ export default {
   },
 };
 </script>
+<style>
+#visualization-server {
+  max-height: 100vh;
+  max-width: 100vw;
+  overflow: hidden;
+}
+</style>
