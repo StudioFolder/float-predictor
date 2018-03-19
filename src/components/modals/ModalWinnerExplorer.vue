@@ -13,9 +13,9 @@
                     from <strong>{{destination.city}}</strong> in
                     <strong>{{winningExplorerData.minTime}} days.</strong>
                 </div>
-                <div v-else>
+                <div v-else class="message">
                     The Aerocene Sculpture that floated the farthest
-                    is the one that  left from <b>{{departure.city}}</b>
+                    is the one that  left from <strong>{{departure.city}}</strong>
                     on <strong>{{depDate}}</strong>
                     and travelled <strong>{{maxDist}} km</strong>
                     in <strong>{{winningExplorerData.minTime}} days.</strong>
@@ -40,7 +40,7 @@ export default {
       return this.$store.state.flightSimulator.winningExplorerData;
     },
     maxDist() {
-      return (parseInt(this.winningExplorerData.minDist, 10) * 1000).toLocaleString('en');
+      return parseInt(this.winningExplorerData.minDist, 10).toLocaleString('en');
     },
     depDate() {
       return moment(this.winningExplorerData.departureDate).format('MMM Do, YYYY');
