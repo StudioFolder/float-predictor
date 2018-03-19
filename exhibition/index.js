@@ -16,10 +16,18 @@ app.use(express.static('../dist'));
 const server = http.createServer(app);
 const wss = new WebSocket.Server({ server });
 const data = {};
+
+
 wss.on('connection', (ws, req) => {
   ws.send(JSON.stringify(data));
   const ip = req.connection.remoteAddress;
   console.log(`New Connection from ${ip}`);
+  data.visualizationState = 8;
+  wss.clients.forEach((client) => {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(JSON.stringify(data));
+    }
+  });
   ws.on('message', (message) => {
     const parsedMessage = JSON.parse(message);
     _.each(parsedMessage, (value, key) => {

@@ -17,6 +17,7 @@
 	"camera_zoom": 0.94,
 	"sun_visible": false,
 	"zoom_enabled": true,
+	"stars": false,
 
 	"use_bump": true,
 	"use_nightmap": true,

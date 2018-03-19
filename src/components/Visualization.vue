@@ -57,7 +57,7 @@ const colors = [0x003769, 0x2e6a9c, 0x0095d7, 0x587a98, 0x7eafd4, 0xb9e5fb, 0x65
 const webColors = ['#003769', '#2e6a9c', '#0095d7', '#587a98', '#7eafd4', '#b9e5fb', '#656868', '#ffffff'];
 
 // eslint-disable-next-line
-let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectLabel, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations, downloader;
+let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectLabel, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations, downloader, particleSystem;
 let pars = {};
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -537,7 +537,8 @@ export default {
       departureLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', departureSphere);
       departureLabel.setIcon(document.getElementById('up'));
       scene.add(departureSphere);
-
+      departureLabel.set(departure.city, departureLabel.anchorObject.position);
+      departureLabel.setVisible(false);
       const selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
       selectLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', selectSphere);
       selectLabel.margin = 2;
@@ -617,12 +618,13 @@ export default {
         particles.vertices.push(particle);
       }
       // create the particle system
-      const particleSystem = new THREE.Points(
+      particleSystem = new THREE.Points(
         particles,
         pMaterial,
       );
       // add it to the scene
       scene.add(particleSystem);
+      particleSystem.visible = pars.stars;
     },
 
     setupExplorers() {
@@ -774,14 +776,14 @@ export default {
       general.add(pars, 'altitudeLevel', 0.0, altitudeLevels.length - 1).step(1).onChange((value) => { this.altitudeLevel = value; });
       general.add(pars, 'auto_rotate');// .onChange(function(value) {controls.autoRotate=value;});
       general.add(pars, 'antialias').listen().onChange((value) => { this.setAntialias(value); });
-
+      general.add(pars, 'stars').onChange((v) => { particleSystem.visible = v; });
       general.add(pars, 'sun_visible').onChange((value) => { sunSphere.visible = value; });
       general.add(pars, 'move_in_time');
       general.add(pars, 'speed_d_x_sec', 0, 2);
       general.add(pars, 'pixel_ratio', 1, 3).listen().onChange((value) => { renderer.setPixelRatio(value); });
       general.add(pars, 'skip_frame', 0, 60).step(1).listen();
       general.add(pars, 'fps', 0, 60).listen();
-      general.add(pars, 'winds', 0, 2).step(1).listen().onChange((value) => { this.winds = value; });
+      general.add(pars, 'winds', 0, 4).step(1).listen().onChange((value) => { this.winds = value; });
 
       general.add(controls.target, 'x', -1000.0, 1000.0).listen().onChange(() => {
         controls.update();
@@ -914,6 +916,8 @@ export default {
           departureLabel.set(departure.city, departureLabel.anchorObject.position);
           if (this.flightType === 'planned') {
             destinationLabel.set(destination.city, destinationLabel.anchorObject.position);
+          } else {
+            destinationLabel.setVisible(false);
           }
           pars.auto_rotate = false;
           this.downloadMulti();
@@ -1364,6 +1368,8 @@ export default {
       if (downloader) {
         downloader.destroy();
       }
+      this.selectedExplorer = 0;
+      this.focusedExplorer = 0;
       downloader = new WindDataDownloader();
       this.startingDate.setMonth(new Date().getMonth());
       this.startingDate.setDate(new Date().getDate());
@@ -1519,6 +1525,7 @@ export default {
   height: 100vh;
   position: relative;
   z-index: 0;
+  font-style: 'Colfax-Medium';
 }
 
 #labels{
