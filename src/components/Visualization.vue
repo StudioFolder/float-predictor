@@ -1453,21 +1453,13 @@ export default {
           }
           const departureDate = new Date(this.startingDate);// this.valueOf()
           departureDate.setDate(departureDate.getDate() + this.minTrack);
-          const s = JSON.stringify({
+          const trajectory = {
             departure: {
               city: departure.city,
               country: departure.country,
               coordinates: {
                 latitude: departure.lat,
                 longitude: departure.lng,
-              },
-            },
-            destination: {
-              city: destination.city,
-              country: destination.country,
-              coordinates: {
-                latitude: destination.lat,
-                longitude: destination.lng,
               },
             },
             min_dist: this.minDist,
@@ -1479,7 +1471,18 @@ export default {
             path: data,
             svg: this.svg,
             explorerIndex: this.minTrack,
-          });
+          };
+          if (this.flightType === 'planned') {
+            trajectory.destination = {
+              city: destination.city,
+              country: destination.country,
+              coordinates: {
+                latitude: destination.lat,
+                longitude: destination.lng,
+              },
+            };
+          }
+          const s = JSON.stringify(trajectory);
           // for (var z = 0; z < 300; z += 1) {
           // setTimeout(() =>
           fetch('http://54.190.63.219/db/insert.php', {
@@ -1496,7 +1499,8 @@ export default {
             console.log(r);
           });
         },
-        () => { // ON ERROR
+        (e) => { // ON ERROR
+          console.log(e.message);
           this.error();
         },
       );
