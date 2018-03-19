@@ -85,7 +85,6 @@ export default {
   methods: {
     toggleWinds(v) {
       this.$store.commit('flightSimulator/setWinds', v);
-      this.closeWindsPanel();
     },
   },
 };

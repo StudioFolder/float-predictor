@@ -6,12 +6,19 @@
             </div>
             <div class="body">
                 <div class="aeroglyph" v-html="winningExplorerData.svg"></div>
-                <div class="message">
+                <div v-if="isPlannedFlight" class="message">
                     The Aerocene Sculpture that left from <b>{{departure.city}}</b>
                     on <strong>{{depDate}}</strong>
                     arrived within <strong>{{winningExplorerData.minDist}}km</strong>
                     from <strong>{{destination.city}}</strong> in
                     <strong>{{winningExplorerData.minTime}} days.</strong>
+                </div>
+                <div v-else>
+                    The Aerocene Sculpture that floated the farthest
+                    is the one that  left from <b>{{departure.city}}</b>
+                    on <strong>{{depDate}}</strong>
+                    and travelled <strong>{{maxDist}} km</strong>
+                    in <strong>{{winningExplorerData.minTime}} days.</strong>
                 </div>
             </div>
         </div>
@@ -23,11 +30,17 @@ import moment from 'moment';
 export default {
   name: 'modal-winner-explorer',
   computed: {
+    isPlannedFlight() {
+      return this.$store.state.flightSimulator.flightType === 'planned';
+    },
     isModalVisible() {
       return this.$store.state.flightSimulator.visualizationState === 4;
     },
     winningExplorerData() {
       return this.$store.state.flightSimulator.winningExplorerData;
+    },
+    maxDist() {
+      return (parseInt(this.winningExplorerData.minDist, 10) * 1000).toLocaleString('en');
     },
     depDate() {
       return moment(this.winningExplorerData.departureDate).format('MMM Do, YYYY');
