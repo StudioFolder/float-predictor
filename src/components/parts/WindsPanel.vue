@@ -46,20 +46,39 @@
                     <div class="panel-title">Winds Altitude</div>
                     <div class="altitude-panel-inner">
                         <div class="column --description">
-                            <div style="margin-top: 50px">stratosphere</div>
-                            <div>tropopause<span>jet streams</span></div>
-                            <div>troposphere</div>
-                            <div>sea level</div>
+                            <div style="margin-top: 50px" @click="setAltitude(4)"
+                                 :class="{ 'isActive': altitudeLevel === 4}">stratosphere
+                            </div>
+                            <div class="tropopause" @click="setAltitude(3)"
+                                 :class="{ 'isActive': altitudeLevel === 3}">
+                                tropopause<span>jet streams</span>
+                            </div>
+                            <div class="troposphere" @click="setAltitude(1)"
+                                 :class="{ 'isActive': altitudeLevel === 1}">
+                                troposphere
+                            </div>
+                            <div class="sea-level" @click="setAltitude(0)"
+                                 :class="{ 'isActive': altitudeLevel === 0}">
+                                sea level
+                            </div>
                         </div>
-                        <div class="column --slider"></div>
+                        <div class="column --slider" :class="'alt-'+altitudeLevel"></div>
                         <div class="column --altitudes">
-                            <div>26,500m</div>
-                            <div>21,500m</div>
-                            <div>16,000m</div>
-                            <div>10,000m</div>
-                            <div>5,500m</div>
-                            <div>1,500m</div>
-                            <div>100m</div>
+                            <div @click="setAltitude(6)"
+                                 :class="{ 'isActive': altitudeLevel === 6}">26,500m
+                            </div>
+                            <div @click="setAltitude(5)"
+                                 :class="{ 'isActive': altitudeLevel === 5}">21,500m</div>
+                            <div @click="setAltitude(4)"
+                                 :class="{ 'isActive': altitudeLevel === 4}">16,000m</div>
+                            <div @click="setAltitude(3)"
+                                 :class="{ 'isActive': altitudeLevel === 3}">10,000m</div>
+                            <div @click="setAltitude(2)"
+                                 :class="{ 'isActive': altitudeLevel === 2}">5,500m</div>
+                            <div @click="setAltitude(1)"
+                                 :class="{ 'isActive': altitudeLevel === 1}">1,500m</div>
+                            <div @click="setAltitude(0)"
+                                 :class="{ 'isActive': altitudeLevel === 0}">100m</div>
                         </div>
                     </div>
                 </div>
@@ -92,6 +111,11 @@ export default {
       isAltPanelOpen: false,
     };
   },
+  computed: {
+    altitudeLevel() {
+      return this.$store.state.flightSimulator.altitudeLevel;
+    },
+  },
   methods: {
     closeBox() {
       this.$store.commit('general/closeWindsPanel');
@@ -99,6 +123,9 @@ export default {
     openAltitudePanel() {
       this.$store.commit('flightSimulator/setPlaying', false);
       this.isAltPanelOpen = true;
+    },
+    setAltitude(alt) {
+      this.$store.commit('flightSimulator/setAltitudeLevel', alt);
     },
   },
   watch: {
@@ -145,7 +172,7 @@ export default {
         padding: 20px;
     }
     .altitude-panel {
-        padding: 25px;
+        padding-top: 25px;
         .panel-title{
             text-transform: uppercase;
             text-align: center;
@@ -170,16 +197,73 @@ export default {
             font-size: 10px;
             text-align: right;
             text-transform: uppercase;
+            > div {
+                position: relative;
+                &.troposphere {margin-top: 25px;
+                }
+                &.isActive {color: #FFF;
+                }
+            }
             span{
+                position: absolute;
                 text-transform: none;
-                margin-top: -12px;
+                top: 12px;
+                right: 0;
             }
         }
         .--slider {
             width: 1px;
             flex: 0 0 1px;
             background-color: $gray;
-            margin: 0 $marginItem;
+            margin: 0 $marginItem*2;
+            &:after {
+                content: '';
+                display: block;
+                width: 12px; height: 25px;
+                margin-left: -5px;
+                border-radius: 50%;
+                transition: transform .2s ease;
+                /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f7f7f7+0,d6d6d6+50,e5e5e5+100&0+36,1+37,1+63,0+64 */
+                background: -moz-linear-gradient(top,
+                        rgba(247,247,247,0) 0%, rgba(223,223,223,0) 36%,
+                        rgba(222,222,222,1) 37%, rgba(214,214,214,1) 50%,
+                        rgba(218,218,218,1) 63%, rgba(218,218,218,0) 64%,
+                        rgba(229,229,229,0) 100%); /* FF3.6-15 */
+                background: -webkit-linear-gradient(top,
+                        rgba(247,247,247,0) 0%,rgba(223,223,223,0) 36%,
+                        rgba(222,222,222,1) 37%,rgba(214,214,214,1) 50%,
+                        rgba(218,218,218,1) 63%,rgba(218,218,218,0) 64%,
+                        rgba(229,229,229,0) 100%); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(to bottom,
+                        rgba(247,247,247,0) 0%,rgba(223,223,223,0) 36%,
+                        rgba(222,222,222,1) 37%,rgba(214,214,214,1) 50%,
+                        rgba(218,218,218,1) 63%,rgba(218,218,218,0) 64%,
+                        rgba(229,229,229,0) 100%); /* IE10+, FF16+, Chrome26+, Opera12+, Safari7+*/
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00f7f7f7',
+                        endColorstr='#00e5e5e5',GradientType=0 ); /* IE6-9 */
+            }
+            &.alt-6:after{ transform: translateY(0);
+            }
+            &.alt-5:after{ transform: translateY(25px);
+            }
+            &.alt-4:after{ transform: translateY(50px);
+            }
+            &.alt-3:after{ transform: translateY(75px);
+            }
+            &.alt-2:after{ transform: translateY(100px);
+            }
+            &.alt-1:after{ transform: translateY(125px);
+            }
+            &.alt-0:after{ transform: translateY(150px);
+            }
+        }
+        .--altitudes {
+            >div {
+                cursor: pointer;
+                &.isActive {
+                    color: #FFF;
+                }
+            }
         }
     }
     p {
@@ -188,8 +272,14 @@ export default {
         text-align: center;
         margin-top: 15px;
     }
-    .box-footer p:not(.small) {
-        color: #FFF;
+    .box-footer {
+        padding-top: 0;
+        p:not(.small) {
+            color: #FFF;
+        }
+        p:first-child {
+            margin-top: 0;
+        }
     }
     .data-credits {
         color: $gray;
