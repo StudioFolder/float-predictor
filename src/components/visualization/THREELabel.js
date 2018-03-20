@@ -136,7 +136,7 @@ class THREELabel {
   }
 
   setScale() {
-    const f = 0.08 / ((this.scene.scale.x) ** 1.2);
+    const f = 0.06 / ((this.scene.scale.x) ** 1.2);
     this.camera.position.distanceTo(this.sprite.position);
     if (this.anchorObject) {
       this.anchorObject.scale.set(f * 20, f * 20, f * 20);

@@ -1508,7 +1508,8 @@ export default {
           const s = JSON.stringify(trajectory);
           // for (var z = 0; z < 300; z += 1) {
           // setTimeout(() =>
-          fetch('http://54.190.63.219/db/insert.php', {
+          // fetch('http://54.190.63.219/db/insert.php', {
+          fetch('http://54.218.125.165/api/insert.php', {
             method: 'post',
             body: s,
           }).then(
