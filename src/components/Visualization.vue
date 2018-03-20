@@ -22,13 +22,16 @@ import WindVisualization from './visualization/WindVisualization';
 import WindDataDownloader from './visualization/WindDataDownloader';
 import Cities from './visualization/Cities';
 import colorMap from '../assets/img/colormap/4096.jpg';
+import colorMapMobile from '../assets/img/colormap/2048.jpg';
+import bumpMap from '../assets/img/bumpmap/8192.jpg';
+import bumpMapMobile from '../assets/img/bumpmap/4096.jpg';
+import nightModeMap from '../assets/img/nightModeMap/4096.jpg';
+import nightModeMapMobile from '../assets/img/nightModeMap/2048.jpg';
 import colorMapA from '../assets/img/colormap/4096A.jpg';
 import colorMapB from '../assets/img/colormap/4096B.jpg';
 import colorMapC from '../assets/img/colormap/4096C.jpg';
 import colorMapD from '../assets/img/colormap/4096D.jpg';
 import spriteURL from '../assets/img/sprite.png';
-import nightModeMap from '../assets/img/nightModeMap/4096.jpg';
-import bumpMap from '../assets/img/bumpmap/8192.jpg';
 
 const STATE_IDLE = 0;
 const STATE_MOVING_TO_DEPARTURE = 1;
@@ -69,7 +72,8 @@ export default {
     flightType() { return this.$store.state.flightSimulator.flightType; },
     animating() {
       return this.playing &&
-        this.loading >= 1 && (!this.selecting);
+        this.loading >= 1 && (!this.selecting ||
+          this.visualizationState !== STATE_ANIMATION_ACTIVE);
       /*
         (!(this.isMouseSelected &&
           this.visualizationState === STATE_ANIMATION_ACTIVE))
@@ -413,9 +417,9 @@ export default {
           this.selecting = true;
         }
       });
-      if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
-        this.selectedExplorer = selected + 1;
-      }
+      // if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
+      this.selectedExplorer = selected + 1;
+      // }
     },
 
     onMouseClick(event) {
@@ -541,13 +545,16 @@ export default {
       departureLabel.setVisible(false);
       const selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
       selectLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', selectSphere);
-      selectLabel.margin = 2;
+      selectLabel.margin = 4;
+      departureLabel.margin = 4;
+
       scene.add(selectSphere);
 
       const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
       destinationLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
       destinationLabel.setIcon(document.getElementById('down'));
       scene.add(destinationSphere);
+      destinationLabel.margin = 4;
 
       cityLabels = [];
       Cities.init();
@@ -749,9 +756,17 @@ export default {
         this.loading = Math.min(1, this.loading + 0.34);
         // console.log(`loading: ${this.loading}`);
       };
-      bumpTexture = new THREE.TextureLoader().load(bumpMap, () => { /* console.log('bumb loaded'); */ afterLoad(); });
-      colorTexture = new THREE.TextureLoader().load(colorMap, () => { /* console.log('color loaded'); */ afterLoad(); });
-      nightMapTexture = new THREE.TextureLoader().load(nightModeMap, () => { /* console.log('alpha loaded'); */ afterLoad(); });
+      if (window.matchMedia('(min-width: 768px)').matches) {
+        bumpTexture = new THREE.TextureLoader().load(bumpMap, () => { /* console.log('bumb loaded'); */ afterLoad(); });
+        colorTexture = new THREE.TextureLoader().load(colorMap, () => { /* console.log('color loaded'); */ afterLoad(); });
+        nightMapTexture = new THREE.TextureLoader().load(nightModeMap, () => { /* console.log('alpha loaded'); */ afterLoad(); });
+        /* the viewport is at least 400 pixels wide */
+      } else {
+        bumpTexture = new THREE.TextureLoader().load(bumpMapMobile, () => { /* console.log('bumb loaded'); */ afterLoad(); });
+        colorTexture = new THREE.TextureLoader().load(colorMapMobile, () => { /* console.log('color loaded'); */ afterLoad(); });
+        nightMapTexture = new THREE.TextureLoader().load(nightModeMapMobile, () => { /* console.log('alpha loaded'); */ afterLoad(); });
+        /* the viewport is less than 400 pixels wide */
+      }
     },
 
     updateLabels() {
