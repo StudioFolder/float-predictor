@@ -260,7 +260,7 @@ export default {
           pars.layers.wind.threshold = 25;
           pars.layers.wind.opacity = 0.9;
           pars.layers.wind.magnitude = 0.4;
-          pars.layers.wind.animated = true;
+          pars.layers.wind.animating = true;
           break;
         case 2: // COLOR animated
           pars.layers.wind.start_color = '#073a9e';
@@ -271,7 +271,7 @@ export default {
           pars.layers.wind.threshold = 25;
           pars.layers.wind.opacity = 0.9;
           pars.layers.wind.visible = true;
-          pars.layers.wind.animated = true;
+          pars.layers.wind.animating = true;
           break;
         case 3: // B/W static
           pars.layers.wind.start_color = '##5b5b5b';
@@ -282,7 +282,7 @@ export default {
           pars.layers.wind.threshold = 25;
           pars.layers.wind.opacity = 0.4;
           pars.layers.wind.magnitude = 0.25;
-          pars.layers.wind.animated = false;
+          pars.layers.wind.animating = false;
 
           break;
         case 4: // COLOR static
@@ -294,7 +294,7 @@ export default {
           pars.layers.wind.threshold = 30;
           pars.layers.wind.opacity = 0.4;
           pars.layers.wind.visible = true;
-          pars.layers.wind.animated = true;
+          pars.layers.wind.animating = true;
           break;
         default:
           break;
@@ -1437,6 +1437,7 @@ export default {
             });
             this.minDist = maxDistance;
             this.minTrack = winningIndex;
+            this.minTime = 16 - this.minTrack;
           }
           // TODO: actual startingDate! Add minTrack days
           this.winningExplorerData = {
