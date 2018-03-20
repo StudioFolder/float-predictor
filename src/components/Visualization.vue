@@ -1383,6 +1383,7 @@ export default {
       if (downloader) {
         downloader.destroy();
       }
+      selectLabel.setVisible(false);
       this.selectedExplorer = 0;
       this.focusedExplorer = 0;
       downloader = new WindDataDownloader();
