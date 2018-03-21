@@ -70,6 +70,9 @@ export default {
     mouseEnter() {
       this.hover = true;
       this.$store.commit('flightSimulator/setSelectedExplorer', this.explorer);
+      if (this.isFlightOver) {
+        this.$store.commit('flightSimulator/setFocusedExplorer', this.explorer);
+      }
     },
     mouseLeave() {
       this.hover = false;

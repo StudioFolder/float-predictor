@@ -46,7 +46,7 @@
                     <div class="panel-title">Winds Altitude</div>
                     <div class="altitude-panel-inner">
                         <div class="column --description">
-                            <div style="margin-top: 50px" @click="setAltitude(4)"
+                            <div class="stratosphere" @click="setAltitude(4)"
                                  :class="{ 'isActive': altitudeLevel === 4}">stratosphere
                             </div>
                             <div class="tropopause" @click="setAltitude(3)"
@@ -121,7 +121,7 @@ export default {
       this.$store.commit('general/closeWindsPanel');
     },
     openAltitudePanel() {
-      this.$store.commit('flightSimulator/setPlaying', false);
+      // this.$store.commit('flightSimulator/setPlaying', false);
       this.isAltPanelOpen = true;
     },
     setAltitude(alt) {
@@ -157,6 +157,7 @@ export default {
 
 <style lang="scss">
 @import "~@/assets/css/_variables_and_mixins.scss";
+$elemHeight: 30px;
 .info-box.winds-panel {
     top: calc(#{$marginBase} + #{$itemWidth*3} + #{$marginItem * 4});
     width: 244px;
@@ -172,7 +173,7 @@ export default {
         padding: 20px;
     }
     .altitude-panel {
-        padding-top: 25px;
+        padding-top: $elemHeight;
         .panel-title{
             text-transform: uppercase;
             text-align: center;
@@ -189,8 +190,8 @@ export default {
             }
             color: $gray;
             > div {
-                min-height: 25px;
-                line-height: 25px;
+                min-height: $elemHeight;
+                line-height: $elemHeight;
             }
         }
         .--description {
@@ -199,10 +200,10 @@ export default {
             text-transform: uppercase;
             > div {
                 position: relative;
-                &.troposphere {margin-top: 25px;
-                }
-                &.isActive {color: #FFF;
-                }
+                cursor: pointer;
+                &.stratosphere {margin-top: $elemHeight*2;}
+                &.troposphere {margin-top: $elemHeight;}
+                &.isActive {color: #FFF;}
             }
             span{
                 position: absolute;
@@ -219,7 +220,7 @@ export default {
             &:after {
                 content: '';
                 display: block;
-                width: 12px; height: 25px;
+                width: 12px; height: $elemHeight;
                 margin-left: -5px;
                 border-radius: 50%;
                 transition: transform .2s ease;
@@ -244,17 +245,17 @@ export default {
             }
             &.alt-6:after{ transform: translateY(0);
             }
-            &.alt-5:after{ transform: translateY(25px);
+            &.alt-5:after{ transform: translateY($elemHeight);
             }
-            &.alt-4:after{ transform: translateY(50px);
+            &.alt-4:after{ transform: translateY($elemHeight*2);
             }
-            &.alt-3:after{ transform: translateY(75px);
+            &.alt-3:after{ transform: translateY($elemHeight*3);
             }
-            &.alt-2:after{ transform: translateY(100px);
+            &.alt-2:after{ transform: translateY($elemHeight*4);
             }
-            &.alt-1:after{ transform: translateY(125px);
+            &.alt-1:after{ transform: translateY($elemHeight*5);
             }
-            &.alt-0:after{ transform: translateY(150px);
+            &.alt-0:after{ transform: translateY($elemHeight*6);
             }
         }
         .--altitudes {
