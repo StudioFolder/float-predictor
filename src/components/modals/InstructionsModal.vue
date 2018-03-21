@@ -13,29 +13,6 @@ import fSlider from 'Components/slider/FSlider';
 export default {
   name: 'instruction-modal',
   components: { fSlider },
-  computed: {
-    sectionTitle() {
-      let title = '';
-      switch (this.activeIndex) {
-        case 0:
-          title = 'Becoming Aerosolar';
-          break;
-        case 1:
-          title = '2—How to Float';
-          break;
-        case 2:
-          title = '3—After Journey';
-          break;
-        default:
-          title = '';
-      }
-      return title;
-    },
-  },
-  mounted() {
-  },
-  methods: {
-  },
 };
 </script>
 
@@ -51,10 +28,13 @@ $lateralSpaceMobile: .5rem;
         }
         .modal-content {
             height: calc(100vh - 2*#{$marginBase});
+            @include medium_down {
+                height: 100%;
+            }
         }
         .modal-body {
             // 100% modal height - header padding - line height
-            height: calc(100% - (2*2rem) - (2.369rem*2.1))
+            height: calc(100% - (2*2rem) - (2.369rem*1.2))
         }
     }
     .carousel-indicators {
@@ -80,7 +60,7 @@ $lateralSpaceMobile: .5rem;
             flex: 0 0 auto;
             margin: $marginItem 0;
             @include small_down {
-                margin: $marginItem*2 0 $marginItem;
+                margin: $marginItem*2 0 $marginItem $marginMobile;
             }
         }
         .animation-wrapper {
@@ -117,95 +97,4 @@ $lateralSpaceMobile: .5rem;
         }
     }
 }
-/*.instructions-sections {
-    display: flex;
-    justify-content: space-between;
-    padding-left: $lateralSpace;
-    padding-right: $lateralSpace;
-    margin-top: -$marginBase/2;
-    @include medium_down {
-        padding-left: $lateralSpaceMobile;
-        padding-right: $lateralSpaceMobile;
-        margin-top: 0;
-    }
-    .main-pagination-wrapper {
-        font-size: .8em;
-        padding-top: 5px;
-    }
-    .sections {
-        color: $gray;
-        @include small_down {
-            display: none;
-        }
-    }
-    .section-title {
-        width: 50%;
-        text-align: left;
-        color: $gray;
-    }
-    .main-pagination {
-        width: 50%;
-        text-align: right;
-    }
-}
-
-.how-aerocene-float {
-    .animation-wrapper {
-        margin-right: -90px;
-        margin-top: -10px;
-    }
-    .--subtitle{
-        margin-bottom: -90px;
-    }
-}
-.nav-icon {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    z-index: 9;
-    text-align: center;
-    transform: translateX(-50%);
-    color: $gray;
-    &.--down {
-        cursor: pointer;
-    }
-    @include small_down {
-        bottom: 15px;
-    }
-}
-.scroll-icon {
-    position: relative;
-    width: 100%;
-    i {margin: 0 auto}
-}
-.main-pagination {
-    .swiper-pagination-bullet {
-        background: transparent;
-        border-radius: 0;
-        margin-left: .5em;
-        height: 20px;
-        width: 20px;
-    }
-}
-*[class^="internal-pagination"] {
-    position: absolute;
-    height: 600px;
-    top: 0;
-    right: 0.5rem;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    z-index:10;
-    @include medium_down {
-        display: none;
-    }
-    .swiper-pagination-bullet {
-        background-color: #fff;
-        opacity: .4;
-        margin: .5em 0;
-    }
-    .swiper-pagination-bullet-active {
-        opacity: 1;
-    }
-}*/
 </style>

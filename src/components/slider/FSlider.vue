@@ -1,11 +1,14 @@
 <template>
-    <div class="f-slider instructions-slider" id="instructions-slider" ref="wrapper">
+    <div class="f-slider instructions-slider" id="instructions-slider">
+        <h5 class="title-apice">{{ sectionTitle }}</h5>
+        <h3 class="title-number">{{ sectionNumber }}</h3>
         <f-slides-wrapper :currentIndex="currentIndex"
-                          :height="height"
                           @scrollDown="onScrollDown"
                           @scrollUp="onScrollUp"/>
         <f-slides-nav @navSelectSlide="onNavSelectSlide"
                 :slides="slides"
+                :paragraphs="paragraphs"
+                :currentSlide="currentSlide"
                 :currentIndex="currentIndex" />
     </div>
 </template>
@@ -24,9 +27,13 @@ export default {
     return {
       currentIndex: 0,
       slides: [101, 102, 103, 201, 202, 203, 204, 205, 206, 301, 302, 303],
+      paragraphs: [
+        [101, 102, 103],
+        [201, 202, 203, 204, 205, 206],
+        [301, 302, 303],
+      ],
       scrollingTo: 0,
       animating: false,
-      height: '',
     };
   },
   computed: {
@@ -41,6 +48,33 @@ export default {
         return 0;
       }
       return this.currentIndex - 1;
+    },
+    currentSlide() {
+      return this.slides[this.currentIndex];
+    },
+    currentParagraph() {
+      return parseInt(this.currentSlide / 100, 10);
+    },
+    sectionTitle() {
+      let title = '';
+      switch (this.currentParagraph) {
+        case 1:
+          title = 'Becoming Aerosolar';
+          break;
+        case 2:
+          title = 'Starting a Journey';
+          break;
+        case 3:
+          title = 'Saving an Aeroglyph';
+          break;
+        default:
+          title = '';
+      }
+      return title;
+    },
+    sectionNumber() {
+      const num = this.currentSlide - (this.currentParagraph * 100);
+      return `${this.currentParagraph}.${num}`;
     },
   },
   methods: {
@@ -58,9 +92,9 @@ export default {
         this.scrollingTo = this.previousIndex;
       }
     },
-    onNavSelectSlide(newIndex) {
+    onNavSelectSlide(newSlide) {
       if (!this.animating) {
-        this.scrollingTo = newIndex;
+        this.scrollingTo = this.slides.indexOf(newSlide);
       }
     },
     handleScroll(scrollHeight) {
@@ -82,52 +116,48 @@ export default {
       this.handleScroll(-height);
     },
   },
-  mounted() {
-    this.height = `${this.$refs.wrapper.clientHeight}px`;
-  },
 };
 </script>
 <style lang="scss">
-@import "~@/assets/css/_variables_and_mixins.scss";
+@import "~css/_variables_and_mixins.scss";
+@import"~css/_typography.scss";
 .f-slider.instructions-slider {
     position: relative;
     display: flex;
     max-width: 100%;
     height: 100%;
     flex-flow: row;
+    .title-apice {
+        position: absolute;
+        width: 100%;
+        top: -20px;
+        padding-left: 7rem;
+        color: $gray;
+        text-transform: uppercase;
+        font-size: .85em;
+    }
+    .title-number {
+        position: absolute;
+        margin: $marginItem 0;
+        @include small_down {
+            margin: $marginItem*2 0 $marginItem;
+        }
+    }
     .f-slider-wrapper {
         flex: 1 1 100%;
         overflow: hidden;
         position: relative;
         padding-right: 2rem;
         .f-slider-inner {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 2rem;
+            position: relative;
+            height: 100%;
+            width: 100%;
+            @include medium_up {
+                padding-right: 2rem;
+            }
         }
         .f-slide {
             height: 100%;
-        }
-    }
-    .f-slider-nav {
-        flex: 0 0 auto;
-        display: flex;
-        flex-flow: column;
-        justify-content: center;
-    }
-    .f-bullet-pagination {
-        li {
-            cursor: pointer;
-            background-color: $gray;
-            border-radius: 50%;
-            width: 8px;
-            height: 8px;
-            margin-bottom:12px;
-            transition: background-color .4s ease;
-            &.isActive {
-                background-color: #FFF;
-            }
         }
     }
 }

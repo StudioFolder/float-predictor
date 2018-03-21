@@ -1,5 +1,8 @@
 <template>
-    <div class="f-slider-wrapper" @wheel.stop.prevent="onScroll">
+    <div class="f-slider-wrapper"
+         @wheel.stop.prevent="onScroll"
+         @touchmove.stop.prevent="onTouchMove"
+         @touchend="onTouchEnd" @touchstart="onTouchStart">
         <div class="f-slider-inner">
             <f-slide id="101">
                 <h3 class="title">Aerocene</h3>
@@ -178,12 +181,33 @@ import fSlide from './FSlide';
 export default {
   name: 'f-slides-wrapper',
   components: { fSlide },
-  props: ['currentIndex', 'height'],
+  props: ['currentIndex'],
+  data() {
+    return {
+      clientY: 0,
+    };
+  },
   methods: {
     onScroll(e) {
-      if (e.deltaY > 10) {
+      this.manageScroll(e.deltaY);
+    },
+    onTouchMove(e) {
+      if (e.changedTouches.length === 1) {
+        this.manageScroll(this.clientY - e.changedTouches[0].clientY);
+      }
+    },
+    onTouchEnd() {
+      this.clientY = null;
+    },
+    onTouchStart(e) {
+      if (e.touches.length === 1) {
+        this.clientY = e.touches[0].clientY;
+      }
+    },
+    manageScroll(deltaY) {
+      if (deltaY > 15) {
         this.$emit('scrollDown', parseInt(this.id, 10) + 1);
-      } else if (e.deltaY < -10) {
+      } else if (deltaY < -15) {
         this.$emit('scrollUp', parseInt(this.id, 10) - 1);
       }
     },
