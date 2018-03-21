@@ -205,9 +205,9 @@ export default {
       }
     },
     manageScroll(deltaY) {
-      if (deltaY > 15) {
+      if (deltaY > 18) {
         this.$emit('scrollDown', parseInt(this.id, 10) + 1);
-      } else if (deltaY < -15) {
+      } else if (deltaY < -18) {
         this.$emit('scrollUp', parseInt(this.id, 10) - 1);
       }
     },
