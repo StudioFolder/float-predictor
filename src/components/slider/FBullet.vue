@@ -1,5 +1,5 @@
 <template>
-    <span :style="{top: marginTop}"
+    <span :style="{top: marginTop, zIndex: 20 - i}"
           :class="{'isActive': isActive, 'hidden-paragraph' : isHidden}"
           class="fslider-nav-item"
           @click="onClick">

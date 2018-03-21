@@ -135,12 +135,17 @@ export default {
         color: $gray;
         text-transform: uppercase;
         font-size: .85em;
+        @include medium_down {
+            top: 20px;
+            padding-left: 3.5rem;
+        }
     }
     .title-number {
         position: absolute;
         margin: $marginItem 0;
         @include small_down {
             margin: $marginItem*2 0 $marginItem;
+            padding-top: 2.95rem;
         }
     }
     .f-slider-wrapper {
@@ -148,6 +153,11 @@ export default {
         overflow: hidden;
         position: relative;
         padding-right: 2rem;
+        @include medium_down {
+            padding-right: 1.5rem;
+            padding-left: 3rem;
+            margin-top: 3rem;
+        }
         .f-slider-inner {
             position: relative;
             height: 100%;

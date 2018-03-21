@@ -60,7 +60,7 @@ $lateralSpaceMobile: .5rem;
             flex: 0 0 auto;
             margin: $marginItem 0;
             @include small_down {
-                margin: $marginItem*2 0 $marginItem $marginMobile;
+                margin: $marginItem*2 0 $marginItem 0;
             }
         }
         .animation-wrapper {
@@ -74,6 +74,13 @@ $lateralSpaceMobile: .5rem;
                 max-height: 100%;
                 max-width: 100%;
                 text-align: center;
+                @include medium_down {
+                    max-width: unset;
+                    max-height: unset;
+                    width: 140%;
+                    height: auto;
+                    margin-left: -20%;
+                }
                 &.--big {
                     max-width: 130%;
                     width: 130%;
