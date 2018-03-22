@@ -191,18 +191,23 @@ export default {
 
     selectedExplorer(s) {
       let selected = s;
-      if (selected <= 0 && (this.visualizationState === STATE_MOVING_TO_DESTINATION ||
-        this.visualizationState === STATE_ANIMATION_END)) {
-        selected = this.minTrack + 1;
-      }
       if (selected <= 0) {
         selectLabel.setVisible(false);
         this.selecting = false;
+        if (this.visualizationState === STATE_MOVING_TO_DESTINATION ||
+          this.visualizationState === STATE_ANIMATION_END) {
+          selected = this.minTrack + 1;
+        }
+      }
+      if (selected <= 0) {
         this.hideExplorerDates();
         _.each(explorers, (e) => {
           e.setStyle(Explorer.MOVING);
         });
       } else {
+        this.focusedExplorerSpeed = explorers[selected - 1].getSpeed().toFixed(0);
+        this.focusedExplorerDistance = explorers[selected - 1].getDistance().toFixed(0);
+        this.focusedExplorerAltitude = (explorers[selected - 1].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
         this.showExplorerDates(selected - 1);
         _.each(explorers, (e, index) => {
           if (index === selected - 1) {
@@ -501,11 +506,10 @@ export default {
             }
             pars.fps = fps;
             fps = 0;
-            if (pars.onboard) {
+            if (this.focusedExplorer > 0 && this.visualizationState === STATE_ANIMATION_ACTIVE) {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
               this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
-              // console.log(`Altitude: ${this.focusedExplorerAltitude}`);
               const coord = Util.XYZ2LatLon(explorers[this.onboardIndex].animatingSphere.position);
               const cities = Cities.get(coord);
               for (let i = 0; i < cityLabels.length; i += 1) {
