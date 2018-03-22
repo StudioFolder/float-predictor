@@ -61,7 +61,7 @@ const colors = [0x003769, 0x2e6a9c, 0x0095d7, 0x587a98, 0x7eafd4, 0xb9e5fb, 0x65
 const webColors = ['#003769', '#2e6a9c', '#0095d7', '#587a98', '#7eafd4', '#b9e5fb', '#656868', '#ffffff'];
 
 // eslint-disable-next-line
-let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectLabel, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations, downloader, particleSystem;
+let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectSphere, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations, downloader, particleSystem;
 let pars = {};
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
@@ -192,7 +192,7 @@ export default {
     selectedExplorer(s) {
       let selected = s;
       if (selected <= 0) {
-        selectLabel.setVisible(false);
+        selectSphere.visible = false;
         this.selecting = false;
         if (this.visualizationState === STATE_MOVING_TO_DESTINATION ||
           this.visualizationState === STATE_ANIMATION_END) {
@@ -416,7 +416,7 @@ export default {
       camera.updateMatrixWorld();
       raycaster.setFromCamera(mouse, camera);
       // calculate objects intersecting the picking ray
-      if (selectLabel.anchorObject.visible && raycaster.intersectObject(selectLabel.anchorObject).length > 0) {
+      if (selectSphere.visible && raycaster.intersectObject(selectSphere).length > 0) {
         return;
       }
       let selected = -1;
@@ -424,7 +424,8 @@ export default {
         if (raycaster.intersectObject(e.animatingSphere).length > 0) {
           selected = index;
           this.selecting = true;
-          selectLabel.set('', explorers[selected].animatingSphere.position);// `Explorer ${index + 1} > `, e.animatingSphere.position);
+          selectSphere.visible = true;
+          selectSphere.position.copy(explorers[selected].animatingSphere.position);// `Explorer ${index + 1} > `, e.animatingSphere.position);
         }
       });
       // if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
@@ -559,9 +560,7 @@ export default {
       departureLabel.setVisible(false);
       departureLabel.margin = 4;
 
-      const selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
-      selectLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', selectSphere);
-      selectLabel.margin = 4;
+      selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
       scene.add(selectSphere);
 
       const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
@@ -1230,13 +1229,17 @@ export default {
       for (let i = 0; i < explorers.length; i += 1) {
         explorers[i].animatingSphere.scale.set(1 / s, 1 / s, 1 / s);
       }
+      selectSphere.scale.set(1 / s, 1 / s, 1 / s);
+      // selectSphere.setScale(10);
       // departureSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
       // destinationSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
-      departureLabel.setScale();
-      destinationLabel.setScale();
-      selectLabel.setScale();
-      _.each(daysLabels, (l) => { l.setScale(); });
-      _.each(cityLabels, (l) => { l.setScale(); });
+      let t = Math.min(200, -200 + camera.position.distanceTo(new THREE.Vector3())) / 200;
+      t = 0.06 * t / (s ** 1.4); // ((t * s) ** 0.8); // (s ** 1.3);
+
+      departureLabel.setScale(t);
+      destinationLabel.setScale(t);
+      _.each(daysLabels, (l) => { l.setScale(t); });
+      _.each(cityLabels, (l) => { l.setScale(t); });
 
       // *** destinationLabel.getAnchorObject().scale.set(0.5 / s, 0.5 / s, 0.5 / s);
     },
@@ -1387,7 +1390,7 @@ export default {
       if (downloader) {
         downloader.destroy();
       }
-      selectLabel.setVisible(false);
+      selectSphere.visible = false;
       this.selectedExplorer = 0;
       this.focusedExplorer = 0;
       downloader = new WindDataDownloader();

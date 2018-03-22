@@ -77,22 +77,30 @@ class THREELabel {
     if (this.img) startW = (this.iconPadding.left + this.iconPadding.right) + iconSize;
     this.w = startW + (this.padding.left + this.padding.right) + textWidth * antialias;
     this.canvas.width = nextPOT(this.w);
-    this.canvas.height = nextPOT(this.h);
+    this.canvas.height = nextPOT(this.h * 2);
+    let left = 0.5 * (this.canvas.width - this.w);
+    const top = (this.canvas.height - this.h) * 0.5 - this.h * 0.65;
+    // this.roundRect(0, 0, this.canvas.width,
+    //  this.canvas.height, 0);
+    this.context.fillStyle = 'rgba(100,100,100,0.3)';
     this.context.fillStyle = this.bgColor;
-    this.roundRect(0, 0, this.w,
+    this.roundRect(left, top, this.w,
       this.h, this.h * 0.3);
     this.context.fillStyle = this.textColor;
-    let left = this.padding.left;
+    left = this.padding.left + 0.5 * (this.canvas.width - this.w);
     if (this.img && this.img.clientWidth > 0 && this.img.clientHeight > 0) {
       left += this.iconPadding.left;
       const ratio = this.img.clientWidth / this.img.clientHeight;
-      this.context.drawImage(this.img, left, this.iconPadding.top, iconSize * ratio, iconSize);
+      this.context.drawImage(this.img, left,
+        top + this.iconPadding.top, iconSize * ratio, iconSize);
       left += iconSize * ratio + this.iconPadding.right;
     }
     this.context.font = `${this.fontSize * antialias}px ${this.fontFace}`;
-    this.context.fillText(this.text, left, this.h - this.padding.bottom);
+    this.context.fillText(this.text, left, top + this.h - this.padding.bottom);
     this.texture.needsUpdate = true;
-    this.setScale();
+    let t = Math.min(200, -200 + this.camera.position.distanceTo(new THREE.Vector3())) / 200;
+    t = 0.06 * t / (this.scene.scale.x ** 1.4); // ((t * s) ** 0.8); // (s ** 1.3);
+    this.setScale(t);
   }
 
   setIcon(img) {
@@ -135,6 +143,7 @@ class THREELabel {
     }
   }
 
+  /*
   setScale() {
     const f = 0.05 / ((this.scene.scale.x) ** 1.2);
     this.camera.position.distanceTo(this.sprite.position);
@@ -144,10 +153,18 @@ class THREELabel {
     this.sprite.scale.set(this.canvas.width * f,
       this.canvas.height * f, 1);
   }
-
+*/
+  setScale(f) {
+    this.camera.position.distanceTo(this.sprite.position);
+    if (this.anchorObject) {
+      this.anchorObject.scale.set(f * 20, f * 20, f * 20);
+    }
+    this.sprite.scale.set(this.canvas.width * f,
+      this.canvas.height * f, 1);
+  }
   setPosition(position) {
     this.position = position;
-    this.sprite.position.set(position.x, position.y + this.margin, position.z);
+    this.sprite.position.set(position.x, position.y, position.z);
     if (this.anchorObject != null) {
       this.anchorObject.position.set(position.x, position.y, position.z);
     }

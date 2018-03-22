@@ -126,22 +126,24 @@ export default {
     },
   },
   mounted() {
-    this.destination = {
-      lat: 35.652832,
-      lng: 139.839478,
-      city: 'Tokio',
-      country: 'Japan',
-    };
-    this.departure = {
-      lat: 52.520645,
-      lng: 13.409779,
-      city: 'Berlin',
-      country: 'Germany',
-    };
-    const elements = document.getElementsByClassName('cover');
-    while (elements.length > 0) {
-      elements[0].parentNode.removeChild(elements[0]);
-    }
+    setTimeout(() => {
+      this.destination = {
+        lat: 35.652832,
+        lng: 139.839478,
+        city: 'Tokio',
+        country: 'Japan',
+      };
+      this.departure = {
+        lat: 52.520645,
+        lng: 13.409779,
+        city: 'Berlin',
+        country: 'Germany',
+      };
+      const elements = document.getElementsByClassName('cover');
+      while (elements.length > 0) {
+        elements[0].parentNode.removeChild(elements[0]);
+      }
+    }, 1000);
   },
   methods: {
     setDeparture(e) {
