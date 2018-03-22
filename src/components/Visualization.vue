@@ -33,6 +33,7 @@ import colorMapC from '../assets/img/colormap/4096C.jpg';
 import colorMapD from '../assets/img/colormap/4096D.jpg';
 import spriteURL from '../assets/img/sprite.png';
 
+const DEFAULT_ALTITUDE_LEVEL = 3;
 const STATE_IDLE = 0;
 const STATE_MOVING_TO_DEPARTURE = 1;
 const STATE_ANIMATION_ACTIVE = 2;
@@ -166,11 +167,17 @@ export default {
       }
     },
 
+    playing(p) {
+      if (p) {
+        this.altitudeLevel = DEFAULT_ALTITUDE_LEVEL;
+      }
+    },
+
     altitudeLevel(altitude) {
       // console.log('Setting altitude value');
       // console.log(altitude);
       pars.altitudeLevel = altitude;
-      this.setWindVisualization(altitude);
+      this.setWindVisualization(altitude, pars.elapsed_days);
     },
 
     focusedExplorer(explorerId) {
@@ -200,7 +207,6 @@ export default {
         _.each(explorers, (e, index) => {
           if (index === selected - 1) {
             e.setStyle(Explorer.SELECTED);
-            selectLabel.set('', e.animatingSphere.position);// `Explorer ${index + 1} > `, e.animatingSphere.position);
           } else {
             e.setStyle(Explorer.UNSELECTED);
           }
@@ -216,7 +222,7 @@ export default {
         departure = { lat: d.lat, lng: d.lng, country: d.country, city: d.city };
         // console.log(`Departure: ${d.lat} ${d.lng} ${d.city} `);
         const t = Util.latLon2XYZPosition(d.lat, d.lng, radius);
-        departureLabel.set(d.city, t);
+        if (departureLabel) departureLabel.set(d.city, t);
         const azimuth = ((d.lng + 90) / 360.0) * 2 * Math.PI;
         const ts = (-earthRotation - azimuth) / (Math.PI * 2) % 1;
         this.targetDate.setTime(this.startingDate.getTime() + (ts * 24.0 * 60 * 60 * 1000));
@@ -345,8 +351,6 @@ export default {
         explorerHS = [0, 0, 0, 0, 0, 0, 0, 0];
         this.initVis();
         this.addDebugTools();
-      }).catch((r) => {
-        console.log(`static/config/general.json not found: ${r.message}`);
       });
   },
 
@@ -415,6 +419,7 @@ export default {
         if (raycaster.intersectObject(e.animatingSphere).length > 0) {
           selected = index;
           this.selecting = true;
+          selectLabel.set('', explorers[selected].animatingSphere.position);// `Explorer ${index + 1} > `, e.animatingSphere.position);
         }
       });
       // if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
@@ -429,7 +434,12 @@ export default {
           this.focusedExplorer = this.selectedExplorer;
           this.selectedExplorer = 0;
         }
-        selectLabel.setVisible(false);
+      }
+      if (this.visualizationState === STATE_ANIMATION_END) {
+        this.onMouseMove(event);
+        if (this.selectedExplorer > 0) {
+          this.minTrack = this.selectedExplorer - 1;
+        }
       }
     },
 
@@ -543,11 +553,11 @@ export default {
       scene.add(departureSphere);
       departureLabel.set(departure.city, departureLabel.anchorObject.position);
       departureLabel.setVisible(false);
+      departureLabel.margin = 4;
+
       const selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
       selectLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', selectSphere);
       selectLabel.margin = 4;
-      departureLabel.margin = 4;
-
       scene.add(selectSphere);
 
       const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
@@ -559,17 +569,6 @@ export default {
       cityLabels = [];
       Cities.init();
       for (let i = 0; i < 8; i += 1) {
-        /*
-        const el = document.createElement('div');
-        el.classList.add('label');
-        document.getElementById('labels').appendChild(el);
-        const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-        sphere.visible = false;
-        scene.add(sphere);
-        // class="label"
-        cityLabels.push(new Label(scene, camera, sphere, el, true));
-        */
-
         const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
         scene.add(sphere);
         const label = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
@@ -590,6 +589,7 @@ export default {
       _.each(pressureLevels, (l) => {
         windVisualizations.push(new WindVisualization(l, scene, radius * 1.02));
       });
+      windVisualizations[this.altitudeLevel].setActive();
       this.setWindVisualization(this.altitudeLevel);
       this.winds = pars.winds;
     },
@@ -599,7 +599,7 @@ export default {
         windVisualization.hide();
       }
       windVisualization = windVisualizations[i];
-      windVisualization.setActive();
+      windVisualization.setActive(pars.elapsed_days);
       windVisualization.setStyle(pars.layers.wind);
     },
 
@@ -1261,8 +1261,8 @@ export default {
 
     animate() {
       fps += 1;
+      windVisualization.update(pars.elapsed_days);
       if (this.animating) {
-        windVisualization.update(pars.elapsed_days);
         animator.update(pars.speed_d_x_sec / 60.0);
         if (pars.auto_rotate) {
           controls.setAzimuthalAngle(controls.getAzimuthalAngle() + 0.002);
@@ -1411,7 +1411,8 @@ export default {
     },
 
     downloadMulti() {
-      downloader.downloadMulti(departure, destination, pressureLevels[this.altitudeLevel],
+      downloader.downloadMulti(departure, destination, pressureLevels[DEFAULT_ALTITUDE_LEVEL],
+        // this.altitudeLevel],
         (data) => { // ON UPDATE
           if (data.mindist < this.minDist) {
             this.minDist = Math.round(data.mindist);
