@@ -2,7 +2,8 @@
 
 const THREE = require('three');
 // const Util = require('util')
-
+const DOWNLOADED = 1;
+const DOWNLOADING = 0.5;
 const vshader =
 'uniform float alpha;' +
 'uniform float magnitude;' +
@@ -76,6 +77,12 @@ class WindVisualization {
     this.pressure = pressure;
     this.scene = scene;
     this.radius = radius;
+    this.urls = [];
+    this.downloadStatus = [];
+    for (let i = 0; i < 16; i += 1) {
+      this.urls.push(`static/data/gfs/data/${this.pressure}/${i * 24}.json`);
+      this.downloadStatus.push(0);
+    }
   }
   init() {
     this.initialized = true;
@@ -114,15 +121,6 @@ class WindVisualization {
     // geometry.addAttribute('end', new THREE.BufferAttribute(this.windData[1], 3));
     this.lines = new THREE.LineSegments(geometry, this.lineMaterial);
     this.scene.add(this.lines);
-    const urls = [];
-    for (let i = 0; i < 16; i += 1) {
-      urls.push(`static/data/gfs/data/${this.pressure}/${i * 24}.json`);
-      // console.log(urls[urls.length - 1]);
-    }
-    this.downloadData(urls, 0,
-      /* (v) => { console.log(`Wind data download: ${1 + v}/16`);}, */
-      /* () => { console.log('Wind data download: finished'); }, */
-    );
   }
 
   setStyle(config) {
@@ -139,14 +137,31 @@ class WindVisualization {
     this.precision = config.precision;
   }
 
-  setActive() {
+  preload(i = 0) {
+    this.downloadData(i, () => {
+      if (i < this.urls.length - 1) {
+        this.preload(i + 1);
+      }
+    });
+  }
+
+  setActive(day) {
     if (!this.initialized) {
       this.init();
+      if (day) { // Download only the day
+        const clampedDay = Math.floor(day);
+        this.downloadData(clampedDay);
+        this.downloadData(clampedDay + 1);
+      } else { // Download them all
+        this.preload();
+      }
     }
   }
+
   hide() {
     this.lines.visible = false;
   }
+
   setOpacity(f) {
     this.lines.material.uniforms.opacity.value = f;
     this.lines.material.needsUpdate = true;
@@ -157,7 +172,34 @@ class WindVisualization {
     this.lines.material.needsUpdate = true;
   }
 
-  downloadData(paths, d, onProgress, onEnd, errorCount = 0) {
+  downloadData(d, onEnd) {
+    if (d >= 0 && d < this.urls.length && this.downloadStatus[d] === 0) {
+      this.downloadStatus[d] = DOWNLOADING;
+      fetch(this.urls[d])
+        .then(r => r.json())
+        .then((json) => {
+          for (let i = 0; i < json.data.length; i += 3) {
+            this.windData[d][i * 2] = json.data[i];
+            this.windData[d][i * 2 + 1] = json.data[i + 1];
+            this.windData[d][i * 2 + 2] = json.data[i + 2];
+          }
+          this.downloadStatus[d] = DOWNLOADED;
+          if (onEnd) {
+            onEnd();
+          }
+        }).catch((r) => {
+          console.log(`Wind data error - ${r.message} - reconnect attempt`);
+          // setInterval(() => this.downloadData(paths, d, onProgress, onEnd), 1000);
+        });
+    } else if (onEnd) {
+      onEnd();
+    }
+  }
+
+  /*
+  downloadData(paths, day = -1, onProgress, onEnd, errorCount = 0) {
+    // if day < 0 download them all
+    const d = Math.max(0, day);
     if (d < paths.length) {
       fetch(paths[d])
         .then(r => r.json())
@@ -167,9 +209,9 @@ class WindVisualization {
             this.windData[d][i * 2 + 1] = json.data[i + 1];
             this.windData[d][i * 2 + 2] = json.data[i + 2];
           }
-          this.progress = d;
+          this.downloadStatus[d] = 1;
           if (onProgress) onProgress(d);
-          this.downloadData(paths, d + 1, onProgress, onEnd);
+          if (day < 0) this.downloadData(paths, d + 1, onProgress, onEnd);
           errorCount = 0;
         }).catch((r) => {
           errorCount += 1;
@@ -181,6 +223,7 @@ class WindVisualization {
       onEnd();
     }
   }
+  */
 
   setOpacityMapping(t) {
     // 0 -> no opacity mapping
@@ -267,18 +310,20 @@ class WindVisualization {
       let i = Math.floor(elapsedTime);
       const alpha = elapsedTime - i;
       this.lines.material.uniforms.alpha.value = alpha;
-      if (Math.floor(this.lastUpdateTime) !== i) {
+      if (Math.floor(this.lastUpdateTime) !== i) { // NEW DAY
         // REPLACE ARRAYS
         i = Math.min(i, 15);
         const ip1 = Math.min(i + 1, 15);
-        if (ip1 > this.progress) {
+        if (this.downloadStatus[ip1] === DOWNLOADED && this.downloadStatus[i] === DOWNLOADED) {
+          this.lines.geometry.attributes.start.setArray(this.windData[i]);
+          this.lines.geometry.attributes.end.setArray(this.windData[ip1]);
+          this.lines.geometry.attributes.start.needsUpdate = true;
+          this.lines.geometry.attributes.end.needsUpdate = true;
+        } else {
+          this.downloadData(i);
+          this.downloadData(ip1);
           return false;
         }
-        // console.log(`${i} : ${ip1} ->${alpha}`);
-        this.lines.geometry.attributes.start.setArray(this.windData[i]);
-        this.lines.geometry.attributes.end.setArray(this.windData[ip1]);
-        this.lines.geometry.attributes.start.needsUpdate = true;
-        this.lines.geometry.attributes.end.needsUpdate = true;
       }
       this.lastUpdateTime = elapsedTime;
     }
