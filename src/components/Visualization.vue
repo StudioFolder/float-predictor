@@ -435,7 +435,7 @@ export default {
     onMouseClick(event) {
       if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
         this.onMouseMove(event);
-        if (this.selectedExplorer > 0) {
+        if (this.selectedExplorer < pars.elapsed_days + 1) {
           this.focusedExplorer = this.selectedExplorer;
           this.selectedExplorer = 0;
         }
@@ -1515,19 +1515,22 @@ export default {
           // for (var z = 0; z < 300; z += 1) {
           // setTimeout(() =>
           // fetch('http://54.190.63.219/db/insert.php', {
-          fetch('http://54.218.125.165/api/insert.php', {
-            method: 'post',
-            body: s,
-          }).then(
-            response => response.json(),
-          ).then((jsonData) => {
-            // console.log('***********************');
-            // console.log(jsonData);
-            this.trajectoryId = jsonData.id;
-          }).catch((r) => {
-            console.log('Downloader error');
-            console.log(r);
-          });
+          if (s !== this.previousTrajectoryData) {
+            fetch('http://54.218.125.165/api/insert.php', {
+              method: 'post',
+              body: s,
+            }).then(
+              response => response.json(),
+            ).then((jsonData) => {
+              // console.log('***********************');
+              // console.log(jsonData);
+              this.trajectoryId = jsonData.id;
+            }).catch((r) => {
+              console.log('Downloader error');
+              console.log(r);
+            });
+          }
+          this.previousTrajectoryData = s;
         },
         (e) => { // ON ERROR
           console.log(e.message);
