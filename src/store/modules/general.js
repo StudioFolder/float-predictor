@@ -49,7 +49,7 @@ export default {
     closeInfoBox(state) {
       state.isInfoBoxOpen = false;
     },
-    closeWindPanel(state) {
+    closeWindsPanel(state) {
       state.isWindPanelOpen = false;
     },
     setFormStatus(state, value) {

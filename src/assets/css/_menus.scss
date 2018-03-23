@@ -63,9 +63,11 @@ body.upper-content {
     visibility: hidden;
   }
   &:hover {
-    .hover-text {
-      opacity: 1;
-      visibility: visible;
+    @include medium_up {
+      .hover-text {
+        opacity: 1;
+        visibility: visible;
+      }
     }
   }
 }
@@ -79,7 +81,7 @@ body.upper-content {
   position: fixed;
   top: 188px;
   right: $marginBase;
-  z-index: 19; // as the main-menu
+  z-index: 20; // as the main-menu
   @include medium_up {
     .mobile-explorer-dashboard {
       display: none;

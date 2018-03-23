@@ -190,6 +190,9 @@ export default {
                 width: 80px;
             }
         }
+        @include medium_down {
+            display: none;
+        }
     }
     .explorers-dashboard {
         .explorer-item {
