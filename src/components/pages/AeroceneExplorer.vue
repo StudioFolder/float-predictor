@@ -32,15 +32,13 @@
                     <div class="img-wrapper">
                         <img srcset="~img/gemini-free-flight_27-aug-2016_01_web.jpg 1400w,
                                 ~img/gemini-free-flight_27-aug-2016_01_mobile.jpg 800w"
-                             sizes="(max-width: 540px) 800px,
-                                    1400px"
+                             sizes="(max-width: 540px) 800px, 1400px"
                              alt="">
                     </div>
                     <div class="img-wrapper">
                         <img srcset="~img/gemini-free-flight_27-aug-2016_02_web.jpg 1400w,
                                 ~img/gemini-free-flight_27-aug-2016_02_mobile.jpg 800w"
-                             sizes="(max-width: 540px) 800px,
-                                    1400px"
+                             sizes="(max-width: 540px) 800px, 1400px"
                              alt="">
                     </div>
                     <figcaption> <a target="_blank" href="http://aerocene.org/aug-27-schoenfelde-germany">Aerocene
@@ -84,53 +82,16 @@ export default {
     this.$store.commit('flightSimulator/setVisualizationState', 6);
   },
   mounted() {
-    // eslint-disable-next-line
-    setTimeout(()=>{
-      this.upperHeight = `${this.$refs.content.clientHeight}px`;
-    }, 1500);
+    this.upperHeight = `${this.$refs.content.clientHeight}px`;
   },
 };
 </script>
 <style lang="scss">
-@import "~@/assets/css/_variables_and_mixins.scss";
-.entry-body {
-    figure {
-        position: relative;
-        margin: 2em -3rem;
-        @include medium_up {
-            .img-wrapper {
-                position: relative;
-                &:after {
-                    content: "";
-                    display: block;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
-                    position: absolute;
-                    background-color: black;
-                    opacity: .3;
-                    z-index: 1;
-                    transition: opacity .5s ease;
-                }
-                &:hover:after {
-                    opacity: 0;
-                }
-            }
-        }
-        figcaption {
-            color: $gray;
-            font-size: .9em;
-            a { color: $gray;
-            border-color: $gray
-            }
-        }
-    }
-    img {
-        max-width: 100%;
-    }
-    .cit {
-        padding: 0 2em;
+    @import "~css/_variables_and_mixins.scss";
+.img-wrapper img{
+    height: 378px;
+    @include medium_down {
+        height: 190px;
     }
 }
 </style>

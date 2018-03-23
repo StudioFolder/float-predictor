@@ -180,11 +180,12 @@ $elemHeight: 30px;
 .info-box.winds-panel {
     top: calc(#{$marginBase} + #{$itemWidth*3} + #{$marginItem * 4});
     width: 244px;
-    z-index: 21;
     @include medium_down {
-        top: 0;
         left: 0;
-        width: 100%;
+        height: 100px;
+        width: 32px;
+        flex-flow: column;
+        top: -100px;
     }
     .body,
     .box-footer {
@@ -380,10 +381,5 @@ $elemHeight: 30px;
             }
         }
     }
-}
-.fp-winds-on,
-.fp-winds-en,
-.fp-no-winds {
-    width: 30px;
 }
 </style>

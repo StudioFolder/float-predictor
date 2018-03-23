@@ -4,26 +4,39 @@
             <li class="nav-item --rounded wind-selector" @click="toggleWindsPanel">
                 <div class="hover-text">Toggle wind panel</div>
                 <a href="#" target="_self" class="nav-link">
-                    <i :class="[isWindsPanelOpen ? 'fp-close' : windPanelClass, 'fp']"></i>
+                    <i v-if="isMobile" :class="windPanelClass" class="fp"></i>
+                    <i v-else :class="[isWindsPanelOpen ? 'fp-close' : windPanelClass, 'fp']"></i>
                 </a>
             </li>
             <transition name="fade">
-                <winds-panel v-if="(isWindsPanelOpen)" />
+                <winds-panel v-if="(isWindsPanelOpen && !isMobile)" />
+                <span class="mobile-winds-panel"
+                      v-else-if="(isWindsPanelOpen && !isFlightOver && isMobile)">
+                    <b-nav-item @click="toggleWinds(2)" class="--rounded" v-if="winds!==2">
+                        <i class="fp fp-winds-en"></i>
+                    </b-nav-item>
+                    <b-nav-item @click="toggleWinds(1)" class="--rounded" v-if="winds!==1">
+                        <i class="fp fp-winds-on"></i>
+                    </b-nav-item>
+                    <b-nav-item @click="toggleWinds(0)" class="--rounded" v-if="winds!==0">
+                        <i class="fp fp-no-winds"></i>
+                    </b-nav-item>
+                </span>
             </transition>
         </div>
         <div class="play-animation" @mouseenter="mouseEnter" @mouseleave="mouseLeave">
             <transition name="fade">
-                <div v-if="(!isInfoboxOpen && !hoverOnPlay)"
+                <div v-if="((!isInfoboxOpen && !hoverOnPlay) || isMobile)"
                      key="elapsed"
                      class="hover-text elapsed-days">
                     Day {{elapsedDays}}/16
                 </div>
-                <div v-else-if="(!isInfoboxOpen && hoverOnPlay && !isFlightOver)"
+                <div v-else-if="(!isInfoboxOpen && hoverOnPlay && !isFlightOver && !isMobile)"
                      key="playpause"
                      class="hover-text">
                     play/pause animation
                 </div>
-                <div v-else-if="(!isInfoboxOpen && hoverOnPlay && isFlightOver)"
+                <div v-else-if="(!isInfoboxOpen && hoverOnPlay && isFlightOver && !isMobile)"
                      key="restart"
                      class="hover-text">
                     restart
@@ -85,6 +98,9 @@ export default {
         'fp-winds-en': this.winds === 2,
       };
     },
+    isMobile() {
+      return (window.matchMedia('(max-width: 767px)').matches);
+    },
     winds() { return this.$store.state.flightSimulator.winds; },
     isWindsPanelOpen() { return this.$store.state.general.isWindPanelOpen; },
     isPlaying() { return this.$store.state.flightSimulator.isPlaying; },
@@ -102,7 +118,11 @@ export default {
       this.$store.commit('general/toggleWindPanel');
     },
     closeWindsPanel() {
-      this.$store.commit('general/closeWindPanel');
+      this.$store.commit('general/closeWindsPanel');
+    },
+    toggleWinds(v) {
+      this.$store.commit('flightSimulator/setWinds', v);
+      this.closeWindsPanel();
     },
     toggleAnimation() {
       if (this.isFlightOver) {
@@ -177,6 +197,28 @@ export default {
     .nav-item.wind-selector .inactive {
         opacity: .25;
     }
+    .mobile-winds-panel {
+        display: flex;
+        justify-content: space-evenly;
+        flex-flow: row;
+        position: absolute;
+        top: 0;
+        left: -130px;
+        height: 32px;
+        width: 130px;
+        @include medium_down {
+            left: 0;
+            height: 100px;
+            width: 32px;
+            flex-flow: column;
+            top: -100px;
+        }
+    }
+    .fp-winds-on,
+    .fp-winds-en,
+    .fp-no-winds {
+        width: 30px;
+    }
     .play-animation {
         position: relative;
         .hover-text {
@@ -189,9 +231,13 @@ export default {
                 font-size: 1em;
                 width: 80px;
             }
-        }
-        @include medium_down {
-            display: none;
+            @include medium_down {
+                &:not(.elapsed-days) {
+                    display: none;
+                    visibility: hidden;
+                    opacity: 0;
+                }
+            }
         }
     }
     .explorers-dashboard {

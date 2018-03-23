@@ -71,38 +71,3 @@ export default {
   },
 };
 </script>
-<style>
-.entry-subtitle small{
-    font-size: .5em;
-    display: block;
-    margin-top: 2.4em;
-}
-sub, sup {
-    /* Specified in % so that the sup/sup is the
-       right size relative to the surrounding text */
-    font-size: 75%;
-
-    /* Zero out the line-height so that it doesn't
-       interfere with the positioning that follows */
-    line-height: 0;
-
-    /* Where the magic happens: makes all browsers position
-       the sup/sup properly, relative to the surrounding text */
-    position: relative;
-
-    /* Note that if you're using Eric Meyer's reset.css, this
-       is already set and you can remove this rule */
-    vertical-align: baseline;
-}
-
-sup {
-    /* Move the superscripted text up */
-    top: -0.5em;
-}
-
-sub {
-    /* Move the subscripted text down, but only
-       half as far down as the superscript moved up */
-    bottom: -0.25em;
-}
-</style>

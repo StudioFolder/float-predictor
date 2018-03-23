@@ -136,16 +136,18 @@ export default {
         text-transform: uppercase;
         font-size: .85em;
         @include medium_down {
-            top: 20px;
-            padding-left: 3.5rem;
+            top: 0px;
+            padding: 1.5rem 0 1.5rem 3.5rem;
+            background-color: $lightBlack;
+            z-index: 5;
         }
     }
     .title-number {
         position: absolute;
         margin: $marginItem 0;
         @include small_down {
-            margin: $marginItem*2 0 $marginItem;
-            padding-top: 2.95rem;
+            margin: 0;
+            padding-top: calc(#{$marginItem*2} + 2.95rem);
         }
     }
     .f-slider-wrapper {
@@ -156,7 +158,7 @@ export default {
         @include medium_down {
             padding-right: 1.5rem;
             padding-left: 3rem;
-            margin-top: 3rem;
+            padding-top: 3rem;
         }
         .f-slider-inner {
             position: relative;
