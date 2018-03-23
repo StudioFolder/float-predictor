@@ -97,6 +97,7 @@ $lateralSpaceMobile: .5rem;
             @include small_down {
                 max-width: unset;
                 font-size: .9em;
+                padding-bottom: 2rem;
             }
             &.--upper {
                 margin-top: 1em;

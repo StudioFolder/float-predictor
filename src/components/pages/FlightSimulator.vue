@@ -203,7 +203,7 @@ export default {
             height: 100%;
             display: flex;
             flex-flow: column;
-            justify-content: space-around;
+            justify-content: space-evenly;
         }
     }
     p {
