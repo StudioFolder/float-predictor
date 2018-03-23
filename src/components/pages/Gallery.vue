@@ -94,7 +94,7 @@ export default {
     },
     addPage(i) {
       // console.log('Add page ' + i)
-      fetch(`http://54.190.63.219/db/api.php?page=${String(i)}`, {
+      fetch(`http://54.218.125.165/api/gallery.php?page=${String(i)}`, {
         method: 'get',
       }).then(
         response => response.json(),
