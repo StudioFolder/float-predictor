@@ -62,7 +62,13 @@
                                 sea level
                             </div>
                         </div>
-                        <div class="column --slider" :class="'alt-'+altitudeLevel"></div>
+                        <div class="column --slider" :class="'alt-'+altitudeLevel">
+                            <div class="input-wrapper">
+                                <input type="range"
+                                       v-model="altitudeLevel"
+                                       min="0" max="6" step="1">
+                            </div>
+                        </div>
                         <div class="column --altitudes">
                             <div @click="setAltitude(6)"
                                  :class="{ 'isActive': altitudeLevel === 6}">26,500m
@@ -90,10 +96,17 @@
             </transition>
         </div>
         <div class="box-footer">
-            <p>Aerocene Sculptures normally float between 8,000 and 16,000 m.
-                Here you can explore wind patterns in the atmosphere at different altitudes.
-                This will temporarily pause the float simulation.
-            </p>
+            <transition name="fade" mode="out-in">
+                <p v-if="!isAltPanelOpen" key="closed">
+                    Aerocene Sculptures normally float between 8,000 and 16,000 m.
+                    Here you can explore wind patterns in the atmosphere at different altitudes.
+                    This will temporarily pause the float simulation.
+                </p>
+                <p v-else key="open">
+                    Closing this panel will resume the float
+                    simulation at the default altitude of 10,000 m.
+                </p>
+            </transition>
             <p class="small data-credits">
                 Data source: GFS
             </p>
@@ -112,8 +125,14 @@ export default {
     };
   },
   computed: {
-    altitudeLevel() {
-      return this.$store.state.flightSimulator.altitudeLevel;
+    altitudeLevel: {
+      get() {
+        return this.$store.state.flightSimulator.altitudeLevel;
+      },
+      set(v) {
+        const alt = parseInt(v, 10);
+        this.$store.commit('flightSimulator/setAltitudeLevel', alt);
+      },
     },
   },
   methods: {
@@ -121,7 +140,7 @@ export default {
       this.$store.commit('general/closeWindsPanel');
     },
     openAltitudePanel() {
-      // this.$store.commit('flightSimulator/setPlaying', false);
+      this.$store.commit('flightSimulator/setPlaying', false);
       this.isAltPanelOpen = true;
     },
     setAltitude(alt) {
@@ -182,6 +201,7 @@ $elemHeight: 30px;
     .altitude-panel-inner {
         display: flex;
         padding-top: $marginItem;
+        position: relative;
         > div {
             flex: 1 0 auto;
             font-size: 14px;
@@ -213,49 +233,93 @@ $elemHeight: 30px;
             }
         }
         .--slider {
-            width: 1px;
-            flex: 0 0 1px;
-            background-color: $gray;
-            margin: 0 $marginItem*2;
-            &:after {
-                content: '';
-                display: block;
-                width: 12px; height: $elemHeight;
-                margin-left: -5px;
+            width: 28px;
+            flex: 0 0 auto;
+            position: relative;
+            padding-left: 4px;
+            .input-wrapper {
+                transform: rotate(-90deg);
+                transform-origin: 98px 105px;
+                width: 195px;
+            }
+            input[type=range] {
+                -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+                width: 100%; /* Specific width is required for Firefox. */
+                background: transparent; /* Otherwise white in Chrome */
+            }
+            input[type=range]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+            }
+            input[type=range]:focus {
+                outline: none; // Removes the blue border.
+            }
+            input[type=range]::-ms-track {
+                width: 100%;
+                cursor: pointer;
+                background: transparent;
+                border-color: transparent;
+                color: transparent;
+            }
+            input[type=range]::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                height: 12px;
+                width: 12px;
                 border-radius: 50%;
-                transition: transform .2s ease;
-                /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f7f7f7+0,d6d6d6+50,e5e5e5+100&0+36,1+37,1+63,0+64 */
-                background: -moz-linear-gradient(top,
-                        rgba(247,247,247,0) 0%, rgba(223,223,223,0) 36%,
-                        rgba(222,222,222,1) 37%, rgba(214,214,214,1) 50%,
-                        rgba(218,218,218,1) 63%, rgba(218,218,218,0) 64%,
-                        rgba(229,229,229,0) 100%); /* FF3.6-15 */
-                background: -webkit-linear-gradient(top,
-                        rgba(247,247,247,0) 0%,rgba(223,223,223,0) 36%,
-                        rgba(222,222,222,1) 37%,rgba(214,214,214,1) 50%,
-                        rgba(218,218,218,1) 63%,rgba(218,218,218,0) 64%,
-                        rgba(229,229,229,0) 100%); /* Chrome10-25,Safari5.1-6 */
-                background: linear-gradient(to bottom,
-                        rgba(247,247,247,0) 0%,rgba(223,223,223,0) 36%,
-                        rgba(222,222,222,1) 37%,rgba(214,214,214,1) 50%,
-                        rgba(218,218,218,1) 63%,rgba(218,218,218,0) 64%,
-                        rgba(229,229,229,0) 100%); /* IE10+, FF16+, Chrome26+, Opera12+, Safari7+*/
-                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00f7f7f7',
-                        endColorstr='#00e5e5e5',GradientType=0 ); /* IE6-9 */
+                background: #ffffff;
+                cursor: pointer;
+                margin-top: -5px; // need to specify a margin in Chrome
             }
-            &.alt-6:after{ transform: translateY(0);
+            input[type=range]::-moz-range-thumb {
+                height: 12px;
+                width: 12px;
+                border-radius: 50%;
+                background: #ffffff;
+                cursor: pointer;
             }
-            &.alt-5:after{ transform: translateY($elemHeight);
+            input[type=range]::-ms-thumb {
+                height: 12px;
+                width: 12px;
+                border-radius: 50%;
+                background: #ffffff;
+                cursor: pointer;
             }
-            &.alt-4:after{ transform: translateY($elemHeight*2);
+            input[type=range]::-webkit-slider-runnable-track {
+                width: 100%;
+                height: 2px;
+                cursor: pointer;
+                background: $gray;
+                border-radius: 1.3px;
             }
-            &.alt-3:after{ transform: translateY($elemHeight*3);
+            input[type=range]:focus::-webkit-slider-runnable-track {
+                background: $gray;
             }
-            &.alt-2:after{ transform: translateY($elemHeight*4);
+            input[type=range]::-moz-range-track {
+                width: 100%;
+                height: 2px;
+                cursor: pointer;
+                background: $gray;
+                border-radius: 1.3px;
             }
-            &.alt-1:after{ transform: translateY($elemHeight*5);
+            input[type=range]::-ms-track {
+                width: 100%;
+                height: 2px;
+                cursor: pointer;
+                background: transparent;
+                border-color: transparent;
+                border-width: 16px 0;
+                color: transparent;
             }
-            &.alt-0:after{ transform: translateY($elemHeight*6);
+            input[type=range]::-ms-fill-lower {
+                background: $gray;
+            }
+            input[type=range]:focus::-ms-fill-lower {
+                background: $gray;
+            }
+            input[type=range]::-ms-fill-upper {
+                background: $gray;
+            }
+            input[type=range]:focus::-ms-fill-upper {
+                background: $gray;
             }
         }
         .--altitudes {
