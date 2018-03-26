@@ -94,8 +94,8 @@ export default {
     windPanelClass() {
       return {
         'fp-no-winds': this.winds === 0,
-        'fp-winds-on': this.winds === 1,
-        'fp-winds-en': this.winds === 2,
+        'fp-winds-on': this.winds === 1 || this.winds === 3,
+        'fp-winds-en': this.winds === 2 || this.winds === 4,
       };
     },
     isMobile() {

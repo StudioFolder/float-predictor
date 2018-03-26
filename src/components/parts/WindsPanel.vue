@@ -136,13 +136,76 @@ export default {
   name: 'winds-panel',
   data() {
     return {
-      isOn: true,
-      isColor: false,
-      isAnimated: true,
       isAltPanelOpen: false,
     };
   },
   computed: {
+    isOn: {
+      get() {
+        return this.$store.state.flightSimulator.winds !== 0;
+      },
+      set(v) {
+        if (v) {
+          if (this.isColor && this.isAnimated) {
+            this.$store.commit('flightSimulator/setWinds', 2);
+          } else if (!this.isColor && this.isAnimated) {
+            this.$store.commit('flightSimulator/setWinds', 1);
+          } else if (this.isColor && !this.isAnimated) {
+            this.$store.commit('flightSimulator/setWinds', 4);
+          } else if (!this.isColor && !this.isAnimated) {
+            this.$store.commit('flightSimulator/setWinds', 3);
+          }
+        } else {
+          this.$store.commit('flightSimulator/setWinds', 0);
+        }
+      },
+    },
+    isColor: {
+      get() {
+        return (this.$store.state.flightSimulator.winds === 4
+          || this.$store.state.flightSimulator.winds === 2);
+      },
+      set(v) {
+        if (this.isOn) {
+          if (this.isAnimated) {
+            if (v) {
+              this.$store.commit('flightSimulator/setWinds', 2);
+            } else {
+              this.$store.commit('flightSimulator/setWinds', 1);
+            }
+          } else if (v) { // static
+            this.$store.commit('flightSimulator/setWinds', 4);
+          } else {
+            this.$store.commit('flightSimulator/setWinds', 3);
+          }
+        } else {
+          this.$store.commit('flightSimulator/setWinds', 0);
+        }
+      },
+    },
+    isAnimated: {
+      get() {
+        return (this.$store.state.flightSimulator.winds === 1
+          || this.$store.state.flightSimulator.winds === 2);
+      },
+      set(v) {
+        if (this.isOn) {
+          if (this.isColor) {
+            if (v) {
+              this.$store.commit('flightSimulator/setWinds', 2);
+            } else {
+              this.$store.commit('flightSimulator/setWinds', 4);
+            }
+          } else if (v) { // white
+            this.$store.commit('flightSimulator/setWinds', 1);
+          } else {
+            this.$store.commit('flightSimulator/setWinds', 3);
+          }
+        } else {
+          this.$store.commit('flightSimulator/setWinds', 0);
+        }
+      },
+    },
     altitudeLevel: {
       get() {
         return this.$store.state.flightSimulator.altitudeLevel;
@@ -163,57 +226,6 @@ export default {
     },
     setAltitude(alt) {
       this.$store.commit('flightSimulator/setAltitudeLevel', alt);
-    },
-  },
-  watch: {
-    isOn(v) {
-      if (v) {
-        if (this.isColor && this.isAnimated) {
-          this.$store.commit('flightSimulator/setWinds', 2);
-        } else if (!this.isColor && this.isAnimated) {
-          this.$store.commit('flightSimulator/setWinds', 1);
-        } else if (this.isColor && !this.isAnimated) {
-          this.$store.commit('flightSimulator/setWinds', 4);
-        } else if (!this.isColor && !this.isAnimated) {
-          this.$store.commit('flightSimulator/setWinds', 3);
-        }
-      } else {
-        this.$store.commit('flightSimulator/setWinds', 0);
-      }
-    },
-    isColor(v) {
-      if (this.isOn) {
-        if (this.isAnimated) {
-          if (v) {
-            this.$store.commit('flightSimulator/setWinds', 2);
-          } else {
-            this.$store.commit('flightSimulator/setWinds', 1);
-          }
-        } else if (v) { // static
-          this.$store.commit('flightSimulator/setWinds', 4);
-        } else {
-          this.$store.commit('flightSimulator/setWinds', 3);
-        }
-      } else {
-        this.$store.commit('flightSimulator/setWinds', 0);
-      }
-    },
-    isAnimated(v) {
-      if (this.isOn) {
-        if (this.isColor) {
-          if (v) {
-            this.$store.commit('flightSimulator/setWinds', 2);
-          } else {
-            this.$store.commit('flightSimulator/setWinds', 4);
-          }
-        } else if (v) { // white
-          this.$store.commit('flightSimulator/setWinds', 1);
-        } else {
-          this.$store.commit('flightSimulator/setWinds', 3);
-        }
-      } else {
-        this.$store.commit('flightSimulator/setWinds', 0);
-      }
     },
   },
 };
@@ -377,7 +389,7 @@ $elemHeight: 30px;
         }
     }
     p {
-        font-size: 10px;
+        font-size: 11px;
         color: $gray;
         text-align: center;
         margin-top: 15px;
