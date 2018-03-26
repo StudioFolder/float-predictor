@@ -39,6 +39,23 @@
                     </label>
                 </div>
             </div>
+            <div class="type-selector-group">
+                <div class="type-selector custom-checkbox animation-selector"
+                     :class="{'--animated': isAnimated}">
+                    <input id="animationSelector"
+                           v-model="isAnimated"
+                           type="checkbox"
+                           autocomplete="off"
+                           class="custom-control-input">
+                    <label for="animationSelector">
+                        <div class="type-selector">
+                            <span :class="[{'--isActive': isAnimated}, '--left']">Animated</span>
+                            <span class="slider round"></span>
+                            <span :class="{'--isActive': !isAnimated}">Static</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
             <p>Animated winds emphasise speed.<br>
                 Static winds highlight stream patterns.</p>
             <transition name="fade" mode="out-in">
@@ -121,6 +138,7 @@ export default {
     return {
       isOn: true,
       isColor: false,
+      isAnimated: true,
       isAltPanelOpen: false,
     };
   },
@@ -150,10 +168,14 @@ export default {
   watch: {
     isOn(v) {
       if (v) {
-        if (this.isColor) {
+        if (this.isColor && this.isAnimated) {
           this.$store.commit('flightSimulator/setWinds', 2);
-        } else {
+        } else if (!this.isColor && this.isAnimated) {
           this.$store.commit('flightSimulator/setWinds', 1);
+        } else if (this.isColor && !this.isAnimated) {
+          this.$store.commit('flightSimulator/setWinds', 4);
+        } else if (!this.isColor && !this.isAnimated) {
+          this.$store.commit('flightSimulator/setWinds', 3);
         }
       } else {
         this.$store.commit('flightSimulator/setWinds', 0);
@@ -161,10 +183,33 @@ export default {
     },
     isColor(v) {
       if (this.isOn) {
-        if (v) {
-          this.$store.commit('flightSimulator/setWinds', 2);
+        if (this.isAnimated) {
+          if (v) {
+            this.$store.commit('flightSimulator/setWinds', 2);
+          } else {
+            this.$store.commit('flightSimulator/setWinds', 1);
+          }
+        } else if (v) { // static
+          this.$store.commit('flightSimulator/setWinds', 4);
         } else {
+          this.$store.commit('flightSimulator/setWinds', 3);
+        }
+      } else {
+        this.$store.commit('flightSimulator/setWinds', 0);
+      }
+    },
+    isAnimated(v) {
+      if (this.isOn) {
+        if (this.isColor) {
+          if (v) {
+            this.$store.commit('flightSimulator/setWinds', 2);
+          } else {
+            this.$store.commit('flightSimulator/setWinds', 4);
+          }
+        } else if (v) { // white
           this.$store.commit('flightSimulator/setWinds', 1);
+        } else {
+          this.$store.commit('flightSimulator/setWinds', 3);
         }
       } else {
         this.$store.commit('flightSimulator/setWinds', 0);
@@ -356,7 +401,8 @@ $elemHeight: 30px;
     }
     .type-selector {
         &.on-off-selector.--on,
-        &.color-selector.--color {
+        &.color-selector.--color,
+        &.animation-selector.--animated {
             .slider:before {
                 transform: translateX(-22px);
             }

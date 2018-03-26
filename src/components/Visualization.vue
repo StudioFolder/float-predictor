@@ -289,7 +289,7 @@ export default {
           pars.layers.wind.animating = true;
           break;
         case 3: // B/W static
-          pars.layers.wind.start_color = '##5b5b5b';
+          pars.layers.wind.start_color = '#5b5b5b';
           pars.layers.wind.end_color = '#ffffff';
           pars.layers.wind.mapping = 1.0;
           pars.layers.wind.opacity_mapping = true;
@@ -298,7 +298,6 @@ export default {
           pars.layers.wind.opacity = 0.4;
           pars.layers.wind.magnitude = 0.25;
           pars.layers.wind.animating = false;
-
           break;
         case 4: // COLOR static
           pars.layers.wind.start_color = '#073a9e';
@@ -309,7 +308,7 @@ export default {
           pars.layers.wind.threshold = 30;
           pars.layers.wind.opacity = 0.4;
           pars.layers.wind.visible = true;
-          pars.layers.wind.animating = true;
+          pars.layers.wind.animating = false;
           break;
         default:
           break;
