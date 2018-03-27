@@ -440,6 +440,7 @@ export default {
         if (this.selectedExplorer < pars.elapsed_days + 1) {
           this.focusedExplorer = this.selectedExplorer;
           this.selectedExplorer = 0;
+          this.playing = true;
         }
       }
       if (this.visualizationState === STATE_ANIMATION_END) {
