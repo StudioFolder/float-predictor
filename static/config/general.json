@@ -52,5 +52,56 @@
 			"precision": 2
 		}
 	},
-	"colorMap": "MAP A"
+	"colorMap": "MAP A",
+	"wind_settings": [
+		{
+			"visible": false
+		},
+		{
+			"start_color": "#5b5b5b",
+			"end_color": "#ffffff",
+			"mapping": 1.0,
+			"opacity_mapping": true,
+			"visible": true,
+			"threshold": 35.0,
+			"opacity": 1.1,
+			"magnitude": 0.8,
+			"animating": true,
+			"animationSpeed": 0.8
+		},
+		{
+			"start_color": "#073a9e",
+			"end_color": "f80000",
+			"mapping": 2.0,
+			"opacity_mapping": true,
+			"magnitude": 0.8,
+			"threshold": 40.0,
+			"opacity": 1.1,
+			"visible": true,
+			"animating": true,
+			"animationSpeed": 0.8
+		},
+		{
+			"start_color": "#5b5b5b",
+			"end_color": "#ffffff",
+			"mapping": 1.0,
+			"opacity_mapping": true,
+			"visible": true,
+			"threshold": 35.0,
+			"opacity": 1.1,
+			"magnitude": 0.4,
+			"animating": false
+		},
+		{
+			"start_color": "#073a9e",
+			"end_color": "f80000",
+			"mapping": 2.0,
+			"opacity_mapping": true,
+			"magnitude": 0.4,
+			"visible": true,
+			"threshold": 40.0,
+			"opacity": 1.1,
+			"animating": false
+		}
+	]
 }
