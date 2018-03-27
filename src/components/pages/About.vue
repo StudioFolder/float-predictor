@@ -35,7 +35,7 @@
                     the evolving wind patterns around the globe based on wind forecast data from the
                     U.S. National Oceanic and Atmospheric Administration, the EAPS team created an
                     interactive web interface and thus the Float Predictor was born. You can read
-                    more about his collaboration
+                    more about this collaboration
                      <a target="_blank" href="http://synoptic.mit.edu/aerocene-collaboration/">here</a>.
                 </p>
                 <p>

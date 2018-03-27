@@ -1,5 +1,5 @@
 <template>
-    <div class="site-header" :class="{'is-onboard': isOnboard}">
+    <div class="site-header">
         <main-menu :is-choosing="isChoosing"  />
         <nav-brand :is-choosing="isChoosing" />
     </div>
@@ -15,6 +15,7 @@ export default {
   computed: {
     isOnboard() { return this.$store.state.flightSimulator.focusedExplorer > 0; },
     isChoosing() { return this.$store.state.general.isChoosingDestination; },
+    isHome() { return this.$route.name === 'home-page'; },
   },
 };
 </script>
@@ -138,6 +139,9 @@ export default {
                 font-size: 1em;
                 line-height: 1.45;
             }
+        }
+        .logo {
+            margin: 0 auto;
         }
     }
 }

@@ -3,17 +3,30 @@
     <b-modal id="impressum-modal" class="page-modal" centered hide-footer size="lg"
              title="Impressum">
         <i slot="modal-header-close" class="fp fp-close"></i>
-        <p>
-            This website has been established and developed by a dedicated and enthusiastic
-            team of community members including: Lodovica Illari, Glenn Flierl, Bill McKenna
-            (MIT Department of Earth, Atmospheric and Planetary Sciences), Marco Ferrari,
-            Elisa Pasqual, Luca Ferrario, Iacopo Leardini, Angelo Semeraro (Studio Folder),
-            Joaquin Ezcurra, Camilla Berggren Lundell, Alice Lamperti (Aerocene Foundation),
-            Erik Vogler, Saverio Cantoni, Rosalie Laurin, Yelta Köm, Connie Chester,
-            Roxanne Mackie, Sofia Lemos, Zaida Violan (Studio Tomás Saraceno), Nick Shapiro,
-            Liz Barry, (Public Lab), Imperial College London, Radio Amateurs DE & UK, and the
-            UK High Altitude Society.
+        <div class="entry-body">
+            <p>
+            The Aerocene Float Predictor is being developed by
+            the Aerocene Foundation and the members of its diverse community.
         </p>
+        <h4>TRAJECTORY COMPUTATION</h4>
+        <p>
+            <a href="https://eapsweb.mit.edu/" target="_blank">MIT Department of Earth, Atmospheric and Planetary Sciences</a> (Glenn Flierl, Lodovica Illari, Bill McKenna).
+        </p>
+        <h4>VISUALISATION, DESIGN AND DEVELOPMENT</h4>
+        <p>
+            <a href="http://www.studiofolder.it/" target="_blank">Studio Folder</a> (Marco Ferrari, Elisa Pasqual, Luca Ferrario, Iacopo Leardini)
+            and <a href="http://angelosemeraro.info/" target="_blank">Angelo Semeraro</a>.
+        </p>
+        <h4>PROJECT DEVELOPMENT AND COORDINATION</h4>
+        <p>
+            <a href="http://aerocene.org/" target="_blank">Aerocene Foundation</a> (Joaquin Ezcurra, Camilla Berggren Lundell, Alice Lampert),
+            <a href="http://tomassaraceno.com/" target="_blank">Studio Tomás Saraceno</a>
+            (Erik Vogler, Saverio Cantoni, Rosalie Laurin, Yelta Köm,
+            Connie Chester, Roxanne Mackie, Sofia Lemos, Zaida Violan),
+            <a href="https://publiclab.org/ " target="_blank">Public Lab</a>
+            (Nick Shapiro, Liz Barry), Imperial College London, Radio Amateurs DE
+            & UK, and the <a href="https://ukhas.org.uk/" target="_blank">UK High Altitude Society</a>.
+        </p></div>
     </b-modal>
 </template>
 

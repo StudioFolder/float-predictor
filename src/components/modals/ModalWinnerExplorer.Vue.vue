@@ -9,12 +9,19 @@
              title="Your Aerosolar Journey">
         <i slot="modal-header-close" class="fp fp-close-w"></i>
         <div class="aeroglyph" v-html="winningExplorerData.svg"></div>
-        <div class="message">
+        <div v-if="isPlannedFlight" class="message">
             The Aerocene Sculpture that left from <b>{{departure.city}}</b>
             on <strong>{{depDate}}</strong>
             arrived within <strong>{{winningExplorerData.minDist}}km</strong>
             from <strong>{{destination.city}}</strong> in
             <strong>{{winningExplorerData.minTime}} days.</strong>
+        </div>
+        <div v-else class="message">
+            The Aerocene Sculpture that floated the farthest
+            is the one that left from <strong>{{departure.city}}</strong>
+            on <strong>{{depDate}}</strong>
+            and travelled <strong>{{maxDist}} km</strong>
+            in <strong>{{winningExplorerData.minTime}} days.</strong>
         </div>
         <!-- Begin MailChimp Signup Form -->
         <div id="mc_embed_signup">
@@ -31,7 +38,7 @@
                         <div class="mc-field-group">
                             <b-form-input
                                     type="text"
-                                    placeholder="Enter your name here"
+                                    placeholder="Your name"
                                     name="FNAME"
                                     class=""
                                     id="mce-FNAME">
@@ -40,7 +47,7 @@
                         <div class="mc-field-group">
                             <b-form-input
                                     type="email"
-                                    placeholder="example@mail.com"
+                                    placeholder="Your e-mail"
                                     name="EMAIL"
                                     class="required email"
                                     id="mce-EMAIL">
@@ -60,8 +67,7 @@
                                value="">
                     </div>
                     <p class="input-label">
-                        Enter your name and email to receive a postcard about your journey
-                        and get updates on Aerocene.
+                        Enter your name and e-mail to get updates on Aerocene.
                     </p>
                     <b-button type="submit"
                               variant="primary"
@@ -104,8 +110,14 @@ export default {
     };
   },
   computed: {
+    isPlannedFlight() {
+      return this.$store.state.flightSimulator.flightType === 'planned';
+    },
     winningExplorerData() {
       return this.$store.state.flightSimulator.winningExplorerData;
+    },
+    maxDist() {
+      return parseInt(this.winningExplorerData.minDist, 10).toLocaleString('en');
     },
     depDate() {
       return moment(this.winningExplorerData.departureDate).format('MMM Do, YYYY');

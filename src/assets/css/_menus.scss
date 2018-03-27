@@ -206,14 +206,27 @@ body.upper-content {
     flex-flow: row;
     justify-content: space-between;
   }
+  &.share-items {
+    max-width: 150px;
+  }
+  @include small_down {
+    &.share-items {
+      max-width: 200px;
+      margin: 0 auto;
+    }
+  }
+  @include small_up {
+    &.share-items {
+      margin: .5rem 0;
+    }
+  }
 }
 /**
  * MAin Navigation
  */
 .main-nav {
   background-color: $lightBlack;
-  padding: $marginBase;
-  padding-left: $marginBase+$marginBase/3;
+  padding: $marginBase $marginBase $marginBase/2 $marginBase+$marginBase/3;
   position: fixed;
   top: 0;
   right: 0;
@@ -223,6 +236,7 @@ body.upper-content {
   display: flex;
   flex-flow: column;
   z-index: 50;
+  overflow: scroll;
   @include medium_down {
     padding: $marginMobile $marginMobile $marginMobile/2 $marginMobile;
     width: 100%;
@@ -319,7 +333,7 @@ body.upper-content {
     }
     .menu-item.--link:before {
       background-image: url("assets/icons/menu_hover_outbound.svg");
-      background-size: 50%;
+      background-size: 65%;
     }
   }
 }

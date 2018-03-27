@@ -2,7 +2,7 @@
     <ul class="flight-dashboard" :class="{'is-onboard': isOnboard, 'flight-over': isFlightOver}">
         <div class="toggle-winds">
             <li class="nav-item --rounded wind-selector" @click="toggleWindsPanel">
-                <div class="hover-text">Toggle wind panel</div>
+                <div class="hover-text">Explore winds</div>
                 <a href="#" target="_self" class="nav-link">
                     <i v-if="isMobile" :class="windPanelClass" class="fp"></i>
                     <i v-else :class="[isWindsPanelOpen ? 'fp-close' : windPanelClass, 'fp']"></i>
@@ -34,12 +34,15 @@
                 <div v-else-if="(!isInfoboxOpen && hoverOnPlay && !isFlightOver && !isMobile)"
                      key="playpause"
                      class="hover-text">
-                    play/pause animation
+                    <transition name="fade" mode="out-in">
+                        <span v-if="isPlaying" key="pause_sim">Pause simulation</span>
+                        <span v-else key="resume_sim">Resume Simulation</span>
+                    </transition>
                 </div>
                 <div v-else-if="(!isInfoboxOpen && hoverOnPlay && isFlightOver && !isMobile)"
                      key="restart"
                      class="hover-text">
-                    restart
+                    Restart
                 </div>
             </transition>
             <b-nav-item @click="toggleAnimation" class="--rounded --play">
@@ -115,6 +118,12 @@ export default {
   },
   methods: {
     toggleWindsPanel() {
+      if (!this.isFlightOver && !this.isPlaying) {
+        this.$store.commit('flightSimulator/setFocusedExplorer', 1);
+        this.$store.commit('flightSimulator/setPlaying', true);
+        setTimeout(() => this.$store.commit('flightSimulator/setFocusedExplorer', 0), 0);
+        this.$store.commit('general/setAltPanel', false);
+      }
       this.$store.commit('general/toggleWindPanel');
     },
     closeWindsPanel() {
@@ -132,6 +141,7 @@ export default {
       } else {
         this.$store.commit('flightSimulator/setPlaying', !this.isPlaying);
       }
+      this.$store.commit('general/setAltPanel', false);
     },
     goMobileOnBoard() {
       this.$store.commit('flightSimulator/setFocusedExplorer', 1);

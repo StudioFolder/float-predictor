@@ -27,7 +27,7 @@
               <div class="date-created">
                 {{getDate(item.created)}}
               </div>
-              <div class="additional-info">
+              <div v-if="item.destination" class="additional-info">
                 <p>Departed from <strong>{{item.departure.city}}</strong>.</p>
                 <p>Arrived within <strong>{{item.min_dist.toLocaleString('en')}}</strong> km
                 of <strong>{{item.destination.city}}</strong>
@@ -36,6 +36,13 @@
                     <strong>{{parseInt(item.distance * 1000).toLocaleString('en')}} km</strong>.
                 </p>
               </div>
+              <div v-else class="additional-info">
+                  <p>Departed from <strong>{{item.departure.city}}</strong>.</p>
+                  <p>Travelled a total of
+                      <strong>{{parseInt(item.distance * 1000).toLocaleString('en')}} km</strong>
+                      in <strong>{{item.min_time}} days</strong>.
+                  </p>
+              </div>
             </div>
           </div>
         </div>
@@ -43,7 +50,7 @@
       <div v-if="!done" class='small-loader'>
         <Loading></Loading>
       </div>
-        <back-to-viz />
+      <back-to-viz />
   </div>
 </template>
 
@@ -117,7 +124,7 @@ export default {
       return moment(dt).format('MMM Do, YYYY');
     },
     getSVGPath(item) {
-      return `http://54.190.63.219/db/svg/${String(item.id)}.svg`;
+      return `http://54.218.125.165/api/svg/${String(item.id)}.svg`;
     },
   },
 };

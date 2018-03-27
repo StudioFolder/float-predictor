@@ -230,8 +230,8 @@ body.modal-open {
 // modal large
 .modal-lg {
   @include down($xlarge) {
-    margin: 0 auto;
-    height: 100%;
+    //margin: 0 auto;
+    //height: 100%;
     .modal-content {
       height: 100%;
       background-color: $lightBlack;

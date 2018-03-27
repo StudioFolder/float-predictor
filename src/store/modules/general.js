@@ -6,6 +6,7 @@ export default {
     transitionMode: '',
     animationHeight: 'normal',
     isChoosingDestination: true,
+    isAltPanelOpen: false,
     webColors: [
       '#003769',
       '#2e6a9c',
@@ -22,6 +23,9 @@ export default {
     deviceName: '', // (small, medium, big) or (phone, tablet, desktop) ???
   },
   mutations: {
+    setAltPanel(state, v) {
+      state.isAltPanelOpen = v;
+    },
     loadingComplete(state) {
       state.isLoading = false;
     },

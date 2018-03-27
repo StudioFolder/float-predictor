@@ -272,21 +272,23 @@ export default {
           pars.layers.wind.mapping = 1.0;
           pars.layers.wind.opacity_mapping = true;
           pars.layers.wind.visible = true;
-          pars.layers.wind.threshold = 25;
-          pars.layers.wind.opacity = 0.9;
-          pars.layers.wind.magnitude = 0.4;
+          pars.layers.wind.threshold = 35;
+          pars.layers.wind.opacity = 1.1;
+          pars.layers.wind.magnitude = 0.8;
           pars.layers.wind.animating = true;
+          pars.layers.wind.animationSpeed = 0.8;
           break;
         case 2: // COLOR animated
           pars.layers.wind.start_color = '#073a9e';
           pars.layers.wind.end_color = '#f80000';
           pars.layers.wind.mapping = 2.0;
           pars.layers.wind.opacity_mapping = true;
-          pars.layers.wind.magnitude = 0.5;
-          pars.layers.wind.threshold = 25;
-          pars.layers.wind.opacity = 0.9;
+          pars.layers.wind.magnitude = 0.8;
+          pars.layers.wind.threshold = 40;
+          pars.layers.wind.opacity = 1.1;
           pars.layers.wind.visible = true;
           pars.layers.wind.animating = true;
+          pars.layers.wind.animationSpeed = 0.8;
           break;
         case 3: // B/W static
           pars.layers.wind.start_color = '#5b5b5b';
@@ -294,9 +296,9 @@ export default {
           pars.layers.wind.mapping = 1.0;
           pars.layers.wind.opacity_mapping = true;
           pars.layers.wind.visible = true;
-          pars.layers.wind.threshold = 25;
-          pars.layers.wind.opacity = 0.4;
-          pars.layers.wind.magnitude = 0.25;
+          pars.layers.wind.threshold = 35;
+          pars.layers.wind.opacity = 1.1;
+          pars.layers.wind.magnitude = 0.4;
           pars.layers.wind.animating = false;
           break;
         case 4: // COLOR static
@@ -304,9 +306,9 @@ export default {
           pars.layers.wind.end_color = '#f80000';
           pars.layers.wind.mapping = 2.0;
           pars.layers.wind.opacity_mapping = true;
-          pars.layers.wind.magnitude = 0.25;
-          pars.layers.wind.threshold = 30;
-          pars.layers.wind.opacity = 0.4;
+          pars.layers.wind.magnitude = 0.4;
+          pars.layers.wind.threshold = 40;
+          pars.layers.wind.opacity = 1.1;
           pars.layers.wind.visible = true;
           pars.layers.wind.animating = false;
           break;

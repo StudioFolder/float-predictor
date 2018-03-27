@@ -19,6 +19,7 @@ export default {
         && !this.$store.state.general.isChoosingDestination
         && !this.$store.state.flightSimulator.autoMode
         && this.$store.state.flightSimulator.visualizationState !== 4
+        && !this.$store.state.general.isWindPanelOpen
         && this.isAnimationActive);
     },
   },

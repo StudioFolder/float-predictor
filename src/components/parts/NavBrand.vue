@@ -2,7 +2,7 @@
     <nav class="nav-brand">
         <router-link to="/flight-simulator">
             <div class="logo">
-                <div class="title">Aerocene</div><div class="subtitle">Float Predictor</div>
+                <img src="~img/float_predictor_logo.svg" alt="logo aerocene float predictor">
             </div>
         </router-link>
         <transition name="fade">
@@ -32,3 +32,18 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+@import "~@/assets/css/_variables_and_mixins.scss";
+.nav-brand {
+    .logo {
+        width: 165px;
+        margin-bottom: 33px;
+        img{
+            max-width: 100%;
+        }
+        @include small_down {
+            width: 120px;
+        }
+    }
+}
+</style>

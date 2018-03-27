@@ -87,6 +87,9 @@ export default {
       if (this.transitionName === 'bottom-to-top') {
         const height = document.querySelector('.bottom-to-top-enter-active article').offsetHeight;
         TweenLite.fromTo(window, this.duration * 2, { scrollTo: height }, { scrollTo: 0 });
+      } else if (this.transitionName === 'fade') {
+        TweenLite.to(window, this.duration, { scrollTo: 0 });
+        this.$store.commit('general/setAnimationHeight', 'small');
       }
     },
     afterEnter() {
@@ -97,7 +100,9 @@ export default {
         this.$store.commit('general/setAnimationHeight', 'normal');
       }
       // for the cases in which this pages are landing pages
-      if (this.$route.name === 'about' || this.$route.name === 'aerocene-explorer') {
+      if (this.$route.name === 'about'
+        || this.$route.name === 'aerocene-explorer'
+        || this.$route.name === 'resources-and-api') {
         this.$store.commit('general/setAnimationHeight', 'small');
         this.$store.commit('flightSimulator/setVisualizationState', 6);
       } else if (this.$route.name === 'gallery') {

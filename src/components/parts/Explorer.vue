@@ -20,7 +20,7 @@
         </svg>
         <transition name="fade">
             <div v-if="(hover && !isFlightOver)" class="hover-text" key="onboard">
-                Go Onboard Sculpture {{explorer}}
+                Board Sculpture {{explorer}}
             </div>
             <div v-else-if="(hover && isFlightOver)" class="hover-text" key="sculpture">
                 Sculpture {{explorer}}
