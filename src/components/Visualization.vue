@@ -1274,7 +1274,7 @@ export default {
       if (this.animating) {
         animator.update(pars.speed_d_x_sec / 60.0);
         if (pars.auto_rotate) {
-          controls.setAzimuthalAngle(controls.getAzimuthalAngle() + 0.002);
+          controls.setAzimuthalAngle(controls.getAzimuthalAngle() - 0.002);
           controls.update();
         }
         if (pars.move_in_time) { this.incrementTime(); }
