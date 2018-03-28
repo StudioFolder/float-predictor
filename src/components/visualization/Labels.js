@@ -15,7 +15,7 @@ class Labels {
     const departureSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20),
       new THREE.MeshBasicMaterial({ color: 0xffffff }));
     scene.add(departureSphere);
-    this.departureLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,1)',
+    this.departureLabel = new THREELabel(scene, camera, 'Colfax-Medium', 8, 'rgba(30,30,30,1)',
       'rgba(255,255,255,1)', departureSphere);
     this.departureLabel.setIcon(document.getElementById('up'));
     this.departureLabel.set('', this.departureLabel.anchorObject.position);
@@ -25,7 +25,8 @@ class Labels {
     const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20),
       new THREE.MeshBasicMaterial({ color: 0xffffff }));
     scene.add(destinationSphere);
-    this.destinationLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
+    this.destinationLabel = new THREELabel(scene, camera, 'Colfax-Medium', 8, 'rgba(30,30,30,1)',
+      'rgba(255,255,255,1)', destinationSphere);
     this.destinationLabel.setIcon(document.getElementById('down'));
     this.destinationLabel.margin = 4;
   }

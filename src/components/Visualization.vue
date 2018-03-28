@@ -205,6 +205,12 @@ export default {
           selected = this.minTrack + 1;
         }
       }
+
+      if (this.visualizationState === STATE_MOVING_TO_DESTINATION ||
+        this.visualizationState === STATE_ANIMATION_END) {
+        this.focusedExplorer = selected;
+      }
+
       if (selected <= 0) {
         labels.daysLabels.setVisible(false);
         _.each(explorers, (e) => {
@@ -800,9 +806,9 @@ export default {
         }
         case STATE_MOVING_TO_DEPARTURE: { // MOVING TO DEPARTURE POINT
           this.clear();
-          labels.departureLabel.set(departure.city, labels.departureLabel.anchorObject.position);
+          labels.departureLabel.set(departure.city, labels.departureLabel.anchorObject.position.clone().multiplyScalar(1.01));
           if (this.flightType === 'planned') {
-            labels.destinationLabel.set(destination.city, labels.destinationLabel.anchorObject.position);
+            labels.destinationLabel.set(destination.city, labels.destinationLabel.anchorObject.position.clone().multiplyScalar(1.01));
           } else {
             labels.destinationLabel.setVisible(false);
           }
@@ -1112,7 +1118,7 @@ export default {
     animate() {
       fps += 1;
       this.windsLoaded = windVisualization.update(pars.elapsed_days);
-      if (this.animating) {
+      if (!this.selecting) {
         animator.update(pars.speed_d_x_sec / 60.0);
         if (pars.auto_rotate) {
           controls.setAzimuthalAngle(controls.getAzimuthalAngle() - 0.002);
@@ -1177,7 +1183,9 @@ export default {
                   // controls.setAzimuthalAngle(rad);
                 }
               }
-              this.incrementTime();
+              if (this.animating) {
+                this.incrementTime();
+              }
             } else {
               this.trajectoryLoaded = false;
             }
