@@ -37,20 +37,20 @@ class WindDataDownloader {
           if (day < 15) {
             this.downloadMultiS(day + 1, url, departure, destination, pressure);
           } else {
-            console.log('Done!');
+            console.log('Wind data download complete');
             if (this.onEndCallback) {
               this.onEndCallback();
             }
           }
         }
       }).catch((r) => {
+        console.log(`Downloader error. ACTIVE: ${this.active}`);
+        console.log(r.message);
         if (this.active) {
           if (this.onErrorCallback) {
             this.onErrorCallback();
           }
         }
-        console.log('Downloader error');
-        console.log(r);
       });
   }
   destroy() {

@@ -1,4 +1,10 @@
+
 /* eslint-disable */
+
+import _ from 'lodash';
+import Util from './Util';
+import THREELabel from './THREELabel';
+
 
 const list = [
 [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
@@ -19,64 +25,79 @@ const list = [
 ,[[],[],[],[{"city": "Anchorage","lat": 61.217,"lng": -149.883},{"city": "Fairbanks","lat": 64.833,"lng": -147.7}],[],[],[{"city": "Yellowknife","lat": 62.45,"lng": -114.4}],[],[],[],[],[{"city": "Iqaluit","lat": 63.75,"lng": -68.517}],[{"city": "Nuuk","lat": 64.167,"lng": -51.75}],[],[],[{"city": "Reykjavík","lat": 64.133,"lng": -21.933}],[],[{"city": "Tórshavn","lat": 62,"lng": -6.783}],[{"city": "Bergen","lat": 60.367,"lng": 5.4}],[],[{"city": "Tampere","lat": 61.5,"lng": 23.75},{"city": "Helsinki","lat": 60.167,"lng": 24.933}],[],[],[],[],[],[{"city": "Norilsk","lat": 69.35,"lng": 88.2}],[],[],[],[{"city": "Yakutsk","lat": 62.033,"lng": 129.733}],[],[],[],[]]
 ,[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[{"city": "Longyearbyen","lat": 78.217,"lng": 15.55}],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
 ];
+/* eslint-enable */
 
-class Cities {
-  decodeHtml(html) {
-    var txt = document.createElement("textarea");
-    txt.innerHTML = html;
-    return txt.value;
-  }
-  getList(){
-    return list;
-  }
-  init(){
-    /*
-    var minLat = 128374973824;
-    var maxLat = -21840978230413;
-    var minLon = 128374973824;
-    var maxLon = -21840978230413;
-    var c=[];
-    for(var y=1;y<18;y+=1){
-      var a = [];
-      for(var x=1;x<36;x+=1) {
-        var startLng=(x-1)*10-180;
-        var endLng=(x)*10-180;
-        var startLat=(y-1)*10-90;
-        var endLat=(y)*10-90;
-        var b = [];
-        for (var i = 0; i < coordinates.length; i++) {
-          if(coordinates[i][1]>=startLat && coordinates[i][1]<endLat &&
-            coordinates[i][0]>=startLng && coordinates[i][0]<endLng){
+const THREE = require('three');
 
-            b.push({'city': this.decodeHtml(cities[i]), 'lat': coordinates[i][1], 'lng': coordinates[i][0]});
+const NUM_LABELS = 12;
+
+class CityLabels {
+  constructor(scene, camera, radius) {
+    this.cityLabels = [];
+    this.rotationIndex = 0;
+    for (let i = 0; i < NUM_LABELS; i += 1) {
+      const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5),
+        new THREE.MeshBasicMaterial({ color: 0xffffff }));
+      scene.add(sphere);
+      const label = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
+      this.cityLabels.push(label);
+    }
+  }
+
+  updatePosition() {
+    _.each(this.cityLabels, (l) => { l.updatePosition(); });
+  }
+
+  setVisible(visible) {
+    _.each(this.cityLabels, (l) => { l.setVisible(visible); });
+  }
+
+  setScale(t) {
+    _.each(this.cityLabels, (l) => { l.setScale(t); });
+  }
+
+  update(position) {
+    const coord = Util.XYZ2LatLon(position);
+    const cities = this.get(coord);
+    for (let i = 0; i < this.cityLabels.length; i += 1) {
+      if (i < cities.length) {
+        this.rotationIndex = this.rotationIndex % this.cityLabels.length;
+        this.cityLabels[this.rotationIndex].setCity(cities[i]);
+        this.rotationIndex += 1;
+      }
+    }
+  }
+
+  static getNormalisedCoordinates(coord) {
+    return {
+      lat: Math.max(0, Math.min(list.length - 1, (coord.lat + 90) / 10)),
+      lng: Math.max(0, Math.min(list[0].length - 1, (((coord.lng) + 180) % 360) / 10)),
+    };
+  }
+
+  get(coord) {
+    this.cityList = [];
+    const c = CityLabels.getNormalisedCoordinates(coord);
+    // console.log(c);
+    const lat = Math.floor(c.lat);
+    const lng = Math.floor(c.lng);
+    if (lat !== this.lastLat || this.lastLng !== lng) {
+      for (let y = Math.max(0, Math.floor(c.lat - 0.5));
+        y <= Math.min(list.length - 1, Math.floor(c.lat + 0.5)); y += 1) {
+        for (let x = Math.max(0, Math.floor(c.lng - 0.5));
+          x <= Math.min(list[y].length - 1, Math.floor(c.lng + 0.5)); x += 1) {
+          for (let i = 0; i < list[y][x].length; i += 1) {
+            //   if(Math.abs(list[lat][lng][i].lng - c.lng) < 5 &&
+            //        Math.abs(list[lat][lng][i].lat - c.lat) < 5) {
+            this.cityList.push(list[y][x][i]);
+            //      }
           }
         }
-        a.push(b);
       }
-      c.push(a);
-    }
-    console.log(c);
-    for (var i = 0; i < coordinates.length; i++) {
-      minLat = Math.min(coordinates[i][0],minLat);
-      maxLat = Math.max(coordinates[i][0],maxLat);
-      minLon = Math.min(coordinates[i][1],minLon);
-      maxLon = Math.max(coordinates[i][1],maxLon);
-    }
-    console.log(minLat + ' ' + maxLat);
-    console.log(minLon + ' ' + maxLon);
-*/
-  }
-  get(coord) {
-    let lat = Math.max(0,Math.min(list.length-1,Math.round((coord.lat + 90) / 10)));
-    let lng = Math.max(0,Math.min(list[0].length-1,Math.round((((coord.lng) + 180) % 360) / 10)));
-    if(lat != this.lastLat || this.lastLng != lng){
-      this.lastLat = lat;
-      this.lastLng = lng;
-      return list[lat][lng];
     }
     this.lastLat = lat;
     this.lastLng = lng;
-    return [];
+    return this.cityList;
   }
 }
-export default new Cities();
+export default CityLabels;
