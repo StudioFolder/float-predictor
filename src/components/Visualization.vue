@@ -1109,8 +1109,13 @@ export default {
       pars.onboard = v;
       this.autoMode = true;
       pars.zoom_enabled = !v;
-      controls.enableZoom = pars.zoom_enabled;
-      controls.enableRotate = pars.zoom_enabled;
+      if (this.visualizationState === STATE_ANIMATION_ACTIVE && v) {
+        controls.enableZoom = pars.zoom_enabled;
+        controls.enableRotate = pars.zoom_enabled;
+      } else {
+        controls.enableZoom = true;
+        controls.enableRotate = true;
+      }
       if (!v) {
         labels.cityLabels.setVisible(v);
       }
