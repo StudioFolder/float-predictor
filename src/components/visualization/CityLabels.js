@@ -38,6 +38,8 @@ class CityLabels {
     this.camera = camera;
     this.scene = scene;
     this.radius = radius;
+    this.fpsCount = 0;
+    this.indexList = [];
     for (let i = 0; i < NUM_LABELS; i += 1) {
       const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5),
         new THREE.MeshBasicMaterial({ color: 0xffffff }));
@@ -60,15 +62,18 @@ class CityLabels {
   }
 
   update(position) {
-    const coord = Util.XYZ2LatLon(position);
-    const cities = this.get(coord);
-    for (let i = 0; i < this.cityLabels.length; i += 1) {
-      if (i < cities.length) {
+    if (this.fpsCount > 30) {
+      const coord = Util.XYZ2LatLon(position);
+      this.get(coord);
+      if (this.cityList.length > 0) {
         this.rotationIndex = this.rotationIndex % this.cityLabels.length;
-        this.cityLabels[this.rotationIndex].setCity(cities[i]);
+        this.cityLabels[this.rotationIndex].setCity(this.cityList[0]);
         this.rotationIndex += 1;
+        this.cityList.shift();
       }
+      this.fpsCount = 0;
     }
+    this.fpsCount += 1;
   }
 
   static getNormalisedCoordinates(coord) {
@@ -79,24 +84,32 @@ class CityLabels {
   }
 
   get(coord) {
-    this.cityList = [];
     const c = CityLabels.getNormalisedCoordinates(coord);
     // console.log(c);
     const lat = Math.floor(c.lat);
     const lng = Math.floor(c.lng);
     if (lat !== this.lastLat || this.lastLng !== lng) {
-      for (let y = Math.max(0, Math.floor(c.lat - 0.5));
-        y <= Math.min(list.length - 1, Math.floor(c.lat + 0.5)); y += 1) {
-        for (let x = Math.max(0, Math.floor(c.lng - 0.5));
-          x <= Math.min(list[y].length - 1, Math.floor(c.lng + 0.5)); x += 1) {
-          for (let i = 0; i < list[y][x].length; i += 1) {
-            //   if(Math.abs(list[lat][lng][i].lng - c.lng) < 5 &&
-            //        Math.abs(list[lat][lng][i].lat - c.lat) < 5) {
-            this.cityList.push(list[y][x][i]);
-            //      }
+      this.cityList = [];
+      const box = {
+        minLat: Math.max(0, Math.floor(c.lat - 0.5)),
+        maxLat: Math.min(list.length - 1, Math.floor(c.lat + 0.5)),
+        minLng: Math.max(0, Math.floor(c.lng - 0.5)),
+        maxLng: Math.min(list[0].length - 1, Math.floor(c.lng + 0.5)),
+      };
+      const tmpIndexList = [];
+      for (let y = box.minLat; y <= box.maxLat; y += 1) {
+        for (let x = box.minLng; x <= box.maxLng; x += 1) {
+          const index = (y * 36) + x;
+          if (this.indexList.indexOf(index) < 0) {
+            // this.cityList.concat(list[y][x]);
+            for (let i = 0; i < list[y][x].length; i += 1) {
+              this.cityList.push(list[y][x][i]);
+            }
+            tmpIndexList.push(index);
           }
         }
       }
+      this.indexList = tmpIndexList;
     }
     this.lastLat = lat;
     this.lastLng = lng;

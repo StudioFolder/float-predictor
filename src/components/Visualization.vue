@@ -485,7 +485,6 @@ export default {
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
               this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
               pars.camera_shift = 0.13 - 0.08 * explorers[this.onboardIndex].animatingSphere.position.distanceTo(camera.position) / 100.0;
-              labels.cityLabels.update(explorers[this.onboardIndex].animatingSphere.position);
             }
           },
           1000,
@@ -1111,6 +1110,7 @@ export default {
       this.autoMode = true;
       pars.zoom_enabled = !v;
       controls.enableZoom = pars.zoom_enabled;
+      controls.enableRotate = pars.zoom_enabled;
       if (!v) {
         labels.cityLabels.setVisible(v);
       }
@@ -1154,6 +1154,7 @@ export default {
               this.trajectoryLoaded = true;
               if (!this.interacting) {
                 if (pars.onboard) {
+                  if (this.animating) labels.cityLabels.update(explorers[this.onboardIndex].animatingSphere.position);
                   const pAlpha = Math.min(1, Math.max(0, alpha - pars.camera_shift));
                   if (explorers[this.onboardIndex].getLength() > 2) {
                     const c = explorers[this.onboardIndex].getPosition(pAlpha);
