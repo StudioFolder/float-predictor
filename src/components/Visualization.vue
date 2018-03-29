@@ -161,6 +161,11 @@ export default {
         this.visualizationState = STATE_INITIAL;
       }
     },
+    autoMode(am) {
+      if (!am) {
+        this.focusedExplorer = 0;
+      }
+    },
     windsLoaded(wl) {
       this.loading = wl * (this.trajectoryLoaded || this.visualizationState !== STATE_ANIMATION_ACTIVE) * this.textureLoaded;
       console.log(this.loading);
@@ -387,11 +392,12 @@ export default {
       }
       let selected = -1;
       _.each(explorers, (e, index) => {
-        if (raycaster.intersectObject(e.animatingSphere).length > 0) {
+        if (raycaster.intersectObject(e.animatingSphere).length > 0 &&
+          e.getDistance() > 0) {
           selected = index;
           this.selecting = true;
           selectSphere.visible = true;
-          selectSphere.position.copy(explorers[selected].animatingSphere.position);// `Explorer ${index + 1} > `, e.animatingSphere.position);
+          selectSphere.position.copy(explorers[selected].animatingSphere.position.clone().multiplyScalar(1.001));// `Explorer ${index + 1} > `, e.animatingSphere.position);
         }
       });
       // if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
@@ -478,6 +484,7 @@ export default {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
               this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
+              pars.camera_shift = 0.13 - 0.08 * explorers[this.onboardIndex].animatingSphere.position.distanceTo(camera.position) / 100.0;
               labels.cityLabels.update(explorers[this.onboardIndex].animatingSphere.position);
             }
           },
@@ -601,6 +608,7 @@ export default {
       controls.zoomSpeed = 0.1;
       controls.enableZoom = pars.zoom_enabled;
       controls.constraint.scene = scene;
+      controls.minDistance = radius * 0.5;
       pars.pixel_ratio = window.devicePixelRatio;
       this.setAntialias(pars.antialias);
 
@@ -653,7 +661,7 @@ export default {
       sunSphere.visible = pars.sun_visible;
       scene.add(sunSphere);
 
-      selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
+      selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.1, transparent: true }));
       scene.add(selectSphere);
 
       // events
@@ -711,7 +719,7 @@ export default {
       onboard.add(pars, 'onboard');
       onboard.add(pars, 'camera_smooth', 0.9, 1);
       onboard.add(pars, 'camera_distance', 1.0, 1.5);
-      onboard.add(pars, 'camera_shift', 0, 0.5);
+      onboard.add(pars, 'camera_shift', 0, 0.5).listen();
       const materialf = gui.addFolder('material');
       const emisphere = gui.addFolder('emisphere');
       const bump = materialf.addFolder('bump');
@@ -806,9 +814,9 @@ export default {
         }
         case STATE_MOVING_TO_DEPARTURE: { // MOVING TO DEPARTURE POINT
           this.clear();
-          labels.departureLabel.set(departure.city, labels.departureLabel.anchorObject.position.clone().multiplyScalar(1.01));
+          labels.departureLabel.set(departure.city, labels.departureLabel.anchorObject.position.clone().multiplyScalar(1.003));
           if (this.flightType === 'planned') {
-            labels.destinationLabel.set(destination.city, labels.destinationLabel.anchorObject.position.clone().multiplyScalar(1.01));
+            labels.destinationLabel.set(destination.city, labels.destinationLabel.anchorObject.position.clone().multiplyScalar(1.003));
           } else {
             labels.destinationLabel.setVisible(false);
           }
@@ -1101,6 +1109,8 @@ export default {
     setOnboard(v) {
       pars.onboard = v;
       this.autoMode = true;
+      pars.zoom_enabled = !v;
+      controls.enableZoom = pars.zoom_enabled;
       if (!v) {
         labels.cityLabels.setVisible(v);
       }
@@ -1159,6 +1169,7 @@ export default {
                       camera.position.y * v + umv * c.y * pars.camera_distance,
                       camera.position.z * v + umv * c.z * pars.camera_distance,
                     );
+                    // camera.position.clampLength(radius * 1.35, radius * 5);
                     controls.target.set(
                       controls.target.x * v + umv * explorers[this.onboardIndex].animatingSphere.position.x,
                       controls.target.y * v + umv * explorers[this.onboardIndex].animatingSphere.position.y,

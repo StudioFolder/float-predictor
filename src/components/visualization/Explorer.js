@@ -93,6 +93,7 @@ class Explorer {
     const t = 0.0;
     switch (s) {
       case Explorer.SELECTED:
+        this.animatingSphereMaterial.opacity = 1;
         this.mesh.visible = true;
         this.segments.visible = true;
         this.line.visible = true;
@@ -101,12 +102,14 @@ class Explorer {
         this.facesMaterial.setOpacity(0.15, t);
         break;
       case Explorer.UNSELECTED:
+        this.animatingSphereMaterial.opacity = 1;
         this.line.visible = true;
         this.lineMaterial.setOpacity(0.25, t);
         this.lineSegmentMaterial.setOpacity(0, t, () => { this.segments.visible = false; });
         this.facesMaterial.setOpacity(0, t, () => { this.mesh.visible = false; });
         break;
       case Explorer.MOVING:
+        this.animatingSphereMaterial.opacity = 1;
         this.line.visible = true;
         this.lineMaterial.setOpacity(1, t);
         this.lineSegmentMaterial.setOpacity(0, t, () => { this.segments.visible = false; });
@@ -116,6 +119,7 @@ class Explorer {
         this.lineMaterial.setOpacity(0, t, () => { this.line.visible = false; });
         this.lineSegmentMaterial.setOpacity(0, t, () => { this.segments.visible = false; });
         this.facesMaterial.setOpacity(0, t, () => { this.mesh.visible = false; });
+        this.animatingSphereMaterial.opacity = 0;
         break;
       default:
         break;
@@ -133,6 +137,10 @@ class Explorer {
     this.animatingSphereMaterial.opacity = 1;
     if (departure) {
       this.animatingSphere.position.set(departure.x, departure.y, departure.z);
+    }
+    for (let i = 0; i < MAX_POINTS; i += 1) {
+      this.distance[i] = 0;
+      this.speed[i] = 0;
     }
     this.lineSegmentMaterial.opacity = 0;
     this.line.geometry.setDrawRange(0, 0);

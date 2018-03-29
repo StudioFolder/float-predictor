@@ -71,7 +71,7 @@
 		},
 		{
 			"start_color": "#073a9e",
-			"end_color": "f80000",
+			"end_color": "#f80000",
 			"mapping": 2.0,
 			"opacity_mapping": true,
 			"magnitude": 0.8,

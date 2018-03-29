@@ -35,6 +35,9 @@ class CityLabels {
   constructor(scene, camera, radius) {
     this.cityLabels = [];
     this.rotationIndex = 0;
+    this.camera = camera;
+    this.scene = scene;
+    this.radius = radius;
     for (let i = 0; i < NUM_LABELS; i += 1) {
       const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5),
         new THREE.MeshBasicMaterial({ color: 0xffffff }));
