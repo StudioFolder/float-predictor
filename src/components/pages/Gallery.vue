@@ -1,6 +1,6 @@
 <template>
   <div id="gallery" class="main-content gallery" v-infinite-scroll="loadMore"
-    infinite-scroll-disabled="busy" infinite-scroll-distance="10">
+       infinite-scroll-disabled="busy" infinite-scroll-distance="10">
       <h1 class="entry-title">Aeroglyphs Archive</h1>
       <h3 class="entry-subtitle">
           Each imaginary Aerocene journey is an air signature we can use to
@@ -17,7 +17,7 @@
         </div>
       </div>
       <div class="path-wrapper">
-        <div class="gallery-item" v-for="item in data" :key="item.id">
+        <div class="gallery-item" v-for="item in flights" :key="item.id">
           <div class="gallery-item-inside">
             <img :src="getSVGPath(item)"/>
             <div class="info">
@@ -47,7 +47,7 @@
           </div>
         </div>
       </div>
-      <div v-if="!done" class='small-loader'>
+      <div v-if="busy" class='small-loader'>
         <Loading></Loading>
       </div>
       <back-to-viz />
@@ -63,62 +63,54 @@ export default {
   name: 'Gallery',
   data() {
     return {
-      data: [],
+      flights: [],
       totalDistance: 0,
       count: 0,
       busy: false,
-      done: false,
       page: 1,
     };
   },
   mounted() {
-    this.init();
+    this.done = false;
+    this.addPage(this.page);
   },
   components: {
     BackToViz,
     Loading,
   },
   methods: {
-    init() {
-      this.done = false;
-      this.addPage(this.page);
-    },
     loadMore() {
-      if (!this.done) {
+      if (!this.busy) {
         this.busy = true;
-        this.page += 1;
-        setTimeout(() => {
-          this.addPage(this.page);
-        }, 1000);
+        this.addPage(this.page);
       }
     },
-    clear() {
-      this.done = false;
-      this.data = [];
-      this.totalDistance = 0;
-      this.count = 0;
-      this.busy = true;
-    },
     addPage(i) {
-      // console.log('Add page ' + i)
       fetch(`http://54.218.125.165/api/gallery.php?page=${String(i)}`, {
         method: 'get',
-      }).then(
-        response => response.json(),
-      ).then((data) => {
-        if (data.flights) {
-          this.data = this.data.concat(data.flights);
-          this.done = true;
-        } else {
-          this.done = true;
-        }
-        if (data.total_distance) {
-          this.totalDistance = data.total_distance;
-        }
-        if (data.count) {
-          this.count = data.count;
-        }
-      });
+      })
+        .then((response) => {
+          if (response.status !== 200) {
+            // eslint-disable-next-line
+            console.log(`Looks like there was a problem. Status Code: ${response.status}`);
+          } else {
+            response.json().then((data) => {
+              if (data.flights) {
+                this.flights = this.flights.concat(data.flights);
+              }
+              if (data.total_distance) {
+                this.totalDistance = data.total_distance;
+              }
+              if (data.count) {
+                this.count = data.count;
+              }
+              this.busy = false;
+              this.page += 1;
+            });
+          }
+        })
+        // eslint-disable-next-line
+        .catch(err => console.log('Fetch Error :-S', err));
     },
     getDate(dt) {
       return moment(dt).format('MMM Do, YYYY');
