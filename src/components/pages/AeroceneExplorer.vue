@@ -33,13 +33,15 @@
                         <img srcset="~img/gemini-free-flight_27-aug-2016_01_web.jpg 1400w,
                                 ~img/gemini-free-flight_27-aug-2016_01_mobile.jpg 800w"
                              sizes="(max-width: 540px) 800px, 1400px"
-                             alt="">
+                             alt=""
+                             height="378px">
                     </div>
                     <div class="img-wrapper">
                         <img srcset="~img/gemini-free-flight_27-aug-2016_02_web.jpg 1400w,
                                 ~img/gemini-free-flight_27-aug-2016_02_mobile.jpg 800w"
                              sizes="(max-width: 540px) 800px, 1400px"
-                             alt="">
+                             alt=""
+                             height="378px">
                     </div>
                     <figcaption> <a target="_blank" href="http://aerocene.org/aug-27-schoenfelde-germany">Aerocene
                         Gemini Free Float</a>, August 27th, 2016. Two Aerocene Sculptures (a Gemini
@@ -78,6 +80,8 @@ export default {
       upperHeight: 0,
     };
   },
+  computed: {
+  },
   created() {
     this.$store.commit('flightSimulator/setVisualizationState', 6);
   },
@@ -88,7 +92,7 @@ export default {
 </script>
 <style lang="scss">
     @import "~css/_variables_and_mixins.scss";
-.img-wrapper img{
+.img-wrapper {
     height: 378px;
     @include medium_down {
         height: 190px;
