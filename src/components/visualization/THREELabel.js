@@ -68,8 +68,10 @@ class THREELabel {
   }
 
   redraw() {
+    // this.texture.anisotropy = 0;
+    // this.texture.magFilter = THREE.NearestFilter;
+    this.texture.minFilter = THREE.NearestFilter;
     this.context.font = `${this.fontSize}px ${this.fontFace}`;
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     const metrics = this.context.measureText(this.text);
     const textWidth = metrics.width;
     this.h = this.fontSize * antialias + this.padding.top + this.padding.bottom;
@@ -137,7 +139,7 @@ class THREELabel {
       const angle = this.camera.position.angleTo(this.anchorObject.position);
       let limit = 1.1;
       if (onboard) {
-        limit = 0.9;
+        limit = 0.8;
       }
       if (Math.abs(angle) < limit) {
         this.sprite.visible = true;

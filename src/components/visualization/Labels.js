@@ -33,11 +33,11 @@ class Labels {
 
   update(onboard = false) {
     if (onboard) {
-      this.cityLabels.updatePosition();
+      this.cityLabels.updatePosition(onboard);
     }
-    this.daysLabels.updatePosition();
-    this.destinationLabel.updatePosition();
-    this.departureLabel.updatePosition();
+    this.daysLabels.updatePosition(onboard);
+    this.destinationLabel.updatePosition(onboard);
+    this.departureLabel.updatePosition(onboard);
   }
 
   setVisible(v) {

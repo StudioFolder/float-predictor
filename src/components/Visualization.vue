@@ -1135,7 +1135,7 @@ export default {
       this.windsLoaded = windVisualization.update(pars.elapsed_days);
       if (!this.selecting) {
         animator.update(pars.speed_d_x_sec / 60.0);
-        if (pars.auto_rotate) {
+        if (pars.auto_rotate && this.animating) {
           controls.setAzimuthalAngle(controls.getAzimuthalAngle() - 0.002);
         }
         if (pars.move_in_time) { this.incrementTime(); }
