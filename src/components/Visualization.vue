@@ -5,6 +5,7 @@
     <img id="up" src="../assets/icons/departure_arrow_up.svg"/>
     <div id="labels"></div>
     <Loading v-if="(loading < 1.0 || saving)"></Loading>
+    <canvas id="labels-canvas"></canvas>
   </div>
 </template>
 <script>
@@ -168,15 +169,15 @@ export default {
     },
     windsLoaded(wl) {
       this.loading = wl * (this.trajectoryLoaded || this.visualizationState !== STATE_ANIMATION_ACTIVE) * this.textureLoaded;
-      console.log(this.loading);
+      // console.log(this.loading);
     },
     textureLoaded(tl) {
       this.loading = this.windsLoaded * (this.trajectoryLoaded || this.visualizationState !== STATE_ANIMATION_ACTIVE) * tl;
-      console.log(this.loading);
+      // console.log(this.loading);
     },
     trajectoryLoaded(tl) {
       this.loading = this.windsLoaded * (tl || this.visualizationState !== STATE_ANIMATION_ACTIVE) * this.textureLoaded;
-      console.log(this.loading);
+      // console.log(this.loading);
     },
     playing(p) {
       if (p) {
@@ -1235,13 +1236,32 @@ export default {
 
       // Saving after rendering
       if (this.saving) {
+        const canvasLabel = document.getElementById('labels-canvas');
+        const saveCanvas = document.createElement('canvas');
+        const saveContext = saveCanvas.getContext('2d');
+        saveCanvas.width = renderer.domElement.width;
+        saveCanvas.height = renderer.domElement.height;
+
+        saveContext.drawImage(renderer.domElement, 0, 0,
+          saveCanvas.width, saveCanvas.height);
+        saveContext.drawImage(canvasLabel, 0, 0,
+          saveCanvas.width, saveCanvas.height);
+
+
+        saveCanvas.toBlob((blob) => {
+          saveAs(blob, 'image.png');
+          this.saving = false;
+          requestAnimationFrame(this.animate);
+        });
+        /*
         renderer.domElement.toBlob(
           (blob) => {
+            console.log(blob);
             saveAs(blob, 'image.png');
-            this.saving = false;
-            requestAnimationFrame(this.animate);
+            console.log('after');
           },
         );
+        */
         return;
       }
       if (this.alive) { // Needed for hot reload
@@ -1285,7 +1305,8 @@ export default {
         (data) => { // ON UPDATE
           if (data.mindist < this.minDist) {
             this.minDist = Math.round(data.mindist);
-            this.minTime = Math.round(data.mintime);
+            this.minTime = Math.round(data.mintime) - data.mintrack;
+            console.log(`min time ${this.minTime}`);
             this.minTrack = data.mintrack;
           }
           this.api_data.push(data.d);
@@ -1398,7 +1419,7 @@ export default {
           this.previousTrajectoryData = s;
         },
         (e) => { // ON ERROR
-          console.log(e.message);
+          console.log(e);
           this.error();
         },
       );
@@ -1484,5 +1505,16 @@ export default {
 }
 .dg.main .close-button.close-bottom {
   color: black;
+}
+#labels-canvas {
+  pointer-events: none;
+  user-select: none;
+  background:transparent;
+  z-index:100000000;
+  width:100%;
+  height:100%;
+  position:absolute;
+  left:0px;
+  top:0px;
 }
 </style>

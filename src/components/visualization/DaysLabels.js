@@ -15,7 +15,7 @@ class DaysLabels {
       const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5),
         new THREE.MeshBasicMaterial({ color: 0xffffff }));
       scene.add(sphere);
-      const label = new THREELabel(scene, camera, 'Colfax-Medium', 8, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
+      const label = new THREELabel(scene, camera, 'Colfax-Medium', 11, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
       this.daysLabels.push(label);
     }
   }
