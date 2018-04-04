@@ -227,6 +227,7 @@ export default {
         this.focusedExplorerDistance = explorers[selected - 1].getDistance().toFixed(0);
         this.focusedExplorerAltitude = (explorers[selected - 1].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
         labels.daysLabels.show(selected - 1, explorers);
+        labels.update(pars.onboard);
         _.each(explorers, (e, index) => {
           if (index === selected - 1) {
             e.setStyle(Explorer.SELECTED);
@@ -847,6 +848,7 @@ export default {
             },
           });
           labels.daysLabels.show(this.minTrack, explorers);
+          labels.update(pars.onboard);
           break;
         }
         case STATE_ANIMATION_END: {
