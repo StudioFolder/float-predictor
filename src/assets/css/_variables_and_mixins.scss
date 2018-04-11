@@ -60,12 +60,12 @@ $img-base-path: '../../../static/img/' !default;
 
 /* Media Query Mixins */
 @mixin up($breakpoint) {
-  @media screen and (min-width: $breakpoint) {
+  @media screen and (min-width: $breakpoint +1) {
     @content;
   }
 }
 @mixin down($breakpoint) {
-  @media screen and (max-width: $breakpoint - 1) {
+  @media screen and (max-width: $breakpoint) {
     @content;
   }
 }

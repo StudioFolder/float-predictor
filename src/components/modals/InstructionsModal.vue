@@ -25,6 +25,7 @@ $lateralSpaceMobile: .5rem;
         max-width: 1024px;
         @include medium_down {
             margin: 0;
+            height: 100%;
         }
         .modal-content {
             height: calc(100vh - 2*#{$marginBase});
@@ -70,6 +71,9 @@ $lateralSpaceMobile: .5rem;
             display: flex;
             flex-flow: column;
             justify-content: center;
+            @include medium_down {
+                height: unset;
+            }
             .animation {
                 max-height: 100%;
                 max-width: 100%;
