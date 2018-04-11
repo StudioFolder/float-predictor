@@ -35,6 +35,11 @@ article, .page-modal {
   .entry-body {
     figure {
       position: relative;
+      margin: 2em 0 0 0;
+      .img-wrapper {
+        margin-bottom: 20px;
+        text-align: center;
+      }
       @include medium_up {
         margin: 2em -3rem;
         .img-wrapper {

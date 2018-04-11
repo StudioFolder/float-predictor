@@ -230,7 +230,7 @@ body.upper-content {
   position: fixed;
   top: 0;
   right: 0;
-  height: 100vh;
+  height: 100%;
   width: auto;
   max-width: 332px;
   display: flex;
@@ -299,12 +299,6 @@ body.upper-content {
     }
     .menu-section {
       padding: .75rem 0;
-      @media screen and (min-height: 991px) {
-        padding: 1.8rem 0 .75rem;
-      }
-      @media screen and (max-height: 600px) {
-        padding: 0 0 .75rem;
-      }
     }
     .menu-item.--nav,
     .menu-item.--link {
@@ -380,6 +374,23 @@ body.upper-content {
     height: 100%;
     &.fp-no-wind {
       width: 100%;
+    }
+  }
+}
+.main-nav{
+// mobile
+  @media screen and (min-height: 991px) {
+    .body {
+      .menu-section {
+        padding: 1.8rem 0 .75rem;
+      }
+    }
+  }
+  @media screen and (max-height: 600px) {
+    .body {
+      .menu-section {
+        padding: 0 0 .75rem;
+      }
     }
   }
 }

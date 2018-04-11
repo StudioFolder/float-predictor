@@ -127,7 +127,6 @@ export default {
   methods: {
     onSubmit(e) {
       e.preventDefault();
-      // this.upperHeight = 0;
       this.validateForm()
         .then(() => {
           this.form.errors = {}; // reset previous errors
@@ -172,7 +171,7 @@ export default {
     },
   },
   mounted() {
-    this.upperHeight = (this.$refs.content) ? `${this.$refs.content.clientHeight + 100}px` : 0;
+    this.upperHeight = (this.$refs.content) ? `${this.$refs.content.clientHeight + 80}px` : 0;
   },
 };
 </script>
@@ -196,7 +195,7 @@ export default {
     @include medium_down {
         width: auto;
         padding: $marginMobile*2/3;
-        height: calc(100vh - 80px - #{$marginMobile});
+        // height: calc(100vh - 80px - #{$marginMobile});
         margin: 80px $marginMobile $marginMobile;
         background: $lightBlack;
         form {

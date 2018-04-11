@@ -143,11 +143,33 @@ export default {
             left: 0;
             box-shadow: none;
             .header {
-                background: linear-gradient(to top,
-                        rgba(0,0,0,.98) 0%,
-                        rgba(0,0,0,.58) 38%,
-                        rgba(0,0,0,.1) 80%,
-                        rgba(0,0,0,.0)) 100%;
+                /*background: linear-gradient(to bottom,*/
+                        /*rgba(0,0,0,.98) 0%,*/
+                        /*rgba(0,0,0,.58) 38%,*/
+                        /*rgba(0,0,0,.1) 80%,*/
+                        /*rgba(0,0,0,.0)) 100%;*/
+                /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#000000+0,000000+100&0+0,1+100 */
+                background: -moz-linear-gradient(
+                                top,
+                                rgba(0,0,0,0) 0%,
+                                rgba(0,0,0,1) 100%
+                ); /* FF3.6-15 */
+                background: -webkit-linear-gradient(
+                                top,
+                                rgba(0,0,0,0) 0%,
+                                rgba(0,0,0,1) 100%
+                ); /* Chrome10-25,Safari5.1-6 */
+                background: linear-gradient(
+                                to bottom,
+                                rgba(0,0,0,0) 0%,
+                                rgba(0,0,0,1) 100%
+                ); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+                filter: progid:DXImageTransform.Microsoft.gradient(
+                                startColorstr='#00000000',
+                                endColorstr='#000000',
+                                GradientType=0
+                ); /* IE6-9 */
+
                 color: #FFF;
                 display: flex;
                 flex-flow: row;

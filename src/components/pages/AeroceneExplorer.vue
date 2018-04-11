@@ -34,14 +34,14 @@
                                 ~img/gemini-free-flight_27-aug-2016_01_mobile.jpg 800w"
                              sizes="(max-width: 540px) 800px, 1400px"
                              alt=""
-                             height="378px">
+                             :height=imgHeight>
                     </div>
                     <div class="img-wrapper">
                         <img srcset="~img/gemini-free-flight_27-aug-2016_02_web.jpg 1400w,
                                 ~img/gemini-free-flight_27-aug-2016_02_mobile.jpg 800w"
                              sizes="(max-width: 540px) 800px, 1400px"
                              alt=""
-                             height="378px">
+                             :height=imgHeight>
                     </div>
                     <figcaption> <a target="_blank" href="http://aerocene.org/aug-27-schoenfelde-germany">Aerocene
                         Gemini Free Float</a>, August 27th, 2016. Two Aerocene Sculptures (a Gemini
@@ -78,24 +78,24 @@ export default {
   data() {
     return {
       upperHeight: 0,
+      imgHeight: 0,
     };
   },
   computed: {
   },
   created() {
     this.$store.commit('flightSimulator/setVisualizationState', 6);
+    if (window.matchMedia('(max-width: 424px)').matches) {
+      this.imgHeight = '150px';
+    } else if (window.matchMedia('(max-width: 767px)').matches) {
+      /* the viewport is less than 400 pixels wide */
+      this.imgHeight = '200px';
+    } else {
+      this.imgHeight = '378px';
+    }
   },
   mounted() {
     this.upperHeight = `${this.$refs.content.clientHeight}px`;
   },
 };
 </script>
-<style lang="scss">
-    @import "~css/_variables_and_mixins.scss";
-.img-wrapper {
-    height: 378px;
-    @include medium_down {
-        height: 190px;
-    }
-}
-</style>
