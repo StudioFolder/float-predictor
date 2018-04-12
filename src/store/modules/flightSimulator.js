@@ -9,6 +9,7 @@ export default {
     isSaving: false, // saving true sve image then sets to false
     loading: 0, // percentage of loading assets. Value in range [0-1].
     winds: 0, // 0 = none, 1 = B/W, 2 = Color
+    guiVisible: false,
     selectedExplorer: 0,
     focusedExplorer: 0, // this is for onBoardExperience, if 0 none is focused
     focusedExplorerSpeed: 0, // onBoard data
@@ -40,6 +41,9 @@ export default {
     },
     setActive(state, active) {
       state.isActive = active;
+    },
+    setGUIVisible(state, visible) {
+      state.guiVisible = visible;
     },
     saveImage(state) { // the image will be saved after the next rendering
       state.isSaving = true;

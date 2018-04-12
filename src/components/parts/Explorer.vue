@@ -70,6 +70,7 @@ export default {
       this.$store.commit('flightSimulator/setFocusedExplorer', this.explorer);
       this.$store.commit('flightSimulator/setPlaying', true);
       if (this.isFlightOver) {
+        this.hightlightedExplorer = this.explorer;
         this.$store.commit('flightSimulator/setSelectedExplorer', this.explorer);
       }
     },
@@ -77,6 +78,7 @@ export default {
       this.hover = true;
       this.$store.commit('flightSimulator/setSelectedExplorer', this.explorer);
       if (this.isFlightOver) {
+        this.hightlightedExplorer = this.$store.state.flightSimulator.focusedExplorer;
         this.$store.commit('flightSimulator/setFocusedExplorer', this.explorer);
       }
     },
@@ -84,6 +86,9 @@ export default {
       this.hover = false;
       if (!this.isFlightOver) {
         this.$store.commit('flightSimulator/setSelectedExplorer', 0);
+      } else {
+        this.$store.commit('flightSimulator/setSelectedExplorer', this.hightlightedExplorer);
+        this.$store.commit('flightSimulator/setFocusedExplorer', this.hightlightedExplorer);
       }
     },
   },

@@ -76,6 +76,9 @@ export default {
         this.textureLoaded >= 1 && this.windsLoaded && (!this.selecting ||
           this.visualizationState !== STATE_ANIMATION_ACTIVE);
     },
+    guiVisible() {
+      return this.$store.state.flightSimulator.guiVisible;
+    },
     focusedExplorer: {
       get() { return this.$store.state.flightSimulator.focusedExplorer; },
       set(fe) { this.$store.commit('flightSimulator/setFocusedExplorer', fe); },
@@ -154,6 +157,9 @@ export default {
     },
   },
   watch: {
+    guiVisible(gv) {
+      if (gv) this.addDebugTools();
+    },
     active(isActive) {
       if (isActive) {
         this.visualizationState = STATE_INITIAL;
@@ -326,7 +332,9 @@ export default {
         allExplorers = [];
         explorerHS = [0, 0, 0, 0, 0, 0, 0, 0];
         this.initVis();
-        this.addDebugTools();
+        if (this.guiVisible) {
+          this.addDebugTools();
+        }
       });
   },
 
@@ -403,7 +411,7 @@ export default {
         }
       });
       // if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
-      this.selectedExplorer = selected + 1;
+      if (this.selecting) this.selectedExplorer = selected + 1;
       // }
     },
 
@@ -436,7 +444,7 @@ export default {
             const diff = now - this.lastCheck;
             this.lastCheck = now;
             if (Math.abs(diff - 1000) < 10 && fps > 5 && document.hasFocus()) { // IF IT WAS 1 sec
-              if (60 - fps > 6) {
+              if (60 - fps > 10) {
                 this.lowFPS -= 1;
                 this.highFPS = 0;
                 if (this.lowFPS <= 0) {
@@ -446,6 +454,7 @@ export default {
                   } else if (renderer === rendererAA) {
                     this.setAntialias(false);
                   } else {
+                    /*
                     const lpr = pars.pixel_ratio;
                     if (fps < 40) {
                       pars.pixel_ratio = Math.max(1, pars.pixel_ratio - 1.0);
@@ -456,6 +465,7 @@ export default {
                       renderer.setPixelRatio(pars.pixel_ratio);
                       // console.log(`--------------------------------- Setting PixelRatio to ${pars.pixel_ratio}`);
                     }
+                    */
                   }
                   this.lowFPS = COUNTDOWN;
                 }
@@ -799,10 +809,18 @@ export default {
     },
 
     addDebugTools() {
-      // eslint-disable-next-line
-      const GUI = require('../../custom_modules/dat.gui/build/dat.gui.min.js').GUI;
-      gui = new GUI({ width: 400 });
-      this.initGUI();
+      if (!this.guiLoaded) {
+        // eslint-disable-next-line
+        const GUI = require('../../custom_modules/dat.gui/build/dat.gui.min.js').GUI;
+        gui = new GUI({ width: 400 });
+        gui.domElement.id = 'gui';
+        gui.domElement.style.left = '10px';
+        gui.domElement.style.top = '0px';
+        gui.domElement.style.position = 'absolute';
+        console.log('GUI VISIBLE');
+        this.initGUI();
+      }
+      this.guiLoaded = true;
     },
 
     setState(state) {
@@ -1308,7 +1326,6 @@ export default {
           if (data.mindist < this.minDist) {
             this.minDist = Math.round(data.mindist);
             this.minTime = Math.round(data.mintime) - data.mintrack;
-            console.log(`min time ${this.minTime}`);
             this.minTrack = data.mintrack;
           }
           this.api_data.push(data.d);

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import store from '@/store/index';
 import Router from 'vue-router';
 import HomePage from 'Pages/HomePage';
+import GUI from 'Pages/GUI';
 import TestInterface from 'Components/visualization/TestInterface';
 
 import Gallery from 'Pages/Gallery';
@@ -19,6 +20,15 @@ const router = new Router({
       path: '/',
       name: 'home-page',
       component: HomePage,
+      meta: {
+        bodyClass: 'home no-scroll',
+        position: 'middle',
+      },
+    },
+    {
+      path: '/gui',
+      name: 'gui',
+      component: GUI,
       meta: {
         bodyClass: 'home no-scroll',
         position: 'middle',
