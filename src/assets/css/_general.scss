@@ -36,7 +36,7 @@ body {
     .main-application {
       &.choosing-destination {
         .main-content.over {
-          position: relative;
+          //position: relative;
         }
         @include medium_down {
           .router-view {
@@ -44,9 +44,10 @@ body {
             top: 0;
             width: 100%;
             height: 100%;
-            display: flex;
+            padding-top: 60px;
+            //display: flex;
             //justify-content: center;
-            align-items: center;
+            //align-items: center;
           }
         }
       }
@@ -101,6 +102,9 @@ body.flight-simulator .main-application:not(.choosing-destination){
     border-radius: 4px;
     background-color: transparent;
     color: #fff;
+    max-width: 150px;
+    margin-left: auto;
+    margin-right: auto;
 
     &:not(:disabled):hover, &:not(:disabled):active {
       background-color: #FFF;
@@ -221,7 +225,7 @@ body.modal-open {
   border-top-right-radius: 0;
 }
 .modal-dialog {
-  @include medium_down {
+  @include small_down {
     margin: 0;
   }
 }
@@ -277,12 +281,12 @@ body.modal-open {
   }
   .modal-body {
     padding: $marginBase;
-    @include medium_down {
+    @include small_down {
       padding:$marginItem;
     }
   }
   .modal-header {
-    @include medium_down {
+    @include small_down {
       padding: .8rem $marginMobile;
     }
   }

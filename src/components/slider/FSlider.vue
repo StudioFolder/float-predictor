@@ -10,6 +10,7 @@
                 :paragraphs="paragraphs"
                 :currentSlide="currentSlide"
                 :currentIndex="currentIndex" />
+        <i class="fp fp-caret-down"></i>
     </div>
 </template>
 
@@ -124,6 +125,7 @@ export default {
 .f-slider.instructions-slider {
     position: relative;
     display: flex;
+    flex-flow: row wrap;
     max-width: 100%;
     height: 100%;
     flex-flow: row;
@@ -152,6 +154,7 @@ export default {
     }
     .f-slider-wrapper {
         flex: 1 1 100%;
+        width: 100%;
         overflow: hidden;
         position: relative;
         padding-right: 2rem;
@@ -171,6 +174,24 @@ export default {
         .f-slide {
             height: 100%;
         }
+    }
+    .fp-caret-down {
+        position: absolute;
+        bottom: -25px;
+        left: 50%;
+        animation: pulse .4s 1s;
+        @include medium_down {
+            bottom: -20px;
+        }
+        @include small_down {
+            display: none;
+        }
+    }
+    @keyframes pulse {
+        0% {transform: translateY(0)}
+        10% {transform: translateY(-4px)}
+        50% {transform: translateY(10px)}
+        100% {transform: translateY(0)}
     }
 }
 </style>

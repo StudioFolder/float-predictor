@@ -1,6 +1,7 @@
 <template>
     <div class="f-slider-nav">
         <div class="f-bullet-pagination paragraph paragraph-1">
+            <span v-if="currentParagraph!==1" class="nav-over-text">1. Becoming aerosolar</span>
             <bullet-nav v-for="(slide, i) in paragraphs[0]"
                 :key="i"
                 :i="i"
@@ -11,7 +12,8 @@
                 @navSelectSlide="onNavSelectSlide">
             </bullet-nav>
         </div>
-        <div class="f-bullet-pagination paragraph paragraph-1">
+        <div class="f-bullet-pagination paragraph paragraph-2">
+            <span v-if="currentParagraph!==2" class="nav-over-text">2. Starting a journey</span>
             <bullet-nav v-for="(slide, i) in paragraphs[1]"
                         :key="i"
                         :i="i"
@@ -22,7 +24,8 @@
                         @navSelectSlide="onNavSelectSlide">
             </bullet-nav>
         </div>
-        <div class="f-bullet-pagination paragraph paragraph-1">
+        <div class="f-bullet-pagination paragraph paragraph-3">
+            <span v-if="currentParagraph!==3" class="nav-over-text">3. Saving an aeroglyph</span>
             <bullet-nav v-for="(slide, i) in paragraphs[2]"
                         :key="i"
                         :i="i"
@@ -87,10 +90,32 @@ export default {
                 background-color: #FFF;
             }
         }
+        .nav-over-text {
+            display: none;
+        }
         &:after {
             content: '';
             display: table;
             clear: both;
+        }
+    }
+    @include medium_up {
+        .f-bullet-pagination {
+            .nav-over-text {
+                opacity: 0;
+                visibility: hidden;
+                display: block;
+                transition: opacity .3s;
+                font-size: .8em;
+                position: absolute;
+                right: -9px;
+                top: -4px;
+                min-width: 100px;
+            }
+            &:hover .nav-over-text {
+                opacity: 1;
+                visibility: visible;
+            }
         }
     }
 }

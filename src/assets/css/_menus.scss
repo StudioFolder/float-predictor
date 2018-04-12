@@ -237,7 +237,7 @@ body.upper-content {
   flex-flow: column;
   z-index: 50;
   overflow: scroll;
-  @include medium_down {
+  @include small_down {
     padding: $marginMobile $marginMobile $marginMobile/2 $marginMobile;
     width: 100%;
     overflow: scroll;

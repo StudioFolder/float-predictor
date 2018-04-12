@@ -213,7 +213,7 @@ export default {
         }
     }
     @include small_down {
-        margin: 80px $marginMobile $marginMobile;
+        margin: 40px $marginMobile $marginMobile;
     }
     p {
         font-size: .85em;

@@ -31,7 +31,7 @@ export default {
     @include large_down {
         position: fixed;
         top: 0;
-        height: 80px;
+        height: 75px;
         width: 100%;
         &.is-onboard {
             display: none;

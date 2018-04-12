@@ -114,3 +114,8 @@ article, .page-modal {
     }
   }
 }
+.page-modal .entry-body {
+  @include medium_down {
+    padding-top: 30px;
+  }
+}
