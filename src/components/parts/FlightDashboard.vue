@@ -11,7 +11,7 @@
             <transition name="fade">
                 <winds-panel v-if="(isWindsPanelOpen && !isMobile)" />
                 <span class="mobile-winds-panel"
-                      v-else-if="(isWindsPanelOpen && !isFlightOver && isMobile)">
+                      v-else-if="(isWindsPanelOpen && isFlightOver && isMobile)">
                     <b-nav-item @click="toggleWinds(2)" class="--rounded" v-if="winds!==2">
                         <i class="fp fp-winds-en"></i>
                     </b-nav-item>
@@ -47,8 +47,19 @@
             </transition>
             <b-nav-item @click="toggleAnimation" class="--rounded --play">
                 <svg>
-                    <circle class="progress" :style="{ strokeDasharray: dashArray }"></circle>
-                    <circle class="baseline"></circle>
+                    <circle
+                            class="progress"
+                            cx="50%"
+                            cy="50%"
+                            r="18px"
+                            :stroke-dasharray="dashArray">
+                    </circle>
+                    <circle
+                            cx="50%"
+                            cy="50%"
+                            r="16px"
+                            class="baseline">
+                    </circle>
                 </svg>
                 <transition name="fade-icon" mode="out-in">
                     <i key="play" v-if="!isFlightOver"
@@ -138,6 +149,7 @@ export default {
         this.$store.dispatch('flightSimulator/resetVisualization');
         this.$store.commit('flightSimulator/setVisualizationState', 8);
         this.$store.commit('general/setFormStatus', true);
+        this.$store.commit('general/setModalShow', true);
       } else {
         this.$store.commit('flightSimulator/setPlaying', !this.isPlaying);
       }
@@ -320,6 +332,7 @@ export default {
                 fill: transparent;
                 &.progress {
                     stroke-width: 2;
+                    stroke-dashoffset: 1px;
                     r: $r;
                     stroke: $gray;
                     transition: stroke-dasharray $speed;

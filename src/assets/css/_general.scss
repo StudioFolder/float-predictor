@@ -34,12 +34,10 @@ body {
   }
   &.flight-simulator {
     .main-application {
-      .main-content.over {
-        @include medium_down {
+      &.choosing-destination {
+        .main-content.over {
           position: relative;
         }
-      }
-      &.choosing-destination {
         @include medium_down {
           .router-view {
             position: absolute;

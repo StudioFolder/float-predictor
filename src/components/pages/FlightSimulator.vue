@@ -172,6 +172,12 @@ export default {
   },
   mounted() {
     this.upperHeight = (this.$refs.content) ? `${this.$refs.content.clientHeight + 80}px` : 0;
+    /**
+     * check if mobile and toggle full screen
+     */
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      window.scrollTo(0, 1);
+    }
   },
 };
 </script>
@@ -196,14 +202,18 @@ export default {
         width: auto;
         padding: $marginMobile*2/3;
         // height: calc(100vh - 80px - #{$marginMobile});
-        margin: 80px $marginMobile $marginMobile;
+        margin: 80px auto $marginMobile;
         background: $lightBlack;
+        max-width: 500px;
         form {
             height: 100%;
             display: flex;
             flex-flow: column;
             justify-content: space-evenly;
         }
+    }
+    @include small_down {
+        margin: 80px $marginMobile $marginMobile;
     }
     p {
         font-size: .85em;

@@ -132,7 +132,11 @@
                 </p>
             </transition>
             <p class="small data-credits">
-                Data source: <a href="https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs">GFS</a>
+                Data source:
+                <a target="_blank"
+                    href="https://www.ncdc.noaa.gov/data-access/model-data/model-datasets/global-forcast-system-gfs">
+                    GFS
+                </a>
             </p>
         </div>
     </div>
@@ -148,6 +152,14 @@ export default {
       },
       set(v) {
         this.$store.commit('general/setAltPanel', v);
+      },
+    },
+    isInfoBoxOpen: {
+      get() {
+        return this.$store.state.general.isInfoBoxOpen;
+      },
+      set(v) {
+        this.$store.commit('general/setInfoBox', v);
       },
     },
     isOn: {
@@ -242,6 +254,9 @@ export default {
       } else {
         this.$store.commit('flightSimulator/setPlaying', false);
         this.isAltPanelOpen = true;
+      }
+      if (this.isInfoBoxOpen) {
+        this.isInfoBoxOpen = false;
       }
     },
     setAltitude(alt) {

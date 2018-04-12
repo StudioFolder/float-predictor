@@ -104,12 +104,15 @@ import moment from 'moment';
 
 export default {
   name: 'modal-winner-explorer',
-  data() {
-    return {
-      modalShow: true,
-    };
-  },
   computed: {
+    modalShow: {
+      get() {
+        return this.$store.state.general.modalShow;
+      },
+      set(v) {
+        this.$store.commit('general/setModalShow', v);
+      },
+    },
     isPlannedFlight() {
       return this.$store.state.flightSimulator.flightType === 'planned';
     },

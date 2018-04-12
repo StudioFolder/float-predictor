@@ -16,6 +16,14 @@ export default {
       upperHeight: 0,
     };
   },
+  mounted() {
+    /**
+     * check if mobile and toggle full screen
+     */
+    if (window.matchMedia('(max-width: 767px)').matches) {
+      window.scrollTo(0, 1);
+    }
+  },
   methods: {
     startAction() {
       this.$store.commit('general/closeMenu');

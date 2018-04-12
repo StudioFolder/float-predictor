@@ -21,8 +21,12 @@ export default {
     isInfoBoxOpen: false,
     isWindPanelOpen: false,
     deviceName: '', // (small, medium, big) or (phone, tablet, desktop) ???
+    modalShow: false,
   },
   mutations: {
+    setModalShow(state, v) {
+      state.modalShow = v;
+    },
     setAltPanel(state, v) {
       state.isAltPanelOpen = v;
     },
@@ -44,7 +48,16 @@ export default {
     toggleInfoBox(state) {
       state.isInfoBoxOpen = !state.isInfoBoxOpen;
     },
+    setInfoBox(state, v) {
+      state.isInfoBoxOpen = v;
+    },
+    setWindPanel(state, v) {
+      state.isWindPanelOpen = v;
+    },
     toggleWindPanel(state) {
+      if (!state.isWindPanelOpen && state.isInfoBoxOpen) {
+        state.isInfoBoxOpen = false;
+      }
       state.isWindPanelOpen = !state.isWindPanelOpen;
     },
     closeMenu(state) {

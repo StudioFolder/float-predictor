@@ -46,13 +46,33 @@ export default {
     isAnimationActive() {
       return (this.$store.state.flightSimulator.isActive && this.$route.name === 'flight-simulator');
     },
-    isInfoBoxOpen() {
-      return this.$store.state.general.isInfoBoxOpen;
+    isWindPanelOpen: {
+      get() {
+        return this.$store.state.general.isWindPanelOpen;
+      },
+      set(v) {
+        this.$store.commit('general/setWindPanel', v);
+      },
+    },
+    isInfoBoxOpen: {
+      get() {
+        return this.$store.state.general.isInfoBoxOpen;
+      },
+      set(v) {
+        this.$store.commit('general/setInfoBox', v);
+      },
     },
   },
   methods: {
     toggleInfoBox() {
-      this.$store.commit('general/toggleInfoBox');
+      if (this.isInfoBoxOpen) {
+        this.isInfoBoxOpen = false;
+      } else {
+        this.isInfoBoxOpen = true;
+        if (this.isWindPanelOpen) {
+          this.isWindPanelOpen = false;
+        }
+      }
     },
     openMenu() {
       this.$store.commit('general/closeInfoBox');

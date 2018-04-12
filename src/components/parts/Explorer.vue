@@ -11,12 +11,18 @@
             <div v-else>{{explorer}}</div>
         </div>
         <svg>
-            <circle
+            <circle cx="50%"
+                    cy="50%"
+                    r="13px"
                     :data-explorer="id"
                     class="progress"
-                    :style="{ strokeDasharray: dashArray, stroke: color }">
+                    :stroke-dasharray="dashArray"
+                    :stroke="color">
             </circle>
-            <circle class="baseline"></circle>
+            <circle cx="50%"
+                    cy="50%"
+                    r="13px"
+                    class="baseline"></circle>
         </svg>
         <transition name="fade">
             <div v-if="(hover && !isFlightOver)" class="hover-text" key="onboard">

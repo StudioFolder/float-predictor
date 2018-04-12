@@ -1,6 +1,8 @@
 <template>
     <div class="site-header">
-        <main-menu :is-choosing="isChoosing"  />
+        <transition name="fade">
+            <main-menu v-if="!isOnboard" :is-choosing="isChoosing" />
+        </transition>
         <nav-brand :is-choosing="isChoosing" />
     </div>
 </template>
