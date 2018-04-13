@@ -33,7 +33,6 @@ import colorMapC from '../assets/img/colormap/4096C.jpg';
 import colorMapD from '../assets/img/colormap/4096D.jpg';
 import spriteURL from '../assets/img/sprite.png';
 
-const DEFAULT_ALTITUDE_LEVEL = 3;
 const STATE_IDLE = 0;
 const STATE_MOVING_TO_DEPARTURE = 1;
 const STATE_ANIMATION_ACTIVE = 2;
@@ -170,7 +169,7 @@ export default {
     },
     autoMode(am) {
       if (!am) {
-        this.focusedExplorer = 0;
+        if (this.visualizationState === STATE_ANIMATION_ACTIVE) this.focusedExplorer = 0;
       }
     },
     windsLoaded(wl) {
@@ -187,14 +186,14 @@ export default {
     },
     playing(p) {
       if (p) {
-        this.altitudeLevel = DEFAULT_ALTITUDE_LEVEL;
+        this.altitudeLevel = pars.altitudeLevel;
       }
     },
 
     altitudeLevel(altitude) {
       // console.log('Setting altitude value');
       // console.log(altitude);
-      pars.altitudeLevel = altitude;
+      if (this.visualizationState !== STATE_ANIMATION_ACTIVE) pars.altitudeLevel = altitude;
       this.setWindVisualization(altitude, pars.elapsed_days);
     },
 
@@ -231,7 +230,7 @@ export default {
       } else {
         this.focusedExplorerSpeed = explorers[selected - 1].getSpeed().toFixed(0);
         this.focusedExplorerDistance = explorers[selected - 1].getDistance().toFixed(0);
-        this.focusedExplorerAltitude = (explorers[selected - 1].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
+        this.focusedExplorerAltitude = (explorers[selected - 1].getAltitudeRatio() * 1000.0 * altitudeLevels[pars.altitudeLevel]).toFixed(2);
         labels.daysLabels.show(selected - 1, explorers);
         labels.update(pars.onboard);
         _.each(explorers, (e, index) => {
@@ -495,7 +494,7 @@ export default {
             if (this.focusedExplorer > 0 && this.visualizationState === STATE_ANIMATION_ACTIVE) {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
-              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
+              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[pars.altitudeLevel]).toFixed(2);
               pars.camera_shift = 0.13 - 0.08 * explorers[this.onboardIndex].animatingSphere.position.distanceTo(camera.position) / 100.0;
             }
           },
@@ -530,8 +529,8 @@ export default {
       _.each(pressureLevels, (l) => {
         windVisualizations.push(new WindVisualization(l, scene, radius * 1.02));
       });
-      windVisualizations[this.altitudeLevel].setActive();
-      this.setWindVisualization(this.altitudeLevel);
+      windVisualizations[pars.altitudeLevel].setActive();
+      this.setWindVisualization(pars.altitudeLevel);
       this.winds = pars.winds;
     },
 
@@ -1320,7 +1319,7 @@ export default {
     },
 
     downloadMulti() {
-      downloader.downloadMulti(departure, destination, pressureLevels[DEFAULT_ALTITUDE_LEVEL],
+      downloader.downloadMulti(departure, destination, pressureLevels[pars.altitudeLevel],
         // this.altitudeLevel],
         (data) => { // ON UPDATE
           if (data.mindist < this.minDist) {
@@ -1400,7 +1399,7 @@ export default {
             min_time: this.minTime,
             departure_date: departureDate.toISOString(),
             speed: explorers[this.minTrack].avgSpeed,
-            altitude: altitudeLevels[this.altitudeLevel],
+            altitude: altitudeLevels[pars.altitudeLevel],
             distance: explorers[this.minTrack].getTotalDistance() * 0.001,
             path: data,
             svg: this.svg,
@@ -1522,9 +1521,7 @@ export default {
 .dg .c input[type=text]{
   height: 100%;
 }
-.dg.main .close-button.close-bottom {
-  color: black;
-}
+
 #labels-canvas {
   pointer-events: none;
   user-select: none;
