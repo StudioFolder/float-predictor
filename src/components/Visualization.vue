@@ -71,7 +71,7 @@ export default {
     activeExplorers() { return this.$store.state.flightSimulator.activeExplorers; },
     flightType() { return this.$store.state.flightSimulator.flightType; },
     animating() {
-      return this.playing &&
+      return (!this.isWindPanelOn) && this.playing &&
         this.textureLoaded >= 1 && this.windsLoaded && (!this.selecting ||
           this.visualizationState !== STATE_ANIMATION_ACTIVE);
     },
@@ -150,9 +150,16 @@ export default {
       get() { return this.$store.state.flightSimulator.altitudeLevel; },
       set(a) { this.$store.commit('flightSimulator/setAltitudeLevel', a); },
     },
+    initialAltitudeLevel: {
+      get() { return this.$store.state.flightSimulator.initialAltitudeLevel; },
+      set(a) { this.$store.commit('flightSimulator/setInitialAltitudeLevel', a); },
+    },
     trajectoryId: {
       get() { return this.$store.state.flightSimulator.trajectoryId; },
       set(a) { this.$store.commit('flightSimulator/setTrajectoryId', a); },
+    },
+    isWindPanelOn() {
+      return this.$store.state.general.isWindPanelOpen && this.$store.state.general.isAltPanelOpen;
     },
   },
   watch: {
@@ -186,14 +193,14 @@ export default {
     },
     playing(p) {
       if (p) {
-        this.altitudeLevel = pars.altitudeLevel;
+        this.altitudeLevel = this.initialAltitudeLevel;
       }
     },
 
     altitudeLevel(altitude) {
       // console.log('Setting altitude value');
       // console.log(altitude);
-      if (this.visualizationState !== STATE_ANIMATION_ACTIVE) pars.altitudeLevel = altitude;
+      if (this.visualizationState !== STATE_ANIMATION_ACTIVE) this.initialAltitudeLevel = altitude;
       this.setWindVisualization(altitude, pars.elapsed_days);
     },
 
@@ -230,7 +237,7 @@ export default {
       } else {
         this.focusedExplorerSpeed = explorers[selected - 1].getSpeed().toFixed(0);
         this.focusedExplorerDistance = explorers[selected - 1].getDistance().toFixed(0);
-        this.focusedExplorerAltitude = (explorers[selected - 1].getAltitudeRatio() * 1000.0 * altitudeLevels[pars.altitudeLevel]).toFixed(2);
+        this.focusedExplorerAltitude = (explorers[selected - 1].getAltitudeRatio() * 1000.0 * altitudeLevels[this.initialAltitudeLevel]).toFixed(2);
         labels.daysLabels.show(selected - 1, explorers);
         labels.update(pars.onboard);
         _.each(explorers, (e, index) => {
@@ -494,7 +501,7 @@ export default {
             if (this.focusedExplorer > 0 && this.visualizationState === STATE_ANIMATION_ACTIVE) {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
-              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[pars.altitudeLevel]).toFixed(2);
+              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.initialAltitudeLevel]).toFixed(2);
               pars.camera_shift = 0.13 - 0.08 * explorers[this.onboardIndex].animatingSphere.position.distanceTo(camera.position) / 100.0;
             }
           },
@@ -529,8 +536,8 @@ export default {
       _.each(pressureLevels, (l) => {
         windVisualizations.push(new WindVisualization(l, scene, radius * 1.02));
       });
-      windVisualizations[pars.altitudeLevel].setActive();
-      this.setWindVisualization(pars.altitudeLevel);
+      windVisualizations[this.initialAltitudeLevel].setActive();
+      this.setWindVisualization(this.initialAltitudeLevel);
       this.winds = pars.winds;
     },
 
@@ -1319,7 +1326,7 @@ export default {
     },
 
     downloadMulti() {
-      downloader.downloadMulti(departure, destination, pressureLevels[pars.altitudeLevel],
+      downloader.downloadMulti(departure, destination, pressureLevels[this.initialAltitudeLevel],
         // this.altitudeLevel],
         (data) => { // ON UPDATE
           if (data.mindist < this.minDist) {
@@ -1399,7 +1406,7 @@ export default {
             min_time: this.minTime,
             departure_date: departureDate.toISOString(),
             speed: explorers[this.minTrack].avgSpeed,
-            altitude: altitudeLevels[pars.altitudeLevel],
+            altitude: altitudeLevels[this.initialAltitudeLevel],
             distance: explorers[this.minTrack].getTotalDistance() * 0.001,
             path: data,
             svg: this.svg,
