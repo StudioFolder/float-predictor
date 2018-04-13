@@ -28,20 +28,20 @@
             </div>
             <div class="column --altitudes">
                 <div @click="setAltitude(6)"
-                     :class="{ 'isActive': altitudeLevel === 6}">26,500m
+                     :class="{ 'isActive': altitudeLevel === 6}">26,500 m
                 </div>
                 <div @click="setAltitude(5)"
-                     :class="{ 'isActive': altitudeLevel === 5}">21,500m</div>
+                     :class="{ 'isActive': altitudeLevel === 5}">21,500 m</div>
                 <div @click="setAltitude(4)"
-                     :class="{ 'isActive': altitudeLevel === 4}">16,000m</div>
+                     :class="{ 'isActive': altitudeLevel === 4}">16,000 m</div>
                 <div @click="setAltitude(3)"
-                     :class="{ 'isActive': altitudeLevel === 3}">10,000m</div>
+                     :class="{ 'isActive': altitudeLevel === 3}">10,000 m</div>
                 <div @click="setAltitude(2)"
-                     :class="{ 'isActive': altitudeLevel === 2}">5,500m</div>
+                     :class="{ 'isActive': altitudeLevel === 2}">5,500 m</div>
                 <div @click="setAltitude(1)"
-                     :class="{ 'isActive': altitudeLevel === 1}">1,500m</div>
+                     :class="{ 'isActive': altitudeLevel === 1}">1,500 m</div>
                 <div @click="setAltitude(0)"
-                     :class="{ 'isActive': altitudeLevel === 0}">100m</div>
+                     :class="{ 'isActive': altitudeLevel === 0}">100 m</div>
             </div>
         </div>
     </div>

@@ -15,7 +15,9 @@
         </transition>
         <transition name="fade">
         <div v-if="isDescriptionActive">
-            <router-link to="/about" class="read-more">read more</router-link>
+            <a href="#"
+               @click.prevent v-b-modal.instruction-modal
+               class="read-more">how to float</a>
         </div>
         </transition>
     </nav>

@@ -163,9 +163,11 @@ body.upper-content {
   &.--nav {
     margin: $marginItem*1.2 0;
     @extend %colfax_bold;
-    // text-transform: uppercase;
-    @media screen and (min-height: 900px) {
+    @media screen and (min-height: 1000px) {
       margin: $marginItem*1.8 0;
+    }
+    @media screen and (min-height: 800px) {
+      margin: $marginItem 0;
     }
   }
   &.--link {
@@ -219,6 +221,11 @@ body.upper-content {
     &.share-items {
       margin: .5rem 0;
     }
+  }
+}
+.main-nav .body .menu-section:first-child .list-group{
+  @media screen and (min-height: 800px) {
+    margin-top: $marginItem*2;
   }
 }
 /**

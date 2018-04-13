@@ -51,7 +51,7 @@
               </div>
               <div class="altitude-selector-group">
                   <div class="input-group altitude-select">
-                      <label class="small">Altitude Select</label>
+                      <label class="small">Float Altitude</label>
                       <div class="alt-select" @click="toggleAltPanel">
                           <span>{{ form.altValues[selectedAlt] }}</span>
                           <i class="fp fp-caret-down"
@@ -92,9 +92,9 @@ export default {
       form: {
         errors: {
         },
-        altValues: ['100m', '1,500m',
-          '5,5000m', '10,000m', '16,000m',
-          '21,500m', '26,500m',
+        altValues: ['100 m', '1,500 m',
+          '5,5000 m', '10,000 m', '16,000 m',
+          '21,500 m', '26,500 m',
         ],
       },
     };
@@ -387,7 +387,7 @@ export default {
         }
     }
     span {
-        text-align: center;
+        text-align: left;
         width: 75px;
         @include small_down {
             width: 80px;
@@ -395,25 +395,31 @@ export default {
     }
     i {
         background-size: cover;
-        transform: rotate(180deg);
+        transform: rotate(0deg);
         transition: transform .2s;
         min-height: 9px;
         min-width: 11px;
         height: 9px;
         width: 11px;
+        @include small_down {
+            transform: rotate(180deg);
+        }
         &.isOpen {
-            transform: rotate(0deg);
+            transform: rotate(180deg);
+            @include small_down {
+                transform: rotate(0deg);
+            }
         }
     }
     .alt-panel-wrapper {
         overflow: hidden;
         box-shadow: 0 0 30px 1px rgba(0,0,0,.5);
         position: absolute;
-        bottom: -210px;
+        bottom: -220px;
         left: 0;
-        height: 210px;
+        height: 220px;
         background-color: $lightBlack;
-        padding: 0 1em;
+        padding: 5px 1em;
         @include small_down {
             bottom: 45px;
         }
