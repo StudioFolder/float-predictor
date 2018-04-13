@@ -14,27 +14,29 @@
                 <!--</li>-->
                 <li class="list-item --screenshot">
                     <div class="title">
-                        Take a Screenshot
+                        Take a screenshot
+                        <div class="description">Capture a moment of your float!</div>
                     </div>
                     <i class="fp"></i>
                 </li>
                 <li class="list-item --winds">
                     <div class="title">
-                        Toggle winds panel
+                        Activate winds panel
+                        <div class="description">Explore the atmosphere.</div>
                     </div>
                     <i class="fp"></i>
                 </li>
                 <li class="list-item --elapsed-days">
                     <div class="title">
-                        Total elapsed day
-                        <div class="description">Click to pause and play</div>
+                        Total elapsed days
+                        <div class="description">Click to pause and play.</div>
                     </div>
                     <i class="fp"><svg><circle class="fake-progress"></circle></svg></i>
                 </li>
                 <li class="list-item --explorers">
                     <div class="title">
-                        Aerocene explorers
-                        <div class="description">Click the icon to go on board.</div>
+                        Aerocene Sculptures
+                        <div class="description">Click on an icon to go on board a Sculpture.</div>
                     </div>
                     <i class="fp"></i>
                 </li>
@@ -51,7 +53,7 @@
                         <div class="nav-item --rounded --black">
                             <i class="fp fp-destination"></i></div>
                         <div class="title">Destination point
-                            <div class="description">(for Planned Flight)</div>
+                            <div class="description">(for Planned Floats)</div>
                         </div>
                     </li>
                 </ul>
