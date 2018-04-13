@@ -22,6 +22,7 @@ export default {
     departure: {},
     destination: {},
     altitudeLevel: 3, // General altitude
+    initialAltitudeLevel: 3, // General altitude
     trajectoryId: -1,
     // used for the final recap: e.g.
     // The Aerocene Explorer that left from Milan...arrived within *km in *hours
@@ -82,6 +83,9 @@ export default {
     },
     setAltitudeLevel(state, altitudeLevel) {
       state.altitudeLevel = altitudeLevel;
+    },
+    setInitialAltitudeLevel(state, altitudeLevel) {
+      state.initialAltitudeLevel = altitudeLevel;
     },
     setLoading(state, loading) {
       state.loading = loading;
