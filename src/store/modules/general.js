@@ -21,7 +21,7 @@ export default {
     isInfoBoxOpen: false,
     isWindPanelOpen: false,
     deviceName: '', // (small, medium, big) or (phone, tablet, desktop) ???
-    modalShow: false,
+    modalShow: true,
   },
   mutations: {
     setModalShow(state, v) {

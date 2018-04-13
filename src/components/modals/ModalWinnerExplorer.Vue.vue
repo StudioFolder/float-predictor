@@ -82,12 +82,28 @@
         <ul class="bottom-links">
             <li class="share">
                 <small>Share</small>
-                <ul class="list-group horiziontal share-items">
-                    <li class="menu-item --socialShare"><i class="fp fp-facebook"></i></li>
-                    <li class="menu-item --socialShare"><i class="fp fp-twitter"></i></li>
-                    <li class="menu-item --socialShare"><i class="fp fp-mail"></i></li>
-                    <li class="menu-item --socialShare"><i class="fp fp-google"></i></li>
-                </ul>
+                <social-sharing url="http://float.aerocene.org/"
+                                title="Aerocene Float Predictor"
+                                description="Travel around the earth lifted only by the sun,
+                                 carried only by the wind, towards a clean and sustainable future."
+                                hashtags="aerocene,floatpredictor"
+                                twitter-user="aerocene"
+                                inline-template>
+                    <div class="list-group horiziontal share-items">
+                        <network network="email">
+                            <i class="fp fp-mail"></i>
+                        </network>
+                        <network network="facebook">
+                            <i class="fp fp-facebook"></i>
+                        </network>
+                        <network network="googleplus">
+                            <i class="fp fp-google"></i>
+                        </network>
+                        <network network="twitter">
+                            <i class="fp fp-twitter"></i>
+                        </network>
+                    </div>
+                </social-sharing>
             </li>
             <li class="separator"></li>
             <li class="download">
@@ -199,6 +215,30 @@ export default {
         color: $lightGray;
         .share {
             flex: 0 1 50%;
+            .share-items {
+                span {
+                    color: $gray;
+                    font-size: .9em;
+                    background-color: #fff;
+                    border-radius: 50%;
+                    height: 32px;
+                    width: 32px;
+                    background-color: rgba(255,255,255,.5);
+                    text-align: center;
+                    line-height: 32px;
+                    transition: background-color .2s ease;
+                    cursor: pointer;
+                    .fp {
+                        width: 28px;
+                        height: 28px;
+                    }
+                    &:hover {
+                        background-color: rgba(255,255,255,1);
+                    }
+                }
+                max-width: none;
+                margin-bottom: 0;
+            }
         }
         .download {
             flex: 0 1 20%;
@@ -207,7 +247,7 @@ export default {
                 margin: 0 auto;
             }
         }
-        ul { margin-top: .5em}
+        ul, .list-group.horiziontal { margin-top: .5em}
         >li {
             text-align: left
         }
