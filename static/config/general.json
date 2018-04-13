@@ -64,8 +64,8 @@
 			"opacity_mapping": true,
 			"visible": true,
 			"threshold": 35.0,
-			"opacity": 1.1,
-			"magnitude": 0.8,
+			"opacity": 1.2,
+			"magnitude": 1.0,
 			"animating": true,
 			"animationSpeed": 0.8
 		},
@@ -74,9 +74,9 @@
 			"end_color": "#f80000",
 			"mapping": 2.0,
 			"opacity_mapping": true,
-			"magnitude": 0.8,
+			"magnitude": 1.0,
 			"threshold": 40.0,
-			"opacity": 1.1,
+			"opacity": 1.2,
 			"visible": true,
 			"animating": true,
 			"animationSpeed": 0.8
