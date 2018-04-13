@@ -68,7 +68,7 @@
             <transition name="fade" mode="out-in">
                 <altitude-panel v-if="isAltPanelOpen"
                                 key="panel"
-                                isFull="true">
+                                :isFull="true">
                 </altitude-panel>
                 <div v-else-if="isOn"
                      class="button-container"
@@ -88,7 +88,7 @@
                 </p>
                 <p v-else-if="isOn" key="open">
                     Closing this panel will resume the float
-                    simulation at the initial altitude of xxx m.
+                    simulation at the initial altitude of {{initialAltLevel}}.
                 </p>
             </transition>
             <p class="small data-credits">
@@ -108,7 +108,18 @@ import altitudePanel from 'Parts/AltitudePanel';
 export default {
   name: 'winds-panel',
   components: { altitudePanel },
+  data() {
+    return {
+      altValues: ['100 m', '1,500 m',
+        '5,5000 m', '10,000 m', '16,000 m',
+        '21,500 m', '26,500 m',
+      ],
+    };
+  },
   computed: {
+    initialAltLevel() {
+      return this.altValues[this.$store.state.flightSimulator.initialAltitudeLevel];
+    },
     isAltPanelOpen: {
       get() {
         return this.$store.state.general.isAltPanelOpen;
