@@ -86,7 +86,7 @@ export default {
       }
     },
     addPage(i) {
-      fetch(`http://54.218.125.165/api/gallery.php?page=${String(i)}`, {
+      fetch(`http://float.aerocene.org/api/gallery.php?page=${String(i)}`, {
         method: 'get',
       })
         .then((response) => {

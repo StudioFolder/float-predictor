@@ -1420,7 +1420,7 @@ export default {
           // setTimeout(() =>
           // fetch('http://54.190.63.219/db/insert.php', {
           if (s !== this.previousTrajectoryData) {
-            fetch('http://54.218.125.165/api/insert.php', {
+            fetch('http://float.aerocene.org/api/insert.php', {
               method: 'post',
               body: s,
             }).then(
