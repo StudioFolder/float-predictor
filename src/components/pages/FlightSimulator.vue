@@ -52,6 +52,14 @@
                       Aerocene sculptures always leave at noon with sun light.
                   </p>
               </div>
+              <div class="altitude-selector-group">
+                  <b-form-select
+                          v-model="selectedAlt"
+                          :options="altOptions"
+                          class="mb-3"
+                          size="sm">
+                  </b-form-select>
+              </div>
               <b-button type="submit" variant="primary">Launch</b-button>
           </b-form>
       </div>
@@ -72,9 +80,27 @@ export default {
         errors: {
         },
       },
+      altOptions: [
+        { value: 6, text: '26,500 meters' },
+        { value: 5, text: '21,500 meters' },
+        { value: 4, text: '16,000 meters' },
+        { value: 3, text: '10,000 meters' },
+        { value: 2, text: '5,5000 meters' },
+        { value: 1, text: '1,500 meters' },
+        { value: 0, text: '100 meters' },
+      ],
     };
   },
   computed: {
+    selectedAlt: {
+      get() {
+        return this.$store.state.flightSimulator.altitudeLevel;
+      },
+      set(v) {
+        const alt = parseInt(v, 10);
+        this.$store.commit('flightSimulator/setAltitudeLevel', alt);
+      },
+    },
     hasErrors() {
       return (this.form.errors.departure || this.form.errors.destination);
     },
@@ -132,6 +158,7 @@ export default {
           this.form.errors = {}; // reset previous errors
           // reset elapsed days from previous simulation if necessary
           this.$store.commit('flightSimulator/setElapsedDays', 0);
+          this.$store.commit('flightSimulator/setAltitudeLevel', this.selectedAlt);
           this.startAnimation();
         }).catch((errors) => {
           this.form.errors = errors;
@@ -295,6 +322,11 @@ export default {
     }
     .small {
         font-size: .6em;
+    }
+}
+.altitude-selector-group {
+    select {
+        background-color: $bodyColor;
     }
 }
 

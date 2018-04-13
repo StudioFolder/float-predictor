@@ -244,7 +244,7 @@ export default {
       this.$store.commit('general/closeWindsPanel');
     },
     openAltitudePanel() {
-      // todo: find a better method to take into account the possibility that the user is onboard
+      // todo: find a better method to take into account the possibility that the user is on board
       if (this.$store.state.flightSimulator.focusedExplorer !== 0) {
         this.$store.commit('flightSimulator/setFocusedExplorer', 0);
         setTimeout(() => {
