@@ -1,7 +1,7 @@
 <template>
     <div class="site-header">
         <transition name="fade">
-            <main-menu v-if="!isOnboard" :is-choosing="isChoosing" />
+            <main-menu v-if="isMenuVisible" :is-choosing="isChoosing" />
         </transition>
         <nav-brand :is-choosing="isChoosing" />
     </div>
@@ -18,6 +18,12 @@ export default {
     isOnboard() { return this.$store.state.flightSimulator.focusedExplorer > 0; },
     isChoosing() { return this.$store.state.general.isChoosingDestination; },
     isHome() { return this.$route.name === 'home-page'; },
+    isMobile() {
+      return (window.matchMedia('(max-width: 768px)').matches);
+    },
+    isMenuVisible() {
+      return ((!this.isOnboard && this.isMobile) || !this.isMobile);
+    },
   },
 };
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="main-content over" :style="{ height: upperHeight }">
       <!--just the animation here-->
-      <div v-if="isChoosing" class="flight-form wrapper" ref="content">
+      <div v-if="isChoosing" class="flight-form wrapper shadowed" ref="content">
           <b-form @submit="onSubmit">
               <div class="type-selector-group">
                   <b-form-checkbox id="FlightTypeSelector"
@@ -48,17 +48,29 @@
                         </vue-google-autocomplete>
                       </div>
                   </transition>
+              </div>
+              <div class="altitude-selector-group">
+                  <div class="input-group altitude-select">
+                      <label class="small">Altitude Select</label>
+                      <div class="alt-select" @click="toggleAltPanel">
+                          <span>{{ form.altValues[selectedAlt] }}</span>
+                          <i class="fp fp-caret-down"
+                             :class="{'isOpen': isAltPanelOpen}">
+                          </i>
+                      </div>
+                  </div>
+                  <transition name="select-slide">
+                      <div v-if="isAltPanelOpen"
+                           class="alt-panel-wrapper"
+                           @click="closeAltPanel">
+                          <altitude-panel :isFull="false">
+                          </altitude-panel>
+                      </div>
+
+                  </transition>
                   <p class="input-label">
                       Aerocene sculptures always leave at noon with sun light.
                   </p>
-              </div>
-              <div class="altitude-selector-group">
-                  <b-form-select
-                          v-model="selectedAlt"
-                          :options="altOptions"
-                          class="mb-3"
-                          size="sm">
-                  </b-form-select>
               </div>
               <b-button type="submit" variant="primary">Launch</b-button>
           </b-form>
@@ -69,29 +81,33 @@
 <script>
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
 import _ from 'lodash';
+import altitudePanel from 'Parts/AltitudePanel';
 
 export default {
   name: 'FlightSimulator',
-  components: { VueGoogleAutocomplete },
+  components: { VueGoogleAutocomplete, altitudePanel },
   data() {
     return {
       upperHeight: 0,
       form: {
         errors: {
         },
+        altValues: ['100m', '1,500m',
+          '5,5000m', '10,000m', '16,000m',
+          '21,500m', '26,500m',
+        ],
       },
-      altOptions: [
-        { value: 6, text: '26,500 meters' },
-        { value: 5, text: '21,500 meters' },
-        { value: 4, text: '16,000 meters' },
-        { value: 3, text: '10,000 meters' },
-        { value: 2, text: '5,5000 meters' },
-        { value: 1, text: '1,500 meters' },
-        { value: 0, text: '100 meters' },
-      ],
     };
   },
   computed: {
+    isAltPanelOpen: {
+      get() {
+        return this.$store.state.general.isAltPanelOpen;
+      },
+      set(v) {
+        this.$store.commit('general/setAltPanel', v);
+      },
+    },
     selectedAlt: {
       get() {
         return this.$store.state.flightSimulator.altitudeLevel;
@@ -151,6 +167,12 @@ export default {
     isPlanned() { return (this.$store.getters['flightSimulator/isPlannedFlight']); },
   },
   methods: {
+    closeAltPanel() {
+      this.isAltPanelOpen = false;
+    },
+    toggleAltPanel() {
+      this.isAltPanelOpen = !this.isAltPanelOpen;
+    },
     onSubmit(e) {
       e.preventDefault();
       this.validateForm()
@@ -228,7 +250,6 @@ export default {
     @include medium_down {
         width: auto;
         padding: $marginMobile*2/3;
-        // height: calc(100vh - 80px - #{$marginMobile});
         margin: 80px auto $marginMobile;
         background: $lightBlack;
         max-width: 500px;
@@ -325,11 +346,112 @@ export default {
     }
 }
 .altitude-selector-group {
-    select {
-        background-color: $bodyColor;
+    .input-label {
+        color: #FFF;
+        text-align: left;
+        //padding-top: .1em;
+        padding-left: 1.2em;
+        @include small_down {
+            padding-left: 0;
+        }
     }
 }
-
+.input-group {
+    .small {
+        font-size: .6em;
+        padding-top: 9px;
+        @include small_down {
+            padding-top: 4px;
+        }
+    }
+}
+.altitude-selector-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+    @include small_down {
+        align-items: flex-start;
+    }
+    .input-group {
+        width: 110px;
+        flex: 0 0 110px;
+    }
+    .alt-select {
+        width: 90px;
+        height: 30px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        @include small_down {
+            width: 85px;
+        }
+    }
+    span {
+        text-align: center;
+        width: 75px;
+        @include small_down {
+            width: 80px;
+        }
+    }
+    i {
+        background-size: cover;
+        transform: rotate(180deg);
+        transition: transform .2s;
+        min-height: 9px;
+        min-width: 11px;
+        height: 9px;
+        width: 11px;
+        &.isOpen {
+            transform: rotate(0deg);
+        }
+    }
+    .alt-panel-wrapper {
+        overflow: hidden;
+        box-shadow: 0 0 30px 1px rgba(0,0,0,.5);
+        position: absolute;
+        bottom: -210px;
+        left: 0;
+        height: 210px;
+        background-color: $lightBlack;
+        padding: 0 1em;
+        @include small_down {
+            bottom: 45px;
+        }
+        .altitude-panel {
+            .altitude-panel-inner {
+                padding-top: 0;
+            }
+        }
+    }
+    .select-slide-enter-active {
+        animation: select-slide-up .3s ease-in-out;
+        @include small_up {
+            animation: select-slide-down .3s ease-in-out;
+            width: 90px;
+            overflow: hidden;
+            > div {
+                position: absolute;
+                bottom: 0;
+                width: 90px;
+                left: 0;
+            }
+        }
+    }
+    .select-slide-leave-active {
+        animation: select-slide-up .2s ease-in-out reverse;
+        @include small_up {
+            animation: select-slide-down .3s ease-in-out reverse;
+            width: 90px;
+            overflow: hidden;
+            > div {
+                position: absolute;
+                bottom: 0;
+                width: 90px;
+                left: 0;
+            }
+        }
+    }
+}
 .switch-text-enter-active {
     animation: flip-up-from-bottom .4s ease;
 }
@@ -344,5 +466,13 @@ export default {
 .fade-height-enter-active {
     animation: fadeHeight .4s ease-in-out reverse;
     overflow: hidden;
+}
+@keyframes select-slide-up {
+    0% {height: 0;}
+    100% {height: 210px;}
+}
+@keyframes select-slide-down {
+    0% {height: 0; bottom: 0;}
+    100% {height: 210px; bottom: -210px;}
 }
 </style>
