@@ -36,6 +36,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 Aerocene is an open artistic project by [Studio Tomàs Saraceno](http://tomassaraceno.com). The current Aerocene Float Predictor has been designed and develped by [Studio Folder](http://www.studiofolder.it) and [Angelo Semeraro](http://angelosemeraro.info), and is based on the work of a dedicated and enthusiastic team of community members including: Lodovica Illari, Glenn Flierl, Bill McKenna (MIT Department of Earth, Atmospheric and Planetary Sciences), Marco Ferrari, Elisa Pasqual, Luca Ferrario, Iacopo Leardini, Angelo Semeraro (Studio Folder), Imperial College London, Studio Tomás Saraceno, Joaquin Ezcurra, Radioamateurs DE & UK, and the UK High Altitude Society. 
 
 ## Links
-[Aerocene Float Predictor](http://float.aerocene.org/)
-[Aerocene project](http://aerocene.org/)
-[Aerocene forum](https://forum.aerocene.org/)
+- [Aerocene Float Predictor](http://float.aerocene.org/)
+- [Aerocene project](http://aerocene.org/)
+- [Aerocene forum](https://forum.aerocene.org/)
