@@ -94,9 +94,12 @@ class WindVisualization {
     this.isEnd = [];
     this.vertexIndex = [];
     this.progress = -1;
-    const detail = 6;
-    let geometry = new THREE.IcosahedronGeometry(this.radius, detail);
     this.colors = [];
+    if (!WindVisualization.geometry) {
+      console.log('geometry no');
+      WindVisualization.geometry = new THREE.IcosahedronGeometry(this.radius, 6);
+    }
+    let geometry = WindVisualization.geometry;
     for (let i = 0; i < geometry.vertices.length; i += 1) {
       this.array.push(geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z);
       this.array.push(geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z);
