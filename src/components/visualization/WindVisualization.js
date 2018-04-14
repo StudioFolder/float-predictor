@@ -306,9 +306,9 @@ class WindVisualization {
     this.lines.material.uniforms.endHue.value = a.getHSL().h;
   }
 
-  update(elapsedTimef) {
+  update(elapsedTimef, frames = 1) {
     const elapsedTime = elapsedTimef.toFixed(this.precision);
-    this.lines.material.uniforms.elapsedTime.value += (1.0 / 60.0) * this.animationSpeed;
+    this.lines.material.uniforms.elapsedTime.value += (frames / 60.0) * this.animationSpeed;
     if (this.lastUpdateTime !== elapsedTime && this.lines.visible) {
       let i = Math.floor(elapsedTime);
       const alpha = elapsedTime - i;

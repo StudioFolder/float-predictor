@@ -1148,8 +1148,8 @@ export default {
       }
     },
 
-    incrementTime() {
-      pars.elapsed_days = Math.max(0, Math.min(16, pars.elapsed_days + pars.speed_d_x_sec / 60.0));
+    incrementTime(frames) {
+      pars.elapsed_days = Math.max(0, Math.min(16, pars.elapsed_days + frames * pars.speed_d_x_sec / 60.0));
       const tmpDays = Math.ceil(pars.elapsed_days);
       // this.elapsedDays = pars.elapsed_days;
       if (tmpDays !== this.elapsedDays) {
@@ -1159,88 +1159,89 @@ export default {
 
     animate() {
       fps += 1;
-      this.windsLoaded = windVisualization.update(pars.elapsed_days);
-      if (!this.selecting) {
-        animator.update(pars.speed_d_x_sec / 60.0);
-        if (pars.auto_rotate && this.animating) {
-          controls.setAzimuthalAngle(controls.getAzimuthalAngle() - 0.002);
-        }
-        if (pars.move_in_time) { this.incrementTime(); }
-
-        const d = new Date(this.startingDate);
-        d.setTime(d.getTime() + 1000 * 60 * 60 * 24 * pars.elapsed_days);
-        earthRotation = Util.getEarthAzimuthRotation(d);
-        pointLight.position.set(Math.sin(-earthRotation) * radius * 90, Math.sin(axesRotation) * radius * 90, Math.cos(-earthRotation) * radius * 90);
-        NightMap.update(new THREE.Vector3(pointLight.position.x / 90, pointLight.position.y / 90, pointLight.position.z / 90));
-        if (pars.sun_visible) {
-          sunSphere.position.set(pointLight.position.x, pointLight.position.y, pointLight.position.z);
-        }
-        switch (pars.state) {
-          case STATE_ANIMATION_ACTIVE: {
-            const alpha = Math.min(1, pars.elapsed_days / 16.0);
-            let ok = true;
-            for (let i = 0; i < explorers.length; i += 1) { // explorers.length
-              ok = ok && explorers[i].setAlpha(alpha);
-            }
-            if (ok) {
-              this.trajectoryLoaded = true;
-              if (!this.interacting) {
-                if (pars.onboard) {
-                  if (this.animating) labels.cityLabels.update(explorers[this.onboardIndex].animatingSphere.position);
-                  const pAlpha = Math.min(1, Math.max(0, alpha - pars.camera_shift));
-                  if (explorers[this.onboardIndex].getLength() > 2) {
-                    const c = explorers[this.onboardIndex].getPosition(pAlpha);
-                    const v = pars.camera_smooth;
-                    const umv = 1 - v;
-                    // zoom en
-                    if (this.autoMode) {
-                      const t = this.getScale() * v + pars.camera_zoom * umv;
-                      this.setScale(t);
-                    }
-                    camera.position.set(
-                      camera.position.x * v + umv * c.x * pars.camera_distance,
-                      camera.position.y * v + umv * c.y * pars.camera_distance,
-                      camera.position.z * v + umv * c.z * pars.camera_distance,
-                    );
-                    // camera.position.clampLength(radius * 1.35, radius * 5);
-                    controls.target.set(
-                      controls.target.x * v + umv * explorers[this.onboardIndex].animatingSphere.position.x,
-                      controls.target.y * v + umv * explorers[this.onboardIndex].animatingSphere.position.y,
-                      controls.target.z * v + umv * explorers[this.onboardIndex].animatingSphere.position.z,
-                    );
-                  }
-                } else {
-                  const v = new THREE.Vector3();
-                  for (let i = 0; i < explorers.length; i += 1) { // explorers.length
-                    v.add(explorers[i].animatingSphere.position);
-                  }
-                  v.divideScalar(explorers.length);
-                  v.setLength(radius * 1.65);
-                  const a = pars.camera_smooth;
-                  const uma = 1 - a;
-                  controls.target.set(controls.target.x * a, controls.target.y * a, controls.target.z * a);
-                  if (this.autoMode) {
-                    const t = this.getScale() * a + INITIAL_ZOOM * uma;
-                    this.setScale(t);
-                    camera.position.set(camera.position.x * a + v.x * uma, camera.position.y * a + v.y * uma, camera.position.z * a + v.z * uma);
-                  }
-                  // controls.setAzimuthalAngle(rad);
-                }
-              }
-              if (this.animating) {
-                this.incrementTime();
-              }
-            } else {
-              this.trajectoryLoaded = false;
-            }
-            if (alpha >= 1) { this.visualizationState = STATE_MOVING_TO_DESTINATION; }
-            break;
-          }
-          default:
-            break;
-        }
-      }
       if (timer % (1 + pars.skip_frame) === 0) {
+        const frames = 1 + pars.skip_frame;
+        this.windsLoaded = windVisualization.update(pars.elapsed_days, frames);
+        if (!this.selecting) {
+          animator.update(frames * pars.speed_d_x_sec / 60.0);
+          if (pars.auto_rotate && this.animating) {
+            controls.setAzimuthalAngle(controls.getAzimuthalAngle() - 0.002 * frames);
+          }
+          if (pars.move_in_time) { this.incrementTime(); }
+
+          const d = new Date(this.startingDate);
+          d.setTime(d.getTime() + 1000 * 60 * 60 * 24 * pars.elapsed_days);
+          earthRotation = Util.getEarthAzimuthRotation(d);
+          pointLight.position.set(Math.sin(-earthRotation) * radius * 90, Math.sin(axesRotation) * radius * 90, Math.cos(-earthRotation) * radius * 90);
+          NightMap.update(new THREE.Vector3(pointLight.position.x / 90, pointLight.position.y / 90, pointLight.position.z / 90));
+          if (pars.sun_visible) {
+            sunSphere.position.set(pointLight.position.x, pointLight.position.y, pointLight.position.z);
+          }
+          switch (pars.state) {
+            case STATE_ANIMATION_ACTIVE: {
+              const alpha = Math.min(1, pars.elapsed_days / 16.0);
+              let ok = true;
+              for (let i = 0; i < explorers.length; i += 1) { // explorers.length
+                ok = ok && explorers[i].setAlpha(alpha);
+              }
+              if (ok) {
+                this.trajectoryLoaded = true;
+                if (!this.interacting) {
+                  if (pars.onboard) {
+                    if (this.animating) labels.cityLabels.update(explorers[this.onboardIndex].animatingSphere.position);
+                    const pAlpha = Math.min(1, Math.max(0, alpha - pars.camera_shift));
+                    if (explorers[this.onboardIndex].getLength() > 2) {
+                      const c = explorers[this.onboardIndex].getPosition(pAlpha);
+                      const v = pars.camera_smooth ** frames;
+                      const umv = 1 - v;
+                      // zoom en
+                      if (this.autoMode) {
+                        const t = this.getScale() * v + pars.camera_zoom * umv;
+                        this.setScale(t);
+                      }
+                      camera.position.set(
+                        camera.position.x * v + umv * c.x * pars.camera_distance,
+                        camera.position.y * v + umv * c.y * pars.camera_distance,
+                        camera.position.z * v + umv * c.z * pars.camera_distance,
+                      );
+                      // camera.position.clampLength(radius * 1.35, radius * 5);
+                      controls.target.set(
+                        controls.target.x * v + umv * explorers[this.onboardIndex].animatingSphere.position.x,
+                        controls.target.y * v + umv * explorers[this.onboardIndex].animatingSphere.position.y,
+                        controls.target.z * v + umv * explorers[this.onboardIndex].animatingSphere.position.z,
+                      );
+                    }
+                  } else {
+                    const v = new THREE.Vector3();
+                    for (let i = 0; i < explorers.length; i += 1) { // explorers.length
+                      v.add(explorers[i].animatingSphere.position);
+                    }
+                    v.divideScalar(explorers.length);
+                    v.setLength(radius * 1.65);
+                    const a = pars.camera_smooth ** frames;
+                    const uma = 1 - a;
+                    controls.target.set(controls.target.x * a, controls.target.y * a, controls.target.z * a);
+                    if (this.autoMode) {
+                      const t = this.getScale() * a + INITIAL_ZOOM * uma;
+                      this.setScale(t);
+                      camera.position.set(camera.position.x * a + v.x * uma, camera.position.y * a + v.y * uma, camera.position.z * a + v.z * uma);
+                    }
+                    // controls.setAzimuthalAngle(rad);
+                  }
+                }
+                if (this.animating) {
+                  this.incrementTime(frames);
+                }
+              } else {
+                this.trajectoryLoaded = false;
+              }
+              if (alpha >= 1) { this.visualizationState = STATE_MOVING_TO_DESTINATION; }
+              break;
+            }
+            default:
+              break;
+          }
+        }
         // update the picking ray with the camera and mouse position
         controls.update();
         renderer.render(scene, camera);
