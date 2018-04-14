@@ -6,6 +6,15 @@ Beginning in 2012, the Float Predictor started as a collaborative project with A
 
 In late 2017, [Studio Folder](http://www.studiofolder.it) from Milan, Italy, continued MIT's work by developing a new visualisation environment coupled with modern programming standards. Since then, the Float Predictor has been continuously developed by the Aerocene community. 
 
+# APIs
+
+To make sure API responses are easier to handle, Aeroglyphs are organised in pages of 30 items, ordered chronologically.
+- In order to access each page use this URL structure:
+http://float.aerocene.org/api/api.php?page=:page
+
+- In order to access the Aeroglyphs individually use this URL structure:
+http://float.aerocene.org/api/api.php?id=:id
+
 
 
 ## Build Setup
