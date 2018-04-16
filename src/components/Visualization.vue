@@ -357,7 +357,6 @@ export default {
         pars.skip_frame = 1;
         pars.use_bump = false;
         pars.antialias = false;
-        // pars.winds = 2;
       }
       departure = {
         lat: 52.520645,
@@ -561,7 +560,7 @@ export default {
       // now create the individual particles
       for (let p = 0; p < particleCount; p += 1) {
         // create a particle with random
-        const r = 1000 + Math.random() * 1000;
+        const r = 1000 + Math.random() * 2000;
         const v = Math.random() * Math.PI;
         const f = Math.random() * Math.PI * 2.0 - Math.PI;
         const pX = r * Math.sin(v) * Math.cos(f);
@@ -689,6 +688,7 @@ export default {
         camera.updateProjectionMatrix();
         rendererNAA.setSize(w, h);
         rendererAA.setSize(w, h);
+        labels.onResize();
       }, false);
     },
 
@@ -1534,7 +1534,7 @@ export default {
   pointer-events: none;
   user-select: none;
   background:transparent;
-  z-index:100000000;
+  z-index:3;
   width:100%;
   height:100%;
   position:absolute;

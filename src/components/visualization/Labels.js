@@ -24,10 +24,7 @@ class Labels {
     this.departureLabel.margin = 4;
     this.canvas = document.getElementById('labels-canvas');
     this.context = this.canvas.getContext('2d');
-
-
-    this.canvas.width = window.innerWidth * antialias;
-    this.canvas.height = window.innerHeight * antialias;
+    this.onResize();
     //  this.context.scale(2, 2);
 
     const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20),
@@ -41,6 +38,13 @@ class Labels {
       this.canvas.width = window.innerWidth * 2;
       this.canvas.height = window.innerHeight * 2;
     }, false);
+  }
+
+  onResize() {
+    this.canvas.width = window.innerWidth * antialias;
+    this.canvas.height = window.innerHeight * antialias;
+    this.canvas.style.width = `${window.innerWidth}px`;
+    this.canvas.style.height = `${window.innerHeight}px`;
   }
 
   update(onboard = false) {
