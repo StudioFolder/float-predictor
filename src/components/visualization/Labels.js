@@ -24,7 +24,10 @@ class Labels {
     this.departureLabel.margin = 4;
     this.canvas = document.getElementById('labels-canvas');
     this.context = this.canvas.getContext('2d');
-    this.onResize();
+    this.canvas.width = window.innerWidth * antialias;
+    this.canvas.height = window.innerHeight * antialias;
+    this.canvas.style.width = `${window.innerWidth}px`;
+    this.canvas.style.height = `${window.innerHeight}px`;
     //  this.context.scale(2, 2);
 
     const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20),
@@ -35,16 +38,11 @@ class Labels {
     this.destinationLabel.setIcon(document.getElementById('down'));
     this.destinationLabel.margin = 4;
     window.addEventListener('resize', () => {
-      this.canvas.width = window.innerWidth * 2;
-      this.canvas.height = window.innerHeight * 2;
+      this.canvas.width = window.innerWidth * antialias;
+      this.canvas.height = window.innerHeight * antialias;
+      this.canvas.style.width = `${window.innerWidth}px`;
+      this.canvas.style.height = `${window.innerHeight}px`;
     }, false);
-  }
-
-  onResize() {
-    this.canvas.width = window.innerWidth * antialias;
-    this.canvas.height = window.innerHeight * antialias;
-    this.canvas.style.width = `${window.innerWidth}px`;
-    this.canvas.style.height = `${window.innerHeight}px`;
   }
 
   update(onboard = false) {
