@@ -182,6 +182,7 @@ export default {
           this.$store.commit('flightSimulator/setElapsedDays', 0);
           this.$store.commit('flightSimulator/setAltitudeLevel', this.selectedAlt);
           this.startAnimation();
+          this.upperHeight = 0;
         }).catch((errors) => {
           this.form.errors = errors;
         });
@@ -261,7 +262,7 @@ export default {
         }
     }
     @include small_down {
-        margin: 40px $marginMobile $marginMobile;
+        margin: 40px $marginMobile 0;
     }
     p {
         font-size: .85em;

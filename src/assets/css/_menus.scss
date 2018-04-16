@@ -274,18 +274,20 @@ body.upper-content {
       margin-top: 0px;
       color: #fff;
     }
-    @include medium_down {
+    @include small_down {
+      font-size: 1.14rem;
       .brand-items a {
         display: flex;
         flex-flow: column;
         align-items: center;
         text-align: left;
         position: relative;
+        margin-left: -14px;
         img {
-          max-width: 140px;
+          max-width: 135px;
           position: absolute;
           top: -55px;
-          left: -80px;
+          left: -78px;
         }
       }
     }

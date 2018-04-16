@@ -30,6 +30,7 @@ export default {
 <style lang="scss">
 @import "~css/_variables_and_mixins.scss";
 @import"~css/_typography.scss";
+
 .site-header {
     position: relative;
     z-index: 20;

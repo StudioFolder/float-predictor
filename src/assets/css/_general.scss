@@ -16,7 +16,6 @@ body {
   padding: 0;
   height: 100%;
   width: 100%;
-  //box-sizing: border-box;
 
   &.no-scroll {
     overflow: hidden;
@@ -46,6 +45,11 @@ body {
             width: 100%;
             height: 100%;
             padding-top: 60px;
+          }
+        }
+        @media screen and (max-height: 570px){
+          .router-view {
+            padding-top: 40px;
           }
         }
       }
