@@ -10,7 +10,7 @@
                 :paragraphs="paragraphs"
                 :currentSlide="currentSlide"
                 :currentIndex="currentIndex" />
-        <i class="fp fp-caret-down"></i>
+        <i v-if="currentIndex!==(slides.length-1)" class="fp fp-caret-down"></i>
     </div>
 </template>
 
@@ -18,8 +18,6 @@
 import fSlidesWrapper from 'Components/slider/FSlidesWrapper';
 import fSlidesNav from 'Components/slider/FSlidesNav';
 import { TweenLite } from 'gsap';
-// eslint-disable-next-line
-import ScrollToPlugin from 'gsap/ScrollToPlugin';
 
 export default {
   name: 'f-slider',
@@ -143,6 +141,9 @@ export default {
             background-color: $lightBlack;
             z-index: 5;
         }
+        @media screen and (max-height: 600px){
+            padding: .5rem 0 .5rem 3.5rem;
+        }
     }
     .title-number {
         position: absolute;
@@ -150,6 +151,9 @@ export default {
         @include small_down {
             margin: 0;
             padding-top: calc(#{$marginItem*2} + 2.95rem);
+        }
+        @media screen and (max-height: 600px){
+            padding-top: 2.4rem;
         }
     }
     .f-slider-wrapper {
@@ -162,6 +166,9 @@ export default {
             padding-right: 1.5rem;
             padding-left: 3rem;
             padding-top: 3rem;
+        }
+        @media screen and (max-height: 600px){
+            padding-top: 2.4rem;
         }
         .f-slider-inner {
             position: relative;
@@ -180,11 +187,17 @@ export default {
         bottom: -25px;
         left: 50%;
         animation: pulse .4s 1s;
+        background-size: cover;
         @include medium_down {
             bottom: -20px;
         }
         @include small_down {
-            display: none;
+            //display: none;
+            bottom: 0;
+            width: .8em;
+            height: .8em;
+            min-width: unset;
+            min-height: unset;
         }
     }
     @keyframes pulse {

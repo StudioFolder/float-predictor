@@ -24,12 +24,21 @@ export default {
 $borderWidth: calc((100vw - 36rem)/2); // 36rem is the article max width
 .back-to-viz {
     transition: opacity .4s ease;
-    position: absolute;
     top: unset;
     bottom: $marginBase;
-    left: calc(#{$borderWidth}*-0.5 - 120px/2); // to center the object on various screen
-    width: 120px;
-    @include large_down {
+    @include medium_up {
+        height: 0;
+        position: sticky;
+        > a {
+            position: absolute;
+            bottom: 0;
+            width: 120px;
+            left: calc(#{$borderWidth}*-0.5 - 120px/2); // to center the object on various screen
+            padding-bottom: 8px;
+        }
+    }
+    @include medium_down {
+        position: absolute;
         box-shadow: 0 0 30px 1px rgba(0,0,0,.5);
         bottom: 0;
         left: 50%;
@@ -70,23 +79,29 @@ $borderWidth: calc((100vw - 36rem)/2); // 36rem is the article max width
 }
 
 body.gallery .back-to-viz {
-    position: fixed;
-    top: calc(#{$marginBase} + 50vh);
+    top: calc(100px + 50%);
     left: calc(12rem*0.5 - 120px/2); // to center the object on various screen
     bottom: unset;
     @include up(1440px) {
         left: calc(calc((100vw - 1100px)/2)*0.5 - 120px/2);;
     }
-    @include down($large) {
-        // left: calc(6rem*0.5 - 120px/2); // to center the object on various screen
-    }
-    @include down($large) {
-        position: absolute;
-        background-color: $lightBlack;
-        top: 0;
-        left: 50%;
-        transform: translate(-50%, 200%);
+    @include medium_up {
+        position: fixed;
+        width: 120px;
+        left: calc(#{$borderWidth}*0.5 - 120px); // to center the object on various screen
         z-index: 9;
+        > a {
+            position: relative;
+            bottom: unset;
+            width: unset;
+            left: unset;
+            padding-bottom: unset;
+        }
+    }
+    @include medium_down {
+        position: absolute;
+        top: $marginBase;
+        left: 50%;
     }
     i {
         order: 1;

@@ -34,12 +34,13 @@
 
 <script>
 import { TweenLite } from 'gsap';
-// eslint-disable-next-line
-import ScrollToPlugin from 'gsap/ScrollToPlugin';
 import visualization from './components/Visualization';
 import siteHeader from './components/Header';
 import dashboard from './components/Dashboard';
 import siteFooter from './components/Footer';
+// keep this even if it seems it is not needed !!!
+// eslint-disable-next-line
+import ScrollToPlugin from 'gsap/ScrollToPlugin';
 
 export default {
   components: {
@@ -78,8 +79,23 @@ export default {
       obj[`${this.transitionName}-leaving`] = this.transitionLeave;
       return obj;
     },
+    isMenuOpen() {
+      return this.$store.state.general.isMenuOpen;
+    },
+  },
+  watch: {
+    isMenuOpen(v) {
+      this.bodyOverflow(v);
+    },
   },
   methods: {
+    bodyOverflow(v) {
+      if (v) {
+        document.body.classList.add('box-open');
+      } else {
+        document.body.classList.remove('box-open');
+      }
+    },
     beforeEnter() {
       this.transitionEnter = true;
     },

@@ -1458,16 +1458,16 @@ export default {
 @import "~@/assets/css/_variables_and_mixins.scss";
 
 .main-visualization {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: relative;
   z-index: 0;
   font-style: 'Colfax-Medium';
 }
 
 #labels{
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position:relative;;
   overflow: hidden;
   font-size: 10px;

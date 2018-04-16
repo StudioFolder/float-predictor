@@ -124,6 +124,14 @@ body.upper-content {
     }
     .play-animation {
       order: 1;
+      @include small_down {
+        .hover-text.elapsed-days {
+          margin-right: 0;
+          left: -20px;
+          margin-bottom: 0;
+          top: -44px;
+        }
+      }
       .elapsed-days {
         left: -$itemWidth;
         top: -$itemWidth*(3/2);
@@ -290,6 +298,18 @@ body.upper-content {
     @include medium_down {
       align-items: center;
       justify-content: space-around;
+      font-size: 1.14rem;
+    }
+    @include small_down {
+      .menu-item.--nav {
+        margin: .5rem 0;
+      }
+      .menu-item.--link {
+        margin: .2rem 0;
+      }
+      .list-group.horiziontal.share-items {
+        margin-top: 1rem;
+      }
     }
     .macro-section.--bottom .menu-section{
       padding-bottom: 0;

@@ -62,8 +62,6 @@ export default {
       state.departure = departure;
     },
     setSelectedExplorer(state, explorerId) {
-      // eslint-disable-next-line
-      console.log('+++++++++++++++ mutation')
       state.selectedExplorer = explorerId;
     },
     setFocusedExplorer(state, explorerId) {

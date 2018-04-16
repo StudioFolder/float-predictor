@@ -1,10 +1,11 @@
-@include medium_down {
-  html,
-  .main-application,
-  .site-content {
-    height: 100%
-  }
+html,
+.main-application,
+.site-content,
+.main-visualization-wrapper {
+  width: 100%;
+  height: 100%
 }
+
 
 body {
   background-color: $bodyColor;
@@ -45,9 +46,6 @@ body {
             width: 100%;
             height: 100%;
             padding-top: 60px;
-            //display: flex;
-            //justify-content: center;
-            //align-items: center;
           }
         }
       }
@@ -119,31 +117,17 @@ body.flight-simulator .main-application:not(.choosing-destination){
     text-align: center;
   }
 }
-body.upper-content {
-  .router-view {
-    @include medium_down {
-      margin-top: calc(80px + #{$marginMobile}); // header height + margin
-    }
+body {
+  &.box-open {
+    overflow: hidden;
   }
-}
-article {
-  position: relative;
-  padding: $marginBase*3 0 $marginBase;
-  max-width: 36rem;
-  margin: 0 auto;
-  @include medium_down {
-    max-width: 90%;
-    padding-top: 0;
-  }
-  .entry-body p {
-    font-size: 1.3em;
-    line-height: 1.5;
-  }
-  .entry-subtitle {
-    margin-bottom: 5rem;
-    @include medium_up {
-      margin-left: -$marginBase*2;
-      margin-right: -$marginBase*2;
+  &.upper-content {
+    .router-view {
+      @include medium_down {
+        margin-top: calc(80px + #{$marginMobile}); // header height + margin
+        z-index: 9;
+        position: relative;
+      }
     }
   }
 }
@@ -167,18 +151,19 @@ form {
   }
   .main-visualization-wrapper {
     position: absolute;
-    height: 100vh;
+    height: 100%;
     overflow: hidden;
     display: flex;
     &.--small {
-      height: 30vh;
+      height: 30%;
+      z-index: 8;
       @include up($xlarge) {
-        height: 45vh;
+        height: 45%;
       }
     }
     &.--bottom {
       //align-items: flex-end;
-      top: -50vh;
+      top: -50%;
     }
     @include medium_down {
       height: 100%;
@@ -264,6 +249,7 @@ body.modal-open {
 
 // modal large
 .modal-lg {
+  height: calc(100% - (1.75rem * 2));
   @include down($xlarge) {
     //margin: 0 auto;
     //height: 100%;

@@ -28,7 +28,7 @@ $lateralSpaceMobile: .5rem;
             height: 100%;
         }
         .modal-content {
-            height: calc(100vh - 2*#{$marginBase});
+            height: calc(100% - 2*#{$marginBase});
             @include medium_down {
                 height: 100%;
             }
@@ -62,6 +62,9 @@ $lateralSpaceMobile: .5rem;
             margin: $marginItem 0;
             @include small_down {
                 margin: $marginItem*2 0 $marginItem 0;
+            }
+            @media screen and (max-height: 600px){
+                margin: 0 0 $marginItem 0;
             }
         }
         .animation-wrapper {
@@ -105,6 +108,19 @@ $lateralSpaceMobile: .5rem;
             }
             &.--upper {
                 margin-top: 1em;
+            }
+        }
+    }
+    @media screen and (max-height: 600px){
+        #slide102, #slide201{
+            .description {
+                @media screen and (max-height: 600px){
+                    padding-bottom: 1.2rem;
+                }
+            }
+            img {
+                width: 120%;
+                margin-left: -10%;
             }
         }
     }

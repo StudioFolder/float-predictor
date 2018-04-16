@@ -178,7 +178,7 @@ li:hover{
 #simple-interface{
   z-index: 10;
   position: absolute;
-  height: 100vh;
+  height: 100%;
 }
 .bottom-right-panel{
   z-index: 2;

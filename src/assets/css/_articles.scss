@@ -1,8 +1,24 @@
 article, .page-modal {
-  .entry-subtitle small{
-    font-size: .5em;
-    display: block;
-    margin-top: 2.4em;
+
+  position: relative;
+  padding: $marginBase*3 0 $marginBase;
+  max-width: 36rem;
+  margin: 0 auto;
+  @include medium_down {
+    max-width: 90%;
+    padding-top: 0;
+  }
+  .entry-subtitle {
+    margin-bottom: 5rem;
+    @include medium_up {
+      margin-left: -$marginBase*2;
+      margin-right: -$marginBase*2;
+    }
+    small{
+      font-size: .5em;
+      display: block;
+      margin-top: 2.4em;
+    }
   }
   sub, sup {
     /* Specified in % so that the sup/sup is the
@@ -33,6 +49,10 @@ article, .page-modal {
     bottom: -0.25em;
   }
   .entry-body {
+    p {
+      font-size: 1.3em;
+      line-height: 1.5;
+    }
     figure {
       position: relative;
       margin: 2em 0 0 0;
@@ -63,10 +83,21 @@ article, .page-modal {
         }
       }
       figcaption {
+        @include small_down {
+          max-width: 266px;
+          margin: 0 auto;
+        }
+        @include medium_down {
+          max-width: 671px;
+          margin: 0 auto;
+        }
         color: $gray;
         font-size: .9em;
         a { color: $gray;
           border-color: $gray
+        }
+        @include medium_down {
+          padding-bottom: 3rem;
         }
       }
     }
@@ -114,8 +145,29 @@ article, .page-modal {
     }
   }
 }
-.page-modal .entry-body {
-  @include medium_down {
-    padding-top: 30px;
+.page-modal {
+  .modal-content {
+    //height: 100%;
   }
+  max-width: unset;
+  @include medium_down {
+    .modal-dialog {
+      height: 100%;
+    }
+  }
+  .modal-body {
+    //max-width: 90%;
+    padding-left: 5%;
+    padding-right: 5%;
+    margin: 0 auto;
+    overflow: scroll;
+  }
+  .entry-body {
+    @include medium_down {
+      padding-top: 30px;
+    }
+  }
+}
+.modal-content {
+  border: 0;
 }
