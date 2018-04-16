@@ -11,7 +11,7 @@
             <transition name="fade">
                 <winds-panel v-if="(isWindsPanelOpen && !isMobile)" />
                 <span class="mobile-winds-panel"
-                      v-else-if="(isWindsPanelOpen && isFlightOver && isMobile)">
+                      v-else-if="(isWindsPanelOpen)">
                     <b-nav-item @click="toggleWinds(2)" class="--rounded" v-if="winds!==2">
                         <i class="fp fp-winds-en"></i>
                     </b-nav-item>
