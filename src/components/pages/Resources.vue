@@ -90,7 +90,7 @@
 import backToViz from 'Parts/BackToViz';
 
 export default {
-  name: 'About',
+  name: 'Resources',
   components: {
     backToViz,
   },
