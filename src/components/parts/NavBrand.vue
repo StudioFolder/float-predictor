@@ -1,7 +1,7 @@
 <template>
     <nav class="nav-brand">
         <router-link to="/flight-simulator">
-            <div class="logo">
+            <div class="logo" id="fp-logo">
                 <img src="~img/float_predictor_logo.svg" alt="logo aerocene float predictor">
             </div>
         </router-link>
@@ -46,6 +46,9 @@ export default {
         @include small_down {
             width: 120px;
         }
+    }
+    .logo.to-top {
+        top: -50px;
     }
 }
 </style>

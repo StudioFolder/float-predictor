@@ -35,6 +35,7 @@ export default {
     position: relative;
     z-index: 20;
     background-color: transparent;
+    transition: top .3s ease-in-out;
     @include large_down {
         position: fixed;
         top: 0;
@@ -63,6 +64,9 @@ export default {
     &.--scroll:before {
         opacity: 1;
     }
+    &.to-top {
+        top: -60px !important;
+    }
     .nav-brand {
         color: #fff;
         display: block;
@@ -81,6 +85,7 @@ export default {
         text-transform: uppercase;
         text-decoration: none;
         font-size: 1.5rem; // 24px
+        transition: top .3s ease-in-out;
 
         .title {
             color: #FFF;
@@ -152,6 +157,9 @@ export default {
         .logo {
             margin: 0 auto;
         }
+    }
+    &.to-top {
+        top: -60px;
     }
 }
 </style>

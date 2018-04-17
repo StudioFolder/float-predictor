@@ -33,6 +33,8 @@
                           id="map" classname="form-control"
                           :placeholder="placeholder.departure"
                           @placechanged="setDeparture"
+                          @focus="setFocus"
+                          @blur="removeFocus"
                           types="(cities)"
                           rtypes="geocode">
                   </vue-google-autocomplete>
@@ -43,6 +45,8 @@
                           id="map2" classname="form-control"
                           :placeholder="placeholder.destination"
                           @placechanged="setDestination"
+                          @focus="setFocus"
+                          @blur="removeFocus"
                           types="(cities)"
                           rtypes="geocode">
                         </vue-google-autocomplete>
@@ -167,6 +171,30 @@ export default {
     isPlanned() { return (this.$store.getters['flightSimulator/isPlannedFlight']); },
   },
   methods: {
+    setFocus() {
+      const ua = navigator.userAgent.toLowerCase();
+      if (ua.indexOf('android') > -1
+        && window.matchMedia('(max-height: 768px)').matches
+        && ua.indexOf('mobile')) {
+        this.$refs.content.style.marginTop = '-60px';
+        const header = document.getElementsByClassName('site-header')[0];
+        const logo = document.getElementById('fp-logo');
+        header.classList.add('to-top');
+        logo.classList.add('to-top');
+      }
+    },
+    removeFocus() {
+      const ua = navigator.userAgent.toLowerCase();
+      if (ua.indexOf('android') > -1
+        && window.matchMedia('(max-height: 768px)').matches
+        && ua.indexOf('mobile')) {
+        this.$refs.content.style.marginTop = '40px';
+        const header = document.getElementsByClassName('site-header')[0];
+        const logo = document.getElementById('fp-logo');
+        header.classList.remove('to-top');
+        logo.classList.remove('to-top');
+      }
+    },
     closeAltPanel() {
       this.isAltPanelOpen = false;
     },
@@ -222,17 +250,14 @@ export default {
   },
   mounted() {
     this.upperHeight = (this.$refs.content) ? `${this.$refs.content.clientHeight + 80}px` : 0;
-    /**
-     * check if mobile and toggle full screen
-     */
-    if (window.matchMedia('(max-width: 767px)').matches) {
-      window.scrollTo(0, 1);
-    }
   },
 };
 </script>
 <style lang="scss">
 @import "~@/assets/css/_variables_and_mixins.scss";
+.main-content.over .flight-form{
+    transition: margin-top .3s ease-in-out;
+}
 .flight-form.wrapper {
     position: relative;
     top: 0;
