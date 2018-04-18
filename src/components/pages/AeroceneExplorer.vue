@@ -28,7 +28,7 @@
                     inside the balloon is lighter than the ambient air, the resultant force is a
                     vertical upwards force: the aerostatics force or &lsquo;lift&rsquo;.
                 </p>
-                <figure>
+                <figure :style="{height: figureHeight}">
                     <div class="img-wrapper">
                         <img srcset="~img/gemini-free-flight_27-aug-2016_01_web.jpg 1400w,
                                 ~img/gemini-free-flight_27-aug-2016_01_mobile.jpg 800w"
@@ -43,12 +43,13 @@
                              alt=""
                              :height=imgHeight>
                     </div>
-                    <figcaption> <a target="_blank" href="http://aerocene.org/aug-27-schoenfelde-germany">Aerocene
-                        Gemini Free Float</a>, August 27th, 2016. Two Aerocene Sculptures (a Gemini
-                        and a Tetrahedron Transparent), launched from Schönfelde, Germany, travelled
-                        for 605 kilometres over 12 hours, reaching a maximum altitude of 16,283m.
-                    </figcaption>
                 </figure>
+                <p class="figcaption" :style="{maxWidth: captionWidth}"> <a target="_blank"
+                       href="http://aerocene.org/aug-27-schoenfelde-germany">Aerocene
+                    Gemini Free Float</a>, August 27th, 2016. Two Aerocene Sculptures (a Gemini
+                    and a Tetrahedron Transparent), launched from Schönfelde, Germany, travelled
+                    for 605 kilometres over 12 hours, reaching a maximum altitude of 16,283m.
+                </p>
                 <p>
                     On a sunny day, due to the partially reflective material of the Aerocene
                     Sculpture, the air inside an envelope will slowly heat up until the inner
@@ -79,6 +80,8 @@ export default {
     return {
       upperHeight: 0,
       imgHeight: 0,
+      figureHeight: 0,
+      captionWidth: 0,
     };
   },
   computed: {
@@ -87,11 +90,16 @@ export default {
     this.$store.commit('flightSimulator/setVisualizationState', 6);
     if (window.matchMedia('(max-width: 424px)').matches) {
       this.imgHeight = '150px';
+      this.figureHeight = '333px';
+      this.captionWidth = '267px';
     } else if (window.matchMedia('(max-width: 767px)').matches) {
-      /* the viewport is less than 400 pixels wide */
       this.imgHeight = '200px';
+      this.figureHeight = '433px';
+      this.captionWidth = '356px';
     } else {
       this.imgHeight = '378px';
+      this.figureHeight = '789px';
+      this.captionWidth = '672px';
     }
   },
   mounted() {

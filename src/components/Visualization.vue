@@ -1276,19 +1276,21 @@ export default {
 
 
         saveCanvas.toBlob((blob) => {
-          saveAs(blob, 'image.png');
+          // const file = new File([blob], 'image.png', { type: 'application/octet-stream' });
+          // FilseSaver.saveAs(file);
+          saveAs(blob, 'image.jpg');
+          // const url = window.URL.createObjectURL(blob);
+          // const a = document.createElement('a');
+          // document.body.appendChild(a);
+          // a.style.display = 'none';
+          // a.href = url;
+          // a.download = 'aerocene-float-predictor-screenshot.jpg';
+          // a.click();
+          // window.URL.revokeObjectURL(url);
+          // document.body.removeChild(a);
           this.saving = false;
           requestAnimationFrame(this.animate);
-        });
-        /*
-        renderer.domElement.toBlob(
-          (blob) => {
-            console.log(blob);
-            saveAs(blob, 'image.png');
-            console.log('after');
-          },
-        );
-        */
+        }, 'image/jpg', 1);
         return;
       }
       if (this.alive) { // Needed for hot reload

@@ -82,23 +82,23 @@ article, .page-modal {
           }
         }
       }
-      figcaption {
-        @include small_down {
-          max-width: 266px;
-          margin: 0 auto;
-        }
-        @include medium_down {
-          max-width: 671px;
-          margin: 0 auto;
-        }
-        color: $gray;
-        font-size: .9em;
-        a { color: $gray;
-          border-color: $gray
-        }
-        @include medium_down {
-          padding-bottom: 3rem;
-        }
+    }
+    .figcaption {
+      @include small_down {
+        max-width: 266px;
+        margin: 0 auto;
+      }
+      @include medium_down {
+        max-width: 671px;
+        margin: 0 auto;
+      }
+      color: $gray;
+      font-size: .9em;
+      a { color: $gray;
+        border-color: $gray
+      }
+      @include medium_down {
+        padding-bottom: 3rem;
       }
     }
     img {
