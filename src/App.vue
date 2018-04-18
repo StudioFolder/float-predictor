@@ -169,6 +169,9 @@ export default {
       if (el.id === 'gallery') {
         this.isBottom = (this.$route.name === 'gallery');
       }
+      if (this.transitionName === 'top-to-middle') {
+        TweenLite.to(window, this.duration, { scrollTo: 0 });
+      }
     },
     async setContentOffset() {
       const title = await this.getTitleElement();
