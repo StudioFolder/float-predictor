@@ -84,9 +84,8 @@
                 <small>Share</small>
                 <social-sharing url="http://float.aerocene.org/"
                                 title="Aerocene Float Predictor"
-                                description="Travel around the earth lifted only by
-                                 the sun, carried only by the wind, towards a clean
-                                  and sustainable future."
+                                description="Travel around the earth lifted only by the sun,
+                                 carried only by the wind, towards a clean and sustainable future."
                                 hashtags="aerocene,floatpredictor"
                                 twitter-user="aerocene"
                                 inline-template>

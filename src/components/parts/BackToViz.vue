@@ -23,11 +23,6 @@ export default {
       return (this.$route.name === 'about' || this.$route.name === 'aerocene-explorer' || this.$route.name === 'gallery' || this.$route.name === 'resources-and-api');
     },
   },
-  methods: {
-    disappear(){
-
-    }
-  },
 };
 </script>
 <style lang="scss">
