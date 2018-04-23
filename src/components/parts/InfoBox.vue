@@ -171,6 +171,7 @@ export default {
                     @include medium_down {
                         display: flex;
                         align-items: center;
+                        flex-flow: row wrap;
                     }
                 }
                 i {
@@ -178,6 +179,7 @@ export default {
                     margin-right: $marginItem;
                     @include medium_down {
                         width: $itemWidth;
+                        min-width: $itemWidth;
                         height: $itemWidth;
                         background-color: $gray;
                         border-radius: 50%;
@@ -247,7 +249,7 @@ export default {
                     @include medium_down {
                         order:4;
                         i {
-                            background-image: url("~Icons/ico-camera.svg");
+                            background-image: url("~Icons/ico-explorer.svg");
                         }
                         .title {
                             display: flex;
