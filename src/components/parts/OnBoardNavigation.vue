@@ -195,7 +195,8 @@ export default {
             }
             .close {
                 position: fixed;
-                top: $marginMobile;
+                top: 2.6rem;
+                right: 1.5rem;
             }
             .body {
                 background-color: black;

@@ -23,6 +23,7 @@ $lateralSpaceMobile: .5rem;
 .instruction-modal {
     .modal-dialog {
         max-width: 1024px;
+        height: calc(100% - (1.75rem * 2));
         @include medium_down {
             margin: 0;
             height: 100%;
@@ -35,7 +36,9 @@ $lateralSpaceMobile: .5rem;
         }
         .modal-body {
             // 100% modal height - header padding - line height
-            height: calc(100% - (2*2rem) - (2.369rem*1.2))
+            max-height: calc(100% - (2*2rem) - (2.369rem*1.2));
+            height: calc(100% - (2*2rem) - (2.369rem*1.2));
+            overflow: unset;
         }
     }
     .carousel-indicators {

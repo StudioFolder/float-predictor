@@ -182,11 +182,13 @@ export default {
           flex-flow: row wrap;
           position: relative;
           padding: 1rem;
+          justify-content: center;
+          align-items: center;
       }
       .gallery-item {
           height: 240px;
           overflow: hidden;
-          width: 20%;
+          width: 18%;
           display: flex;
           align-items: flex-start;
           justify-content: center;

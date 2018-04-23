@@ -50,7 +50,9 @@ export default {
   computed: { // ${this.circumference * ((this.id) / 16)}
     circumference() { return this.r * 2 * Math.PI; },
     highlighted() {
-      return (this.$store.state.flightSimulator.focusedExplorer === this.explorer);
+      return (this.$store.state.flightSimulator.focusedExplorer === this.explorer
+              || this.$store.state.flightSimulator.selectedExplorer === this.explorer
+      );
     },
     dashArray() {
       if (this.id === 0) {

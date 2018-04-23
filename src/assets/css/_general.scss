@@ -270,8 +270,13 @@ body.modal-open {
 // modal medium
 
 // modal large
+
 .modal-lg {
-  height: calc(100% - (1.75rem * 2));
+  .modal-body {
+    max-height: 690px;
+    overflow: scroll;
+  }
+  //height: calc(100% - (1.75rem * 2));
   @include down($xlarge) {
     //margin: 0 auto;
     //height: 100%;
@@ -329,5 +334,6 @@ body.modal-open {
 }
 
 .shadowed {
-  box-shadow: 0 0 30px 1px rgba(0,0,0,.5);
+  // filter: drop-shadow(0 0 30px rgba(0,0,0,0.5));
+  box-shadow: 0 0 30px 1px rgba(0,0,0,.5); // because of a bug in safari
 }
