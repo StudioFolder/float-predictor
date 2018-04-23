@@ -5,7 +5,7 @@
              size="sm"
              hide-footer
              centered
-             class="winner-explorer-modal --box"
+             class="alert-explorer-modal --box"
              title="Your Aerosolar Journey">
         <i slot="modal-header-close" class="fp fp-close-w"></i>
         <div class="aeroglyph" v-html="winningExplorerData.svg"></div>
@@ -116,10 +116,9 @@
     </b-modal>
 </template>
 <script>
-import moment from 'moment';
 
 export default {
-  name: 'modal-winner-explorer',
+  name: 'modal-alert',
   computed: {
     modalShow: {
       get() {

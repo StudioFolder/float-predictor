@@ -337,3 +337,15 @@ body.modal-open {
   // filter: drop-shadow(0 0 30px rgba(0,0,0,0.5));
   box-shadow: 0 0 30px 1px rgba(0,0,0,.5); // because of a bug in safari
 }
+
+.dg-main-content {
+  @extend .modal-body;
+}
+.dg-btn--ok,
+.dg-btn--cancel {
+  @extend .btn;
+  @extend .btn-primary;
+}
+.dg-content-body {
+  border-bottom: 1px solid $gray;
+}

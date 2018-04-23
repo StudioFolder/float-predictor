@@ -96,6 +96,16 @@ export default {
   methods: {
     closeAction() { this.$store.commit('general/toggleMenu'); },
     startNew() {
+      if (this.$store.state.flightSimulator.isActive) {
+        this.$dialog.confirm('This Action will reset the current simulation and start a new one. Please confirm to continue')
+          .then(() => {
+            this.initNew();
+          });
+      } else {
+        this.initNew();
+      }
+    },
+    initNew() {
       this.$store.dispatch('flightSimulator/resetVisualization');
       this.$store.commit('general/toggleMenu');
       this.$store.commit('flightSimulator/setVisualizationState', 8);

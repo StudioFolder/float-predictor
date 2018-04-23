@@ -28,6 +28,7 @@
     "vue-infinite-scroll": "^2.0.2",
     "vue-router": "^3.0.1",
     "vue-social-sharing": "^2.3.3",
+    "vuejs-dialog": "^0.9.0",
     "vuex": "^3.0.1"
   },
   "devDependencies": {

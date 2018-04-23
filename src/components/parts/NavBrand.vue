@@ -2,7 +2,9 @@
     <nav class="nav-brand">
         <router-link to="/flight-simulator">
             <div class="logo" id="fp-logo">
-                <img src="~img/float_predictor_logo.svg" alt="logo aerocene float predictor">
+                <img src="~img/float_predictor_logo.svg"
+                     alt="logo aerocene float predictor"
+                     @click="startNew">
             </div>
         </router-link>
         <transition name="fade">
@@ -30,6 +32,25 @@ export default {
     isDescriptionActive() {
       return (this.isChoosing &&
         (this.$route.name === 'flight-simulator' || this.$route.name === 'home-page'));
+    },
+  },
+  methods: {
+    startNew() {
+      if (this.$store.state.flightSimulator.isActive) {
+        this.$dialog.confirm('This Action will reset the current simulation and start a new one. Please confirm to continue')
+          .then(() => {
+            this.initNew();
+          });
+      } else {
+        this.initNew();
+      }
+    },
+    initNew() {
+      this.$store.dispatch('flightSimulator/resetVisualization');
+      this.$store.commit('general/toggleMenu');
+      this.$store.commit('flightSimulator/setVisualizationState', 8);
+      this.$store.commit('general/setFormStatus', true);
+      this.$store.commit('general/setModalShow', true);
     },
   },
 };

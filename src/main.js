@@ -8,6 +8,7 @@ import InfiniteScroll from 'vue-infinite-scroll';
 import vbclass from 'vue-body-class';
 import VueAnalytics from 'vue-analytics';
 import SocialSharing from 'vue-social-sharing';
+import VuejsDialog from 'vuejs-dialog';
 import App from './App';
 import router from './router';
 import store from './store';
@@ -20,6 +21,7 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 Vue.use(BootstrapCSS);
 Vue.use(InfiniteScroll);
+Vue.use(VuejsDialog);
 Vue.use(vbclass, router);
 Vue.use(VueAnalytics, {
   id: 'UA-25554902-10',
