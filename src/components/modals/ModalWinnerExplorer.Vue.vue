@@ -110,7 +110,11 @@
             <li class="download">
                 <small>Download</small>
                 <ul>
-                    <li class="menu-item --socialShare"><i class="fp fp-download"></i></li>
+                    <li class="menu-item --socialShare">
+                        <a :href="trajectoryLink" target="_blank">
+                            <i class="fp fp-download"></i>
+                        </a>
+                    </li>
                 </ul>
             </li>
         </ul>
@@ -129,6 +133,9 @@ export default {
       set(v) {
         this.$store.commit('general/setModalShow', v);
       },
+    },
+    trajectoryLink() {
+      return `http://float.aerocene.org/api/api.php?id=${this.$store.state.flightSimulator.trajectoryId}`;
     },
     isPlannedFlight() {
       return this.$store.state.flightSimulator.flightType === 'planned';
