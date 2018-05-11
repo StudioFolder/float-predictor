@@ -22,10 +22,10 @@ class TrajectoryDataDownloader {
   downloadMultiS(day, urls, departure, destination, pressure) {
     let url = `http://float.aerocene.org/traj4multi2d.php?${day},${pressure},${destination.lat},${destination.lng} ${urls}`;
     // console.log(`${url}`);
-    if (departure.lat === 52.520645 && departure.lng === 13.409779 &&
+    /* if (departure.lat === 52.520645 && departure.lng === 13.409779 &&
       destination.lat === 35.652832 && destination.lng === 139.839478) {
       url = `static/data/gfs/test/${day}.json`;
-    }
+    } */
     fetch(url)
       .then(r => r.json())
       .then((json) => {
