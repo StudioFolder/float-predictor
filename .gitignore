@@ -16,3 +16,5 @@ yarn-error.log*
 
 /deploy/
 /static/data/gfs/tmp/
+/data/gfs/data
+/data/gfs/script/data
