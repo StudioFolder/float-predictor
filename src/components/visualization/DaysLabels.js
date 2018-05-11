@@ -1,3 +1,7 @@
+/**
+ * DaysLabels.js - creates and defines the behaviour of days labels.
+ *
+*/
 
 import _ from 'lodash';
 import THREELabel from './THREELabel';
@@ -31,7 +35,11 @@ class DaysLabels {
   setScale(t) {
     _.each(this.daysLabels, (l) => { l.setScale(t); });
   }
-
+  /**
+   * Fill and show the labels with the days info for the trajectory.
+   * @param {Integer} explorerIndex
+   * @param {Array} explorers
+   */
   show(explorerIndex, explorers) {
     this.setVisible(false);
     for (let j = explorerIndex + 1; j <= this.daysLabels.length; j += 1) {

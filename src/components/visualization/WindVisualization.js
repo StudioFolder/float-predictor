@@ -1,3 +1,9 @@
+/**
+ * WindVisualization.js - creates and defines the behaviour wind visualization layer
+ * for a specific pressure/altitude level.
+ *
+*/
+
 /* eslint-disable no-mixed-operators, no-console, no-param-reassign */
 
 const THREE = require('three');
@@ -80,7 +86,7 @@ class WindVisualization {
     this.urls = [];
     this.downloadStatus = [];
     for (let i = 0; i < 16; i += 1) {
-      this.urls.push(`static/data/gfs/data/${this.pressure}/${i * 24}.json`);
+      this.urls.push(`http://float.aerocene.org/gfs/data/${this.pressure}/${i * 24}.json`);
       this.downloadStatus.push(0);
     }
   }

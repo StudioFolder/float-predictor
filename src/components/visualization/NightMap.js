@@ -1,3 +1,8 @@
+/**
+ * NightMap.js - creates and defines the behaviour of NightMap.
+ * The shader code make the sphere surface opacity responsive to the pointlight position
+*/
+
 /* eslint-disable no-mixed-operators, no-console, no-param-reassign */
 
 const THREE = require('three');

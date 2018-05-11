@@ -1,5 +1,9 @@
+/**
+ * TrajectoryDataDownloader.js - downloads trajectory data providing update/end/error callbacks
+*/
+
 /* eslint-disable no-console */
-class WindDataDownloader {
+class TrajectoryDataDownloader {
   downloadMulti(departure, destination, pressure,
     onUpdateCallback, onEndCallback, onErrorCallback) {
     this.active = true;
@@ -61,4 +65,4 @@ class WindDataDownloader {
   }
 }
 
-export default WindDataDownloader;
+export default TrajectoryDataDownloader;

@@ -1,3 +1,9 @@
+/**
+ * Label.js - it creates and manages all the different labels:
+ *  departure, destination, explorer elapsed days, cities.
+ *
+*/
+
 import THREELabel from './THREELabel';
 import CityLabels from './CityLabels';
 import DaysLabels from './DaysLabels';
@@ -47,6 +53,7 @@ class Labels {
 
   update(onboard = false) {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    /* update cities only if onboard */
     if (onboard) {
       this.cityLabels.updatePosition(onboard);
     }
@@ -65,6 +72,7 @@ class Labels {
   setScale(s) {
     // let t = Math.min(200, -200 + this.camera.position.distanceTo(new THREE.Vector3())) / 200;
     // t = (0.06 * t) / (s ** 1.4); // ((t * s) ** 0.8); // (s ** 1.3);
+    /* explorer scale */
     const t = 1.0 / (s ** 1.4);
     this.cityLabels.setScale(t);
     this.daysLabels.setScale(t);

@@ -1,3 +1,8 @@
+/**
+ * THREELabels.js - Utility class for creating labels in three.js
+ * The labels are drawn on a separate canvas, overlayed on top of the visualization canvas.
+*/
+
 /* eslint-disable no-mixed-operators, no-console */
 import Util from './Util';
 

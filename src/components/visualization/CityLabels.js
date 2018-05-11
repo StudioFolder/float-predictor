@@ -1,3 +1,8 @@
+/**
+ * CityLabels.js - creates and defines the behaviour of city labels.
+ * A bi-dimensional array organizes cities in tiles (32x16),
+ * making it immediate to retrieve the close cities.
+*/
 
 /* eslint-disable */
 
@@ -6,7 +11,7 @@ import Util from './Util';
 import THREELabel from './THREELabel';
 
 
-const list = [
+const city_tiles = [
 [[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
 ,[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
 ,[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]]
@@ -28,7 +33,7 @@ const list = [
 /* eslint-enable */
 
 const THREE = require('three');
-
+/* number of visible cities */
 const NUM_LABELS = 12;
 
 class CityLabels {
@@ -61,6 +66,11 @@ class CityLabels {
     _.each(this.cityLabels, (l) => { l.setScale(t); });
   }
 
+  /**
+   * Updates the visible cities every 30 frames.
+   * @param {Vec3} position
+   * explorer 3d position
+   */
   update(position) {
     if (this.fpsCount > 30) {
       const coord = Util.XYZ2LatLon(position);
@@ -76,13 +86,21 @@ class CityLabels {
     this.fpsCount += 1;
   }
 
+  /**
+   * Mapping lat lng coordinates to city tile array position
+   * @param {Object} coord
+   */
   static getNormalisedCoordinates(coord) {
     return {
-      lat: Math.max(0, Math.min(list.length - 1, (coord.lat + 90) / 10)),
-      lng: Math.max(0, Math.min(list[0].length - 1, (((coord.lng) + 180) % 360) / 10)),
+      lat: Math.max(0, Math.min(city_tiles.length - 1, (coord.lat + 90) / 10)),
+      lng: Math.max(0, Math.min(city_tiles[0].length - 1, (((coord.lng) + 180) % 360) / 10)),
     };
   }
 
+  /**
+   * Fill the cityList array with the closest cities. It also get cities from close tiles.
+   * @param {Object} coord
+   */
   get(coord) {
     const c = CityLabels.getNormalisedCoordinates(coord);
     // console.log(c);
@@ -92,9 +110,9 @@ class CityLabels {
       this.cityList = [];
       const box = {
         minLat: Math.max(0, Math.floor(c.lat - 0.5)),
-        maxLat: Math.min(list.length - 1, Math.floor(c.lat + 0.5)),
+        maxLat: Math.min(city_tiles.length - 1, Math.floor(c.lat + 0.5)),
         minLng: Math.max(0, Math.floor(c.lng - 0.5)),
-        maxLng: Math.min(list[0].length - 1, Math.floor(c.lng + 0.5)),
+        maxLng: Math.min(city_tiles[0].length - 1, Math.floor(c.lng + 0.5)),
       };
       const tmpIndexList = [];
       for (let y = box.minLat; y <= box.maxLat; y += 1) {
@@ -102,8 +120,8 @@ class CityLabels {
           const index = (y * 36) + x;
           if (this.indexList.indexOf(index) < 0) {
             // this.cityList.concat(list[y][x]);
-            for (let i = 0; i < list[y][x].length; i += 1) {
-              this.cityList.push(list[y][x][i]);
+            for (let i = 0; i < city_tiles[y][x].length; i += 1) {
+              this.cityList.push(city_tiles[y][x][i]);
             }
             tmpIndexList.push(index);
           }

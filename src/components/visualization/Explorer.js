@@ -1,3 +1,9 @@
+/**
+ * Explorer.js - creates and defines the style & behaviour of the Explorers.
+ * It computes explorer positions based on elapsed days and trajectory data.
+*/
+
+
 /* eslint-disable no-mixed-operators, no-console, no-param-reassign, max-len */
 
 const THREE = require('three');
@@ -67,6 +73,7 @@ class Explorer {
 
     this.currentPosition = new THREE.Vector3(0, 0, 0);
 
+    /* Add setOpacity method for the material */
     THREE.Material.prototype.setOpacity =
     function setOpacity(opacity, animationTime, callback) {
       function animate(material, countdown, v) {
@@ -89,6 +96,10 @@ class Explorer {
     this.reset();
   }
 
+  /**
+   * Set the style of the explorer trajectory. Options are SELECTED, UNSELECTED, MOVING, HIDDEN.
+   * @param {Integer} S
+   */
   setStyle(s) {
     const t = 0.0;
     switch (s) {
@@ -130,6 +141,10 @@ class Explorer {
     return this.length;
   };
 
+  /**
+   * Reset and hide the explorer trajectory.
+   * @param {Integer} s
+   */
   reset = function reset(departure = new THREE.Vector3(0, 0, 0)) {
     this.length = 0;
     this.alpha = 0;
@@ -152,6 +167,10 @@ class Explorer {
     this.line.visible = true;
   };
 
+  /**
+   * Return the 3d position of the trajectory at the specified alpha
+   * @param {Float} alpha [0 - 1]
+   */
   getPosition = function getPosition(alpha) {
     const t = alpha * (MAX_POINTS - 1.0);
     const i = Math.floor(t);
@@ -166,6 +185,10 @@ class Explorer {
     return this.alpha;
   };
 
+  /**
+   * Set the trajectory alpha.
+   * @param {Float} alpha [0 - 1]
+   */
   setAlpha = function setAlpha(alpha) {
     this.alpha = Math.min(1, Math.max(0, alpha));
     const t = Math.max(0, this.alpha * (MAX_POINTS - 1.0));
@@ -212,6 +235,12 @@ class Explorer {
     return this.totalDistance;
   };
 
+  /**
+   * Add position value to the trajectory. It manages also the explorer landing and takeoff.
+   * @param {Vec3} position
+   * @param {Float} h base height
+   * @param {Float} hs height shift based on sunlight exposure
+   */
   addDataSample = function addDataSample(position, h, hs) {
     let s = 0;
     const pIndex = this.length - this.shift;
@@ -247,6 +276,8 @@ class Explorer {
     } else {
       console.log('this is strange...got more points than expected - Explorer');
     }
+
+    /* Set flight data at the end */
     if (this.length === MAX_POINTS - 1) {
       this.avgSpeed = 0;
       for (let i = 0; i < this.speed.length; i += 1) {
