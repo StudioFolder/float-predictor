@@ -116,7 +116,7 @@ export default {
       return moment(dt).format('MMM Do, YYYY');
     },
     getSVGPath(item) {
-      return `http://float.aerocene.org/api/svg/${String(item.id)}.svg`;
+      return `http://floatpredictor.aerocene.org/api/svg/${String(item.id)}.svg`;
     },
   },
 };

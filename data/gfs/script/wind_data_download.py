@@ -4,7 +4,7 @@ import math
 import os
 import json
 
-basepath = "/home/ubuntu/public_html/met/";
+basepath = "/home/ubuntu/public_html/scripts/";
 
 def latLonToXYZ(lat,lon,radius=200):
 	theta=(lon+180)*(math.pi/180)

@@ -1,4 +1,4 @@
-cd ~/public_html/met/gfs/
+cd ~/public_html/scripts/gfs/
 cd script
 rm -rf data
 mkdir data
