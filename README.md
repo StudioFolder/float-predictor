@@ -10,10 +10,10 @@ In late 2017, [Studio Folder](http://www.studiofolder.it) from Milan, Italy, con
 
 To make sure API responses are easier to handle, Aeroglyphs are organised in pages of 30 items, ordered chronologically.
 - In order to access each page use this URL structure:
-http://float.aerocene.org/api/api.php?page=:page
+http://floatpredictor.aerocene.org/api/api.php?page=:page
 
 - In order to access the Aeroglyphs individually use this URL structure:
-http://float.aerocene.org/api/api.php?id=:id
+http://floatpredictor.aerocene.org/api/api.php?id=:id
 
 
 
@@ -45,6 +45,6 @@ For a detailed explanation on how things work, check out the [guide](http://vuej
 Aerocene is an open artistic project by [Studio Tomàs Saraceno](http://tomassaraceno.com). The current Aerocene Float Predictor has been designed and develped by [Studio Folder](http://www.studiofolder.it) and [Angelo Semeraro](http://angelosemeraro.info), and is based on the work of a dedicated and enthusiastic team of community members including: Lodovica Illari, Glenn Flierl, Bill McKenna (MIT Department of Earth, Atmospheric and Planetary Sciences), Marco Ferrari, Elisa Pasqual, Luca Ferrario, Iacopo Leardini, Angelo Semeraro (Studio Folder), Imperial College London, Studio Tomás Saraceno, Joaquin Ezcurra, Radioamateurs DE & UK, and the UK High Altitude Society. 
 
 ## Links
-- [Aerocene Float Predictor](http://float.aerocene.org/)
+- [Aerocene Float Predictor](http://floatpredictor.aerocene.org/)
 - [Aerocene project](http://aerocene.org/)
 - [Aerocene forum](https://forum.aerocene.org/)

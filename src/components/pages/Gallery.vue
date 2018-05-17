@@ -86,7 +86,7 @@ export default {
       }
     },
     addPage(i) {
-      fetch(`http://float.aerocene.org/api/gallery.php?page=${String(i)}`, {
+      fetch(`http://floatpredictor.aerocene.org/api/gallery.php?page=${String(i)}`, {
         method: 'get',
       })
         .then((response) => {

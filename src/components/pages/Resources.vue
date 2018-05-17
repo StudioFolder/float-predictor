@@ -33,7 +33,7 @@
                 </p>
                 <p>
                     Aeroglyphs can be accessed (individually or in bulk) through a
-                     <a target="_blank" href="http://float.aerocene.org/api/api.php">REST API</a>
+                     <a target="_blank" href="http://floatpredictor.aerocene.org/api/api.php">REST API</a>
                     in JSON format. Each JSON file has a specified structure that contains
                     the following variables:
                 </p>

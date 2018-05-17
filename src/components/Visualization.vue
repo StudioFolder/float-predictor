@@ -1558,7 +1558,7 @@ export default {
           }
           const s = JSON.stringify(trajectory);
           if (s !== this.previousTrajectoryData) {
-            fetch('http://float.aerocene.org/api/insert.php', {
+            fetch('http://floatpredictor.aerocene.org/api/insert.php', {
               method: 'post',
               body: s,
             }).then(
