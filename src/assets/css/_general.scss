@@ -338,14 +338,19 @@ body.modal-open {
   box-shadow: 0 0 30px 1px rgba(0,0,0,.5); // because of a bug in safari
 }
 
-.dg-main-content {
+div.dg-main-content {
   @extend .modal-body;
+  background-color: #1e1e1e;
 }
-.dg-btn--ok,
-.dg-btn--cancel {
+button.dg-btn--ok,
+button.dg-btn--cancel {
   @extend .btn;
   @extend .btn-primary;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #fff;
 }
-.dg-content-body {
+div.dg-content-body {
   border-bottom: 1px solid $gray;
 }
