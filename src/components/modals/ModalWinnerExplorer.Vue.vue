@@ -135,7 +135,7 @@ export default {
       },
     },
     trajectoryLink() {
-      return `http://floatpredictor.aerocene.org/api/api.php?id=${this.$store.state.flightSimulator.trajectoryId}`;
+      return `http://floatpredictor.aerocene.org/scripts/api/api.php?id=${this.$store.state.flightSimulator.trajectoryId}`;
     },
     isPlannedFlight() {
       return this.$store.state.flightSimulator.flightType === 'planned';

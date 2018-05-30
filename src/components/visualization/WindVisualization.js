@@ -86,7 +86,7 @@ class WindVisualization {
     this.urls = [];
     this.downloadStatus = [];
     for (let i = 0; i < 16; i += 1) {
-      this.urls.push(`http://floatpredictor.aerocene.org/gfs/data/${this.pressure}/${i * 24}.json`);
+      this.urls.push(`http://floatpredictor.aerocene.org/scripts/gfs/data/${this.pressure}/${i * 24}.json`);
       this.downloadStatus.push(0);
     }
   }

@@ -38,7 +38,7 @@ def generateWindJson(filename, n, mb):
 def process(mb):
 	for i in range(0,8*16,8):
 		filename = "uv-"+str(i).zfill(4)+".npz";
-		url = "http://floatpredictor.aerocene.org/gfs-" +str(mb).zfill(4) + "/"+filename;
+		url = "http://floatpredictor.aerocene.org/scripts/gfs-" +str(mb).zfill(4) + "/"+filename;
 		print(url);
 		wget.download(url);
 		print(filename);

@@ -11,7 +11,7 @@ class TrajectoryDataDownloader {
     this.onUpdateCallback = onUpdateCallback;
     this.onEndCallback = onEndCallback;
     this.onErrorCallback = onErrorCallback;
-    // http://floatpredictor.aerocene.org/traj4multi2d.php?0,250,52.5,13.4%2049.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,
+    // http://floatpredictor.aerocene.org/scripts/traj4multi2d.php?0,250,52.5,13.4%2049.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,49.2,-123.1,
     let url = '';
     for (let i = 0; i < 8; i += 1) {
       url += `${departure.lat},${departure.lng},`;
@@ -20,7 +20,7 @@ class TrajectoryDataDownloader {
   }
 
   downloadMultiS(day, urls, departure, destination, pressure) {
-    let url = `http://floatpredictor.aerocene.org/traj4multi2d.php?${day},${pressure},${destination.lat},${destination.lng} ${urls}`;
+    let url = `http://floatpredictor.aerocene.org/scripts/traj4multi2d.php?${day},${pressure},${destination.lat},${destination.lng} ${urls}`;
     // console.log(`${url}`);
     /* if (departure.lat === 52.520645 && departure.lng === 13.409779 &&
       destination.lat === 35.652832 && destination.lng === 139.839478) {

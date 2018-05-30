@@ -10,10 +10,10 @@ In late 2017, [Studio Folder](http://www.studiofolder.it) from Milan, Italy, con
 
 To make sure API responses are easier to handle, Aeroglyphs are organised in pages of 30 items, ordered chronologically.
 - In order to access each page use this URL structure:
-http://floatpredictor.aerocene.org/api/api.php?page=:page
+http://floatpredictor.aerocene.org/scripts/api/api.php?page=:page
 
 - In order to access the Aeroglyphs individually use this URL structure:
-http://floatpredictor.aerocene.org/api/api.php?id=:id
+http://floatpredictor.aerocene.org/scripts/api/api.php?id=:id
 
 
 
