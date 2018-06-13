@@ -52,7 +52,7 @@ for (let i = 0; i < mbs.length; i += 1) {
   for (let j = 0; j <= 360; j += 24) {
     const f = `${j}.json`;
     const filename = `../static/data/gfs/tmp/${mbs[i]}/${f}`;
-    const url = `http://float.aerocene.org/gfs/data/${mbs[i]}/${f}`;
+    const url = `http://floatpredictor.aerocene.org/scripts/gfs/data/${mbs[i]}/${f}`;
     urls.push(url);
     filenames.push(filename);
     console.log(url);

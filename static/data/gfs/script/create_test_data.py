@@ -9,12 +9,12 @@ import json
 
 def downloadData():
 	#rm *.json
-	#wget -O 0.json http://float.aerocene.org/traj4multi2d.php?0,250,35.652832,139.839478%2052.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,
+	#wget -O 0.json http://floatpredictor.aerocene.org/traj4multi2d.php?0,250,35.652832,139.839478%2052.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,52.520645,13.409779,
 	latlons=[];
 	for i in range(8):
 		latlons.append(52.520645)
 		latlons.append(13.409779)
-	url="http://float.aerocene.org/traj4multi2d.php?"+str(0)+",250,35.652832,139.839478%20"
+	url="http://floatpredictor.aerocene.org/scripts/traj4multi2d.php?"+str(0)+",250,35.652832,139.839478%20"
 	for i in latlons:
 		url+=str(i);
 		url+=','
@@ -27,7 +27,7 @@ def downloadData():
 		wget.download(url,name);
 		j = json.load(open(name))
 		j = j['d']
-		url="http://float.aerocene.org/traj4multi2d.php?"+str(i+1)+",250,35.652832,139.839478%20"
+		url="http://floatpredictor.aerocene.org/scripts/traj4multi2d.php?"+str(i+1)+",250,35.652832,139.839478%20"
 		start=len(j)-8
 		end=len(j)
 		print(str(start)+" "+str(end))
