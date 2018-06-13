@@ -20,6 +20,7 @@ export default {
     autoMode: false,
     departure: {},
     destination: {},
+    initialAltitudeLevel: 3, // General altitude
     altitudeLevel: 3, // General altitude
     trajectoryId: -1,
     // used for the final recap: e.g.
@@ -76,6 +77,9 @@ export default {
     },
     setAltitudeLevel(state, altitudeLevel) {
       state.altitudeLevel = altitudeLevel;
+    },
+    setInitialAltitudeLevel(state, altitudeLevel) {
+      state.initialAltitudeLevel = altitudeLevel;
     },
     setLoading(state, loading) {
       state.loading = loading;

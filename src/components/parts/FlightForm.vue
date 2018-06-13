@@ -39,6 +39,7 @@
                             rtypes="geocode">
                     </vue-google-autocomplete>
                 </div>
+                <altitude-selector />
             </div>
             <div class="selector-group" v-else key="free-flight">
                 <div class="departure">
@@ -51,6 +52,7 @@
                             rtypes="geocode">
                     </vue-google-autocomplete>
                 </div>
+                <altitude-selector />
             </div>
         </transition>
         <transition name="switch-text" mode="out-in">
@@ -70,17 +72,19 @@
 <script>
 import _ from 'lodash';
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
+import altitudeSelector from './AltitudeSelector';
 
 export default {
   name: 'flight-form',
   data() {
     return {
       form: {
-        errors: {},
+        errors: {
+        },
       },
     };
   },
-  components: { VueGoogleAutocomplete },
+  components: { VueGoogleAutocomplete, altitudeSelector },
   computed: {
     hasErrors() {
       return (this.form.errors.departure || this.form.errors.destination);

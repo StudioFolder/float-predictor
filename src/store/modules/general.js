@@ -19,9 +19,14 @@ export default {
     ],
     isMenuOpen: false,
     isInfoBoxOpen: false,
+    isAltPanelOpen: false,
+    isWindPanelOpen: false,
     deviceName: '', // (small, medium, big) or (phone, tablet, desktop) ???
   },
   mutations: {
+    setAltPanel(state, v) {
+      state.isAltPanelOpen = v;
+    },
     loadingComplete(state) {
       state.isLoading = false;
     },
