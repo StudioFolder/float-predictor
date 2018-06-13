@@ -16,3 +16,4 @@ yarn-error.log*
 
 /deploy/
 /static/data/gfs/tmp/
+/static/data/gfs/data/**/*.json
