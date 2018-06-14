@@ -1,44 +1,9 @@
 <template>
-    <div class="flight-dashboard" :class="{'is-onboard': isOnboard}">
+    <div class="flight-dashboard" :class="{'is-onboard': isOnboard, 'is-open': isAltPanelOpen}">
         <div class="play-animation">
             <div class="hover-text elapsed-days">Day {{elapsedDays}}/16</div>
         </div>
-        <div class="winds-panel">
-            <div class="wind-labels">
-                <div class="hover-text">Basic Winds</div>
-                <div class="hover-text">Enhanced Winds</div>
-                <div class="hover-text">Winds Off</div>
-            </div>
-            <div class="wind-buttons">
-                <div>
-                    <div @click="toggleWinds(1)"
-                         class="nav-item --rounded"
-                         :class="{'isActive': winds===1}">
-                        <transition name="fade-icon" mode="out-in">
-                            <i v-if="winds===1" class="fp fp-winds-on" key="fp-winds-on"></i>
-                            <i v-else class="fp fp-winds-on-w" key="fp-winds-on-w"></i>
-                        </transition>
-                    </div>
-                </div>
-                <div>
-                    <div @click="toggleWinds(2)"
-                         class="nav-item --rounded"
-                         :class="{'isActive': winds===2}">
-                        <i class="fp fp-winds-en"></i>
-                    </div>
-                </div>
-                <div>
-                    <div @click="toggleWinds(0)"
-                         class="nav-item --rounded"
-                         :class="{'isActive': winds===0}">
-                        <transition name="fade-icon" mode="out-in">
-                            <i v-if="winds===0" class="fp fp-no-winds" key="fp-no-winds"></i>
-                            <i v-else class="fp fp-no-winds-w" key="fp-no-winds-w"></i>
-                        </transition>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <winds-panel />
         <div class="separator"></div>
         <div class="explorer-description">
             <p>Aerocene Sculptures</p>
@@ -63,11 +28,12 @@
 
 <script>
 import Explorer from './Explorer';
+import windsPanel from './WindsPanel';
 
 export default {
   name: 'flight-dashboard',
   props: ['isInfoboxOpen', 'isOnboard'],
-  components: { Explorer },
+  components: { Explorer, windsPanel },
   data() {
     return {
       activeExplorers: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -80,6 +46,9 @@ export default {
     circumference() { return 35.8 * Math.PI; },
     dashArray() {
       return `${this.circumference * ((this.elapsedDays) / 32)}, 10000`;
+    },
+    isAltPanelOpen() {
+      return this.$store.state.general.isAltPanelOpen;
     },
   },
   methods: {
@@ -150,6 +119,13 @@ export default {
         .explorers-dashboard {
             display: flex;
             justify-content: space-between;
+        }
+    }
+    .flight-dashboard.is-open {
+        height: calc(100vh - 115px);
+        overflow: hidden;
+        .info-box.winds-panel {
+            height: 100%;
         }
     }
     .fp-winds-on,

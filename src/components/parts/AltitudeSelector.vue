@@ -9,15 +9,14 @@
                 </i>
             </div>
         </div>
-        <!--<transition name="select-slide">-->
+        <transition name="select-slide">
             <div v-if="isAltPanelOpen"
                  class="alt-panel-wrapper"
                  @click="closeAltPanel">
                 <altitude-panel :isFull="false">
                 </altitude-panel>
             </div>
-
-        <!--</transition>-->
+        </transition>
         <p class="input-label">
             Aerocene sculptures always leave at noon with sun light.
         </p>

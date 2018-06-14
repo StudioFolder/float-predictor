@@ -11,10 +11,10 @@
     </div>
 </template>
 <script>
-import dashboard from 'Parts/FlightDashboard';
-import flightForm from 'Parts/FlightForm';
-import StateRemoteSync from 'Components/StateRemoteSync';
-import saveTrip from 'Parts/SaveTrip';
+import dashboard from '../parts/FlightDashboard';
+import flightForm from '../parts/FlightForm';
+import StateRemoteSync from '../StateRemoteSync';
+import saveTrip from '../parts/SaveTrip';
 
 export default {
   name: 'flight-simulator',

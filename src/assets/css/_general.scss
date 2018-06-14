@@ -72,11 +72,11 @@ body.flight-simulator .main-application:not(.choosing-destination){
     border: 1px solid #fff;
     border-radius: 4px;
     background-color: transparent;
-    color: #fff;
+    color: #FFF;
 
     &:not(:disabled):hover, &:not(:disabled):active {
-      background-color: #FFF;
-      color: $bodyColor;
+      background-color: transparent;
+      color: #FFF;
     }
   }
 }
