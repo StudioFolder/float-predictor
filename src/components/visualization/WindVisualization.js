@@ -1,3 +1,9 @@
+/**
+ * WindVisualization.js - creates and defines the behaviour wind visualization layer
+ * for a specific pressure/altitude level.
+ *
+*/
+
 /* eslint-disable no-mixed-operators, no-console, no-param-reassign */
 
 const THREE = require('three');
@@ -80,7 +86,9 @@ class WindVisualization {
     this.urls = [];
     this.downloadStatus = [];
     for (let i = 0; i < 16; i += 1) {
-      this.urls.push(`static/data/gfs/data/${this.pressure}/${i * 24}.json`);
+      // this.urls.push(`http://floatpredictor.aerocene.org/scripts/gfs/data/${this.pressure}/${i * 24}.json`);
+      this.urls.push(`/static/data/gfs/data/${this.pressure}/${i * 24}.json`);
+
       this.downloadStatus.push(0);
     }
   }
@@ -94,9 +102,12 @@ class WindVisualization {
     this.isEnd = [];
     this.vertexIndex = [];
     this.progress = -1;
-    const detail = 6;
-    let geometry = new THREE.IcosahedronGeometry(this.radius, detail);
     this.colors = [];
+    if (!WindVisualization.geometry) {
+      console.log('geometry no');
+      WindVisualization.geometry = new THREE.IcosahedronGeometry(this.radius, 6);
+    }
+    let geometry = WindVisualization.geometry;
     for (let i = 0; i < geometry.vertices.length; i += 1) {
       this.array.push(geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z);
       this.array.push(geometry.vertices[i].x, geometry.vertices[i].y, geometry.vertices[i].z);
@@ -303,9 +314,9 @@ class WindVisualization {
     this.lines.material.uniforms.endHue.value = a.getHSL().h;
   }
 
-  update(elapsedTimef) {
+  update(elapsedTimef, frames = 1) {
     const elapsedTime = elapsedTimef.toFixed(this.precision);
-    this.lines.material.uniforms.elapsedTime.value += (1.0 / 60.0) * this.animationSpeed;
+    this.lines.material.uniforms.elapsedTime.value += (frames / 60.0) * this.animationSpeed;
     if (this.lastUpdateTime !== elapsedTime && this.lines.visible) {
       let i = Math.floor(elapsedTime);
       const alpha = elapsedTime - i;

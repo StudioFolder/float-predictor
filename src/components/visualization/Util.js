@@ -1,3 +1,8 @@
+/**
+ * Util.js - useful set of static functions
+*/
+
+
 /* eslint-disable no-mixed-operators, no-console, no-param-reassign */
 const THREE = require('three');
 

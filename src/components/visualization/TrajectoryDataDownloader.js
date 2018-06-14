@@ -1,5 +1,9 @@
+/**
+ * TrajectoryDataDownloader.js - downloads trajectory data providing update/end/error callbacks
+*/
+
 /* eslint-disable no-console */
-class WindDataDownloader {
+class TrajectoryDataDownloader {
   downloadMulti(departure, destination, pressure,
     onUpdateCallback, onEndCallback, onErrorCallback) {
     this.active = true;
@@ -18,10 +22,10 @@ class WindDataDownloader {
   downloadMultiS(day, urls, departure, destination, pressure) {
     let url = `http://floatpredictor.aerocene.org/scripts/traj4multi2d.php?${day},${pressure},${destination.lat},${destination.lng} ${urls}`;
     // console.log(`${url}`);
-    if (departure.lat === 52.520645 && departure.lng === 13.409779 &&
+    /* if (departure.lat === 52.520645 && departure.lng === 13.409779 &&
       destination.lat === 35.652832 && destination.lng === 139.839478) {
       url = `static/data/gfs/test/${day}.json`;
-    }
+    } */
     fetch(url)
       .then(r => r.json())
       .then((json) => {
@@ -37,20 +41,20 @@ class WindDataDownloader {
           if (day < 15) {
             this.downloadMultiS(day + 1, url, departure, destination, pressure);
           } else {
-            console.log('Done!');
+            console.log('Wind data download complete');
             if (this.onEndCallback) {
               this.onEndCallback();
             }
           }
         }
       }).catch((r) => {
+        console.log(`Downloader error. ACTIVE: ${this.active}`);
+        console.log(r.message);
         if (this.active) {
           if (this.onErrorCallback) {
             this.onErrorCallback();
           }
         }
-        console.log('Downloader error');
-        console.log(r);
       });
   }
   destroy() {
@@ -61,4 +65,4 @@ class WindDataDownloader {
   }
 }
 
-export default WindDataDownloader;
+export default TrajectoryDataDownloader;

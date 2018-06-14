@@ -81,6 +81,7 @@ function download(i, cb) {
 
 function onDownload() {
   copydir.sync('../static/data/gfs/tmp/', '../static/data/gfs/data/');
+  copydir.sync('../static/data/gfs/tmp/', '../dist/static/data/gfs/data/');
   /* mv('../static/data/gfs/tmp/', '../static/data/gfs/data/', (err) => {
     if (err) {
       console.log(`Unable to mv tmp to data error: ${err.message}`);

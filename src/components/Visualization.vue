@@ -5,22 +5,33 @@
     <img id="up" src="../assets/icons/departure_arrow_up.svg"/>
     <div id="labels"></div>
     <Loading v-if="(loading < 1.0 || saving)"></Loading>
+    <canvas id="labels-canvas"></canvas>
   </div>
 </template>
 <script>
 /* eslint-disable no-mixed-operators, no-console, no-param-reassign, max-len, one-var */
 
+
+/*
+ * Visualization.vue - Vue.js component responsible for implementing the WebGL 3D visualization (built using three.js) and the gui interaction.
+ *
+ * Following the state management pattern provided by Vuex (https://vuex.vuejs.org/), the visualization reacts to the store mutations making it independent from the UI.
+ *
+*/
+
+
 import _ from 'lodash';
 import { saveAs } from 'file-saver';
 import Loading from 'Parts/Loading';
 import Util from './visualization/Util';
-import THREELabel from './visualization/THREELabel';
 import NightMap from './visualization/NightMap';
 import animator from './visualization/Animator';
 import Explorer from './visualization/Explorer';
 import WindVisualization from './visualization/WindVisualization';
-import WindDataDownloader from './visualization/WindDataDownloader';
-import Cities from './visualization/Cities';
+import TrajectoryDataDownloader from './visualization/TrajectoryDataDownloader';
+import Labels from './visualization/Labels';
+
+/* Viz assets */
 import colorMap from '../assets/img/colormap/4096.jpg';
 import colorMapMobile from '../assets/img/colormap/2048.jpg';
 import bumpMap from '../assets/img/bumpmap/8192.jpg';
@@ -33,8 +44,11 @@ import colorMapC from '../assets/img/colormap/4096C.jpg';
 import colorMapD from '../assets/img/colormap/4096D.jpg';
 import spriteURL from '../assets/img/sprite.png';
 
-const DEFAULT_ALTITUDE_LEVEL = 3;
-const STATE_IDLE = 0;
+const THREE = require('three');
+const OrbitControls = require('../../custom_modules/three-orbit-controls')(THREE);
+
+/* visualization states */
+const STATE_ANIMATION_IDLE = 0;
 const STATE_MOVING_TO_DEPARTURE = 1;
 const STATE_ANIMATION_ACTIVE = 2;
 const STATE_MOVING_TO_DESTINATION = 3;
@@ -43,43 +57,43 @@ const STATE_UNFOCUSED = 5;
 const STATE_UNFOCUSED_PAGES = 6;
 const STATE_UNFOCUSED_GALLERY = 7;
 const STATE_INITIAL = 8;
+
 const pressureLevels = [1000, 850, 500, 250, 100, 30, 10];
 const altitudeLevels = [0.0, 1.467, 5.574, 10.363, 15.790, 70.962, 84.998];
-const THREE = require('three');
-const OrbitControls = require('../../custom_modules/three-orbit-controls')(THREE);
-
-
 const CATMULL_NUM_POINTS = 3;
 const radius = 200;
 // const EARTH_RADIUS = 6378.137
-// const SCENE_SCALE = EARTH_RADIUS / radius
 const INITIAL_ZOOM = (window.matchMedia('(orientation: portrait)').matches) ? 0.4 : 0.5;
 const responsiveZoom = (window.matchMedia('(orientation: portrait)').matches) ? 0.5 : 0.8;
 const responsiveY = (window.matchMedia('(orientation: portrait)').matches) ? 45 : 150;
 const axesRotation = Util.getEarthPolarRotation(new Date());
 const colors = [0x003769, 0x2e6a9c, 0x0095d7, 0x587a98, 0x7eafd4, 0xb9e5fb, 0x656868, 0xffffff];
 const webColors = ['#003769', '#2e6a9c', '#0095d7', '#587a98', '#7eafd4', '#b9e5fb', '#656868', '#ffffff'];
-
-// eslint-disable-next-line
-let bumpTexture, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, departureLabel, destinationLabel, selectSphere, earthRotation, loaded, timer, explorers, allExplorers, explorerHS, fps, daysLabels, cityLabels, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations, downloader, particleSystem;
-let pars = {};
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
+// eslint-disable-next-line
+let bumpTexture, labels, colorTexture, nightMapTexture, container, renderer, rendererAA, rendererNAA, scene, camera, controls, gui, pointLight, ambientLight, earthSphere, sunSphere, selectSphere, earthRotation, loaded, timer, explorers, explorerHS, fps, emisphereSprite, emisphereSphere, departure, destination, windVisualization, windVisualizations, downloader, particleSystem;
+let pars = {};
+
 export default {
   name: 'visualization',
+
+  /* Computed properties */
   computed: {
+    animating() {
+      /*
+      * Render the next frame if playing, wind panel is hidden, textures are loaded, wind data are loaded.
+      * Do not if state is active and user is selecting and explorer with the mouse.
+      */
+      return this.playing && (!this.isWindPanelOn) &&
+        this.textureLoaded >= 1 && this.windsLoaded &&
+        (!this.selecting || this.visualizationState !== STATE_ANIMATION_ACTIVE);
+    },
     activeExplorers() { return this.$store.state.flightSimulator.activeExplorers; },
     flightType() { return this.$store.state.flightSimulator.flightType; },
-    animating() {
-      return this.playing &&
-        this.loading >= 1 && (!this.selecting ||
-          this.visualizationState !== STATE_ANIMATION_ACTIVE);
-      /*
-        (!(this.isMouseSelected &&
-          this.visualizationState === STATE_ANIMATION_ACTIVE))
-        */
-    },
+    guiVisible() { return this.$store.state.flightSimulator.guiVisible; },
+    isWindPanelOn() { return this.$store.state.general.isWindPanelOpen && this.$store.state.general.isAltPanelOpen; },
     focusedExplorer: {
       get() { return this.$store.state.flightSimulator.focusedExplorer; },
       set(fe) { this.$store.commit('flightSimulator/setFocusedExplorer', fe); },
@@ -152,12 +166,21 @@ export default {
       get() { return this.$store.state.flightSimulator.altitudeLevel; },
       set(a) { this.$store.commit('flightSimulator/setAltitudeLevel', a); },
     },
+    initialAltitudeLevel: {
+      get() { return this.$store.state.flightSimulator.initialAltitudeLevel; },
+      set(a) { this.$store.commit('flightSimulator/setInitialAltitudeLevel', a); },
+    },
     trajectoryId: {
       get() { return this.$store.state.flightSimulator.trajectoryId; },
       set(a) { this.$store.commit('flightSimulator/setTrajectoryId', a); },
     },
   },
+
   watch: {
+    guiVisible(gv) {
+      if (gv) this.addDebugTools();
+    },
+
     active(isActive) {
       if (isActive) {
         this.visualizationState = STATE_INITIAL;
@@ -167,16 +190,37 @@ export default {
       }
     },
 
-    playing(p) {
-      if (p) {
-        this.altitudeLevel = DEFAULT_ALTITUDE_LEVEL;
+    autoMode(am) {
+      if (!am) {
+        /* quit onboard if user interact with the mouse */
+        if (this.visualizationState === STATE_ANIMATION_ACTIVE) this.focusedExplorer = 0;
       }
     },
 
+    /*  Set loading true if:
+    * 1) wind data is not loaded
+    * 2) textures are not loaded
+    * 3) trajectory are not loaded when state is active
+    */
+    windsLoaded(wl) {
+      this.loading = wl * (this.trajectoryLoaded || this.visualizationState !== STATE_ANIMATION_ACTIVE) * this.textureLoaded;
+    },
+
+    textureLoaded(tl) {
+      this.loading = this.windsLoaded * (this.trajectoryLoaded || this.visualizationState !== STATE_ANIMATION_ACTIVE) * tl;
+    },
+
+    trajectoryLoaded(tl) {
+      this.loading = this.windsLoaded * (tl || this.visualizationState !== STATE_ANIMATION_ACTIVE) * this.textureLoaded;
+    },
+
+    isWindPanelOn(on) {
+      if (!on) this.altitudeLevel = this.initialAltitudeLevel;
+    },
+
     altitudeLevel(altitude) {
-      // console.log('Setting altitude value');
-      // console.log(altitude);
-      pars.altitudeLevel = altitude;
+      /* set initial altitude level only at the beginning */
+      if (this.visualizationState !== STATE_ANIMATION_ACTIVE) this.initialAltitudeLevel = altitude;
       this.setWindVisualization(altitude, pars.elapsed_days);
     },
 
@@ -191,24 +235,34 @@ export default {
 
     selectedExplorer(s) {
       let selected = s;
-      if (selected <= 0) {
+      if (s <= 0) {
         selectSphere.visible = false;
         this.selecting = false;
+        /* During animation end, keep one track selected. */
         if (this.visualizationState === STATE_MOVING_TO_DESTINATION ||
           this.visualizationState === STATE_ANIMATION_END) {
           selected = this.minTrack + 1;
         }
       }
+
+      /* During animation end, focusedExplorer = selectedExplorer. */
+      if (this.visualizationState === STATE_MOVING_TO_DESTINATION ||
+        this.visualizationState === STATE_ANIMATION_END) {
+        this.focusedExplorer = selected;
+      }
+
+      /* update labels, trajectory styles and dashboard data on select changes */
       if (selected <= 0) {
-        this.hideExplorerDates();
+        labels.daysLabels.setVisible(false);
         _.each(explorers, (e) => {
           e.setStyle(Explorer.MOVING);
         });
       } else {
         this.focusedExplorerSpeed = explorers[selected - 1].getSpeed().toFixed(0);
         this.focusedExplorerDistance = explorers[selected - 1].getDistance().toFixed(0);
-        this.focusedExplorerAltitude = (explorers[selected - 1].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
-        this.showExplorerDates(selected - 1);
+        this.focusedExplorerAltitude = (explorers[selected - 1].getAltitudeRatio() * 1000.0 * altitudeLevels[this.initialAltitudeLevel]).toFixed(2);
+        labels.daysLabels.show(selected - 1, explorers);
+        labels.update(pars.onboard);
         _.each(explorers, (e, index) => {
           if (index === selected - 1) {
             e.setStyle(Explorer.SELECTED);
@@ -220,22 +274,23 @@ export default {
     },
 
     departure(d) {
-      // console.log('Setting departure...');
       this.visualizationState = STATE_INITIAL;
       if (d !== undefined && d.city && d.lat && d.lng && d.country) {
-        // console.log(d);
         departure = { lat: d.lat, lng: d.lng, country: d.country, city: d.city };
-        // console.log(`Departure: ${d.lat} ${d.lng} ${d.city} `);
+
         const t = Util.latLon2XYZPosition(d.lat, d.lng, radius);
-        if (departureLabel) departureLabel.set(d.city, t);
+        if (labels.departureLabel) labels.departureLabel.set(d.city, t);
         const azimuth = ((d.lng + 90) / 360.0) * 2 * Math.PI;
+        /* compute the date that make the point light zenithal to departure location */
         const ts = (-earthRotation - azimuth) / (Math.PI * 2) % 1;
         this.targetDate.setTime(this.startingDate.getTime() + (ts * 24.0 * 60 * 60 * 1000));
         this.targetDate.setMonth(new Date().getMonth());
         this.targetDate.setDate(new Date().getDate());
         const r = Util.getEarthAzimuthRotation(this.startingDate);
         const sunP = new THREE.Vector3(Math.sin(-r) * radius, Math.sin(axesRotation) * radius, Math.cos(-r) * radius);
-        const angle = departureLabel.getPosition().angleTo(sunP);
+        const angle = labels.departureLabel.getPosition().angleTo(sunP);
+
+        /* explorers need sunlight to lift. do not accept location like Iceland on the 22nd of December */
         this.coordinatesValid = angle < 1.5;
       } else {
         console.log('Invalid departure');
@@ -243,14 +298,12 @@ export default {
     },
 
     destination(d) {
-      // console.log('Setting destination');
-      // console.log(d);
       this.visualizationState = STATE_INITIAL;
       if (d !== undefined && d.city && d.lat && d.lng && d.country) {
         destination = { lat: d.lat, lng: d.lng, country: d.country, city: d.city };
         // console.log(`Destination: ${d.lat} ${d.lng} ${d.city} `);
         const t = Util.latLon2XYZPosition(destination.lat, d.lng, radius);
-        destinationLabel.set(d.city, t);
+        labels.destinationLabel.set(d.city, t);
       } else {
         console.log('Invalid destination');
       }
@@ -262,76 +315,23 @@ export default {
 
     winds(w) {
       pars.winds = w;
-      switch (w) {
-        case 0: // NONE
-          pars.layers.wind.visible = false;
-          break;
-        case 1: // B/W animated
-          pars.layers.wind.start_color = '#5b5b5b';
-          pars.layers.wind.end_color = '#ffffff';
-          pars.layers.wind.mapping = 1.0;
-          pars.layers.wind.opacity_mapping = true;
-          pars.layers.wind.visible = true;
-          pars.layers.wind.threshold = 25;
-          pars.layers.wind.opacity = 0.9;
-          pars.layers.wind.magnitude = 0.4;
-          pars.layers.wind.animating = true;
-          break;
-        case 2: // COLOR animated
-          pars.layers.wind.start_color = '#073a9e';
-          pars.layers.wind.end_color = '#f80000';
-          pars.layers.wind.mapping = 2.0;
-          pars.layers.wind.opacity_mapping = true;
-          pars.layers.wind.magnitude = 0.5;
-          pars.layers.wind.threshold = 25;
-          pars.layers.wind.opacity = 0.9;
-          pars.layers.wind.visible = true;
-          pars.layers.wind.animating = true;
-          break;
-        case 3: // B/W static
-          pars.layers.wind.start_color = '##5b5b5b';
-          pars.layers.wind.end_color = '#ffffff';
-          pars.layers.wind.mapping = 1.0;
-          pars.layers.wind.opacity_mapping = true;
-          pars.layers.wind.visible = true;
-          pars.layers.wind.threshold = 25;
-          pars.layers.wind.opacity = 0.4;
-          pars.layers.wind.magnitude = 0.25;
-          pars.layers.wind.animating = false;
-
-          break;
-        case 4: // COLOR static
-          pars.layers.wind.start_color = '#073a9e';
-          pars.layers.wind.end_color = '#f80000';
-          pars.layers.wind.mapping = 2.0;
-          pars.layers.wind.opacity_mapping = true;
-          pars.layers.wind.magnitude = 0.25;
-          pars.layers.wind.threshold = 30;
-          pars.layers.wind.opacity = 0.4;
-          pars.layers.wind.visible = true;
-          pars.layers.wind.animating = true;
-          break;
-        default:
-          break;
-      }
+      Object.assign(pars.layers.wind, pars.wind_settings[w]);
       windVisualization.setStyle(pars.layers.wind);
     },
   },
   data() {
     return {
-      alive: true,
-      selecting: false,
-      speed: 0,
-      minDist: 0,
-      minTime: 0,
-      minTrack: 0,
-      onboardIndex: 0,
-      departureDay: 1,
-      departureMonth: 'January',
-      distance2Target: 0,
-      distanceTraveled: 0,
-      startingDate: new Date(),
-      targetDate: new Date(),
+      alive: true, /* needed for debug hot reload */
+      selecting: false, /* explorer mouse selection */
+      minDist: 0, /* min dist from destination */
+      minTime: 0, /* time when the explorer was closer to the destination */
+      minTrack: 0, /* winning track */
+      onboardIndex: 0, /* track onboard */
+      startingDate: new Date(), /* initial date */
+      targetDate: new Date(), /* target date for starting (zenithal to destination) */
+      windsLoaded: false,
+      trajectoryLoaded: false,
+      textureLoaded: 0,
     };
   },
 
@@ -352,62 +352,74 @@ export default {
         timer = 0;
         fps = 0;
         explorers = [];
-        allExplorers = [];
         explorerHS = [0, 0, 0, 0, 0, 0, 0, 0];
         this.initVis();
-        this.addDebugTools();
+        if (this.guiVisible) {
+          this.addDebugTools();
+        }
       });
   },
 
   beforeDestroy() {
-    // console.log('unmounted');
     this.alive = false;
     if (gui) gui.destroy();
   },
 
   methods: {
+    /**
+     * Init the visualization on component mount. It setup the three.js scene, add the gui and setup the listeners.
+     */
     initVis() {
       if (process.env.NODE_ENV === 'development') {
         pars.speed_d_x_sec = 0.09;
         pars.skip_frame = 1;
         pars.use_bump = false;
         pars.antialias = false;
-        // pars.winds = 2;
       }
+
+      /* placeholder locations */
       departure = {
         lat: 52.520645,
         lng: 13.409779,
-        city: 'Berlin',
-        country: 'Germany',
+        city: 'A',
+        country: 'A State',
       };
       destination = {
         lat: 35.652832,
         lng: 139.839478,
-        city: 'Tokio',
-        country: 'Japan',
+        city: 'B',
+        country: 'B State',
       };
+
       this.selectedExplorer = 0;
       this.initTHREE();
       this.initStarfield();
       this.setupExplorers();
       this.initNightMap();
-      this.initLabels();
+      labels = new Labels(scene, camera, radius);
       this.setScale(INITIAL_ZOOM);
       this.initWindVisualization();
       this.initFPSChecker();
       this.visualizationState = STATE_INITIAL;
-      controls.addEventListener('change', this.updateLabels);
-      controls.addEventListener('start', () => { this.interacting = true; this.autoMode = false; }, false);
-      controls.addEventListener('end', () => { this.interacting = false; }, false);
-      controls.addEventListener('scale', () => { this.setScale(scene.scale.x); }, false);
       this.mouse = new THREE.Vector2();
+
       rendererAA.domElement.addEventListener('mousemove', this.onMouseMove, false);
       rendererAA.domElement.addEventListener('click', this.onMouseClick, false);
       rendererNAA.domElement.addEventListener('mousemove', this.onMouseMove, false);
       rendererNAA.domElement.addEventListener('click', this.onMouseClick, false);
+
+      controls.addEventListener('change', () => { labels.update(pars.onboard); });
+      controls.addEventListener('start', () => { this.interacting = true; this.autoMode = false; }, false);
+      controls.addEventListener('end', () => { this.interacting = false; }, false);
+      controls.addEventListener('scale', () => { this.setScale(scene.scale.x); }, false);
+
       this.animate();
     },
 
+    /**
+     * Compute explorer selection by finding explorers object intersecting the mouse picking ray.
+     * @param event
+     */
     onMouseMove(event) {
       event.preventDefault();
       const pr = renderer.getPixelRatio();
@@ -415,30 +427,35 @@ export default {
       mouse.y = -(event.clientY / (renderer.domElement.height / pr)) * 2 + 1;
       camera.updateMatrixWorld();
       raycaster.setFromCamera(mouse, camera);
-      // calculate objects intersecting the picking ray
-      if (selectSphere.visible && raycaster.intersectObject(selectSphere).length > 0) {
-        return;
+
+      /* only if not already selected (sphere visible or not) */
+      if (!(selectSphere.visible && raycaster.intersectObject(selectSphere).length > 0)) {
+        let selected = -1;
+        _.each(explorers, (e, index) => {
+          if (raycaster.intersectObject(e.animatingSphere).length > 0 &&
+            e.getDistance() > 0) { /* if launched */
+            selected = index;
+            this.selecting = true;
+            selectSphere.visible = true;
+            selectSphere.position.copy(explorers[selected].animatingSphere.position.clone().multiplyScalar(1.001));// `Explorer ${index + 1} > `, e.animatingSphere.position);
+          }
+        });
+        if (this.selecting) this.selectedExplorer = selected + 1;
       }
-      let selected = -1;
-      _.each(explorers, (e, index) => {
-        if (raycaster.intersectObject(e.animatingSphere).length > 0) {
-          selected = index;
-          this.selecting = true;
-          selectSphere.visible = true;
-          selectSphere.position.copy(explorers[selected].animatingSphere.position);// `Explorer ${index + 1} > `, e.animatingSphere.position);
-        }
-      });
-      // if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
-      this.selectedExplorer = selected + 1;
-      // }
     },
 
+    /**
+     * Go onboard on mouse click if active. Set selection when animation ends.
+     * @param event
+     */
     onMouseClick(event) {
       if (this.visualizationState === STATE_ANIMATION_ACTIVE) {
         this.onMouseMove(event);
+        /* go onboard on mouse click */
         if (this.selectedExplorer < pars.elapsed_days + 1) {
           this.focusedExplorer = this.selectedExplorer;
           this.selectedExplorer = 0;
+          if (this.selectedExplorer > 0) this.playing = true;
         }
       }
       if (this.visualizationState === STATE_ANIMATION_END) {
@@ -449,28 +466,35 @@ export default {
       }
     },
 
+    /**
+     * Add 1 sec interval callback for calculating actual fps and managing performances and optimizations.
+     *
+     */
     initFPSChecker() {
-      const COUNTDOWN = 3;
+      const DECREASE_COUNTDOWN = 3;
+      const INCREASE_COUNTDOWN = 6;
+
       setTimeout(() => {
         this.lastCheck = new Date();
-        this.lowFPS = COUNTDOWN;
+        this.lowFPS = DECREASE_COUNTDOWN;
         this.highFPS = 0;
         setInterval(
           () => {
             const now = new Date();
             const diff = now - this.lastCheck;
             this.lastCheck = now;
-            if (Math.abs(diff - 1000) < 10 && fps > 5 && document.hasFocus()) { // IF IT WAS 1 sec
-              if (60 - fps > 6) {
+            if (Math.abs(diff - 1000) < 10 && fps > 5 && document.hasFocus()) { // IF IT WAS 1 sec and document has focus
+              /* Decrease viz features (antialias, frame rate, resolution) if fps < 50 for 3 seconds continuously */
+              if (60 - fps > 10) {
                 this.lowFPS -= 1;
                 this.highFPS = 0;
                 if (this.lowFPS <= 0) {
                   if (pars.skip_frame < 3) {
                     pars.skip_frame += 1;
-                    // console.log(`-------------------------- Setting skip to ${pars.skip_frame}`);
                   } else if (renderer === rendererAA) {
                     this.setAntialias(false);
                   } else {
+                    /*
                     const lpr = pars.pixel_ratio;
                     if (fps < 40) {
                       pars.pixel_ratio = Math.max(1, pars.pixel_ratio - 1.0);
@@ -481,16 +505,18 @@ export default {
                       renderer.setPixelRatio(pars.pixel_ratio);
                       // console.log(`--------------------------------- Setting PixelRatio to ${pars.pixel_ratio}`);
                     }
+                    */
                   }
-                  this.lowFPS = COUNTDOWN;
+                  this.lowFPS = DECREASE_COUNTDOWN;
                 }
               } else {
+                /* Increase features (antialias, frame rate, resolution) if fps are 60 for 7 seconds continuously */
                 if (fps > 59) {
                   this.highFPS += 1;
                 } else {
                   this.highFPS = 0;
                 }
-                if (this.highFPS > 7) {
+                if (this.highFPS > INCREASE_COUNTDOWN) {
                   if (pars.skip_frame > 0) {
                     pars.skip_frame -= 1;
                   } else {
@@ -502,34 +528,29 @@ export default {
                   }
                   this.highFPS = 0;
                 }
-                this.lowFPS = COUNTDOWN;
+                this.lowFPS = DECREASE_COUNTDOWN;
               }
             }
             pars.fps = fps;
             fps = 0;
+            /*  update dashboard if onboard & active */
             if (this.focusedExplorer > 0 && this.visualizationState === STATE_ANIMATION_ACTIVE) {
               this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
               this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
-              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.altitudeLevel]).toFixed(2);
-              const coord = Util.XYZ2LatLon(explorers[this.onboardIndex].animatingSphere.position);
-              const cities = Cities.get(coord);
-              for (let i = 0; i < cityLabels.length; i += 1) {
-                if (i < cities.length) {
-                  if (this.rotationIndex === undefined) {
-                    this.rotationIndex = 0;
-                  }
-                  this.rotationIndex = this.rotationIndex % cityLabels.length;
-                  cityLabels[this.rotationIndex].setCity(cities[i]);
-                  this.rotationIndex += 1;
-                }
-              }
+              this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.initialAltitudeLevel]).toFixed(2);
+              pars.camera_shift = 0.13 - 0.08 * explorers[this.onboardIndex].animatingSphere.position.distanceTo(camera.position) / 100.0;
             }
           },
           1000,
         );
-      }, 4000);
+      }, 2000);
     },
 
+    /**
+     * Set antialias on / off.
+     * This is done by using two separate WebGLRenderer.
+     * @param {Boolean} aa
+     */
     setAntialias(aa) {
       pars.antialias = aa;
       if (aa) {
@@ -543,6 +564,10 @@ export default {
       }
       renderer.setPixelRatio(pars.pixel_ratio);
     },
+
+    /**
+     * Init night map, setting the different parameters (visibility, intensity, threshold and color).
+     */
     initNightMap() {
       NightMap.init(radius, scene, nightMapTexture);
       NightMap.setVisible(pars.use_nightmap);
@@ -551,52 +576,26 @@ export default {
       NightMap.setColor(pars.nightmap_color);
     },
 
-    initLabels() {
-      const departureSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      departureLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', departureSphere);
-      departureLabel.setIcon(document.getElementById('up'));
-      scene.add(departureSphere);
-      departureLabel.set(departure.city, departureLabel.anchorObject.position);
-      departureLabel.setVisible(false);
-      departureLabel.margin = 4;
-
-      selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.3, transparent: true }));
-      scene.add(selectSphere);
-
-      const destinationSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.005, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-      destinationLabel = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,1)', 'rgba(255,255,255,1)', destinationSphere);
-      destinationLabel.setIcon(document.getElementById('down'));
-      scene.add(destinationSphere);
-      destinationLabel.margin = 4;
-
-      cityLabels = [];
-      Cities.init();
-      for (let i = 0; i < 8; i += 1) {
-        const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-        scene.add(sphere);
-        const label = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
-        cityLabels.push(label);
-      }
-
-      daysLabels = [];
-      for (let i = 0; i < 16; i += 1) {
-        const sphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.001, 5, 5), new THREE.MeshBasicMaterial({ color: 0xffffff }));
-        scene.add(sphere);
-        const label = new THREELabel(scene, camera, 'Colfax-Medium', 10, 'rgba(30,30,30,0)', 'rgba(255,255,255,1)', sphere);
-        daysLabels.push(label);
-      }
-    },
-
+    /**
+     * Init the wind data for all the altitude levels. It preloads all the 16 days data of the initial altitude level.
+     */
     initWindVisualization() {
       windVisualizations = [];
       _.each(pressureLevels, (l) => {
         windVisualizations.push(new WindVisualization(l, scene, radius * 1.02));
       });
-      windVisualizations[this.altitudeLevel].setActive();
-      this.setWindVisualization(this.altitudeLevel);
+      /* preload */
+      windVisualizations[this.initialAltitudeLevel].setActive();
+
+      this.setWindVisualization(this.initialAltitudeLevel);
       this.winds = pars.winds;
     },
 
+    /**
+     * Change the wind visualization, setting and loading the new altitude level.
+     * @param {Integer} i
+     * index [0-6] of the altitude level
+     */
     setWindVisualization(i) {
       if (windVisualization) {
         windVisualization.hide();
@@ -606,6 +605,9 @@ export default {
       windVisualization.setStyle(pars.layers.wind);
     },
 
+    /**
+     * Init 1000 particles star field. The particle distance (r) is between 1000 and 3000.
+     */
     initStarfield() {
       // create the particle variables
       const particleCount = 1000;
@@ -616,8 +618,8 @@ export default {
       });
       // now create the individual particles
       for (let p = 0; p < particleCount; p += 1) {
-        // create a particle with random
-        const r = 1000 + Math.random() * 1000;
+        // create a particle radius between 1000 and 3000
+        const r = 1000 + Math.random() * 2000;
         const v = Math.random() * Math.PI;
         const f = Math.random() * Math.PI * 2.0 - Math.PI;
         const pX = r * Math.sin(v) * Math.cos(f);
@@ -637,20 +639,26 @@ export default {
       particleSystem.visible = pars.stars;
     },
 
+    /**
+     * Init the 8 explorers.
+     */
     setupExplorers() {
       for (let i = 0; i < 8; i += 1) {
         const explorer = new Explorer(scene, radius, i * 8 * CATMULL_NUM_POINTS, CATMULL_NUM_POINTS);
         explorer.line.material.color = new THREE.Color(colors[i]);
         explorer.animatingSphere.material.color = new THREE.Color(colors[i]);
-        allExplorers.push(explorer);
         explorers.push(explorer);
       }
     },
 
+    /**
+     * Setup the three.js scene. It adds the 3d objects that make the viz (lines, spheres, textures, etc.). setup lights, materials, camera and the mouse/touch controls.
+     */
     initTHREE() {
       container = document.getElementById('visualization');
       this.loadTextures();
-      // renderer
+
+      /* setup antialias and non-antialias rennderers */
       rendererAA = new THREE.WebGLRenderer({
         antialias: true, // pars.antialias,
         preserveDrawingBuffer: true,
@@ -670,29 +678,23 @@ export default {
       container.appendChild(rendererNAA.domElement);
       rendererNAA.setSize(window.innerWidth, window.innerHeight);
       rendererNAA.setClearColor(0x000000);
+
+      /* setup scene, camera, controls */
       scene = new THREE.Scene();
       camera = new THREE.PerspectiveCamera(40, rendererAA.getSize().width / rendererAA.getSize().height, 0.1, 10000);
       camera.position.set(0, radius * 0.25, radius * 1.7);
       controls = new OrbitControls(camera, document.getElementById('visualization'));
-      controls.addEventListener('change', this.updateLabels);
-      controls.addEventListener('start', () => { this.interacting = true; this.autoMode = false; }, false);
-      controls.addEventListener('end', () => { this.interacting = false; }, false);
-      controls.addEventListener('scale', () => { this.setScale(scene.scale.x); }, false);
       controls.dampingFactor = 0.017;
       controls.autoRotateSpeed = 1;
       controls.enablePan = false;
       controls.zoomSpeed = 0.1;
       controls.enableZoom = pars.zoom_enabled;
       controls.constraint.scene = scene;
+      controls.minDistance = radius * 0.5;
       pars.pixel_ratio = window.devicePixelRatio;
       this.setAntialias(pars.antialias);
-      // scene.fog = new THREE.Fog( 0x333333, 0.0001 );
-      // camera
-      // (camera) controls
-      // controls.autoRotate=pars.auto_rotate;
 
-
-      // light
+      /* setup lights: 1 ambientLight 1 point light (sun) */
       pointLight = new THREE.PointLight(pars.sun_light_color);
       pointLight.intensity = pars.spot_light_intensity;
       scene.add(pointLight);
@@ -700,7 +702,7 @@ export default {
       ambientLight.intensity = pars.ambient_light_intensity;
       scene.add(ambientLight);
 
-      // objects
+      /* objects: earth, sun, selection sphere */
       earthSphere = new THREE.Mesh(
         new THREE.SphereGeometry(radius, 64, 36),
         new THREE.MeshPhongMaterial({ color: 0xffffff,
@@ -712,6 +714,19 @@ export default {
       );
       scene.add(earthSphere);
 
+      if (pars.use_bump) { earthSphere.material.bumpMap = bumpTexture; } else { earthSphere.material.bumpMap = undefined; }
+      earthSphere.material.bumpScale = pars.bump_scale;
+
+      earthSphere.material.needsUpdate = true;
+
+      sunSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 2, 20, 20), new THREE.MeshBasicMaterial({ color: 0xFFE893 }));
+      sunSphere.visible = pars.sun_visible;
+      scene.add(sunSphere);
+
+      selectSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 0.01, 20, 20), new THREE.MeshBasicMaterial({ color: 0xffffff, opacity: 0.1, transparent: true }));
+      scene.add(selectSphere);
+
+      /* fake emisphere setup */
       const spriteMap = new THREE.TextureLoader().load(spriteURL);
       const spriteMaterial = new THREE.SpriteMaterial({ map: spriteMap, color: 0xffffff, depthWrite: false, depthTest: false });
       emisphereSprite = new THREE.Sprite(spriteMaterial);
@@ -731,17 +746,9 @@ export default {
       scene.add(emisphereSphere);
       emisphereSphere.visible = false;
       emisphereSprite.visible = false;
-      // console.log(`${earthSphere.castShadow},${renderer.castShadow} ${pointLight.castShadow} ${ambientLight.castShadow}`);
-      if (pars.use_bump) { earthSphere.material.bumpMap = bumpTexture; } else { earthSphere.material.bumpMap = undefined; }
-      earthSphere.material.bumpScale = pars.bump_scale;
 
-      earthSphere.material.needsUpdate = true;
+      /* events */
 
-      sunSphere = new THREE.Mesh(new THREE.SphereGeometry(radius * 2, 20, 20), new THREE.MeshBasicMaterial({ color: 0xFFE893 }));
-      sunSphere.visible = pars.sun_visible;
-      scene.add(sunSphere);
-
-      // events
       window.addEventListener('resize', () => {
         const w = window.innerWidth;
         const h = window.innerHeight;
@@ -749,214 +756,189 @@ export default {
         camera.updateProjectionMatrix();
         rendererNAA.setSize(w, h);
         rendererAA.setSize(w, h);
+        labels.onResize();
       }, false);
     },
 
+    /**
+     * Responsive texture loading.
+     */
     loadTextures() {
       // textures
-      // console.log('loading textures');
       const afterLoad = () => {
-        this.loading = Math.min(1, this.loading + 0.34);
-        // console.log(`loading: ${this.loading}`);
+        /* texture loaded will be 1 after the 3 textures (bump, night, color) are loaded  */
+        this.textureLoaded = Math.min(1, this.textureLoaded + 0.34);
       };
       if (window.matchMedia('(min-width: 768px)').matches) {
         bumpTexture = new THREE.TextureLoader().load(bumpMap, () => { /* console.log('bumb loaded'); */ afterLoad(); });
         colorTexture = new THREE.TextureLoader().load(colorMap, () => { /* console.log('color loaded'); */ afterLoad(); });
         nightMapTexture = new THREE.TextureLoader().load(nightModeMap, () => { /* console.log('alpha loaded'); */ afterLoad(); });
-        /* the viewport is at least 400 pixels wide */
+        /* the viewport is at least 768 pixels wide */
       } else {
         bumpTexture = new THREE.TextureLoader().load(bumpMapMobile, () => { /* console.log('bumb loaded'); */ afterLoad(); });
         colorTexture = new THREE.TextureLoader().load(colorMapMobile, () => { /* console.log('color loaded'); */ afterLoad(); });
         nightMapTexture = new THREE.TextureLoader().load(nightModeMapMobile, () => { /* console.log('alpha loaded'); */ afterLoad(); });
-        /* the viewport is less than 400 pixels wide */
+        /* the viewport is less than 768 pixels wide */
       }
     },
 
-    updateLabels() {
-      if (pars.onboard) {
-        for (let i = 0; i < cityLabels.length; i += 1) {
-          cityLabels[i].updatePosition();
-        }
-      }
-
-      for (let i = 0; i < daysLabels.length; i += 1) {
-        daysLabels[i].updatePosition();
-      }
-      destinationLabel.updatePosition();
-      departureLabel.updatePosition();
-    },
-
-    initGUI() {
-      const general = gui.addFolder('general');
-      general.add(pars, 'active').onChange((v) => { this.isActive = v; });
-      general.add(pars, 'state', 0, 10).step(1).listen().onChange((value) => { this.visualizationState = value; });
-      general.add(pars, 'elapsed_days', 0.0, 16.0).listen();
-      general.add(pars, 'altitudeLevel', 0.0, altitudeLevels.length - 1).step(1).onChange((value) => { this.altitudeLevel = value; });
-      general.add(pars, 'auto_rotate');// .onChange(function(value) {controls.autoRotate=value;});
-      general.add(pars, 'antialias').listen().onChange((value) => { this.setAntialias(value); });
-      general.add(pars, 'stars').onChange((v) => { particleSystem.visible = v; });
-      general.add(pars, 'sun_visible').onChange((value) => { sunSphere.visible = value; });
-      general.add(pars, 'move_in_time');
-      general.add(pars, 'speed_d_x_sec', 0, 2);
-      general.add(pars, 'pixel_ratio', 1, 3).listen().onChange((value) => { renderer.setPixelRatio(value); });
-      general.add(pars, 'skip_frame', 0, 60).step(1).listen();
-      general.add(pars, 'fps', 0, 60).listen();
-      general.add(pars, 'winds', 0, 4).step(1).listen().onChange((value) => { this.winds = value; });
-
-      general.add(controls.target, 'x', -1000.0, 1000.0).listen().onChange(() => {
-        controls.update();
-      });
-      general.add(controls.target, 'y', -1000.0, 1000.0).listen().onChange(() => {
-        controls.update();
-      });
-      general.add(pars, 'zoom', 0.1, 2.0).listen().onChange((value) => { console.log('changed'); this.setScale(value); });
-      general.add(pars, 'zoom_enabled').onChange((value) => { controls.enableZoom = value; });
-      const onboard = gui.addFolder('onboard');
-      onboard.add(pars, 'onboard');
-      onboard.add(pars, 'camera_smooth', 0.9, 1);
-      onboard.add(pars, 'camera_distance', 1.0, 1.5);
-      onboard.add(pars, 'camera_shift', 0, 0.5);
-      const materialf = gui.addFolder('material');
-      const emisphere = gui.addFolder('emisphere');
-      const bump = materialf.addFolder('bump');
-
-      bump.add(pars, 'use_bump').onChange((value) => {
-        if (value) { earthSphere.material.bumpMap = bumpTexture; } else { earthSphere.material.bumpMap = undefined; }
-        earthSphere.material.needsUpdate = true;
-      });
-      bump.add(pars, 'bump_scale', 0, 10).onChange((value) => { earthSphere.material.bumpScale = value; earthSphere.material.needsUpdate = true; });
-      const nightmap = materialf.addFolder('nightmap');
-      nightmap.add(pars, 'use_nightmap').onChange((value) => {
-        NightMap.setVisible(value);
-      });
-      nightmap.add(pars, 'nightmap_intensity', 0, 2).onChange((value) => {
-      //  earthSphere.material.emissiveIntensity = value; earthSphere.material.needsUpdate = true
-        NightMap.setIntensity(value);
-      });
-      nightmap.add(pars, 'nightmap_threshold', 0, 1).onChange((value) => {
-      //  earthSphere.material.emissiveIntensity = value; earthSphere.material.needsUpdate = true
-        NightMap.setThreshold(value);
-      });
-      nightmap.addColor(pars, 'nightmap_color').onChange((value) => {
-        NightMap.setColor(value);
-      });
-      materialf.add(pars, 'colorMap', { 'MAP A': colorMapA, 'MAP B': colorMapB, 'MAP C': colorMapC, 'MAP D': colorMapD }).onChange((v) => {
-        colorTexture = new THREE.TextureLoader().load(v, () => { console.log('color loaded'); });
-        earthSphere.material.map = colorTexture;
-        earthSphere.material.needsUpdate = true;
-      });
-      materialf.add(earthSphere.material, 'shininess', 0, 100).onChange(() => { earthSphere.material.needsUpdate = true; });
-      materialf.add(earthSphere.material, 'reflectivity', 0, 100).onChange(() => { earthSphere.material.needsUpdate = true; });
-      materialf.addColor(earthSphere.material, 'emissive').onChange(() => { earthSphere.material.needsUpdate = true; });
-      materialf.add(earthSphere.material, 'emissiveIntensity', 0, 1).onChange(() => { earthSphere.material.needsUpdate = true; });
-      materialf.add(earthSphere.material, 'reflectivity', 0, 1).onChange(() => { earthSphere.material.needsUpdate = true; });
-      materialf.add(earthSphere.material, 'refractionRatio', 0, 1).onChange(() => { earthSphere.material.needsUpdate = true; });
-
-      emisphere.add({ message: 'OPTION 1 - 3D SPHERE' }, 'message').onChange(() => { emisphereSphere.material.needsUpdate = true; });
-      emisphere.add(emisphereSphere, 'visible').onChange(() => { emisphereSphere.material.needsUpdate = true; });
-      emisphere.add(emisphereSphere.material, 'opacity', 0, 1).onChange(() => { emisphereSphere.material.needsUpdate = true; });
-      emisphere.addColor(emisphereSphere.material, 'color').onChange(() => { emisphereSphere.material.needsUpdate = true; });
-      emisphere.addColor(emisphereSphere.material, 'emissive').onChange(() => { emisphereSphere.material.needsUpdate = true; });
-      emisphere.add(emisphereSphere.material, 'emissiveIntensity', 0, 1).onChange(() => { emisphereSphere.material.needsUpdate = true; });
-      emisphere.add(emisphereSphere.material, 'reflectivity', 0, 10).onChange(() => { emisphereSphere.material.needsUpdate = true; });
-      emisphere.add(emisphereSphere.material, 'refractionRatio', 0, 10).onChange(() => { emisphereSphere.material.needsUpdate = true; });
-      emisphere.add(emisphereSphere.material, 'shininess', 0, 100).onChange(() => { emisphereSphere.material.needsUpdate = true; });
-      emisphere.add(emisphereSphere.scale, 'z', 0.1, 1.5).onChange((z) => { emisphereSphere.scale.set(z, z, z); });
-
-      emisphere.add({ message: 'OPTION 2 - STATIC PNG' }, 'message');
-      emisphere.add(emisphereSprite, 'visible').onChange(() => { emisphereSprite.material.needsUpdate = true; });
-      emisphere.add(emisphereSprite.material, 'opacity', 0, 1).onChange(() => { emisphereSprite.material.needsUpdate = true; });
-      emisphere.addColor(emisphereSprite.material, 'color').onChange(() => { emisphereSprite.material.needsUpdate = true; });
-      emisphere.add(emisphereSprite.scale, 'z', 300, 600).onChange((z) => { emisphereSprite.scale.set(z, z, z); });
-
-      const lights = gui.addFolder('lights');
-      lights.addColor(pars, 'sun_light_color').onChange((value) => { pointLight.color = new THREE.Color(value); });
-      lights.add(pars, 'spot_light_intensity', 0, 10).onChange((value) => { pointLight.intensity = value; });
-      lights.addColor(pars, 'ambient_light_color').onChange((value) => { ambientLight.color = new THREE.Color(value); });
-      lights.add(pars, 'ambient_light_intensity', 0, 10).onChange((value) => { ambientLight.intensity = value; });
-
-      const layers = gui.addFolder('layers');
-      const wind = layers.addFolder('wind');
-      wind.add(pars.layers.wind, 'visible').onChange((value) => { windVisualization.lines.visible = value; });
-      wind.addColor(pars.layers.wind, 'start_color').onChange(() => { windVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
-      wind.addColor(pars.layers.wind, 'end_color').onChange(() => { windVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
-
-      wind.add(pars.layers.wind, 'mapping', { 'NO MAPPING': 0.0, 'RGB MAPPING': 1.0, 'HUE MAPPING': 2.0 }).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      wind.add(pars.layers.wind, 'opacity_mapping').listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      wind.add(pars.layers.wind, 'threshold', 0, 200).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      wind.add(pars.layers.wind, 'opacity', 0, 5).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      wind.add(pars.layers.wind, 'minOpacity', 0, 1).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      wind.add(pars.layers.wind, 'magnitude', 0, 3).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      wind.add(pars.layers.wind, 'precision', 0, 5).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      wind.add(pars.layers.wind, 'animating').listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      wind.add(pars.layers.wind, 'animationSpeed', 0, 3).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
-      gui.close();
-    },
-
+    /**
+     * Init basic gui for customising the viz. Not loaded by default.
+     */
     addDebugTools() {
-      // eslint-disable-next-line
-      const GUI = require('../../custom_modules/dat.gui/build/dat.gui.min.js').GUI;
-      gui = new GUI({ width: 400 });
-      this.initGUI();
-    },
+      if (!this.guiLoaded) {
+        // eslint-disable-next-line
+        const GUI = require('../../custom_modules/dat.gui/build/dat.gui.min.js').GUI;
+        gui = new GUI({ width: 400 });
+        gui.domElement.id = 'gui';
+        gui.domElement.style.left = '10px';
+        gui.domElement.style.top = '0px';
+        gui.domElement.style.position = 'absolute';
+        console.log('GUI VISIBLE');
+        const general = gui.addFolder('general');
+        general.add(pars, 'active').onChange((v) => { this.isActive = v; });
+        general.add(pars, 'state', 0, 10).step(1).listen().onChange((value) => { this.visualizationState = value; });
+        general.add(pars, 'elapsed_days', 0.0, 16.0).listen();
+        general.add(pars, 'altitudeLevel', 0.0, altitudeLevels.length - 1).step(1).onChange((value) => { this.altitudeLevel = value; });
+        general.add(pars, 'auto_rotate');// .onChange(function(value) {controls.autoRotate=value;});
+        general.add(pars, 'antialias').listen().onChange((value) => { this.setAntialias(value); });
+        general.add(pars, 'stars').onChange((v) => { particleSystem.visible = v; });
+        general.add(pars, 'sun_visible').onChange((value) => { sunSphere.visible = value; });
+        general.add(pars, 'move_in_time');
+        general.add(pars, 'speed_d_x_sec', 0, 2);
+        general.add(pars, 'pixel_ratio', 1, 3).listen().onChange((value) => { renderer.setPixelRatio(value); });
+        general.add(pars, 'skip_frame', 0, 60).step(1).listen();
+        general.add(pars, 'fps', 0, 60).listen();
+        general.add(pars, 'winds', 0, 4).step(1).listen().onChange((value) => { this.winds = value; });
 
-    hideExplorerDates() {
-      _.each(daysLabels, (l) => { l.setVisible(false); });
-    },
+        general.add(controls.target, 'x', -1000.0, 1000.0).listen().onChange(() => {});
+        general.add(controls.target, 'y', -1000.0, 1000.0).listen().onChange(() => {});
+        general.add(pars, 'zoom', 0.1, 2.0).listen().onChange((value) => { console.log('changed'); this.setScale(value); });
+        general.add(pars, 'zoom_enabled').onChange((value) => { controls.enableZoom = value; });
+        const onboard = gui.addFolder('onboard');
+        onboard.add(pars, 'onboard');
+        onboard.add(pars, 'camera_smooth', 0.9, 1);
+        onboard.add(pars, 'camera_distance', 1.0, 1.5);
+        onboard.add(pars, 'camera_shift', 0, 0.5).listen();
+        const materialf = gui.addFolder('material');
+        const emisphere = gui.addFolder('emisphere');
+        const bump = materialf.addFolder('bump');
 
-    showExplorerDates(explorerIndex) {
-      _.each(daysLabels, (l) => { l.setVisible(false); });
-      for (let j = explorerIndex + 1; j <= daysLabels.length; j += 1) {
-        const dt = new Date();// this.valueOf()
-        dt.setDate(dt.getDate() + j);
-        const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        const text = `${dt.getDate()} ${monthNames[dt.getMonth()]}`;
-        const alpha = j / 16.0;
-        if (alpha < explorers[explorerIndex].getAlpha()) {
-          daysLabels[j - 1].set(text, explorers[explorerIndex].getPosition(alpha));
-          daysLabels[j - 1].updatePosition();
-        } else {
-          break;
-        }
+        bump.add(pars, 'use_bump').onChange((value) => {
+          if (value) { earthSphere.material.bumpMap = bumpTexture; } else { earthSphere.material.bumpMap = undefined; }
+          earthSphere.material.needsUpdate = true;
+        });
+        bump.add(pars, 'bump_scale', 0, 10).onChange((value) => { earthSphere.material.bumpScale = value; earthSphere.material.needsUpdate = true; });
+        const nightmap = materialf.addFolder('nightmap');
+        nightmap.add(pars, 'use_nightmap').onChange((value) => {
+          NightMap.setVisible(value);
+        });
+        nightmap.add(pars, 'nightmap_intensity', 0, 2).onChange((value) => {
+        //  earthSphere.material.emissiveIntensity = value; earthSphere.material.needsUpdate = true
+          NightMap.setIntensity(value);
+        });
+        nightmap.add(pars, 'nightmap_threshold', 0, 1).onChange((value) => {
+        //  earthSphere.material.emissiveIntensity = value; earthSphere.material.needsUpdate = true
+          NightMap.setThreshold(value);
+        });
+        nightmap.addColor(pars, 'nightmap_color').onChange((value) => {
+          NightMap.setColor(value);
+        });
+        materialf.add(pars, 'colorMap', { 'MAP A': colorMapA, 'MAP B': colorMapB, 'MAP C': colorMapC, 'MAP D': colorMapD }).onChange((v) => {
+          colorTexture = new THREE.TextureLoader().load(v, () => { console.log('color loaded'); });
+          earthSphere.material.map = colorTexture;
+          earthSphere.material.needsUpdate = true;
+        });
+        materialf.add(earthSphere.material, 'shininess', 0, 100).onChange(() => { earthSphere.material.needsUpdate = true; });
+        materialf.add(earthSphere.material, 'reflectivity', 0, 100).onChange(() => { earthSphere.material.needsUpdate = true; });
+        materialf.addColor(earthSphere.material, 'emissive').onChange(() => { earthSphere.material.needsUpdate = true; });
+        materialf.add(earthSphere.material, 'emissiveIntensity', 0, 1).onChange(() => { earthSphere.material.needsUpdate = true; });
+        materialf.add(earthSphere.material, 'reflectivity', 0, 1).onChange(() => { earthSphere.material.needsUpdate = true; });
+        materialf.add(earthSphere.material, 'refractionRatio', 0, 1).onChange(() => { earthSphere.material.needsUpdate = true; });
+
+        emisphere.add({ message: 'OPTION 1 - 3D SPHERE' }, 'message').onChange(() => { emisphereSphere.material.needsUpdate = true; });
+        emisphere.add(emisphereSphere, 'visible').onChange(() => { emisphereSphere.material.needsUpdate = true; });
+        emisphere.add(emisphereSphere.material, 'opacity', 0, 1).onChange(() => { emisphereSphere.material.needsUpdate = true; });
+        emisphere.addColor(emisphereSphere.material, 'color').onChange(() => { emisphereSphere.material.needsUpdate = true; });
+        emisphere.addColor(emisphereSphere.material, 'emissive').onChange(() => { emisphereSphere.material.needsUpdate = true; });
+        emisphere.add(emisphereSphere.material, 'emissiveIntensity', 0, 1).onChange(() => { emisphereSphere.material.needsUpdate = true; });
+        emisphere.add(emisphereSphere.material, 'reflectivity', 0, 10).onChange(() => { emisphereSphere.material.needsUpdate = true; });
+        emisphere.add(emisphereSphere.material, 'refractionRatio', 0, 10).onChange(() => { emisphereSphere.material.needsUpdate = true; });
+        emisphere.add(emisphereSphere.material, 'shininess', 0, 100).onChange(() => { emisphereSphere.material.needsUpdate = true; });
+        emisphere.add(emisphereSphere.scale, 'z', 0.1, 1.5).onChange((z) => { emisphereSphere.scale.set(z, z, z); });
+
+        emisphere.add({ message: 'OPTION 2 - STATIC PNG' }, 'message');
+        emisphere.add(emisphereSprite, 'visible').onChange(() => { emisphereSprite.material.needsUpdate = true; });
+        emisphere.add(emisphereSprite.material, 'opacity', 0, 1).onChange(() => { emisphereSprite.material.needsUpdate = true; });
+        emisphere.addColor(emisphereSprite.material, 'color').onChange(() => { emisphereSprite.material.needsUpdate = true; });
+        emisphere.add(emisphereSprite.scale, 'z', 300, 600).onChange((z) => { emisphereSprite.scale.set(z, z, z); });
+
+        const lights = gui.addFolder('lights');
+        lights.addColor(pars, 'sun_light_color').onChange((value) => { pointLight.color = new THREE.Color(value); });
+        lights.add(pars, 'spot_light_intensity', 0, 10).onChange((value) => { pointLight.intensity = value; });
+        lights.addColor(pars, 'ambient_light_color').onChange((value) => { ambientLight.color = new THREE.Color(value); });
+        lights.add(pars, 'ambient_light_intensity', 0, 10).onChange((value) => { ambientLight.intensity = value; });
+
+        const layers = gui.addFolder('layers');
+        const wind = layers.addFolder('wind');
+        wind.add(pars.layers.wind, 'visible').onChange((value) => { windVisualization.lines.visible = value; });
+        wind.addColor(pars.layers.wind, 'start_color').onChange(() => { windVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
+        wind.addColor(pars.layers.wind, 'end_color').onChange(() => { windVisualization.setColor(new THREE.Color(pars.layers.wind.start_color), new THREE.Color(pars.layers.wind.end_color)); });
+
+        wind.add(pars.layers.wind, 'mapping', { 'NO MAPPING': 0.0, 'RGB MAPPING': 1.0, 'HUE MAPPING': 2.0 }).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+        wind.add(pars.layers.wind, 'opacity_mapping').listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+        wind.add(pars.layers.wind, 'threshold', 0, 200).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+        wind.add(pars.layers.wind, 'opacity', 0, 5).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+        wind.add(pars.layers.wind, 'minOpacity', 0, 1).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+        wind.add(pars.layers.wind, 'magnitude', 0, 3).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+        wind.add(pars.layers.wind, 'precision', 0, 5).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+        wind.add(pars.layers.wind, 'animating').listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+        wind.add(pars.layers.wind, 'animationSpeed', 0, 3).listen().onChange(() => { windVisualization.setStyle(pars.layers.wind); });
+        gui.close();
       }
+      this.guiLoaded = true;
     },
 
+    /**
+     * It manages state transition, implementing the different behaviours for each state.
+     * @param {Integer} state
+     */
     setState(state) {
-      // console.log(`Setting state: ${state}`);
       switch (state) {
-        case STATE_IDLE: {
-          pars.auto_rotate = true;
+        case STATE_ANIMATION_IDLE: {
+          pars.auto_rotate = false;
           this.clear();
           break;
         }
-        case STATE_MOVING_TO_DEPARTURE: { // MOVING TO DEPARTURE POINT
+        /* move to departure point after departure/destination selection and start downloading the trajectory data */
+        case STATE_MOVING_TO_DEPARTURE: {
           this.clear();
-          departureLabel.set(departure.city, departureLabel.anchorObject.position);
+          labels.departureLabel.set(departure.city, labels.departureLabel.anchorObject.position.clone().multiplyScalar(1.003));
+          /* hide the departure label if the flight is planned */
           if (this.flightType === 'planned') {
-            destinationLabel.set(destination.city, destinationLabel.anchorObject.position);
+            labels.destinationLabel.set(destination.city, labels.destinationLabel.anchorObject.position.clone().multiplyScalar(1.003));
           } else {
-            destinationLabel.setVisible(false);
+            labels.destinationLabel.setVisible(false);
           }
           pars.auto_rotate = false;
           this.downloadMulti();
-          // this.rotateTo({ lat: departure.lat, lng: departure.lng, time: 0.5, target: new THREE.Vector3(0, 0, 0), zoom: INITIAL_ZOOM, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_ACTIVE; } });
           this.resetTo({ lat: departure.lat, lng: departure.lng, time: 0.5, date: this.targetDate, onAnimationEnd: () => { this.visualizationState = STATE_ANIMATION_ACTIVE; } });
           break;
         }
+        /* animation active */
         case STATE_ANIMATION_ACTIVE: {
           pars.auto_rotate = false;
           break;
         }
+        /* move to destination point after simulation ends */
         case STATE_MOVING_TO_DESTINATION: {
           pars.auto_rotate = false;
           // FADE IN ONLY THE MIN TRACK
           this.selectedExplorer = this.minTrack + 1;
 
-          for (let j = 0; j < cityLabels.length; j += 1) {
-            cityLabels[j].setVisible(false);
-          }
+          labels.cityLabels.setVisible(false);
           // GO TO DESTINATION POINT
-          const d = Util.XYZ2LatLon(explorers[this.minTrack].animatingSphere.position);// explorers[this.minTrack].destination;
+          const d = Util.XYZ2LatLon(explorers[this.minTrack].animatingSphere.position); // explorers[this.minTrack].destination;
           this.resetTo({
             lat: d.lat,
             lng: d.lng,
@@ -966,18 +948,16 @@ export default {
               this.focusedExplorer = 0;
             },
           });
-          this.showExplorerDates(this.minTrack);
+          labels.daysLabels.show(this.minTrack, explorers);
+          labels.update(pars.onboard);
           break;
         }
+        /* animation end */
         case STATE_ANIMATION_END: {
           pars.auto_rotate = false;
-          const dt = new Date(this.startingDate);// this.valueOf()
-          dt.setDate(dt.getDate() + this.minTrack);
-          const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-          this.departureDay = dt.getDate();
-          this.departureMonth = monthNames[dt.getMonth()];
           break;
         }
+
         case STATE_UNFOCUSED: {
           pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
@@ -994,11 +974,11 @@ export default {
               controls.target.set(controls.target.x, v[0], controls.target.z);
               this.setScale(v[1]);
               controls.setPolarAngle(v[2]);
-              controls.update();
             },
           });
           break;
         }
+
         case STATE_UNFOCUSED_PAGES: {
           pars.auto_rotate = true;
           const iv = [controls.target.y, this.getScale(), controls.getPolarAngle()];
@@ -1015,11 +995,11 @@ export default {
               controls.target.set(controls.target.x, v[0], controls.target.z);
               this.setScale(v[1]);
               controls.setPolarAngle(v[2]);
-              controls.update();
             },
           });
           break;
         }
+
         case STATE_UNFOCUSED_GALLERY: {
           const timeInt = (this.$store.state.general.transitionName === 'middle-to-bottom') ? 0.1 : 0.4;
           pars.auto_rotate = true;
@@ -1037,11 +1017,11 @@ export default {
               controls.target.set(controls.target.x, v[0], controls.target.z);
               this.setScale(v[1]);
               controls.setPolarAngle(v[2]);
-              controls.update();
             },
           });
           break;
         }
+
         case STATE_INITIAL: {
           pars.auto_rotate = true;
           this.active = false;
@@ -1060,7 +1040,6 @@ export default {
               controls.target.set(controls.target.x, v[0], controls.target.z);
               this.setScale(v[1]);
               controls.setPolarAngle(v[2]);
-              controls.update();
             },
           });
           break;
@@ -1072,6 +1051,9 @@ export default {
       pars.state = state;
     },
 
+    /**
+    * returns 2d svg representation of the explorer trajectory.
+    */
     toSVG() {
       this.svg = [];
       let t = '<svg height="210" width="210">';
@@ -1109,25 +1091,23 @@ export default {
       return t;
     },
 
+    /**
+    * setup the animator object to rotate to the latitude, longitude passed as parameter.
+    * @param {Object} config
+    *   config.lat: latitude
+    *   config.lng: longitude
+    *   config.zoom: zoom (optional)
+    *   config.zoom: camera target (optional)
+    */
     rotateTo(config) {
+      /* transform lat lng to azimuth polar angles */
       let polar = (1.0 - ((config.lat + 270) / 180.0) % 1) * Math.PI;
       let azimuth = ((config.lng + 90) / 360.0) * 2 * Math.PI;
-      // controls.setAzimuthalAngle(azimuth-Math.PI*0.5);
-      // controls.setPolarAngle(polar);
-      while (azimuth < controls.getAzimuthalAngle() - Math.PI) {
-        azimuth += Math.PI * 2;
-      }
-      while (azimuth > controls.getAzimuthalAngle() + Math.PI) {
-        azimuth -= Math.PI * 2;
-      }
+      while (azimuth < controls.getAzimuthalAngle() - Math.PI) azimuth += Math.PI * 2;
+      while (azimuth > controls.getAzimuthalAngle() + Math.PI) azimuth -= Math.PI * 2;
+      while (polar < controls.getPolarAngle() - Math.PI * 2) polar += Math.PI * 2;
+      while (polar > controls.getPolarAngle() + Math.PI * 2) polar -= Math.PI * 2;
 
-      while (polar < controls.getPolarAngle() - Math.PI * 2) {
-        polar += Math.PI * 2;
-      }
-      while (polar > controls.getPolarAngle() + Math.PI * 2) {
-        polar -= Math.PI * 2;
-      }
-      // controls.update();
       const iv = [controls.getAzimuthalAngle(), controls.getPolarAngle()];
       const ev = [azimuth, polar];
       if (config.zoom) {
@@ -1159,11 +1139,18 @@ export default {
           if (config.target) {
             controls.target.set(v[i], v[i + 1], v[i + 2]);
           }
-          controls.update();
         },
       });
     },
 
+    /**
+    * setup the animator object to rotate to the latitude, longitude passed as parameter.
+    * It also reset camera zoom and camera target to default values
+    * @param {Object} config
+    *   config.lat: latitude
+    *   config.lng: longitude
+    *   config.date: date to reset
+    */
     resetTo(config) {
       let polar = (1.0 - ((config.lat + 270) / 180.0) % 1) * Math.PI;
       let azimuth = ((config.lng + 90) / 360.0) * 2 * Math.PI;
@@ -1182,7 +1169,6 @@ export default {
       while (polar > controls.getPolarAngle() + Math.PI * 2) {
         polar -= Math.PI * 2;
       }
-      // controls.update();
       const iv = [controls.getAzimuthalAngle(), controls.getPolarAngle()];
       const ev = [azimuth, polar];
       // console.log(`Zooming from ${this.getScale()} to ${config.zoom}`);
@@ -1196,8 +1182,6 @@ export default {
         iv.push(this.startingDate.getTime());
         ev.push(config.date.getTime());
       }
-      // console.log(camera.position);
-      // console.log(`${camera.position.length()} * ${radius * 1.72}`);
       animator.start({
         init_values: iv,
         end_values: ev,
@@ -1211,54 +1195,64 @@ export default {
           controls.setAzimuthalAngle(v[0]);
           controls.setPolarAngle(v[1]);
           let i = 2;
+          this.setScale(v[i]);
           i += 1;
-          this.setScale(v[2]);
-          // console.log(v[2])
           controls.target.set(v[i], v[i + 1], v[i + 2]);
           camera.position.setLength(v[i + 3]);
           if (config.date) {
             this.startingDate.setTime(v[i + 4]);
           }
-          controls.update();
         },
       });
     },
+
+    /**
+    * Set the scene zoom by scaling the scene.
+    * @param {Float} s
+    */
     setScale(s) {
       pars.zoom = s;
       scene.scale.set(s, s, s);
-      for (let i = 0; i < explorers.length; i += 1) {
-        explorers[i].animatingSphere.scale.set(1 / s, 1 / s, 1 / s);
-      }
+      _.each(explorers, (e) => { e.animatingSphere.scale.set(1 / s, 1 / s, 1 / s); });
       selectSphere.scale.set(1 / s, 1 / s, 1 / s);
-      // selectSphere.setScale(10);
-      // departureSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
-      // destinationSphere.scale.set(2.0 - s, 2.0 - s, 2.0 - s);
-      let t = Math.min(200, -200 + camera.position.distanceTo(new THREE.Vector3())) / 200;
-      t = 0.06 * t / (s ** 1.4); // ((t * s) ** 0.8); // (s ** 1.3);
-
-      departureLabel.setScale(t);
-      destinationLabel.setScale(t);
-      _.each(daysLabels, (l) => { l.setScale(t); });
-      _.each(cityLabels, (l) => { l.setScale(t); });
-
-      // *** destinationLabel.getAnchorObject().scale.set(0.5 / s, 0.5 / s, 0.5 / s);
+      labels.setScale(s);
     },
+
+    /**
+    * Return scene zoom.
+    */
     getScale() {
       return pars.zoom;
     },
 
+    /**
+    * Set the explorer to onboard, activating the city labels view.
+    * @param {Integer} v
+    *   explorer index
+    */
     setOnboard(v) {
       pars.onboard = v;
       this.autoMode = true;
+      pars.zoom_enabled = !v;
+      if (this.visualizationState === STATE_ANIMATION_ACTIVE && v) {
+        controls.enableZoom = pars.zoom_enabled;
+        controls.enableRotate = pars.zoom_enabled;
+      } else {
+        controls.enableZoom = true;
+        controls.enableRotate = true;
+      }
       if (!v) {
-        for (let j = 0; j < cityLabels.length; j += 1) {
-          cityLabels[j].setVisible(v, true);
-        }
+        labels.cityLabels.setVisible(v);
       }
     },
 
-    incrementTime() {
-      pars.elapsed_days = Math.max(0, Math.min(16, pars.elapsed_days + pars.speed_d_x_sec / 60.0));
+    /**
+    * Time increment. By increasing the value pars.skip_frame it's possible to skip frame rendering, reducing the computation cost
+    * @param {Integer} frames
+    * frames to skip
+    */
+    incrementTime(frames) {
+      pars.elapsed_days = Math.max(0, Math.min(16, pars.elapsed_days + frames * pars.speed_d_x_sec / 60.0));
       const tmpDays = Math.ceil(pars.elapsed_days);
       // this.elapsedDays = pars.elapsed_days;
       if (tmpDays !== this.elapsedDays) {
@@ -1266,92 +1260,106 @@ export default {
       }
     },
 
+    /**
+    * animation function. Called 60 times per second, it's responsible for rendering and animating.
+    */
     animate() {
       fps += 1;
-      windVisualization.update(pars.elapsed_days);
-      if (this.animating) {
-        animator.update(pars.speed_d_x_sec / 60.0);
-        if (pars.auto_rotate) {
-          controls.setAzimuthalAngle(controls.getAzimuthalAngle() + 0.002);
-          controls.update();
-        }
-        if (pars.move_in_time) { this.incrementTime(); }
-
-        const d = new Date(this.startingDate);//
-        d.setTime(d.getTime() + 1000 * 60 * 60 * 24 * pars.elapsed_days);
-        earthRotation = Util.getEarthAzimuthRotation(d);
-        pointLight.position.set(Math.sin(-earthRotation) * radius * 90, Math.sin(axesRotation) * radius * 90, Math.cos(-earthRotation) * radius * 90);
-        NightMap.update(new THREE.Vector3(pointLight.position.x / 90, pointLight.position.y / 90, pointLight.position.z / 90));
-        if (pars.sun_visible) {
-          sunSphere.position.set(pointLight.position.x, pointLight.position.y, pointLight.position.z);
-        }
-        switch (pars.state) {
-          case STATE_ANIMATION_ACTIVE: {
-            const alpha = Math.min(1, pars.elapsed_days / 16.0);
-            let ok = true;
-            for (let i = 0; i < explorers.length; i += 1) { // explorers.length
-              ok = ok && explorers[i].setAlpha(alpha);
-            }
-            if (ok) {
-              if (!this.interacting) {
-                if (pars.onboard) {
-                  const pAlpha = Math.min(1, Math.max(0, alpha - pars.camera_shift));
-                  if (explorers[this.onboardIndex].getLength() > 2) {
-                    const c = explorers[this.onboardIndex].getPosition(pAlpha);
-                    const v = pars.camera_smooth;
-                    const umv = 1 - v;
-                    // zoom en
-                    if (this.autoMode) {
-                      const t = this.getScale() * v + pars.camera_zoom * umv;
-                      this.setScale(t);
-                    }
-                    camera.position.set(
-                      camera.position.x * v + umv * c.x * pars.camera_distance,
-                      camera.position.y * v + umv * c.y * pars.camera_distance,
-                      camera.position.z * v + umv * c.z * pars.camera_distance,
-                    );
-                    controls.target.set(
-                      controls.target.x * v + umv * explorers[this.onboardIndex].animatingSphere.position.x,
-                      controls.target.y * v + umv * explorers[this.onboardIndex].animatingSphere.position.y,
-                      controls.target.z * v + umv * explorers[this.onboardIndex].animatingSphere.position.z,
-                    );
-                    controls.update();
-                  }
-                } else {
-                  const v = new THREE.Vector3();
-                  for (let i = 0; i < explorers.length; i += 1) { // explorers.length
-                    v.add(explorers[i].animatingSphere.position);
-                  }
-                  v.divideScalar(explorers.length);
-                  v.setLength(radius * 1.65);
-                  const a = pars.camera_smooth;
-                  const uma = 1 - a;
-                  controls.target.set(controls.target.x * a, controls.target.y * a, controls.target.z * a);
-                  if (this.autoMode) {
-                    const t = this.getScale() * a + INITIAL_ZOOM * uma;
-                    this.setScale(t);
-                    camera.position.set(camera.position.x * a + v.x * uma, camera.position.y * a + v.y * uma, camera.position.z * a + v.z * uma);
-                  }
-                  controls.update();
-                  // controls.setAzimuthalAngle(rad);
-                }
-              }
-              this.incrementTime();
-            } else {
-              //  console.log("network problems");
-            }
-            if (alpha >= 1) { this.visualizationState = STATE_MOVING_TO_DESTINATION; }
-            break;
-          }
-          default:
-            break;
-        }
-      }
-      //  controls.update();
+      /* by setting pars.skip_frame it's possible to reduce computation cost, lowering fps.
+      * if pars.skip_frame == 0 -> fps = 60. If == 1  -> fps = 30, if == 2 -> fps = 20  */
       if (timer % (1 + pars.skip_frame) === 0) {
-        // update the picking ray with the camera and mouse position
+        const frames = 1 + pars.skip_frame;
+        this.windsLoaded = windVisualization.update(pars.elapsed_days, frames);
+        /* stop if user is mouse selecting */
+        if (!this.selecting) {
+          /* update animator */
+          animator.update(frames * pars.speed_d_x_sec / 60.0);
 
+          /* auto rotate */
+          if (pars.auto_rotate && this.animating) {
+            controls.setAzimuthalAngle(controls.getAzimuthalAngle() - 0.002 * frames);
+          }
+          if (pars.move_in_time) { this.incrementTime(); }
 
+          /* sun (point light) position set */
+          const d = new Date(this.startingDate);
+          d.setTime(d.getTime() + 1000 * 60 * 60 * 24 * pars.elapsed_days);
+          earthRotation = Util.getEarthAzimuthRotation(d);
+          pointLight.position.set(Math.sin(-earthRotation) * radius * 90, Math.sin(axesRotation) * radius * 90, Math.cos(-earthRotation) * radius * 90);
+          if (pars.sun_visible) {
+            sunSphere.position.set(pointLight.position.x, pointLight.position.y, pointLight.position.z);
+          }
+
+          /* update night map sun position */
+          NightMap.update(new THREE.Vector3(pointLight.position.x / 90, pointLight.position.y / 90, pointLight.position.z / 90));
+
+          /* manage viz states */
+          switch (pars.state) {
+            case STATE_ANIMATION_ACTIVE: {
+              const alpha = Math.min(1, pars.elapsed_days / 16.0);
+              /* check if trajectory are loaded  for current elapsed days */
+              let tl = true;
+              for (let i = 0; i < explorers.length; i += 1) { // explorers.length
+                tl = tl && explorers[i].setAlpha(alpha);
+              }
+              this.trajectoryLoaded = tl;
+
+              if (tl) {
+                if (!this.interacting) {
+                  /* if user is not interacting with the camera update camera and target position */
+                  if (pars.onboard) {
+                    /* position the camera to a previous explorer position and the camera target to the current one */
+                    if (this.animating) labels.cityLabels.update(explorers[this.onboardIndex].animatingSphere.position);
+                    const pAlpha = Math.min(1, Math.max(0, alpha - pars.camera_shift));
+                    if (explorers[this.onboardIndex].getLength() > 2) {
+                      const c = explorers[this.onboardIndex].getPosition(pAlpha);
+                      const v = pars.camera_smooth ** frames;
+                      const umv = 1 - v;
+                      // zoom en
+                      if (this.autoMode) {
+                        const t = this.getScale() * v + pars.camera_zoom * umv;
+                        this.setScale(t);
+                      }
+                      camera.position.set(
+                        camera.position.x * v + umv * c.x * pars.camera_distance,
+                        camera.position.y * v + umv * c.y * pars.camera_distance,
+                        camera.position.z * v + umv * c.z * pars.camera_distance,
+                      );
+                      // camera.position.clampLength(radius * 1.35, radius * 5);
+                      controls.target.set(
+                        controls.target.x * v + umv * explorers[this.onboardIndex].animatingSphere.position.x,
+                        controls.target.y * v + umv * explorers[this.onboardIndex].animatingSphere.position.y,
+                        controls.target.z * v + umv * explorers[this.onboardIndex].animatingSphere.position.z,
+                      );
+                    }
+                  } else {
+                    /* position the camera to the average of all explorers position and the camera target to the earth center */
+                    const v = new THREE.Vector3();
+                    for (let i = 0; i < explorers.length; i += 1) { // explorers.length
+                      v.add(explorers[i].animatingSphere.position);
+                    }
+                    v.divideScalar(explorers.length);
+                    v.setLength(radius * 1.65);
+                    const a = pars.camera_smooth ** frames;
+                    const uma = 1 - a;
+                    controls.target.set(controls.target.x * a, controls.target.y * a, controls.target.z * a);
+                    if (this.autoMode) {
+                      const t = this.getScale() * a + INITIAL_ZOOM * uma;
+                      this.setScale(t);
+                      camera.position.set(camera.position.x * a + v.x * uma, camera.position.y * a + v.y * uma, camera.position.z * a + v.z * uma);
+                    }
+                  }
+                }
+                if (this.animating) this.incrementTime(frames);
+              }
+              if (alpha >= 1) { this.visualizationState = STATE_MOVING_TO_DESTINATION; }
+              break;
+            }
+            default:
+              break;
+          }
+        }
+        controls.update();
         renderer.render(scene, camera);
         /*
         MULTI SCREEN EXAMPLE CODE
@@ -1369,39 +1377,61 @@ export default {
       }
       timer += 1;
 
-      // Saving after rendering
+      /* Save the canvas to jpeg after rendering (avoiding glitches) */
       if (this.saving) {
-        renderer.domElement.toBlob(
-          (blob) => {
-            saveAs(blob, 'image.png');
-            this.saving = false;
-            requestAnimationFrame(this.animate);
-          },
-        );
+        const canvasLabel = document.getElementById('labels-canvas');
+        const saveCanvas = document.createElement('canvas');
+        const saveContext = saveCanvas.getContext('2d');
+        saveCanvas.width = renderer.domElement.width;
+        saveCanvas.height = renderer.domElement.height;
+
+        saveContext.drawImage(renderer.domElement, 0, 0,
+          saveCanvas.width, saveCanvas.height);
+        saveContext.drawImage(canvasLabel, 0, 0,
+          saveCanvas.width, saveCanvas.height);
+
+
+        saveCanvas.toBlob((blob) => {
+          // const file = new File([blob], 'image.png', { type: 'application/octet-stream' });
+          // FilseSaver.saveAs(file);
+          saveAs(blob, 'image.jpg');
+          // const url = window.URL.createObjectURL(blob);
+          // const a = document.createElement('a');
+          // document.body.appendChild(a);
+          // a.style.display = 'none';
+          // a.href = url;
+          // a.download = 'aerocene-float-predictor-screenshot.jpg';
+          // a.click();
+          // window.URL.revokeObjectURL(url);
+          // document.body.removeChild(a);
+          this.saving = false;
+          requestAnimationFrame(this.animate);
+        }, 'image/jpg', 1);
         return;
       }
-      if (this.alive) { // Needed for hot reload
+
+      if (this.alive) { /* Needed for webpack hot reload */
         requestAnimationFrame(this.animate);
       }
     },
 
+    /**
+    * Resets all the parameters and clear useless buffers. It gets at the beginning and we want to start the simulation again.
+    */
     clear() {
-      // console.log('reset');
       if (downloader) {
         downloader.destroy();
       }
       selectSphere.visible = false;
       this.selectedExplorer = 0;
       this.focusedExplorer = 0;
-      downloader = new WindDataDownloader();
+      downloader = new TrajectoryDataDownloader();
       this.startingDate.setMonth(new Date().getMonth());
       this.startingDate.setDate(new Date().getDate());
       pars.elapsed_days = 0;
-      this.hideExplorerDates();
+      labels.daysLabels.setVisible(false);
       _.each(explorers, (e) => { e.reset(); });
-      _.each(cityLabels, (l) => { l.setVisible(false); });
-      departureLabel.setVisible(false);
-      destinationLabel.setVisible(false);
+      labels.setVisible(false);
       this.minDist = 10000000000000000;
       this.minTrack = 0;
       this.minTime = 0;
@@ -1411,31 +1441,39 @@ export default {
       this.setOnboard(false);
     },
 
+    /**
+    * Error routines. Set the state to initial to start again.
+    */
     error() {
       console.log('ERROR ROUTINES');
       this.visualizationState = STATE_INITIAL;
       animator.stop();
     },
 
+    /**
+    * Download the trajectory data for the 8 explorers, create curves using Catmull Rom Curves algorithm and
+    * compute explorer movement in altitude based on the angle between the explorer and the sun position (point light)
+    */
     downloadMulti() {
-      downloader.downloadMulti(departure, destination, pressureLevels[DEFAULT_ALTITUDE_LEVEL],
+      downloader.downloadMulti(departure, destination, pressureLevels[this.initialAltitudeLevel],
         // this.altitudeLevel],
         (data) => { // ON UPDATE
           if (data.mindist < this.minDist) {
             this.minDist = Math.round(data.mindist);
-            this.minTime = Math.round(data.mintime);
+            this.minTime = Math.round(data.mintime) - data.mintrack;
             this.minTrack = data.mintrack;
           }
           this.api_data.push(data.d);
           this.timestamp = data.timestamp.substring(11);
-          // console.log('length ' + this.api_data.length)
           for (let j = 0; j < explorers.length; j += 1) {
             const pts = [];
             for (let i = j; i < data.d.length; i += 8) { pts.push(Util.latLon2XYZPosition(data.d[i][2], data.d[i][3], radius)); }
-            // console.log(pts.length)
+
+            /* increase the number of points using Catmull Rom Curves algorithm */
             const curve = new THREE.CatmullRomCurve3(pts);
             const points = curve.getPoints(CATMULL_NUM_POINTS * (pts.length - 1));
-            // console.log('TO ' + points.length)
+
+            /* compute explorer movement in altitude based on the angle between the explorer and the sun position (point light) */
             const cdate = new Date(this.startingDate);
             const explorerH = pars.explorer_height_base;
             for (let k = 0; k < points.length - 1; k += 1) {
@@ -1448,7 +1486,7 @@ export default {
               if (g < Math.PI * 0.45) {
                 explorerHS[j] += s * 0.005;
               } else { explorerHS[j] -= 0.0015; }
-              //
+
               explorerHS[j] = Math.min(pars.explorer_height_shift, Math.max(explorerHS[j], 0));
               explorers[j].addDataSample(points[k], explorerH, explorerHS[j]);
               Util.addHours(cdate, 24.0 / (points.length - 1));
@@ -1456,6 +1494,7 @@ export default {
           }
         },
         () => { // ON END
+          /* set the winning explorer to the one that got closer to the destination. If the flight is planned, use the one that went farther */
           if (this.flightType !== 'planned') {
             let maxDistance = -1;
             let winningIndex = 0;
@@ -1469,13 +1508,16 @@ export default {
             this.minTrack = winningIndex;
             this.minTime = 16 - this.minTrack;
           }
-          // TODO: actual startingDate! Add minTrack days
+
           this.winningExplorerData = {
             minDist: this.minDist,
             minTime: this.minTime,
             departureDate: this.startingDate,
             svg: this.toSVG(),
           };
+
+          /* Fill a json with the trajectory data and push to server through post request. This will add it to the gallery */
+
           const data = [];
           for (let i = 0; i < this.api_data.length; i += 1) {
             for (let j = this.minTrack; j < this.api_data[i].length - 8; j += 8) {
@@ -1498,7 +1540,7 @@ export default {
             min_time: this.minTime,
             departure_date: departureDate.toISOString(),
             speed: explorers[this.minTrack].avgSpeed,
-            altitude: altitudeLevels[this.altitudeLevel],
+            altitude: altitudeLevels[this.initialAltitudeLevel],
             distance: explorers[this.minTrack].getTotalDistance() * 0.001,
             path: data,
             svg: this.svg,
@@ -1515,11 +1557,8 @@ export default {
             };
           }
           const s = JSON.stringify(trajectory);
-          // for (var z = 0; z < 300; z += 1) {
-          // setTimeout(() =>
-          // fetch('http://54.190.63.219/db/insert.php', {
           if (s !== this.previousTrajectoryData) {
-            fetch('http://54.218.125.165/api/insert.php', {
+            fetch('http://floatpredictor.aerocene.org/scripts/api/insert.php', {
               method: 'post',
               body: s,
             }).then(
@@ -1536,7 +1575,7 @@ export default {
           this.previousTrajectoryData = s;
         },
         (e) => { // ON ERROR
-          console.log(e.message);
+          console.log(e);
           this.error();
         },
       );
@@ -1549,16 +1588,16 @@ export default {
 @import "~@/assets/css/_variables_and_mixins.scss";
 
 .main-visualization {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position: relative;
   z-index: 0;
   font-style: 'Colfax-Medium';
 }
 
 #labels{
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   position:relative;;
   overflow: hidden;
   font-size: 10px;
@@ -1620,7 +1659,16 @@ export default {
 .dg .c input[type=text]{
   height: 100%;
 }
-.dg.main .close-button.close-bottom {
-  color: black;
+
+#labels-canvas {
+  pointer-events: none;
+  user-select: none;
+  background:transparent;
+  z-index:3;
+  width:100%;
+  height:100%;
+  position:absolute;
+  left:0px;
+  top:0px;
 }
 </style>

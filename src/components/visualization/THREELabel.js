@@ -1,58 +1,65 @@
+/**
+ * THREELabels.js - Utility class for creating labels in three.js
+ * The labels are drawn on a separate canvas, overlayed on top of the visualization canvas.
+*/
+
 /* eslint-disable no-mixed-operators, no-console */
 import Util from './Util';
 
 const nextPOT = require('next-power-of-two');
 const THREE = require('three');
 
-const antialias = 5;
-
+const antialias = 2;
 class THREELabel {
   constructor(scene, camera, fontFace = 'Bold Arial', fontSize = 12, bgColor = 'rgba(0,0,0,0)', textColor = 'rgba(255,255,255,1)', obj = undefined) {
     this.scene = scene;
     this.camera = camera;
     this.anchorObject = obj;
     this.fontFace = fontFace;
-    this.fontSize = fontSize;
+    this.fontSize = fontSize * antialias;
+    this.labelPadding = {
+      left: this.fontSize * 0.5,
+      right: this.fontSize * 0.5,
+      top: this.fontSize * 0.0,
+      bottom: this.fontSize * 0.5,
+    };
     this.padding = {
-      left: fontSize * 2,
-      right: fontSize * 4,
-      top: fontSize,
-      bottom: fontSize * 3,
+      left: this.fontSize * 2 / 5.0,
+      right: this.fontSize * 4 / 5.0,
+      top: this.fontSize / 5.0,
+      bottom: this.fontSize * 3 / 5.0,
     };
     this.iconPadding = {
-      left: fontSize * 2,
-      right: fontSize * 2,
-      top: fontSize * 3,
-      bottom: fontSize * 3,
+      left: this.fontSize * 2 / 5.0,
+      right: this.fontSize * 2 / 5.0,
+      top: this.fontSize * 3 / 5.0,
+      bottom: this.fontSize * 3 / 5.0,
     };
-    this.canvas = document.createElement('canvas');
+    // this.canvas = document.createElement('canvas');
     // document.body.appendChild(this.canvas);
+    // this.context = this.canvas.getContext('2d');
+
+    this.canvas = document.getElementById('labels-canvas');
     this.context = this.canvas.getContext('2d');
+    this.labelCanvas = document.createElement('canvas');
+    this.labelContext = this.labelCanvas.getContext('2d');
     this.text = '';
     this.bgColor = bgColor;
     this.textColor = textColor;
 
-    this.texture = new THREE.Texture(this.canvas);
-    this.spriteMaterial = new THREE.SpriteMaterial({ map: this.texture });
-
-    // this.spriteMaterial.clipShadows = true;
-    this.spriteMaterial.depthTest = false;
-    // this.spriteMaterial.depthWrite = false;
-
-    this.sprite = new THREE.Sprite(this.spriteMaterial);
-
-
-    this.scene.add(this.sprite);
     this.margin = 2;
     this.position = new THREE.Vector3(0, 0, 0);
     this.w = 0;
     this.h = 0;
     this.setVisible(false);
+    window.addEventListener('resize', () => {
+      this.redraw();
+    }, false);
   }
 
 
   roundRect(x, y, w, h, r) {
-    const ctx = this.context;
+    const ctx = this.labelContext;
     ctx.beginPath();
     ctx.moveTo(x + r, y);
     ctx.lineTo(x + w - r, y);
@@ -68,39 +75,45 @@ class THREELabel {
   }
 
   redraw() {
-    this.context.font = `${this.fontSize}px ${this.fontFace}`;
-    const metrics = this.context.measureText(this.text);
+    this.labelContext.font = `${this.fontSize}px ${this.fontFace}`;
+    const metrics = this.labelContext.measureText(this.text);
     const textWidth = metrics.width;
-    this.h = this.fontSize * antialias + this.padding.top + this.padding.bottom;
+    this.h = this.fontSize + this.padding.top + this.padding.bottom;
     const iconSize = this.h - (this.iconPadding.top + this.iconPadding.bottom);
     let startW = 0;
-    if (this.img) startW = (this.iconPadding.left + this.iconPadding.right) + iconSize;
-    this.w = startW + (this.padding.left + this.padding.right) + textWidth * antialias;
-    this.canvas.width = nextPOT(this.w);
-    this.canvas.height = nextPOT(this.h * 2);
-    let left = 0.5 * (this.canvas.width - this.w);
-    const top = (this.canvas.height - this.h) * 0.5 - this.h * 0.65;
-    // this.roundRect(0, 0, this.canvas.width,
-    //  this.canvas.height, 0);
-    this.context.fillStyle = 'rgba(100,100,100,0.3)';
-    this.context.fillStyle = this.bgColor;
-    this.roundRect(left, top, this.w,
-      this.h, this.h * 0.3);
-    this.context.fillStyle = this.textColor;
-    left = this.padding.left + 0.5 * (this.canvas.width - this.w);
+    if (this.img) startW = this.iconPadding.left + this.iconPadding.right + iconSize;
+    this.w = startW + (this.padding.left + this.padding.right) + textWidth;
+    this.labelCanvas.width = nextPOT(this.w + this.labelPadding.left + this.labelPadding.right);
+    this.labelCanvas.height = nextPOT(this.h + this.labelPadding.top + this.labelPadding.bottom);
+    let left = 0; // this.labelPadding.left;
+    const top = this.labelPadding.top;
     if (this.img && this.img.clientWidth > 0 && this.img.clientHeight > 0) {
+      this.labelContext.fillStyle = this.bgColor;
+      this.roundRect(left, top, this.w,
+        this.h, this.h * 0.3);
+
+      left += this.padding.left;
       left += this.iconPadding.left;
       const ratio = this.img.clientWidth / this.img.clientHeight;
-      this.context.drawImage(this.img, left,
+      this.labelContext.drawImage(this.img, left,
         top + this.iconPadding.top, iconSize * ratio, iconSize);
       left += iconSize * ratio + this.iconPadding.right;
+    } else {
+      left += this.padding.left;
     }
-    this.context.font = `${this.fontSize * antialias}px ${this.fontFace}`;
-    this.context.fillText(this.text, left, top + this.h - this.padding.bottom);
-    this.texture.needsUpdate = true;
-    let t = Math.min(200, -200 + this.camera.position.distanceTo(new THREE.Vector3())) / 200;
-    t = 0.06 * t / (this.scene.scale.x ** 1.4); // ((t * s) ** 0.8); // (s ** 1.3);
-    this.setScale(t);
+    this.labelContext.fillStyle = this.textColor;
+    this.labelContext.font = `${this.fontSize}px ${this.fontFace}`;
+    this.labelContext.fillText(this.text, left, top + this.h - this.padding.bottom);
+    this.context.fillStyle = this.textColor;
+    this.prepare();
+  }
+
+  prepare() {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    this.startL = w * 0.5 - this.w * 0.25; // + w * 0.5 * pos.x;
+    this.startT = h * 0.5 - this.fontSize; // -h * 0.5 * pos.y;
+    this.hScreen = { width: w * 0.5, height: h * 0.5 };
   }
 
   setIcon(img) {
@@ -132,39 +145,31 @@ class THREELabel {
     return this.position;
   }
 
-  updatePosition() {
+  updatePosition(onboard = false) {
     if (this.visible) {
       const angle = this.camera.position.angleTo(this.anchorObject.position);
-      if (Math.abs(angle) < 1.1) {
-        this.sprite.visible = true;
-      } else {
-        this.sprite.visible = false;
+      let limit = 1.1;
+      if (onboard) {
+        limit = 0.6;
+      }
+      if (Math.abs(angle) < limit) {
+        let pos = this.anchorObject.position.clone();
+        pos = pos.multiplyScalar(this.scene.scale.x).project(this.camera);
+        const left = this.startL + this.hScreen.width * pos.x;
+        const top = this.startT - this.hScreen.height * pos.y;
+        this.context.drawImage(this.labelCanvas, left * antialias, top * antialias);
       }
     }
   }
 
-  /*
-  setScale() {
-    const f = 0.05 / ((this.scene.scale.x) ** 1.2);
-    this.camera.position.distanceTo(this.sprite.position);
-    if (this.anchorObject) {
-      this.anchorObject.scale.set(f * 20, f * 20, f * 20);
-    }
-    this.sprite.scale.set(this.canvas.width * f,
-      this.canvas.height * f, 1);
-  }
-*/
   setScale(f) {
-    this.camera.position.distanceTo(this.sprite.position);
+    this.lastScale = f;
     if (this.anchorObject) {
-      this.anchorObject.scale.set(f * 20, f * 20, f * 20);
+      this.anchorObject.scale.set(f, f, f);
     }
-    this.sprite.scale.set(this.canvas.width * f,
-      this.canvas.height * f, 1);
   }
   setPosition(position) {
     this.position = position;
-    this.sprite.position.set(position.x, position.y, position.z);
     if (this.anchorObject != null) {
       this.anchorObject.position.set(position.x, position.y, position.z);
     }
@@ -172,7 +177,6 @@ class THREELabel {
 
   setVisible(v, hideObject = true) {
     this.visible = v;
-    this.sprite.visible = v;
     if (hideObject) {
       this.anchorObject.visible = v;
     }
