@@ -33,6 +33,11 @@
 </template>
 
 <script>
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import { TweenLite } from 'gsap';
 import visualization from './components/Visualization';
 import siteHeader from './components/Header';

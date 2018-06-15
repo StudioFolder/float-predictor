@@ -176,6 +176,11 @@
     </div>
 </template>
 <script>
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import fSlide from './FSlide';
 
 export default {

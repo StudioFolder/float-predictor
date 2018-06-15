@@ -116,7 +116,11 @@
     </b-modal>
 </template>
 <script>
-
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 export default {
   name: 'modal-alert',
   computed: {

@@ -15,6 +15,11 @@
 </template>
 
 <script>
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import fSlidesWrapper from 'Components/slider/FSlidesWrapper';
 import fSlidesNav from 'Components/slider/FSlidesNav';
 import { TweenLite } from 'gsap';

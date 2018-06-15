@@ -1,3 +1,8 @@
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import Vue from 'vue';
 import store from '@/store/index';
 import Router from 'vue-router';

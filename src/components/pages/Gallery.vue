@@ -55,6 +55,11 @@
 </template>
 
 <script>
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import moment from 'moment';
 import Loading from 'Parts/Loading';
 import BackToViz from 'Parts/BackToViz';

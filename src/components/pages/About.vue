@@ -51,6 +51,11 @@
 </template>
 
 <script>
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import backToViz from 'Parts/BackToViz';
 
 export default {

@@ -14,6 +14,11 @@
 </template>
 
 <script>
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 /* eslint-disable */
 export default {
   name: 'loading',

@@ -83,6 +83,11 @@
 </template>
 
 <script>
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
 import _ from 'lodash';
 import altitudePanel from 'Parts/AltitudePanel';
