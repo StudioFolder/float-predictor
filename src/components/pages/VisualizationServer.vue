@@ -27,9 +27,12 @@ export default {
 </script>
 <style>
 #visualization-server {
-  height: 100%;
+  height: 100vh;
   max-height: 100vh;
   max-width: 100vw;
   overflow: hidden;
+}
+.main-visualization , .main-visualization-wrapper{
+  height: 100%;
 }
 </style>

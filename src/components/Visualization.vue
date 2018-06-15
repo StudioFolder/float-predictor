@@ -756,7 +756,7 @@ export default {
         camera.updateProjectionMatrix();
         rendererNAA.setSize(w, h);
         rendererAA.setSize(w, h);
-        labels.onResize();
+        // labels.onResize();
       }, false);
     },
 
