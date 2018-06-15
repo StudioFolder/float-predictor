@@ -17,9 +17,9 @@
                 </altitude-panel>
             </div>
         </transition>
-        <p class="input-label">
+<!--        <p class="input-label">
             Aerocene sculptures always leave at noon with sun light.
-        </p>
+        </p>-->
     </div>
 </template>
 
@@ -32,7 +32,7 @@ export default {
   data() {
     return {
       altValues: ['100 m', '1,500 m',
-        '5,5000 m', '10,000 m', '16,000 m',
+        '5,500 m', '10,000 m', '16,000 m',
         '21,500 m', '26,500 m',
       ],
     };
@@ -82,6 +82,10 @@ export default {
     .input-group {
         width: 110px;
         flex: 0 0 110px;
+        label {
+            margin-top: -15px;
+            margin-bottom: 5px;
+        }
     }
     .alt-select {
         width: 90px;
@@ -122,8 +126,7 @@ export default {
         overflow: hidden;
         box-shadow: 0 0 30px 1px rgba(0,0,0,.5);
         position: absolute;
-        bottom: -220px;
-        left: 0;
+        bottom: -210px;
         height: 220px;
         background-color: $lightBlack;
         padding: 5px 1em;
@@ -137,55 +140,32 @@ export default {
         }
     }
     .select-slide-enter-active {
-        animation: select-slide-up .3s ease-in-out;
+        animation: select-slide-up .25s ease-in-out;
         @include small_up {
-            animation: select-slide-down .3s ease-in-out;
-            width: 90px;
+            animation: select-slide-down .25s ease-in-out;
+            width: 93px;
             overflow: hidden;
             > div {
                 position: absolute;
                 bottom: 0;
                 width: 90px;
-                left: 0;
+                left: 16px;
             }
         }
     }
     .select-slide-leave-active {
-        animation: select-slide-up .2s ease-in-out reverse;
+        animation: select-slide-up .25s ease-in-out reverse;
         @include small_up {
-            animation: select-slide-down .3s ease-in-out reverse;
-            width: 90px;
+            animation: select-slide-down .25s ease-in-out reverse;
+            width: 93px;
             overflow: hidden;
             > div {
                 position: absolute;
                 bottom: 0;
                 width: 90px;
-                left: 0;
+                left: 16px;
             }
         }
     }
-}
-.switch-text-enter-active {
-    animation: flip-up-from-bottom .4s ease;
-}
-.switch-text-leave-active {
-    position: absolute;
-    animation: flip-up-to-top .4s ease;
-}
-.fade-height-leave-active {
-    animation: fadeHeight .4s ease;
-    overflow: hidden;
-}
-.fade-height-enter-active {
-    animation: fadeHeight .4s ease-in-out reverse;
-    overflow: hidden;
-}
-@keyframes select-slide-up {
-    0% {height: 0;}
-    100% {height: 210px;}
-}
-@keyframes select-slide-down {
-    0% {height: 0; bottom: 0;}
-    100% {height: 210px; bottom: -210px;}
 }
 </style>

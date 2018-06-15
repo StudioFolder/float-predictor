@@ -55,7 +55,7 @@
                 <altitude-selector />
             </div>
         </transition>
-        <transition name="switch-text" mode="out-in">
+        <transition name="switch-text">
             <p v-if="isPlanned" class="description" key="planned">
                 A ‘Planned Float’ tries to reach a specific
                 destination starting from a selected departure point.
@@ -66,7 +66,9 @@
                 winds and thermal air currents will do the rest.
             </p>
         </transition>
-        <b-button type="submit" variant="primary">Launch</b-button>
+        <div class="button-container">
+            <b-button type="submit" variant="primary">Launch</b-button>
+        </div>
     </b-form>
 </template>
 <script>
@@ -201,6 +203,14 @@ form.flight-form {
         margin: 1em auto .5em;
         min-height: 48px;
     }
+    .type-selector-group .type-selector span {
+        padding: 20px 0;
+        background-color: rgb(15,15,15);
+        &.--isActive {
+            color: #fff;
+            background-color: $bodyColor;
+        }
+    }
 }
 
 .type-selector-group{
@@ -227,10 +237,10 @@ form.flight-form {
       color: $gray;
       transition: color .4s ease;
       flex: 1 0 50%;
-      &.--isActive {
-        color: #fff;
-        background-color: $bodyColor;
-      }
+        &.--isActive {
+            color: #fff;
+            background-color: $bodyColor;
+        }
     }
     .slider {
       display: block;
@@ -265,6 +275,7 @@ form.flight-form {
   text-align: left;
   padding: $marginMobile;
   display: flex;
+  min-height: 146px;
   > div {
     flex: 1 0 auto;
     padding: 0 $marginMobile;
@@ -284,35 +295,6 @@ form.flight-form {
   }
   .small {
     font-size: .6em;
-  }
-}
-.switch-text-enter-active {
-  animation: flip-up-from-bottom .3s ease;
-}
-.switch-text-leave-active {
-  animation: flip-up-to-top .3s ease;
-}
-@keyframes flip-up-to-top {
-  0% {
-    transform: translateY(0%);
-    opacity: 1;
-  }
-  80% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-    transform: translateY(-30%);
-  }
-}
-@keyframes flip-up-from-bottom {
-  0% {
-    transform: translateY(50%);
-    opacity: 0;
-  }
-  100% {
-    transform: translateY(0%);
-    opacity: 1;
   }
 }
 </style>

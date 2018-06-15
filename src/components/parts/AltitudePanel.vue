@@ -210,7 +210,7 @@ $elemHeight: 30px;
         }
     }
 }
-.info-box.winds-panel .box-footer {
+.winds-panel .box-footer {
     flex-flow: column;
     padding-top: 30px;
 }

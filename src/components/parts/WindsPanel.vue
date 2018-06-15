@@ -1,5 +1,5 @@
 <template>
-    <div class="info-box winds-panel">
+    <div class="winds-panel">
         <div class="body">
             <div class="type-selector-group">
                 <div class="type-selector custom-checkbox on-off-selector"
@@ -38,31 +38,27 @@
                 </div>
             </transition>
             <transition name="fade">
-                <div v-if="isOn">
-                    <div class="type-selector-group">
-                        <div class="type-selector custom-checkbox animation-selector"
-                             :class="{'--animated': isAnimated}">
-                            <input id="animationSelector"
-                                   v-model="isAnimated"
-                                   type="checkbox"
-                                   autocomplete="off"
-                                   class="custom-control-input">
-                            <label for="animationSelector">
-                                <div class="type-selector">
-                                <span :class="[{'--isActive': isAnimated}, '--left']">Animated
-                                </span>
-                                    <span class="slider round"></span>
-                                    <span :class="{'--isActive': !isAnimated}">Static</span>
-                                </div>
-                            </label>
-                        </div>
+                <div v-if="isOn" class="type-selector-group">
+                    <div class="type-selector custom-checkbox animation-selector"
+                         :class="{'--animated': isAnimated}">
+                        <input id="animationSelector"
+                               v-model="isAnimated"
+                               type="checkbox"
+                               autocomplete="off"
+                               class="custom-control-input">
+                        <label for="animationSelector">
+                            <div class="type-selector">
+                            <span :class="[{'--isActive': isAnimated}, '--left']">Animated
+                            </span>
+                                <span class="slider round"></span>
+                                <span :class="{'--isActive': !isAnimated}">Static</span>
+                            </div>
+                        </label>
                     </div>
-                    <!--<p>Animated winds emphasise speed.<br>
-                        Static winds highlight stream patterns.</p>-->
                 </div>
             </transition>
         </div>
-        <transition name="fade" mode="out-in">
+        <transition name="fade-wind-panel" mode="out-in">
             <altitude-panel v-if="isAltPanelOpen"
                             key="panel"
                             :isFull="true">
@@ -81,7 +77,7 @@
             </transition>
         </div>
         <div class="box-footer">
-            <transition name="fade" mode="out-in">
+            <transition name="switch-text">
                 <p v-if="!isAltPanelOpen && isOn" key="closed">
                     Aerocene Sculptures normally float between 8,000 and 16,000 m.
                     Here you can explore wind patterns in the atmosphere at different altitudes.
@@ -229,6 +225,7 @@ export default {
     },
     closeAltPanel() {
       this.isAltPanelOpen = false;
+      this.$store.commit('flightSimulator/setPlaying', true);
     },
   },
 };
@@ -237,11 +234,18 @@ export default {
 <style lang="scss">
 @import "~@/assets/css/_variables_and_mixins.scss";
 $elemHeight: 30px;
-.info-box.winds-panel {
+.winds-panel {
     flex-flow: column;
     .body,
     .box-footer {
         padding: 20px;
+    }
+    .body .custom-checkbox span{
+        display: inline-block;
+        &.slider {
+            margin-top: 10px;
+            margin-bottom: -7px;
+        }
     }
     .altitude-panel {
         padding-top: $elemHeight;
@@ -282,7 +286,7 @@ $elemHeight: 30px;
                 order: 2;
                 width: 100%;
                 flex-flow: row-reverse;
-                //justify-content: space-between;
+                justify-content: center;
                 > div {
                     flex: 0 0 115px;
                 }
@@ -290,13 +294,14 @@ $elemHeight: 30px;
         }
     }
     p {
-        font-size: 11px;
+        font-size: 14px;
         color: $gray;
         text-align: center;
         margin-top: 15px;
     }
     .box-footer {
         padding-top: 0;
+        flex-flow: column;
         p:not(.small) {
             color: #FFF;
         }
@@ -311,6 +316,7 @@ $elemHeight: 30px;
     }
     .button-container {
         text-align: center;
+        margin-bottom: 20px;
     }
     .type-selector {
         &.on-off-selector.--on,

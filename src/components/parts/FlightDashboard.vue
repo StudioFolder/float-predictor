@@ -85,7 +85,7 @@ export default {
         .winds-panel {
             display: flex;
             flex-flow: row wrap;
-            align-content: center;
+            align-content: flex-start;
             > * {
                 display: flex;
                 align-items: center;
@@ -110,6 +110,7 @@ export default {
             p {
                 flex: 1 1 100%;
                 &.desc {
+                    font-size: 14px;
                     color: $gray;
                     max-width: 35em;
                     margin-top: 10px;
@@ -124,7 +125,7 @@ export default {
     .flight-dashboard.is-open {
         height: calc(100vh - 115px);
         overflow: hidden;
-        .info-box.winds-panel {
+        .winds-panel {
             height: 100%;
         }
     }
