@@ -1,6 +1,10 @@
 /**
  * THREELabels.js - Utility class for creating labels in three.js
  * The labels are drawn on a separate canvas, overlayed on top of the visualization canvas.
+ *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 /* eslint-disable no-mixed-operators, no-console */

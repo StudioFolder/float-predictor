@@ -1,6 +1,10 @@
 /**
  * NightMap.js - creates and defines the behaviour of NightMap.
  * The shader code make the sphere surface opacity responsive to the pointlight position
+ *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 /* eslint-disable no-mixed-operators, no-console, no-param-reassign */

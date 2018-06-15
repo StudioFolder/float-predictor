@@ -2,6 +2,9 @@
  * Label.js - it creates and manages all the different labels:
  *  departure, destination, explorer elapsed days, cities.
  *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 import THREELabel from './THREELabel';

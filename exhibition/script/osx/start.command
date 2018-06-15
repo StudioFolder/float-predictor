@@ -10,5 +10,6 @@ npm run build
 cd exhibition
 npm install
 node index.js&
-sleep 5
+sleep 20
+echo "STARTING CHROME"
 /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --kiosk http://localhost:1337/#/server

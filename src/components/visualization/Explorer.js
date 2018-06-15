@@ -1,6 +1,10 @@
 /**
  * Explorer.js - creates and defines the style & behaviour of the Explorers.
  * It computes explorer positions based on elapsed days and trajectory data.
+ *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 

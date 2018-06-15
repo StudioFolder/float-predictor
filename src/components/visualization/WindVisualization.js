@@ -2,6 +2,9 @@
  * WindVisualization.js - creates and defines the behaviour wind visualization layer
  * for a specific pressure/altitude level.
  *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 /* eslint-disable no-mixed-operators, no-console, no-param-reassign */

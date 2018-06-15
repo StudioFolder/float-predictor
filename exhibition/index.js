@@ -6,6 +6,7 @@ const http = require('http');
 const WebSocket = require('ws');
 const fs = require('fs');
 const copydir = require('copy-dir');
+const os = require('os');
 // const mv = require('mv');
 
 const mbs = [10, 30, 100, 250, 500, 850, 1000];
@@ -65,7 +66,7 @@ function download(i, cb) {
     response.pipe(file);
     file.on('finish', () => {
       file.close(() => {
-        console.log(`Downloaded ${urls[i]} to ${filenames[i]}`);
+        // console.log(`Downloaded ${urls[i]} to ${filenames[i]}`);
         if (i < urls.length - 1) {
           download(i + 1, cb);
         } else {
@@ -97,6 +98,43 @@ function startDownload() {
 }
 
 startDownload();
+
+
+function getIP() {
+  const ifaces = os.networkInterfaces();
+  Object.keys(ifaces).forEach((ifname) => {
+    let alias = 0;
+
+    ifaces[ifname].forEach((iface) => {
+      if (iface.family !== 'IPv4' || iface.internal !== false) {
+        // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+        return;
+      }
+
+      if (alias >= 1) {
+        // this single interface has multiple ipv4 addresses
+        console.log(`${ifname}:${alias}`, iface.address);
+      } else {
+        // this interface has only one ipv4 adress
+        console.log(ifname, iface.address);
+        const settings = {
+          ip: iface.address,
+          port: '1337',
+        };
+        fs.writeFile('../dist/static/exhibition/websocket_config.json', JSON.stringify(settings), (err) => {
+          if (err) {
+            return console.log(err);
+          }
+          console.log(`Visualization Server address -> ${settings.ip}:${settings.port}`);
+          return 1;
+        });
+      }
+      alias += 1;
+    });
+  });
+}
+
+getIP();
 
 setInterval(() => {
   startDownload();

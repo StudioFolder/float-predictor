@@ -1,5 +1,9 @@
 /**
  * TrajectoryDataDownloader.js - downloads trajectory data providing update/end/error callbacks
+ *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 /* eslint-disable no-console */
