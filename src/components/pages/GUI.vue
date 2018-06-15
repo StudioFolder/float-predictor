@@ -9,10 +9,8 @@ import VisualizationServer from './VisualizationServer';
 export default {
   name: 'GUI',
   extends: VisualizationServer,
+  beforeCreate() {
+    this.$store.commit('flightSimulator/setGUIVisible', true);
+  },
 };
 </script>
-<style>
-.close-button{
-  opacity: 1 !important;
-}
-</style>
