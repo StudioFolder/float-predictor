@@ -11,12 +11,13 @@
 <script>
 /* eslint-disable no-mixed-operators, no-console, no-param-reassign, max-len, one-var */
 
-
-/*
+/**
  * Visualization.vue - Vue.js component responsible for implementing the WebGL 3D visualization (built using three.js) and the gui interaction.
- *
  * Following the state management pattern provided by Vuex (https://vuex.vuejs.org/), the visualization reacts to the store mutations making it independent from the UI.
  *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 

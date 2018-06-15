@@ -23,7 +23,11 @@
     </div>
 </template>
 <script>
-
+/**
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+*/
 export default {
   computed: {
     isClient() { return this.$route.name !== 'visualization-server'; },
