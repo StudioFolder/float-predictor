@@ -27,6 +27,11 @@
 </template>
 
 <script>
+/**
+ * @author Studio Folder - @StudioFolder
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import Explorer from './Explorer';
 import windsPanel from './WindsPanel';
 

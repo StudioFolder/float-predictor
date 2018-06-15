@@ -21,6 +21,11 @@
     </div>
 </template>
 <script>
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import StateRemoteSync from 'Components/StateRemoteSync';
 
 export default {

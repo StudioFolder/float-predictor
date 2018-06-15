@@ -30,6 +30,11 @@
     </transition>
 </template>
 <script>
+/**
+ * @author Studio Folder - @StudioFolder
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import moment from 'moment';
 
 export default {

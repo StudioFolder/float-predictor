@@ -14,16 +14,19 @@
 </template>
 
 <script>
-/* eslint-disable */
+/**
+ * @author Studio Folder - @StudioFolder
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 export default {
   name: 'loading',
-  data () {
+  data() {
     return {
       // type: 'fullscreen'
-    }
-  }
-
-}
+    };
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

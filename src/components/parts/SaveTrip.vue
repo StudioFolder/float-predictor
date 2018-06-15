@@ -58,6 +58,11 @@
     <!--End mc_embed_signup-->
 </template>
 <script>
+/**
+ * @author Studio Folder - @StudioFolder
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 export default {
   name: 'save-trip',
   methods: {

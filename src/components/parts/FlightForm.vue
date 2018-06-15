@@ -72,6 +72,11 @@
     </b-form>
 </template>
 <script>
+/**
+ * @author Studio Folder - @StudioFolder
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 import _ from 'lodash';
 import VueGoogleAutocomplete from 'vue-google-autocomplete';
 import altitudeSelector from './AltitudeSelector';

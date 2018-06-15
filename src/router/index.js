@@ -7,7 +7,11 @@ import flightSimulator from 'Pages/FlightSimulator';
 import visualizationServer from 'Pages/VisualizationServer';
 import gui from 'Pages/GUI';
 
-
+/**
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+*/
 Vue.use(Router);
 
 const router = new Router({
