@@ -5,6 +5,8 @@ import Router from 'vue-router';
 import homePage from 'Pages/HomePage';
 import flightSimulator from 'Pages/FlightSimulator';
 import visualizationServer from 'Pages/VisualizationServer';
+import gui from 'Pages/GUI';
+
 
 Vue.use(Router);
 
@@ -30,6 +32,11 @@ const router = new Router({
       path: '/server',
       name: 'visualization-server',
       component: visualizationServer,
+    },
+    {
+      path: '/gui',
+      name: 'visualization-server',
+      component: gui,
     },
   ],
 });
