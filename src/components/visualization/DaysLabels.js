@@ -1,6 +1,9 @@
 /**
  * DaysLabels.js - creates and defines the behaviour of days labels.
  *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 import _ from 'lodash';

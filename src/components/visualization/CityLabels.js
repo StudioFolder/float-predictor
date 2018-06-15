@@ -2,6 +2,10 @@
  * CityLabels.js - creates and defines the behaviour of city labels.
  * A bi-dimensional array organizes cities in tiles (32x16),
  * making it immediate to retrieve the close cities.
+ *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 /* eslint-disable */

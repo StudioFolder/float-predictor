@@ -1,5 +1,9 @@
 /**
  * Util.js - useful set of static functions
+ *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 

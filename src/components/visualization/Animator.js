@@ -2,6 +2,10 @@
  * Animator.js - manages interpolations during animations.
  * It interpolates between starting values and ending values in the time interval
  * passed as parameter.
+ *
+ * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
+ * @author Studio Folder - @StudioFolder / http://studiofolder.it
+ * @author Iacopo Leardini - @iacopolea
 */
 
 class Animator {
