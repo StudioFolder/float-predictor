@@ -23,6 +23,9 @@ export default {
   mounted() {
     this.$store.commit('flightSimulator/setVisualizationState', 9);
   },
+  beforeCreate() {
+    this.$store.commit('flightSimulator/setGUIVisible', true);
+  },
 };
 </script>
 <style>
@@ -34,5 +37,11 @@ export default {
 }
 .main-visualization , .main-visualization-wrapper{
   height: 100%;
+}
+.close-button{
+  opacity: 0;
+}
+.close-button:hover{
+  opacity: 1;
 }
 </style>

@@ -1,11 +1,13 @@
 pkill chrome
 pkill node
+pwd
+dir=${0%/*}
+cd "$dir"
 cd ../../../
 pwd
 git pull
 npm run build
 cd exhibition
-pwd
 npm install
 node index.js&
 sleep 5
