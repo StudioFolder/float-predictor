@@ -5,6 +5,8 @@ dir=${0%/*}
 cd "$dir"
 cd ../../../
 pwd
+git pull
+npm run build
 cd exhibition
 npm install
 node index.js&
