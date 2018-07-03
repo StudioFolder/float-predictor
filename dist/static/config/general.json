@@ -1,0 +1,107 @@
+{
+	"altitudeLevel": 3,
+	"active": false,
+	"winds": 1,
+	"fps": 0,
+	"antialias": true,
+	"state": 0,
+	"speed_d_x_sec": 0.105,
+	"move_in_time": false,
+	"pan_x": 0,
+	"pan_y": 0,
+	"onboard": false,
+	"skip_frame": 1,
+	"camera_smooth": 0.993,
+	"camera_distance": 1.3,
+	"camera_shift": 0.07,
+	"camera_zoom": 0.94,
+	"sun_visible": false,
+	"zoom_enabled": true,
+	"stars": true,
+
+	"use_bump": true,
+	"use_nightmap": true,
+	"nightmap_intensity": 0.9,
+	"nightmap_threshold": 0.7,
+	"nightmap_color": "#ffffff",
+	"bump_scale": 0.5,
+
+	"spot_light_intensity": 0.8,
+	"sun_light_color": "#ffffff",
+	"ambient_light_intensity": 0.09,
+	"ambient_light_color": "#acdfef",
+	"auto_rotate": false,
+
+	"elapsed_days": 0.001,
+	"explorer_height_base": 0.025,
+	"explorer_height_shift": 0.025,
+	"layers": {
+		"wind": {
+			"animating": true,
+			"animationSpeed": 1,
+			"visible": false,
+			"mapping": 0.0,
+			"opacity_mapping": true,
+			"threshold": 44.0,
+			"start_color": "#000000",
+			"end_color": "#ffffff",
+			"opacity": 1,
+			"minOpacity": 0.5,
+			"magnitude": 0.25,
+			"step": 1,
+			"precision": 2
+		}
+	},
+	"colorMap": "MAP A",
+	"wind_settings": [
+		{
+			"visible": false
+		},
+		{
+			"start_color": "#5b5b5b",
+			"end_color": "#ffffff",
+			"mapping": 1.0,
+			"opacity_mapping": true,
+			"visible": true,
+			"threshold": 35.0,
+			"opacity": 1.2,
+			"magnitude": 0.9,
+			"animating": true,
+			"animationSpeed": 0.8
+		},
+		{
+			"start_color": "#073a9e",
+			"end_color": "#f80000",
+			"mapping": 2.0,
+			"opacity_mapping": true,
+			"magnitude": 0.9,
+			"threshold": 40.0,
+			"opacity": 1.2,
+			"visible": true,
+			"animating": true,
+			"animationSpeed": 0.8
+		},
+		{
+			"start_color": "#5b5b5b",
+			"end_color": "#ffffff",
+			"mapping": 1.0,
+			"opacity_mapping": true,
+			"visible": true,
+			"threshold": 35.0,
+			"opacity": 1.1,
+			"magnitude": 0.4,
+			"animating": false
+		},
+		{
+			"start_color": "#073a9e",
+			"end_color": "f80000",
+			"mapping": 2.0,
+			"opacity_mapping": true,
+			"magnitude": 0.4,
+			"visible": true,
+			"threshold": 40.0,
+			"opacity": 1.1,
+			"animating": false
+		}
+	]
+}
