@@ -111,7 +111,7 @@
                 <small>Download</small>
                 <ul>
                     <li class="menu-item --socialShare">
-                        <a :href="trajectoryLink" target="_blank">
+                        <a @click="onDownloadData">
                             <i class="fp fp-download"></i>
                         </a>
                     </li>
@@ -127,6 +127,7 @@
  * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
 */
 import moment from 'moment';
+import { saveAs } from 'file-saver/FileSaver';
 
 export default {
   name: 'modal-winner-explorer',
@@ -175,6 +176,26 @@ export default {
   methods: {
     onSubmit() {
       this.modalShow = false;
+    },
+    onDownloadData() {
+      fetch(this.trajectoryLink, {
+        method: 'get',
+      })
+        .then((response) => {
+          if (response.status !== 200) {
+            // eslint-disable-next-line
+            console.log(`Looks like there was a problem. Status Code: ${response.status}`);
+          } else {
+            response.text().then((data) => {
+              // eslint-disable-next-line
+                console.log(data);
+              const blob = new Blob([data], { type: 'text/plain;charset=utf-8' });
+              saveAs(blob, 'data.json');
+            });
+          }
+        })
+        // eslint-disable-next-line
+        .catch(err => console.log('Fetch Error :-S', err));
     },
   },
 };
