@@ -38,7 +38,7 @@ import colorMapMobile from '../assets/img/colormap/2048.jpg';
 import bumpMap from '../assets/img/bumpmap/8192.jpg';
 import bumpMapMobile from '../assets/img/bumpmap/4096.jpg';
 import nightModeMap from '../assets/img/nightModeMap/8192.jpg';
-import nightModeMapMobile from '../assets/img/nightModeMap/4096.jpg';
+import nightModeMapMobile from '../assets/img/nightModeMap/2048.jpg';
 import colorMapA from '../assets/img/colormap/4096A.jpg';
 import colorMapB from '../assets/img/colormap/4096B.jpg';
 import colorMapC from '../assets/img/colormap/4096C.jpg';
@@ -234,7 +234,11 @@ export default {
       if (explorerId === 0) {
         this.setOnboard(false);
       } else {
+        // console.log(explorerId);
         this.onboardIndex = explorerId - 1;
+        this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
+        this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
+        this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.initialAltitudeLevel]).toFixed(2);
         this.setOnboard(true);
       }
     },
@@ -264,11 +268,12 @@ export default {
           e.setStyle(Explorer.MOVING);
         });
       } else {
+        /*
         this.focusedExplorerSpeed = explorers[selected - 1].getSpeed().toFixed(0);
         this.focusedExplorerDistance = explorers[selected - 1].getDistance().toFixed(0);
         this.focusedExplorerAltitude = (explorers[selected - 1].getAltitudeRatio() * 1000.0 * altitudeLevels[this.initialAltitudeLevel]).toFixed(2);
+        */
         labels.daysLabels.show(selected - 1, explorers);
-        labels.update(pars.onboard);
         _.each(explorers, (e, index) => {
           if (index === selected - 1) {
             e.setStyle(Explorer.SELECTED);
@@ -277,11 +282,14 @@ export default {
           }
         });
       }
+      labels.update(pars.onboard);
     },
 
     departure(d) {
       this.visualizationState = STATE_INITIAL;
-      if (d !== undefined && d.city && d.lat && d.lng && d.country) {
+      if (d !== undefined && d.lat && d.lng) {
+        if (!d.country) d.country = 'undefined';
+        if (!d.city) d.city = 'undefined';
         departure = { lat: d.lat, lng: d.lng, country: d.country, city: d.city };
 
         const t = Util.latLon2XYZPosition(d.lat, d.lng, radius);
@@ -299,25 +307,44 @@ export default {
         /* explorers need sunlight to lift. do not accept location like Iceland on the 22nd of December */
         this.coordinatesValid = angle < 1.5;
       } else {
-        console.log('Invalid departure');
+        departure = {
+          lat: 0,
+          lng: 0,
+          city: '',
+          country: '',
+        };
+        // const t = Util.latLon2XYZPosition(departure.lat, departure.lng, radius);
+        // if (labels.departureLabel) labels.departureLabel.set(departure.city, t);
+        labels.departureLabel.setVisible(false);
+        console.log('Empty departure');
       }
     },
 
     destination(d) {
       this.visualizationState = STATE_INITIAL;
-      if (d !== undefined && d.city && d.lat && d.lng && d.country) {
+      if (d !== undefined && d.lat && d.lng) {
+        if (!d.country) d.country = 'undefined';
+        if (!d.city) d.city = 'undefined';
         destination = { lat: d.lat, lng: d.lng, country: d.country, city: d.city };
         // console.log(`Destination: ${d.lat} ${d.lng} ${d.city} `);
-        const t = Util.latLon2XYZPosition(destination.lat, d.lng, radius);
+        const t = Util.latLon2XYZPosition(d.lat, d.lng, radius);
         labels.destinationLabel.set(d.city, t);
       } else {
-        console.log('Invalid destination');
+        console.log('Empty destination');
+        destination = {
+          lat: 0,
+          lng: 0,
+          city: '0',
+          country: '0',
+        };
+        // const t = Util.latLon2XYZPosition(destination.lat, destination.lng, radius);
+        // labels.destinationLabel.set(d.city, t);
+        labels.destinationLabel.setVisible(false);
       }
     },
 
     visualizationState(s) {
       this.setState(s);
-      this.loading = this.windsLoaded * (this.trajectoryLoaded || this.visualizationState !== STATE_ANIMATION_ACTIVE) * this.textureLoaded;
     },
 
     winds(w) {
@@ -353,7 +380,7 @@ export default {
       .then((json) => {
         pars = json;
         pars.zoom = (window.matchMedia('(orientation: portrait)').matches) ? 0.4 : 0.5;
-        console.log(pars);
+        // console.log(pars);
         earthRotation = 0;
         loaded = 0;
         timer = 0;
@@ -378,7 +405,7 @@ export default {
      */
     initVis() {
       if (process.env.NODE_ENV === 'development') {
-        pars.speed_d_x_sec = 0.99;
+        pars.speed_d_x_sec = 0.49;
         pars.skip_frame = 1;
         pars.use_bump = false;
         pars.antialias = false;
@@ -386,14 +413,14 @@ export default {
 
       /* placeholder locations */
       departure = {
-        lat: 52.520645,
-        lng: 13.409779,
+        lat: 0,
+        lng: 0,
         city: 'A',
         country: 'A State',
       };
       destination = {
-        lat: 35.652832,
-        lng: 139.839478,
+        lat: 0,
+        lng: 0,
         city: 'B',
         country: 'B State',
       };
@@ -498,9 +525,16 @@ export default {
                 if (this.lowFPS <= 0) {
                   if (pars.skip_frame < 3) {
                     pars.skip_frame += 1;
-                  } else if (renderer === rendererAA) {
-                    this.setAntialias(false);
-                  } else {
+                  } else if (fps < 40) {
+                    // else if (renderer === rendererAA) {
+                    //  this.setAntialias(false);
+                    // } else {
+                    const lpr = pars.pixel_ratio;
+                    pars.pixel_ratio = Math.max(1, pars.pixel_ratio - 0.5);
+                    if (pars.pixel_ratio !== lpr) {
+                      renderer.setPixelRatio(pars.pixel_ratio);
+                      // console.log(`--------------------------------- Setting PixelRatio to ${pars.pixel_ratio}`);
+                    }
                     /*
                     const lpr = pars.pixel_ratio;
                     if (fps < 40) {
@@ -528,7 +562,7 @@ export default {
                     pars.skip_frame -= 1;
                   } else {
                     const lpr = pars.pixel_ratio;
-                    pars.pixel_ratio = Math.min(2, pars.pixel_ratio + 0.1);
+                    pars.pixel_ratio = Math.min(2, pars.pixel_ratio + 0.5);
                     if (pars.pixel_ratio !== lpr) {
                       renderer.setPixelRatio(pars.pixel_ratio);
                     }
@@ -941,7 +975,6 @@ export default {
         case STATE_MOVING_TO_DESTINATION: {
           pars.auto_rotate = false;
           // FADE IN ONLY THE MIN TRACK
-          this.selectedExplorer = this.minTrack + 1;
 
           labels.cityLabels.setVisible(false);
           // GO TO DESTINATION POINT
@@ -952,11 +985,12 @@ export default {
             time: 1.0,
             onAnimationEnd: () => {
               this.visualizationState = STATE_ANIMATION_END;
+              this.selectedExplorer = this.minTrack + 1;
+              labels.daysLabels.show(this.minTrack, explorers);
+              labels.update(pars.onboard);
               this.focusedExplorer = 0;
             },
           });
-          labels.daysLabels.show(this.minTrack, explorers);
-          labels.update(pars.onboard);
           break;
         }
         /* animation end */
@@ -1206,6 +1240,7 @@ export default {
           i += 1;
           controls.target.set(v[i], v[i + 1], v[i + 2]);
           camera.position.setLength(v[i + 3]);
+          labels.update(pars.onboard);
           if (config.date) {
             this.startingDate.setTime(v[i + 4]);
           }

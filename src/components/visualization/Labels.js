@@ -60,9 +60,9 @@ class Labels {
     if (onboard) {
       this.cityLabels.updatePosition(onboard);
     }
-    this.daysLabels.updatePosition(onboard);
     this.destinationLabel.updatePosition(onboard);
     this.departureLabel.updatePosition(onboard);
+    this.daysLabels.updatePosition([this.departureLabel, this.destinationLabel]);
   }
 
   setVisible(v) {

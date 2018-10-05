@@ -8,6 +8,8 @@
 */
 
 /* eslint-disable no-mixed-operators, no-console */
+
+import _ from 'lodash';
 import Util from './Util';
 
 const nextPOT = require('next-power-of-two');
@@ -55,6 +57,8 @@ class THREELabel {
     this.position = new THREE.Vector3(0, 0, 0);
     this.w = 0;
     this.h = 0;
+    this.left = 0;
+    this.top = 0;
     this.setVisible(false);
     window.addEventListener('resize', () => {
       this.redraw();
@@ -149,21 +153,34 @@ class THREELabel {
     return this.position;
   }
 
-  updatePosition(onboard = false) {
+  updatePosition(onboard = false, positions) {
     if (this.visible) {
       const angle = this.camera.position.angleTo(this.anchorObject.position);
-      let limit = 1.1;
+      let limit = 1.2;
       if (onboard) {
         limit = 0.6;
       }
       if (Math.abs(angle) < limit) {
         let pos = this.anchorObject.position.clone();
         pos = pos.multiplyScalar(this.scene.scale.x).project(this.camera);
-        const left = this.startL + this.hScreen.width * pos.x;
-        const top = this.startT - this.hScreen.height * pos.y;
-        this.context.drawImage(this.labelCanvas, left * antialias, top * antialias);
+        this.left = antialias * (this.startL + this.hScreen.width * pos.x);
+        this.top = antialias * (this.startT - this.hScreen.height * pos.y);
+        let overlapping = false;
+        if (positions) {
+          const left = this.left;
+          const top = this.top;
+          _.each(positions, (p) => {
+            if (p.visible &&
+              Math.abs(p.left - left) < p.w && Math.abs(p.top - top) < p.h) {
+              overlapping = true;
+            }
+          });
+        }
+        if (!overlapping) this.context.drawImage(this.labelCanvas, this.left, this.top);
+        return !overlapping;
       }
     }
+    return false;
   }
 
   setScale(f) {

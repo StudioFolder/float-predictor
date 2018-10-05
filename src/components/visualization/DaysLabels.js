@@ -27,8 +27,12 @@ class DaysLabels {
     }
   }
 
-  updatePosition() {
-    _.each(this.daysLabels, (l) => { l.updatePosition(); });
+  updatePosition(positions = []) {
+    _.each(this.daysLabels, (l) => {
+      if (l.updatePosition(false, positions)) {
+        positions.push(l);
+      }
+    });
   }
 
   setVisible(visible) {
