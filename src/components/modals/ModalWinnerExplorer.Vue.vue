@@ -25,18 +25,19 @@
         </div>
         <!-- Begin MailChimp Signup Form -->
         <div id="mc_embed_signup">
-            <form @submit="onSubmit"
-                  class="flight-form"
-                  action="https://aerocene.us12.list-manage.com/subscribe/post?u=8adb5d542fb2a0cf0dac11583&amp;id=d753b7b620"
-                  method="post"
+            <form class="flight-form"
                   id="mc-embedded-subscribe-form"
                   name="mc-embedded-subscribe-form"
-                  target="_blank"
                   novalidate>
+                  <!--action="https://aerocene.us12.list-manage.com/subscribe/post?u=8adb5d542fb2a0cf0dac11583&amp;id=d753b7b620"
+                  method="post"
+                  target="_blank"
+                  novalidate>-->
                 <div id="mc_embed_signup_scroll" class="selector-group-wrapper">
                     <div class="name-selector-group selector-group">
                         <div class="mc-field-group">
                             <b-form-input
+                                    v-model="name"
                                     type="text"
                                     placeholder="Your name"
                                     name="FNAME"
@@ -46,6 +47,7 @@
                         </div>
                         <div class="mc-field-group">
                             <b-form-input
+                                    v-model="email"
                                     type="email"
                                     placeholder="Your e-mail"
                                     name="EMAIL"
@@ -69,7 +71,7 @@
                     <p class="input-label">
                         Enter your name and e-mail to get updates on Aerocene.
                     </p>
-                    <b-button type="submit"
+                    <b-button @click="onSubmit"
                               variant="primary"
                               value="Subscribe"
                               name="subscribe"
@@ -84,9 +86,8 @@
                 <small>Share</small>
                 <social-sharing url="http://floatpredictor.aerocene.org/"
                                 title="Aerocene Float Predictor"
-                                description="Travel around the earth lifted only by
-                                 the sun, carried only by the wind, towards a clean
-                                  and sustainable future."
+description="Travel around the earth lifted only by the sun,
+carried only by the wind, towards a clean and sustainable future."
                                 hashtags="aerocene,floatpredictor"
                                 twitter-user="aerocene"
                                 inline-template>
@@ -131,6 +132,13 @@ import { saveAs } from 'file-saver/FileSaver';
 
 export default {
   name: 'modal-winner-explorer',
+  data() {
+    return {
+      email: '',
+      name: '',
+      text: '',
+    };
+  },
   computed: {
     modalShow: {
       get() {
@@ -148,6 +156,9 @@ export default {
     },
     winningExplorerData() {
       return this.$store.state.flightSimulator.winningExplorerData;
+    },
+    trajectoryId() {
+      return this.$store.state.flightSimulator.trajectoryId;
     },
     maxDist() {
       return parseInt(this.winningExplorerData.minDist, 10).toLocaleString('en');
@@ -174,7 +185,51 @@ export default {
     },
   },
   methods: {
+    generateText() {
+      if (this.isPlannedFlight) {
+        /*
+        return `The Aerocene Sculpture that left from <b>${this.departure.city
+        }</b> on <strong>${this.depDate
+        }</strong>arrived within <strong>${this.winningExplorerData.minDist
+        }km</strong> from <strong>${this.destination.city
+        }</strong> in <strong>${this.winningExplorerData.minTime} days.</strong>`;
+        */
+        // const template = "Departed from New York, US to Paris, France.
+        // Arrived within 898.7 km of Paris in 2.9 days.
+        // Travelled total 5950 km from fussel free borders.";
+        return `Departed from ${this.departure.city}, ${this.departure.country} to ${this.destination.city}, ${this.destination.country}.
+                Arrived within ${this.winningExplorerData.minDist} km of ${this.destination.city} in ${this.winningExplorerData.minTime} days.
+                Travelled total ${this.winningExplorerData.totalDist} km from fossil free borders.`;
+      }
+      return `The Aerocene Sculpture that floated the farthest is the one that left from ${this.departure.city
+      } on ${this.depDate
+      } and travelled ${this.maxDist
+      } km in ${this.winningExplorerData.minTime} days.`;
+    },
     onSubmit() {
+      const data = {
+        email: this.email,
+        id: this.trajectoryId,
+        name: this.name,
+        text: this.generateText(),
+        departure_date: moment(this.winningExplorerData.departureDate).format('DD.MM.YYYY'),
+      };
+      const s = JSON.stringify(data);
+      fetch('http://floatpredictor.aerocene.org/scripts/api/form/subscribe.php', {
+        method: 'post',
+        body: s,
+      }).then(
+        response => response.text(),
+      ).then((jsonData) => {
+        // console.log('***********************');
+        // eslint-disable-next-line
+        console.log(jsonData);
+      }).catch((r) => {
+        // eslint-disable-next-line
+        console.log('Downloader error');
+        // eslint-disable-next-line
+        console.log(r);
+      });
       this.modalShow = false;
     },
     onDownloadData() {
