@@ -35,6 +35,7 @@ export default {
       minDist: 0,
       minTime: 0,
       svg: '',
+      totalDist: 0,
     },
   },
   mutations: {
