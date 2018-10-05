@@ -45,7 +45,7 @@ export default {
       this.$store.commit('general/closeInfoBox');
       this.$store.commit('flightSimulator/setVisualizationState', 8);
       this.$store.commit('general/setFormStatus', true);
-      this.$router.push('flight-simulator');
+      this.$router.push('/client/home');
     },
   },
 };

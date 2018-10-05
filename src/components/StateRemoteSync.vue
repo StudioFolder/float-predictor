@@ -106,16 +106,16 @@ export default {
   },
   watch: {
     flightType() { this.pushState('flightType'); },
-    isActive() { this.pushState('isActive'); },
+    // isActive() { this.pushState('isActive'); },
     isPlaying() { this.pushState('isPlaying'); },
-    loading() { this.pushState('loading'); },
+    // loading() { this.pushState('loading'); },
     winds() { this.pushState('winds'); },
     focusedExplorer() { this.pushState('focusedExplorer'); },
     focusedExplorerSpeed() { this.pushState('focusedExplorerSpeed'); },
     focusedExplorerDistance() { this.pushState('focusedExplorerDistance'); },
     focusedExplorerAltitude() { this.pushState('focusedExplorerAltitude'); },
     elapsedDays() { this.pushState('elapsedDays'); },
-    coordinatesValid() { this.pushState('coordinatesValid'); },
+    // coordinatesValid() { this.pushState('coordinatesValid'); },
     visualizationState() { this.pushState('visualizationState'); },
     autoMode() { this.pushState('autoMode'); },
     departure() { this.pushState('departure'); },
@@ -190,7 +190,7 @@ export default {
       if (this.connected) {
         _.each(this.data, (value, key) => {
           if (!this.isEqual(this[key], value)) {
-            if (this.verbose) console.log(`${key} -> ${value} was ${this[key]}`);
+            if (this.verbose) console.log(`State Push: ${key} <- ${value} was ${this[key]}`);
             this[key] = value;
           }
         });

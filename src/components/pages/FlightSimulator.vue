@@ -34,6 +34,14 @@ export default {
   computed: {
     isChoosing() { return this.$store.state.general.isChoosingDestination; },
     isEndAnimation() { return this.$store.state.flightSimulator.visualizationState === 4; },
+    visualizationState() { return this.$store.state.flightSimulator.visualizationState; },
+  },
+  watch: {
+    visualizationState(vs) {
+      if (!this.isChoosing && !this.isEndAnimation && (vs === 8 || vs === 0)) {
+        //     this.$router.push('/client/home');
+      }
+    },
   },
 };
 </script>

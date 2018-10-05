@@ -34,6 +34,7 @@ export default {
       departureDate: new Date(),
       minDist: 0,
       minTime: 0,
+      totalDist: 0,
       svg: '',
     },
   },

@@ -1,6 +1,6 @@
 <template>
     <transition name="fade">
-    <div class="onboard-nav shadowed" v-show="id > 0">
+    <div class="onboard-nav shadowed" v-show="id > 0 && visualizationState ===2">
         <div class="header">
             <i class="fp fp-caret-right prev" @click="goPrevious"></i>
             <div class="title h4">Explorer {{id}}</div>
@@ -44,6 +44,7 @@ export default {
       return moment().add((this.id - 1), 'days').format('MMM Do, YYYY');
     },
     id() { return this.$store.state.flightSimulator.focusedExplorer; },
+    visualizationState() { return this.$store.state.flightSimulator.visualizationState; },
     distance() {
       return parseInt(this.$store.state.flightSimulator.focusedExplorerDistance, 10).toLocaleString('en');
     },

@@ -191,7 +191,8 @@ export default {
       }
     },
     startAnimation() {
-      this.$store.commit('flightSimulator/startAnimation');
+      this.$store.commit('flightSimulator/setVisualizationState', 8);
+      this.$store.commit('flightSimulator/setVisualizationState', 1);
       this.$store.commit('general/setFormStatus', false);
     },
   },

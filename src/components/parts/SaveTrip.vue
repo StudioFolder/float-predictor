@@ -1,18 +1,16 @@
 <template>
     <!-- Begin MailChimp Signup Form -->
     <div id="mc_embed_signup">
-        <form @submit="onSubmit"
+        <form
                 class="flight-form"
-                action="https://aerocene.us12.list-manage.com/subscribe/post?u=8adb5d542fb2a0cf0dac11583&amp;id=d753b7b620"
-                method="post"
                 id="mc-embedded-subscribe-form"
                 name="mc-embedded-subscribe-form"
-                target="_blank"
                 novalidate>
             <div id="mc_embed_signup_scroll" class="selector-group-wrapper">
                 <div class="name-selector-group selector-group">
                     <div class="mc-field-group">
                         <b-form-input
+                                v-model="name"
                                 type="text"
                                 placeholder="Enter your name here"
                                 name="FNAME"
@@ -22,6 +20,7 @@
                     </div>
                     <div class="mc-field-group">
                         <b-form-input
+                                v-model="email"
                                 type="email"
                                 placeholder="example@mail.com"
                                 name="EMAIL"
@@ -46,7 +45,7 @@
                     Enter your name and email to receive a postcard about your journey
                     and get updates on Aerocene.
                 </p>
-                <b-button type="submit"
+                <b-button @click="onSubmit"
                           variant="primary"
                           value="Subscribe"
                           name="subscribe"
@@ -63,10 +62,87 @@
  * @author Iacopo Leardini - @iacopolea
  * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
 */
+
+import moment from 'moment';
+
 export default {
   name: 'save-trip',
+  data() {
+    return {
+      email: '',
+      name: '',
+      text: '',
+    };
+  },
+  computed: {
+    isPlannedFlight() {
+      return this.$store.state.flightSimulator.flightType === 'planned';
+    },
+    winningExplorerData() {
+      return this.$store.state.flightSimulator.winningExplorerData;
+    },
+    trajectoryId() {
+      return this.$store.state.flightSimulator.trajectoryId;
+    },
+    maxDist() {
+      return parseInt(this.winningExplorerData.minDist, 10).toLocaleString('en');
+    },
+    depDate() {
+      return moment(this.winningExplorerData.departureDate).format('MMM Do, YYYY');
+    },
+    departure() {
+      return this.$store.state.flightSimulator.departure;
+    },
+    destination() {
+      return this.$store.state.flightSimulator.destination;
+    },
+  },
   methods: {
+    generateText() {
+      if (this.isPlannedFlight) {
+        /*
+        return `The Aerocene Sculpture that left from <b>${this.departure.city
+        }</b> on <strong>${this.depDate
+        }</strong>arrived within <strong>${this.winningExplorerData.minDist
+        }km</strong> from <strong>${this.destination.city
+        }</strong> in <strong>${this.winningExplorerData.minTime} days.</strong>`;
+        */
+        // const template = "Departed from New York, US to Paris, France.
+        // Arrived within 898.7 km of Paris in 2.9 days.
+        // Travelled total 5950 km from fussel free borders.";
+        return `Departed from ${this.departure.city}, ${this.departure.country} to ${this.destination.city}, ${this.destination.country}.
+                Arrived within ${this.winningExplorerData.minDist} km of ${this.destination.city} in ${this.winningExplorerData.minTime} days.
+                Travelled total ${this.winningExplorerData.totalDist} km from fossil free borders.`;
+      }
+      return `The Aerocene Sculpture that floated the farthest is the one that left from ${this.departure.city
+      } on ${this.depDate
+      } and travelled ${this.maxDist
+      } km in ${this.winningExplorerData.minTime} days.`;
+    },
     onSubmit() {
+      const data = {
+        email: this.email,
+        id: this.trajectoryId,
+        name: this.name,
+        text: this.generateText(),
+        departure_date: moment(this.winningExplorerData.departureDate).format('DD.MM.YYYY'),
+      };
+      const s = JSON.stringify(data);
+      fetch('http://floatpredictor.aerocene.org/scripts/api/form/subscribe.php', {
+        method: 'post',
+        body: s,
+      }).then(
+        response => response.text(),
+      ).then((jsonData) => {
+        // console.log('***********************');
+        // eslint-disable-next-line
+        console.log(jsonData);
+      }).catch((r) => {
+        // eslint-disable-next-line
+        console.log('Downloader error');
+        // eslint-disable-next-line
+        console.log(r);
+      });
       this.$router.push('/client/home');
     },
   },

@@ -37,8 +37,8 @@ import colorMap from '../assets/img/colormap/4096.jpg';
 import colorMapMobile from '../assets/img/colormap/2048.jpg';
 import bumpMap from '../assets/img/bumpmap/8192.jpg';
 import bumpMapMobile from '../assets/img/bumpmap/4096.jpg';
-import nightModeMap from '../assets/img/nightModeMap/4096.jpg';
-import nightModeMapMobile from '../assets/img/nightModeMap/2048.jpg';
+import nightModeMap from '../assets/img/nightModeMap/8192.jpg';
+import nightModeMapMobile from '../assets/img/nightModeMap/4096.jpg';
 import colorMapA from '../assets/img/colormap/4096A.jpg';
 import colorMapB from '../assets/img/colormap/4096B.jpg';
 import colorMapC from '../assets/img/colormap/4096C.jpg';
@@ -178,6 +178,11 @@ export default {
   },
 
   watch: {
+    playing(p) {
+      if (p && this.visualizationState === STATE_ANIMATION_ACTIVE) {
+        this.altitudeLevel = this.initialAltitudeLevel;
+      }
+    },
     guiVisible(gv) {
       if (gv) this.addDebugTools();
     },
@@ -312,6 +317,7 @@ export default {
 
     visualizationState(s) {
       this.setState(s);
+      this.loading = this.windsLoaded * (this.trajectoryLoaded || this.visualizationState !== STATE_ANIMATION_ACTIVE) * this.textureLoaded;
     },
 
     winds(w) {
@@ -372,7 +378,7 @@ export default {
      */
     initVis() {
       if (process.env.NODE_ENV === 'development') {
-        pars.speed_d_x_sec = 0.09;
+        pars.speed_d_x_sec = 0.99;
         pars.skip_frame = 1;
         pars.use_bump = false;
         pars.antialias = false;
@@ -1514,6 +1520,7 @@ export default {
             minDist: this.minDist,
             minTime: this.minTime,
             departureDate: this.startingDate,
+            totalDist: explorers[this.minTrack].getTotalDistance().toFixed(0),
             svg: this.toSVG(),
           };
 
