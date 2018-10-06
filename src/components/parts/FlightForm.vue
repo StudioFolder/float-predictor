@@ -158,13 +158,30 @@ export default {
           this.form.errors = errors;
         });
     },
-    setDeparture(e) {
+    setDeparture(e, p) {
+      // console.log('Departure set');
+      // console.dir(e);
+      // console.dir(p);
+      let locality = e.locality;
+      if (locality === undefined) {
+        locality = p.vicinity;
+        if (locality === undefined) {
+          locality = '';
+        }
+      }
       this.departure =
-        { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
+        { lat: e.latitude, lng: e.longitude, city: locality, country: e.country };
     },
-    setDestination(e) {
+    setDestination(e, p) {
+      let locality = e.locality;
+      if (locality === undefined) {
+        locality = p.vicinity;
+        if (locality === undefined) {
+          locality = '';
+        }
+      }
       this.destination =
-        { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
+        { lat: e.latitude, lng: e.longitude, city: locality, country: e.country };
     },
     validateForm() {
       const errors = {};
@@ -191,6 +208,8 @@ export default {
       }
     },
     startAnimation() {
+      this.$store.commit('flightSimulator/setDeparture', this.departure);
+      this.$store.commit('flightSimulator/setDestination', this.destination);
       this.$store.commit('flightSimulator/setVisualizationState', 8);
       this.$store.commit('flightSimulator/setVisualizationState', 1);
       this.$store.commit('general/setFormStatus', false);

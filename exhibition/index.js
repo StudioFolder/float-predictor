@@ -7,6 +7,7 @@ const WebSocket = require('ws');
 const fs = require('fs');
 const copydir = require('copy-dir');
 const os = require('os');
+const urllib = require('url');
 // const mv = require('mv');
 
 const mbs = [10, 30, 100, 250, 500, 850, 1000];
@@ -46,6 +47,23 @@ wss.on('connection', (ws, req) => {
 server.listen(1337, () => {
   console.log('Listening on %d', server.address().port);
 });
+
+app.get('/traj', (req, res) => {
+  // const t = res.redirect('http://floatpredictor.aerocene.org/scripts/traj4multi2d.php');
+  res.redirect(urllib.format({
+    pathname: 'http://floatpredictor.aerocene.org/scripts/traj4multi2d.php',
+    query: req.query,
+  }));
+});
+
+app.post('/insert', (req, res) => {
+  res.redirect(307, 'http://floatpredictor.aerocene.org/scripts/api/insert.php');
+});
+
+app.post('/subscribe', (req, res) => {
+  res.redirect(307, 'http://floatpredictor.aerocene.org/scripts/api/form/subscribe.php');
+});
+
 
 /* DOWNLOAD WIND DATA */
 

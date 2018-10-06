@@ -24,7 +24,8 @@ class TrajectoryDataDownloader {
   }
 
   downloadMultiS(day, urls, departure, destination, pressure) {
-    let url = `http://floatpredictor.aerocene.org/scripts/traj4multi2d.php?${day},${pressure},${destination.lat},${destination.lng} ${urls}`;
+  //   let url = `http://floatpredictor.aerocene.org/scripts/traj4multi2d.php?${day},${pressure},${destination.lat},${destination.lng} ${urls}`;
+    let url = `http://localhost:1337/traj?${day},${pressure},${destination.lat},${destination.lng} ${urls}`;
     // console.log(`${url}`);
     /* if (departure.lat === 52.520645 && departure.lng === 13.409779 &&
       destination.lat === 35.652832 && destination.lng === 139.839478) {

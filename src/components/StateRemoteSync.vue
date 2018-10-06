@@ -127,18 +127,21 @@ export default {
   beforeCreate() {
   },
   mounted() {
-    this.loading = 1;
-    this.verbose = true;
-    this.data = JSON.parse(JSON.stringify(this.$store.state.flightSimulator));
-    const url = 'static/exhibition/websocket_config.json';
-    fetch(url)
-      .then(r => r.json())
-      .then((json) => {
-        this.ip = json.ip;
-        this.port = json.port;
-        this.setupWS();
-      })
-      .catch((r) => { console.log(`Error in fetching ${url}: ${r}`); });
+    setTimeout(() => {
+      console.log('mounted ****************************');
+      this.loading = 1;
+      this.verbose = true;
+      this.data = JSON.parse(JSON.stringify(this.$store.state.flightSimulator));
+      const url = 'static/exhibition/websocket_config.json';
+      fetch(url)
+        .then(r => r.json())
+        .then((json) => {
+          this.ip = json.ip;
+          this.port = json.port;
+          this.setupWS();
+        })
+        .catch((r) => { console.log(`Error in fetching ${url}: ${r}`); });
+    }, 2000);
   },
   beforeDestroy() {
     this.ws.close();

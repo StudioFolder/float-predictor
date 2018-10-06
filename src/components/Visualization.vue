@@ -344,6 +344,7 @@ export default {
     },
 
     visualizationState(s) {
+      this.loading = this.windsLoaded * (this.trajectoryLoaded || s !== STATE_ANIMATION_ACTIVE) * this.textureLoaded;
       this.setState(s);
     },
 
@@ -947,6 +948,28 @@ export default {
     setState(state) {
       switch (state) {
         case STATE_ANIMATION_IDLE: {
+          const iv = [];
+          const ev = [];
+          iv.push(this.getScale());
+          ev.push(INITIAL_ZOOM);
+          iv.push(controls.target.x, controls.target.y, controls.target.z);
+          ev.push(0, 0, 0);
+          iv.push(camera.position.length());
+          ev.push(radius * 1.72);
+          animator.start({
+            init_values: iv,
+            end_values: ev,
+            time_start: 0,
+            time_interval: 0.5,
+            sine_interpolation: true,
+            onAnimationEnd: () => {
+            },
+            onAnimationUpdate: (v) => {
+              controls.target.set(v[1], v[2], v[3]);
+              camera.position.setLength(v[4]);
+              this.setScale(v[0]);
+            },
+          });
           pars.auto_rotate = false;
           this.clear();
           break;
@@ -1601,7 +1624,7 @@ export default {
           }
           const s = JSON.stringify(trajectory);
           if (s !== this.previousTrajectoryData) {
-            fetch('http://floatpredictor.aerocene.org/scripts/api/insert.php', {
+            fetch('http://localhost:1337/insert', {
               method: 'post',
               body: s,
             }).then(

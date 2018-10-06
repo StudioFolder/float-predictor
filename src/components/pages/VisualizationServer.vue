@@ -1,6 +1,5 @@
 <template>
   <div id="visualization-server">
-    <StateRemoteSync/>
     <div class="main-visualization-wrapper">
       <visualization />
       <on-board-navigation />
@@ -17,13 +16,12 @@
 */
 import onBoardNavigation from 'Parts/OnBoardNavigation';
 import visualization from 'Components/Visualization';
-import StateRemoteSync from 'Components/StateRemoteSync';
 import modalWinner from 'Modals/ModalWinnerExplorer';
 
 export default {
   name: 'visualizationServer',
   components: {
-    visualization, StateRemoteSync, onBoardNavigation, modalWinner,
+    visualization, onBoardNavigation, modalWinner,
   },
   mounted() {
     this.$store.commit('flightSimulator/setVisualizationState', 9);

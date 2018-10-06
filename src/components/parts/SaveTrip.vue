@@ -128,7 +128,7 @@ export default {
         departure_date: moment(this.winningExplorerData.departureDate).format('DD.MM.YYYY'),
       };
       const s = JSON.stringify(data);
-      fetch('http://floatpredictor.aerocene.org/scripts/api/form/subscribe.php', {
+      fetch('http://localhost:1337/subscribe', {
         method: 'post',
         body: s,
       }).then(

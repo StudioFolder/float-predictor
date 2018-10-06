@@ -13,6 +13,7 @@
                 Design and code by Studio Folder and Angelo Semeraro.
             </div>
         </footer>
+        <StateRemoteSync/>
     </div>
 </template>
 
@@ -24,10 +25,11 @@
 */
 import siteHeader from 'Components/Header';
 import infoBox from 'Parts/InfoBox';
+import StateRemoteSync from 'Components/StateRemoteSync';
 
 export default {
   name: 'App',
-  components: { siteHeader, infoBox },
+  components: { siteHeader, infoBox, StateRemoteSync },
   computed: {
     isInfoBoxOpen() {
       return this.$store.state.general.isInfoBoxOpen;

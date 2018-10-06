@@ -1,6 +1,5 @@
 <template>
     <div class="visualization-client">
-        <StateRemoteSync/>
         <div class="home-content">
             <p>
                 The Aerocene Float Predictor is a global
@@ -26,13 +25,9 @@
  * @author Iacopo Leardini - @iacopolea
  * @author Angelo Semeraro - @angeloseme / http://angelosemeraro.info
 */
-import StateRemoteSync from 'Components/StateRemoteSync';
 
 export default {
   name: 'VisualizationClient',
-  components: {
-    StateRemoteSync,
-  },
   computed: {
     isChoosing() { return (this.$store.state.general.isChoosingDestination); },
   },
