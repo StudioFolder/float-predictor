@@ -733,7 +733,7 @@ export default {
       controls.zoomSpeed = 0.1;
       controls.enableZoom = pars.zoom_enabled;
       controls.constraint.scene = scene;
-      // controls.minDistance = radius * 0.5;
+      controls.minDistance = radius * 0.53;
       pars.pixel_ratio = window.devicePixelRatio;
       this.setAntialias(pars.antialias);
 
