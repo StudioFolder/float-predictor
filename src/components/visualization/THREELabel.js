@@ -171,7 +171,7 @@ class THREELabel {
           const top = this.top;
           _.each(positions, (p) => {
             if (p.visible &&
-              Math.abs(p.left - left) < p.w && Math.abs(p.top - top) < p.h) {
+              Math.abs(p.left - left) < p.w * 0.6 && Math.abs(p.top - top) < p.h * 0.6) {
               overlapping = true;
             }
           });

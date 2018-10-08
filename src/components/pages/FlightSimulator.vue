@@ -220,13 +220,27 @@ export default {
           this.form.errors = errors;
         });
     },
-    setDeparture(e) {
+    setDeparture(e, p) {
+      let locality = e.locality;
+      if (locality === undefined) {
+        locality = p.vicinity;
+        if (locality === undefined) {
+          locality = '';
+        }
+      }
       this.departure =
-        { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
+        { lat: e.latitude, lng: e.longitude, city: locality, country: e.country };
     },
-    setDestination(e) {
+    setDestination(e, p) {
+      let locality = e.locality;
+      if (locality === undefined) {
+        locality = p.vicinity;
+        if (locality === undefined) {
+          locality = '';
+        }
+      }
       this.destination =
-        { lat: e.latitude, lng: e.longitude, city: e.locality, country: e.country };
+        { lat: e.latitude, lng: e.longitude, city: locality, country: e.country };
     },
     validateForm() {
       const errors = {};

@@ -178,6 +178,11 @@ export default {
   },
 
   watch: {
+    playing(p) {
+      if (p && this.visualizationState === STATE_ANIMATION_ACTIVE) {
+        this.altitudeLevel = this.initialAltitudeLevel;
+      }
+    },
     guiVisible(gv) {
       if (gv) this.addDebugTools();
     },
@@ -226,15 +231,16 @@ export default {
     },
 
     focusedExplorer(explorerId) {
-      if (explorerId === 0) {
-        this.setOnboard(false);
-      } else {
-        // console.log(explorerId);
-        this.onboardIndex = explorerId - 1;
-        this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
-        this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
-        this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.initialAltitudeLevel]).toFixed(2);
-        this.setOnboard(true);
+      if (explorerId !== undefined) {
+        if (explorerId === 0) {
+          this.setOnboard(false);
+        } else {
+          this.onboardIndex = explorerId - 1;
+          this.focusedExplorerSpeed = explorers[this.onboardIndex].getSpeed().toFixed(0);
+          this.focusedExplorerDistance = explorers[this.onboardIndex].getDistance().toFixed(0);
+          this.focusedExplorerAltitude = (explorers[this.onboardIndex].getAltitudeRatio() * 1000.0 * altitudeLevels[this.initialAltitudeLevel]).toFixed(2);
+          this.setOnboard(true);
+        }
       }
     },
 
@@ -339,6 +345,7 @@ export default {
     },
 
     visualizationState(s) {
+      this.loading = this.windsLoaded * (this.trajectoryLoaded || s !== STATE_ANIMATION_ACTIVE) * this.textureLoaded;
       this.setState(s);
     },
 
@@ -726,7 +733,7 @@ export default {
       controls.zoomSpeed = 0.1;
       controls.enableZoom = pars.zoom_enabled;
       controls.constraint.scene = scene;
-      controls.minDistance = radius * 0.5;
+      // controls.minDistance = radius * 0.5;
       pars.pixel_ratio = window.devicePixelRatio;
       this.setAntialias(pars.antialias);
 
@@ -942,6 +949,28 @@ export default {
     setState(state) {
       switch (state) {
         case STATE_ANIMATION_IDLE: {
+          const iv = [];
+          const ev = [];
+          iv.push(this.getScale());
+          ev.push(INITIAL_ZOOM);
+          iv.push(controls.target.x, controls.target.y, controls.target.z);
+          ev.push(0, 0, 0);
+          iv.push(camera.position.length());
+          ev.push(radius * 1.72);
+          animator.start({
+            init_values: iv,
+            end_values: ev,
+            time_start: 0,
+            time_interval: 0.5,
+            sine_interpolation: true,
+            onAnimationEnd: () => {
+            },
+            onAnimationUpdate: (v) => {
+              controls.target.set(v[1], v[2], v[3]);
+              camera.position.setLength(v[4]);
+              this.setScale(v[0]);
+            },
+          });
           pars.auto_rotate = false;
           this.clear();
           break;
@@ -990,6 +1019,7 @@ export default {
         }
         /* animation end */
         case STATE_ANIMATION_END: {
+          this.setOnboard(false);
           pars.auto_rotate = false;
           break;
         }
