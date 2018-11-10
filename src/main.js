@@ -31,6 +31,7 @@ Vue.use(VuejsDialog);
 Vue.use(vbclass, router);
 Vue.use(VueAnalytics, {
   id: 'UA-25554902-10',
+  router,
 });
 Vue.use(SocialSharing);
 
