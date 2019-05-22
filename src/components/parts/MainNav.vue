@@ -74,11 +74,16 @@
         <div class="macro-section --bottom">
             <div class="menu-section --rights">
                 <div class="font-small">
+                  <!--
                     Aerocene is an open artistic project by  <a target="_blank" href="http://tomassaraceno.com/">Studio Tomás Saraceno</a>.
                     Trajectory computation by
                     <a href="https://eapsweb.mit.edu/" target="_blank">MIT EAPS</a>.
                     Design and code by  <a target="_blank" href="http://www.studiofolder.it/">Studio Folder</a> and Angelo Semeraro.
-                </div>
+                -->
+                    The Aerocene Float Predictor is being developed by the
+                    <a href="http://aerocene.org" target="_blank">Aerocene Foundation</a>
+                    and the members of its diverse community.
+              </div>
             </div>
         </div>
     </div>
